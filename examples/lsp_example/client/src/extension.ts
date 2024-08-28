@@ -13,17 +13,17 @@ let outputChannel: OutputChannel;
 export function activate(context: ExtensionContext) {
   outputChannel = window.createOutputChannel("Example Language Server");
 
-  const serverModule = context.asAbsolutePath(
+  const serverPath = context.asAbsolutePath(
     path.join("..", "..", "..", "bazel-bin", "examples", "pipe_lsp_server")
   );
 
   const serverOptions: ServerOptions = {
     run: {
-      command: serverModule,
+      command: serverPath,
       transport: TransportKind.pipe,
     },
     debug: {
-      command: serverModule,
+      command: serverPath,
       transport: TransportKind.pipe,
     },
   };
