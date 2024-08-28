@@ -1,0 +1,27 @@
+{
+  "name": "lsp-sample-client",
+  "version": "0.0.1",
+  "description": "VSCode part of a language server",
+  "license": "MIT",
+  "author": "Shou-Li Hsu",
+  "publisher": "hankhsu1996",
+  "main": "./out/extension",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -w"
+  },
+  "activationEvents": [
+    "onLanguage:plaintext"
+  ],
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.1",
+    "@types/vscode": "^1.75.1",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  }
+}
