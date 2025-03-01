@@ -1,9 +1,5 @@
 # .bazelrc
 
-# Enable ccache
-build --sandbox_writable_path=$HOME/.cache/ccache
-build --experimental_guard_against_concurrent_changes
-
 # C++ toolchain configuration
 build --cxxopt='-std=c++20'
 build --host_cxxopt='-std=c++20'
