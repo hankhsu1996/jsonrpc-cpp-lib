@@ -1,6 +1,6 @@
 # .bazelrc
 
-# C++ toolchain configuration
+# Common settings for all builds
 build --cxxopt='-std=c++20'
 build --host_cxxopt='-std=c++20'
 
@@ -19,5 +19,5 @@ build:release --compilation_mode=opt
 build:release --copt='-O3'
 build:release --strip=always
 
-# Default to release mode
-build --config=release
+# Default to release if no config specified
+build:default --config=release
