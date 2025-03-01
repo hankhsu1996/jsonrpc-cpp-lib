@@ -126,7 +126,7 @@ $(function(){initNavTree('classjsonrpc_1_1server_1_1Server.html',''); initResiza
 <div class="dynheader">
 Collaboration diagram for jsonrpc::server::Server:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1server_1_1Server__coll__graph.svg" width="179" height="176"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1server_1_1Server__coll__graph.svg" width="179" height="196"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -146,6 +146,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1d630d4f32a0ac5e37cc6c7f4715a0a0" id="r_a1d630d4f32a0ac5e37cc6c7f4715a0a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d630d4f32a0ac5e37cc6c7f4715a0a0">RegisterNotification</a> (const std::string &amp;method, const <a class="el" href="namespacejsonrpc_1_1server.html#a4f43d4eeec1a7837e83fde5608e97495">NotificationHandler</a> &amp;handler)</td></tr>
 <tr class="memdesc:a1d630d4f32a0ac5e37cc6c7f4715a0a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers an RPC notification handler with the dispatcher.  <br /></td></tr>
 <tr class="separator:a1d630d4f32a0ac5e37cc6c7f4715a0a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd736916c94f187911a8a578506524bc" id="r_afd736916c94f187911a8a578506524bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd736916c94f187911a8a578506524bc">SendNotification</a> (const std::string &amp;method, std::optional&lt; nlohmann::json &gt; params=std::nullopt)</td></tr>
+<tr class="memdesc:afd736916c94f187911a8a578506524bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a notification to the client.  <br /></td></tr>
+<tr class="separator:afd736916c94f187911a8a578506524bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a89acb21d8672178fc9176a7105c638" id="r_a0a89acb21d8672178fc9176a7105c638"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a89acb21d8672178fc9176a7105c638">IsRunning</a> () const -&gt; bool</td></tr>
 <tr class="memdesc:a0a89acb21d8672178fc9176a7105c638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the server is currently running.  <br /></td></tr>
 <tr class="separator:a0a89acb21d8672178fc9176a7105c638"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,7 +157,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A JSON-RPC server for handling requests and notifications. </p>
 <p>Manages the lifecycle of a JSON-RPC server, including starting and stopping, and registering RPC methods and notifications. </p>
 
-<p class="definition">Definition at line <a class="el" href="server_8hpp_source.html#l00019">19</a> of file <a class="el" href="server_8hpp_source.html">server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="server_8hpp_source.html#l00023">23</a> of file <a class="el" href="server_8hpp_source.html">server.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6a0755ca19e216e23879d2e3a1eebc03" name="a6a0755ca19e216e23879d2e3a1eebc03"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a0755ca19e216e23879d2e3a1eebc03">&#9670;&#160;</a></span>Server()</h2>
@@ -226,6 +229,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   25</span>  <span class="keywordflow">return</span> running_.load();</div>
 <div class="line"><span class="lineno">   26</span>}</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="server_8cpp_source.html#l00067">SendNotification()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1server_1_1Server_a0a89acb21d8672178fc9176a7105c638_icgraph.svg" width="395" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <a id="a0d555953f59dc176f334bcb9905f382e" name="a0d555953f59dc176f334bcb9905f382e"></a>
@@ -257,10 +267,10 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacejsonrpc_1_1server.html#ac8d637644941e15c78da445655e95444" title="Type alias for method call handler functions.">MethodCallHandler</a> for the signature of the handler function. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00050">50</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>                                                               {</div>
-<div class="line"><span class="lineno">   52</span>  dispatcher_-&gt;RegisterMethodCall(method, handler);</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00057">57</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>                                                               {</div>
+<div class="line"><span class="lineno">   59</span>  dispatcher_-&gt;RegisterMethodCall(method, handler);</div>
+<div class="line"><span class="lineno">   60</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -293,11 +303,83 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacejsonrpc_1_1server.html#a4f43d4eeec1a7837e83fde5608e97495" title="Type alias for notification handler functions.">NotificationHandler</a> for the signature of the handler function. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00055">55</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>                                                                 {</div>
-<div class="line"><span class="lineno">   57</span>  dispatcher_-&gt;RegisterNotification(method, handler);</div>
-<div class="line"><span class="lineno">   58</span>}</div>
+<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00062">62</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>                                                                 {</div>
+<div class="line"><span class="lineno">   64</span>  dispatcher_-&gt;RegisterNotification(method, handler);</div>
+<div class="line"><span class="lineno">   65</span>}</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="afd736916c94f187911a8a578506524bc" name="afd736916c94f187911a8a578506524bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd736916c94f187911a8a578506524bc">&#9670;&#160;</a></span>SendNotification()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void jsonrpc::server::Server::SendNotification </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; nlohmann::json &gt;</td>          <td class="paramname"><span class="paramname"><em>params</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::nullopt</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends a notification to the client. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">method</td><td>The name of the notification method. </td></tr>
+    <tr><td class="paramname">params</td><td>Optional parameters to include in the notification. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="server_8cpp_source.html#l00067">67</a> of file <a class="el" href="server_8cpp_source.html">server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>                                                               {</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">if</span> (!transport_) {</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Transport is not initialized&quot;</span>);</div>
+<div class="line"><span class="lineno">   71</span>  }</div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="#a0a89acb21d8672178fc9176a7105c638">IsRunning</a>()) {</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Server is not running&quot;</span>);</div>
+<div class="line"><span class="lineno">   75</span>  }</div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment">// Construct JSON-RPC notification message</span></div>
+<div class="line"><span class="lineno">   79</span>    nlohmann::json notification = {{<span class="stringliteral">&quot;jsonrpc&quot;</span>, <span class="stringliteral">&quot;2.0&quot;</span>}, {<span class="stringliteral">&quot;method&quot;</span>, method}};</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>    <span class="comment">// Only add params if they are provided</span></div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> (params.has_value()) {</div>
+<div class="line"><span class="lineno">   83</span>      notification[<span class="stringliteral">&quot;params&quot;</span>] = params.value();</div>
+<div class="line"><span class="lineno">   84</span>    }</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>    <span class="comment">// Convert JSON to string and send with thread safety</span></div>
+<div class="line"><span class="lineno">   87</span>    <span class="keyword">const</span> <span class="keyword">auto</span> message = notification.dump();</div>
+<div class="line"><span class="lineno">   88</span>    {</div>
+<div class="line"><span class="lineno">   89</span>      std::lock_guard&lt;std::mutex&gt; lock(transport_mutex_);</div>
+<div class="line"><span class="lineno">   90</span>      transport_-&gt;SendMessage(message);</div>
+<div class="line"><span class="lineno">   91</span>    }</div>
+<div class="line"><span class="lineno">   92</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;e) {</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">   94</span>        std::string(<span class="stringliteral">&quot;Failed to create notification message: &quot;</span>) + e.what());</div>
+<div class="line"><span class="lineno">   95</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">   97</span>        std::string(<span class="stringliteral">&quot;Failed to send notification: &quot;</span>) + e.what());</div>
+<div class="line"><span class="lineno">   98</span>  }</div>
+<div class="line"><span class="lineno">   99</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a0a89acb21d8672178fc9176a7105c638"><div class="ttname"><a href="#a0a89acb21d8672178fc9176a7105c638">jsonrpc::server::Server::IsRunning</a></div><div class="ttdeci">auto IsRunning() const -&gt; bool</div><div class="ttdoc">Checks if the server is currently running.</div><div class="ttdef"><b>Definition</b> <a href="server_8cpp_source.html#l00024">server.cpp:24</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="server_8cpp_source.html#l00024">IsRunning()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1server_1_1Server_afd736916c94f187911a8a578506524bc_cgraph.svg" width="395" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <a id="a02556987956f30de5480fad7cd07d335" name="a02556987956f30de5480fad7cd07d335"></a>

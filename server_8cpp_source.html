@@ -161,38 +161,82 @@ $(function(){initNavTree('server_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  }</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">while</span> (<a class="code hl_function" href="classjsonrpc_1_1server_1_1Server.html#a0a89acb21d8672178fc9176a7105c638">IsRunning</a>()) {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    std::string request = transport_-&gt;ReceiveMessage();</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">if</span> (request.empty()) {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    std::optional&lt;std::string&gt; response = dispatcher_-&gt;DispatchRequest(request);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> (response.has_value()) {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      transport_-&gt;SendMessage(response.value());</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1server_1_1Server.html#a0d555953f59dc176f334bcb9905f382e">   50</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1server_1_1Server.html#a0d555953f59dc176f334bcb9905f382e">Server::RegisterMethodCall</a>(</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">const</span> std::string &amp;method, <span class="keyword">const</span> <a class="code hl_typedef" href="namespacejsonrpc_1_1server.html#ac8d637644941e15c78da445655e95444">MethodCallHandler</a> &amp;handler) {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  dispatcher_-&gt;RegisterMethodCall(method, handler);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    std::string request;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      std::lock_guard&lt;std::mutex&gt; lock(transport_mutex_);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      request = transport_-&gt;ReceiveMessage();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">if</span> (request.empty()) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    std::optional&lt;std::string&gt; response = dispatcher_-&gt;DispatchRequest(request);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">if</span> (response.has_value()) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      std::lock_guard&lt;std::mutex&gt; lock(transport_mutex_);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      transport_-&gt;SendMessage(response.value());</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1server_1_1Server.html#a0d555953f59dc176f334bcb9905f382e">   57</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1server_1_1Server.html#a0d555953f59dc176f334bcb9905f382e">Server::RegisterMethodCall</a>(</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keyword">const</span> std::string &amp;method, <span class="keyword">const</span> <a class="code hl_typedef" href="namespacejsonrpc_1_1server.html#ac8d637644941e15c78da445655e95444">MethodCallHandler</a> &amp;handler) {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  dispatcher_-&gt;RegisterMethodCall(method, handler);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
 </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1server_1_1Server.html#a1d630d4f32a0ac5e37cc6c7f4715a0a0">   55</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1server_1_1Server.html#a1d630d4f32a0ac5e37cc6c7f4715a0a0">Server::RegisterNotification</a>(</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keyword">const</span> std::string &amp;method, <span class="keyword">const</span> <a class="code hl_typedef" href="namespacejsonrpc_1_1server.html#a4f43d4eeec1a7837e83fde5608e97495">NotificationHandler</a> &amp;handler) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  dispatcher_-&gt;RegisterNotification(method, handler);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1server_1_1Server.html#a1d630d4f32a0ac5e37cc6c7f4715a0a0">   62</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1server_1_1Server.html#a1d630d4f32a0ac5e37cc6c7f4715a0a0">Server::RegisterNotification</a>(</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">const</span> std::string &amp;method, <span class="keyword">const</span> <a class="code hl_typedef" href="namespacejsonrpc_1_1server.html#a4f43d4eeec1a7837e83fde5608e97495">NotificationHandler</a> &amp;handler) {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  dispatcher_-&gt;RegisterNotification(method, handler);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}  <span class="comment">// namespace jsonrpc::server</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1server_1_1Server.html#afd736916c94f187911a8a578506524bc">   67</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1server_1_1Server.html#afd736916c94f187911a8a578506524bc">Server::SendNotification</a>(</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">const</span> std::string &amp;method, std::optional&lt;nlohmann::json&gt; params) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">if</span> (!transport_) {</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Transport is not initialized&quot;</span>);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="classjsonrpc_1_1server_1_1Server.html#a0a89acb21d8672178fc9176a7105c638">IsRunning</a>()) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Server is not running&quot;</span>);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="comment">// Construct JSON-RPC notification message</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    nlohmann::json notification = {{<span class="stringliteral">&quot;jsonrpc&quot;</span>, <span class="stringliteral">&quot;2.0&quot;</span>}, {<span class="stringliteral">&quot;method&quot;</span>, method}};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="comment">// Only add params if they are provided</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">if</span> (params.has_value()) {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      notification[<span class="stringliteral">&quot;params&quot;</span>] = params.value();</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="comment">// Convert JSON to string and send with thread safety</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keyword">const</span> <span class="keyword">auto</span> message = notification.dump();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      std::lock_guard&lt;std::mutex&gt; lock(transport_mutex_);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      transport_-&gt;SendMessage(message);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;e) {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        std::string(<span class="stringliteral">&quot;Failed to create notification message: &quot;</span>) + e.what());</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        std::string(<span class="stringliteral">&quot;Failed to send notification: &quot;</span>) + e.what());</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
+</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}  <span class="comment">// namespace jsonrpc::server</span></div>
 <div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a02556987956f30de5480fad7cd07d335"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#a02556987956f30de5480fad7cd07d335">jsonrpc::server::Server::Start</a></div><div class="ttdeci">void Start()</div><div class="ttdoc">Starts the server to handle incoming JSON-RPC requests.</div><div class="ttdef"><b>Definition</b> <a href="#l00013">server.cpp:13</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a0a89acb21d8672178fc9176a7105c638"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#a0a89acb21d8672178fc9176a7105c638">jsonrpc::server::Server::IsRunning</a></div><div class="ttdeci">auto IsRunning() const -&gt; bool</div><div class="ttdoc">Checks if the server is currently running.</div><div class="ttdef"><b>Definition</b> <a href="#l00024">server.cpp:24</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a0d555953f59dc176f334bcb9905f382e"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#a0d555953f59dc176f334bcb9905f382e">jsonrpc::server::Server::RegisterMethodCall</a></div><div class="ttdeci">void RegisterMethodCall(const std::string &amp;method, const MethodCallHandler &amp;handler)</div><div class="ttdoc">Registers an RPC method handler with the dispatcher.</div><div class="ttdef"><b>Definition</b> <a href="#l00050">server.cpp:50</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a1d630d4f32a0ac5e37cc6c7f4715a0a0"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#a1d630d4f32a0ac5e37cc6c7f4715a0a0">jsonrpc::server::Server::RegisterNotification</a></div><div class="ttdeci">void RegisterNotification(const std::string &amp;method, const NotificationHandler &amp;handler)</div><div class="ttdoc">Registers an RPC notification handler with the dispatcher.</div><div class="ttdef"><b>Definition</b> <a href="#l00055">server.cpp:55</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a0d555953f59dc176f334bcb9905f382e"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#a0d555953f59dc176f334bcb9905f382e">jsonrpc::server::Server::RegisterMethodCall</a></div><div class="ttdeci">void RegisterMethodCall(const std::string &amp;method, const MethodCallHandler &amp;handler)</div><div class="ttdoc">Registers an RPC method handler with the dispatcher.</div><div class="ttdef"><b>Definition</b> <a href="#l00057">server.cpp:57</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a1d630d4f32a0ac5e37cc6c7f4715a0a0"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#a1d630d4f32a0ac5e37cc6c7f4715a0a0">jsonrpc::server::Server::RegisterNotification</a></div><div class="ttdeci">void RegisterNotification(const std::string &amp;method, const NotificationHandler &amp;handler)</div><div class="ttdoc">Registers an RPC notification handler with the dispatcher.</div><div class="ttdef"><b>Definition</b> <a href="#l00062">server.cpp:62</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a6a0755ca19e216e23879d2e3a1eebc03"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#a6a0755ca19e216e23879d2e3a1eebc03">jsonrpc::server::Server::Server</a></div><div class="ttdeci">Server(std::unique_ptr&lt; transport::Transport &gt; transport)</div><div class="ttdoc">Constructs a Server with the specified transport.</div><div class="ttdef"><b>Definition</b> <a href="#l00007">server.cpp:7</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_a79dbe3ca28cd13ab385bedc620c5ec7f"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#a79dbe3ca28cd13ab385bedc620c5ec7f">jsonrpc::server::Server::Stop</a></div><div class="ttdeci">void Stop()</div><div class="ttdoc">Stops the server from handling requests.</div><div class="ttdef"><b>Definition</b> <a href="#l00019">server.cpp:19</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html_afd736916c94f187911a8a578506524bc"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html#afd736916c94f187911a8a578506524bc">jsonrpc::server::Server::SendNotification</a></div><div class="ttdeci">void SendNotification(const std::string &amp;method, std::optional&lt; nlohmann::json &gt; params=std::nullopt)</div><div class="ttdoc">Sends a notification to the client.</div><div class="ttdef"><b>Definition</b> <a href="#l00067">server.cpp:67</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1server_html"><div class="ttname"><a href="namespacejsonrpc_1_1server.html">jsonrpc::server</a></div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8hpp_source.html#l00015">dispatcher.hpp:15</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1server_html_a4f43d4eeec1a7837e83fde5608e97495"><div class="ttname"><a href="namespacejsonrpc_1_1server.html#a4f43d4eeec1a7837e83fde5608e97495">jsonrpc::server::NotificationHandler</a></div><div class="ttdeci">std::function&lt; void(const std::optional&lt; nlohmann::json &gt; &amp;)&gt; NotificationHandler</div><div class="ttdoc">Type alias for notification handler functions.</div><div class="ttdef"><b>Definition</b> <a href="types_8hpp_source.html#l00026">types.hpp:26</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1server_html_ac8d637644941e15c78da445655e95444"><div class="ttname"><a href="namespacejsonrpc_1_1server.html#ac8d637644941e15c78da445655e95444">jsonrpc::server::MethodCallHandler</a></div><div class="ttdeci">std::function&lt; nlohmann::json(const std::optional&lt; nlohmann::json &gt; &amp;)&gt; MethodCallHandler</div><div class="ttdoc">Type alias for method call handler functions.</div><div class="ttdef"><b>Definition</b> <a href="types_8hpp_source.html#l00017">types.hpp:17</a></div></div>

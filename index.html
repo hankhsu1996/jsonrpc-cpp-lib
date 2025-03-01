@@ -190,7 +190,7 @@ Creating a JSON-RPC Server</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Start the server</span></div>
 <div class="line">server.Start();</div>
-<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html">jsonrpc::server::Server</a></div><div class="ttdoc">A JSON-RPC server for handling requests and notifications.</div><div class="ttdef"><b>Definition</b> <a href="server_8hpp_source.html#l00019">server.hpp:19</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html">jsonrpc::server::Server</a></div><div class="ttdoc">A JSON-RPC server for handling requests and notifications.</div><div class="ttdef"><b>Definition</b> <a href="server_8hpp_source.html#l00023">server.hpp:23</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1StdioTransport_html"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1StdioTransport.html">jsonrpc::transport::StdioTransport</a></div><div class="ttdoc">Transport layer using standard I/O for JSON-RPC communication.</div><div class="ttdef"><b>Definition</b> <a href="stdio__transport_8hpp_source.html#l00012">stdio_transport.hpp:12</a></div></div>
 </div><!-- fragment --><p>To register a method, you need to provide a function that takes optional <code>Json</code> parameters and returns a <code>Json</code> object containing either a <code>result</code> or <code>error</code> field. The <code>error</code> field must follow the JSON-RPC spec, including code and message. For simplicity, this library does not provide a more structured way to create error responses.</p>
 <h2><a class="anchor" id="autotoc_md9"></a>
@@ -210,7 +210,7 @@ Creating a JSON-RPC Client</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Send stop notification</span></div>
 <div class="line">client.SendNotification(<span class="stringliteral">&quot;stop&quot;</span>);</div>
-<div class="ttc" id="aclassjsonrpc_1_1client_1_1Client_html"><div class="ttname"><a href="classjsonrpc_1_1client_1_1Client.html">jsonrpc::client::Client</a></div><div class="ttdoc">A JSON-RPC client for sending requests and receiving responses.</div><div class="ttdef"><b>Definition</b> <a href="client_8hpp_source.html#l00025">client.hpp:25</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1client_1_1Client_html"><div class="ttname"><a href="classjsonrpc_1_1client_1_1Client.html">jsonrpc::client::Client</a></div><div class="ttdoc">A JSON-RPC client for sending requests and receiving responses.</div><div class="ttdef"><b>Definition</b> <a href="client_8hpp_source.html#l00027">client.hpp:27</a></div></div>
 </div><!-- fragment --><p>These examples demonstrate the basic usage of setting up a JSON-RPC server and client. For more examples and detailed usage, please refer to the <a href="./examples/">examples folder</a>.</p>
 <h1><a class="anchor" id="autotoc_md10"></a>
 🛠️ Developer Guide</h1>
