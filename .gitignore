@@ -59,3 +59,18 @@ docs/generated/
 
 # Other
 *.DS_Store
+
+# Bazel
+bazel-*
+
+# Build
+build/
+compile_commands.json
+
+# IDE
+.cache/
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
