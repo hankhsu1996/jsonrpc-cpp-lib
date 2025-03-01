@@ -1,5 +1,14 @@
 # tests/BUILD
 
+# Mock transport library
+cc_library(
+    name = "mock_transport",
+    hdrs = ["common/mock_transport.hpp"],
+    deps = [
+        "//src:jsonrpc_lib",
+    ],
+)
+
 # Client
 cc_test(
     name = "test_client",
@@ -8,8 +17,10 @@ cc_test(
         "client/test_client.cpp",
         "common/mock_transport.hpp",
     ],
+    defines = ["TESTING"],
     deps = [
         "//src:jsonrpc_lib",
+        "//tests:mock_transport",
         "@catch2//:catch2_main",
     ],
 )

@@ -1,5 +1,5 @@
-
 #include <queue>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -25,5 +25,12 @@ class MockTransport : public jsonrpc::transport::Transport {
 
   void SetResponse(const std::string &response) {
     responses.push(response);
+  }
+
+  auto GetLastSentMessage() const -> const std::string & {
+    if (sent_requests.empty()) {
+      throw std::runtime_error("No messages have been sent");
+    }
+    return sent_requests.back();
   }
 };

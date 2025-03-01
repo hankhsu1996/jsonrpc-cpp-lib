@@ -2,7 +2,11 @@
 
 #include <atomic>
 #include <memory>
+#include <mutex>
+#include <optional>
 #include <string>
+
+#include <nlohmann/json_fwd.hpp>
 
 #include "jsonrpc/server/dispatcher.hpp"
 #include "jsonrpc/server/types.hpp"
@@ -54,6 +58,16 @@ class Server {
   void RegisterNotification(
       const std::string &method, const NotificationHandler &handler);
 
+  /**
+   * @brief Sends a notification to the client.
+   *
+   * @param method The name of the notification method.
+   * @param params Optional parameters to include in the notification.
+   */
+  void SendNotification(
+      const std::string &method,
+      std::optional<nlohmann::json> params = std::nullopt);
+
   /// @brief Checks if the server is currently running.
   [[nodiscard]] auto IsRunning() const -> bool;
 
@@ -66,6 +80,9 @@ class Server {
 
   /// Transport layer for communication.
   std::unique_ptr<transport::Transport> transport_;
+
+  /// Mutex to protect transport access
+  mutable std::mutex transport_mutex_;
 
   /// Flag indicating if the server is running.
   std::atomic<bool> running_{false};

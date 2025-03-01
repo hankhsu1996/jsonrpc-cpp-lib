@@ -1,3 +1,6 @@
+#include <memory>
+#include <thread>
+
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <fmt/core.h>
@@ -5,6 +8,8 @@
 
 #include "../common/mock_transport.hpp"
 #include "jsonrpc/client/client.hpp"
+
+using Json = nlohmann::json;
 
 TEST_CASE("Client starts and stops correctly", "[Client]") {
   auto transport = std::make_unique<MockTransport>();
@@ -37,7 +42,7 @@ TEST_CASE("Client handles responses correctly", "[Client]") {
 TEST_CASE(
     "Client sends notification without expecting a response", "[Client]") {
   auto transport = std::make_unique<MockTransport>();
-  MockTransport *transport_ptr = transport.get();
+  MockTransport* transport_ptr = transport.get();
 
   jsonrpc::client::Client client(std::move(transport));
   client.Start();
@@ -56,7 +61,7 @@ TEST_CASE(
 
 TEST_CASE("Client handles valid JSON-RPC response", "[Client]") {
   auto transport = std::make_unique<MockTransport>();
-  MockTransport *transport_ptr = transport.get();
+  MockTransport* transport_ptr = transport.get();
 
   transport_ptr->SetResponse(
       R"({"jsonrpc":"2.0","result":{"data":"success"},"id":0})");
@@ -77,20 +82,21 @@ TEST_CASE("Client handles valid JSON-RPC response", "[Client]") {
 
 TEST_CASE("Client handles in-order responses correctly", "[Client][InOrder]") {
   auto transport = std::make_unique<MockTransport>();
-  MockTransport *transport_ptr = transport.get();
+  MockTransport* transport_ptr = transport.get();
 
   const int num_requests = 10;
+  std::vector<std::string> responses;
   for (int i = 0; i < num_requests; ++i) {
-    std::string response = fmt::format(
+    responses.push_back(fmt::format(
         R"({{"jsonrpc":"2.0","result":{{"data":"success_{}"}},"id":{}}})", i,
-        i);
-    transport_ptr->SetResponse(response);
+        i));
   }
 
   jsonrpc::client::Client client(std::move(transport));
   client.Start();
 
   for (int i = 0; i < num_requests; ++i) {
+    transport_ptr->SetResponse(responses[i]);
     REQUIRE(client.HasPendingRequests() == false);
     auto response = client.SendMethodCall("getData");
     REQUIRE(client.HasPendingRequests() == false);
@@ -102,7 +108,7 @@ TEST_CASE("Client handles in-order responses correctly", "[Client][InOrder]") {
 
 TEST_CASE("Client handles async method calls correctly", "[Client][Async]") {
   auto transport = std::make_unique<MockTransport>();
-  MockTransport *transport_ptr = transport.get();
+  MockTransport* transport_ptr = transport.get();
 
   transport_ptr->SetResponse(
       R"({"jsonrpc":"2.0","result":"async_success","id":0})");
@@ -128,7 +134,7 @@ TEST_CASE(
     "Client handles multiple async method calls concurrently",
     "[Client][Async]") {
   auto transport = std::make_unique<MockTransport>();
-  MockTransport *transport_ptr = transport.get();
+  MockTransport* transport_ptr = transport.get();
 
   const int num_requests = 5;
   for (int i = 0; i < num_requests; ++i) {
@@ -157,4 +163,118 @@ TEST_CASE(
   REQUIRE(client.HasPendingRequests() == false);
 
   client.Stop();
+}
+
+TEST_CASE("Client can handle server notifications", "[Client]") {
+  SECTION("Client processes notifications without params") {
+    auto mock_transport = std::make_unique<MockTransport>();
+    auto* transport_ptr = mock_transport.get();
+    jsonrpc::client::Client client(std::move(mock_transport));
+
+    bool notification_received = false;
+    client.RegisterNotification(
+        "test_notification",
+        [&notification_received](
+            [[maybe_unused]] const std::optional<nlohmann::json>& params) {
+          notification_received = true;
+        });
+
+    client.Start();
+
+    // Simulate server sending a notification
+    Json notification = {{"jsonrpc", "2.0"}, {"method", "test_notification"}};
+    transport_ptr->SetResponse(notification.dump());
+
+    // Give some time for the client to process
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    client.Stop();
+
+    REQUIRE(notification_received);
+  }
+
+  SECTION("Client processes notifications with params") {
+    auto mock_transport = std::make_unique<MockTransport>();
+    auto* transport_ptr = mock_transport.get();
+    jsonrpc::client::Client client(std::move(mock_transport));
+
+    Json received_params;
+    client.RegisterNotification(
+        "test_notification",
+        [&received_params](const std::optional<nlohmann::json>& params) {
+          REQUIRE(params.has_value());
+          received_params = params.value();
+        });
+
+    client.Start();
+
+    // Simulate server sending a notification with params
+    Json notification = {
+        {"jsonrpc", "2.0"},
+        {"method", "test_notification"},
+        {"params", {{"key1", "value1"}, {"key2", 42}}}};
+    transport_ptr->SetResponse(notification.dump());
+
+    // Give some time for the client to process
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    client.Stop();
+
+    REQUIRE(received_params["key1"] == "value1");
+    REQUIRE(received_params["key2"] == 42);
+  }
+
+  SECTION("Client handles unregistered notifications gracefully") {
+    auto mock_transport = std::make_unique<MockTransport>();
+    auto* transport_ptr = mock_transport.get();
+    jsonrpc::client::Client client(std::move(mock_transport));
+
+    client.Start();
+
+    // Simulate server sending a notification for unregistered method
+    Json notification = {
+        {"jsonrpc", "2.0"},
+        {"method", "unknown_notification"},
+        {"params", {{"data", "test"}}}};
+    transport_ptr->SetResponse(notification.dump());
+
+    // Should not crash
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    client.Stop();
+  }
+
+  SECTION("Client can handle notifications while processing method calls") {
+    auto mock_transport = std::make_unique<MockTransport>();
+    auto* transport_ptr = mock_transport.get();
+    jsonrpc::client::Client client(std::move(mock_transport));
+
+    bool notification_received = false;
+    client.RegisterNotification(
+        "test_notification",
+        [&notification_received](
+            [[maybe_unused]] const std::optional<nlohmann::json>& params) {
+          notification_received = true;
+        });
+
+    client.Start();
+
+    // Start an async method call
+    auto future = client.SendMethodCallAsync("test_method", Json::object());
+
+    // Simulate server sending a notification before the response
+    Json notification = {{"jsonrpc", "2.0"}, {"method", "test_notification"}};
+    transport_ptr->SetResponse(notification.dump());
+
+    // Then simulate the method response
+    Json response = {
+        {"jsonrpc", "2.0"},
+        {"id", 0},  // First request will always have ID 0
+        {"result", "success"}};
+    transport_ptr->SetResponse(response.dump());
+
+    // Wait for both to be processed
+    future.get();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    client.Stop();
+
+    REQUIRE(notification_received);
+  }
 }

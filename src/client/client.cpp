@@ -35,10 +35,12 @@ auto Client::HasPendingRequests() const -> bool {
 void Client::Listener() {
   spdlog::info("Starting JSON-RPC client listener thread");
   while (is_running_) {
-    if (expected_count_ > 0) {
-      std::string response = transport_->ReceiveMessage();
+    std::string response = transport_->ReceiveMessage();
+    if (!response.empty()) {
       HandleResponse(response);
-      expected_count_--;
+      if (expected_count_ > 0) {  // Only decrement for method call responses
+        expected_count_--;
+      }
     }
   }
 }
@@ -108,6 +110,32 @@ void Client::HandleResponse(const std::string &response) {
         "Failed to parse JSON response: " + std::string(e.what()));
   }
 
+  // Check if this is a notification (no "id" field)
+  if (json_response.contains("method")) {
+    // This is a notification from server
+    try {
+      const std::string &method = json_response["method"].get<std::string>();
+      std::lock_guard<std::mutex> lock(notification_handlers_mutex_);
+      auto it = notification_handlers_.find(method);
+      if (it != notification_handlers_.end()) {
+        // Extract params if they exist
+        nlohmann::json params = json_response.contains("params")
+                                    ? json_response["params"]
+                                    : nlohmann::json::object();
+        it->second(params);
+      } else {
+        spdlog::warn(
+            "No handler registered for notification method: {}", method);
+      }
+      return;  // Exit early for notifications
+    } catch (const std::exception &e) {
+      spdlog::error("Error handling notification: {}", e.what());
+      throw std::runtime_error(
+          "Error handling notification: " + std::string(e.what()));
+    }
+  }
+
+  // Handle regular responses
   if (ValidateResponse(json_response)) {
     int request_id = json_response["id"].get<int>();
 
@@ -154,6 +182,19 @@ auto Client::ValidateResponse(const nlohmann::json &response) -> bool {
   }
 
   return true;
+}
+
+void Client::RegisterNotification(
+    const std::string &method, const server::NotificationHandler &handler) {
+  std::lock_guard<std::mutex> lock(notification_handlers_mutex_);
+  if (handler) {
+    notification_handlers_[method] = handler;
+    spdlog::debug("Registered handler for notification method: {}", method);
+  } else {
+    // If handler is null, remove the registration
+    notification_handlers_.erase(method);
+    spdlog::debug("Unregistered handler for notification method: {}", method);
+  }
 }
 
 }  // namespace jsonrpc::client
