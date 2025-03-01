@@ -1,7 +1,7 @@
 # .bazelrc
 
 # Enable ccache
-build --sandbox_writable_path=/home/hankhsu/.cache/ccache
+build --sandbox_writable_path=$HOME/.cache/ccache
 build --experimental_guard_against_concurrent_changes
 
 # C++ toolchain configuration
@@ -11,3 +11,17 @@ build --host_cxxopt='-std=c++20'
 # Enable warnings
 build --cxxopt='-Wall'
 build --cxxopt='-Wextra'
+build --cxxopt='-Wpedantic'
+build --cxxopt='-Werror'
+
+# Build configurations
+build:debug --compilation_mode=dbg
+build:debug --cxxopt='-g'
+build:debug --strip=never
+
+build:release --compilation_mode=opt
+build:release --copt='-O3'
+build:release --strip=always
+
+# Default to release mode
+build --config=release

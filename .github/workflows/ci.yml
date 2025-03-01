@@ -66,6 +66,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-ccache-bazel-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-bazel-
+
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.8.5
         with:
@@ -75,11 +82,18 @@ jobs:
 
       - name: Build with Bazel
         run: |
+          mkdir -p $HOME/.cache/ccache
+          # Build and test release configuration
           bazel build //...
+          # Build and test debug configuration
+          bazel build //... --config=debug
 
       - name: Test with Bazel
         run: |
+          # Test release configuration
           bazel test //...
+          # Test debug configuration
+          bazel test //... --config=debug
 
   docs:
     runs-on: ubuntu-latest
