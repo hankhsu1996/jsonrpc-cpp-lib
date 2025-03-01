@@ -46,12 +46,23 @@ void Client::Listener() {
 }
 
 auto Client::SendMethodCall(
-    const std::string &method,
-    std::optional<nlohmann::json> params) -> nlohmann::json {
+    const std::string &method, std::optional<nlohmann::json> params,
+    std::chrono::milliseconds timeout) -> nlohmann::json {
   Request request(method, std::move(params), false, [this]() {
     return GetNextRequestId();
   });
-  return SendRequest(request);
+  auto future = SendRequestAsync(request);
+
+  if (future.wait_for(timeout) != std::future_status::ready) {
+    // Remove the pending request since we're timing out
+    {
+      std::lock_guard<std::mutex> lock(requests_mutex_);
+      requests_map_.erase(request.GetKey());
+    }
+    throw std::runtime_error(fmt::format(
+        "Request timed out after {} ms: {}", timeout.count(), method));
+  }
+  return future.get();
 }
 
 auto Client::SendMethodCallAsync(

@@ -278,3 +278,52 @@ TEST_CASE("Client can handle server notifications", "[Client]") {
     REQUIRE(notification_received);
   }
 }
+
+TEST_CASE("Client handles request timeouts correctly", "[Client][Timeout]") {
+  SECTION("Request times out when no response received") {
+    auto transport = std::make_unique<MockTransport>();
+    jsonrpc::client::Client client(std::move(transport));
+    client.Start();
+
+    REQUIRE_THROWS_WITH(
+        client.SendMethodCall(
+            "test_method", nlohmann::json::object(),
+            std::chrono::milliseconds(100)),
+        Catch::Matchers::ContainsSubstring("Request timed out after 100 ms"));
+
+    client.Stop();
+  }
+
+  SECTION("Request succeeds when response received within timeout") {
+    auto transport = std::make_unique<MockTransport>();
+    auto* transport_ptr = transport.get();
+    jsonrpc::client::Client client(std::move(transport));
+
+    transport_ptr->SetResponse(
+        R"({"jsonrpc":"2.0","result":"success","id":0})");
+    client.Start();
+
+    REQUIRE_NOTHROW(client.SendMethodCall(
+        "test_method", nlohmann::json::object(),
+        std::chrono::milliseconds(1000)));
+
+    client.Stop();
+  }
+
+  SECTION("Timed out request is removed from pending requests") {
+    auto transport = std::make_unique<MockTransport>();
+    jsonrpc::client::Client client(std::move(transport));
+    client.Start();
+
+    try {
+      client.SendMethodCall(
+          "test_method", nlohmann::json::object(),
+          std::chrono::milliseconds(100));
+    } catch (const std::runtime_error&) {
+      // Expected timeout
+    }
+
+    REQUIRE(client.HasPendingRequests() == false);
+    client.Stop();
+  }
+}

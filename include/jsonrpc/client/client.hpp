@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <chrono>
 #include <future>
 #include <memory>
 #include <mutex>
@@ -72,15 +73,20 @@ class Client {
    * @brief Sends a JSON-RPC method call and waits for the response.
    *
    * This is a blocking call that sends a method request to the server and waits
-   * for the corresponding response.
+   * for the corresponding response. If no response is received within the
+   * timeout period, throws a runtime_error.
    *
    * @param method The name of the method to call.
    * @param params Optional parameters to pass to the method.
+   * @param timeout Maximum time to wait for response.
    * @return The JSON response received from the server.
+   * @throws std::runtime_error if the request times out.
    */
   auto SendMethodCall(
       const std::string &method,
-      std::optional<nlohmann::json> params = std::nullopt) -> nlohmann::json;
+      std::optional<nlohmann::json> params = std::nullopt,
+      std::chrono::milliseconds timeout = std::chrono::seconds(30))
+      -> nlohmann::json;
 
   /**
    * @brief Sends a JSON-RPC method call asynchronously.
