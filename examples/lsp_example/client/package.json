@@ -13,6 +13,14 @@
   "activationEvents": [
     "onLanguage:plaintext"
   ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "lsp-example.testConnection",
+        "title": "Test LSP Connection"
+      }
+    ]
+  },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"
   },
