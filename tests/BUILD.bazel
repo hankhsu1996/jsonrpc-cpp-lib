@@ -9,7 +9,7 @@ cc_library(
     ],
 )
 
-# Endpoint
+# Endpoint tests
 cc_test(
     name = "test_endpoint",
     size = "small",
@@ -20,6 +20,36 @@ cc_test(
     deps = [
         "//src:jsonrpc_lib",
         "//tests:mock_transport",
+        "@catch2//:catch2_main",
+    ],
+)
+
+cc_test(
+    name = "test_dispatcher",
+    size = "small",
+    srcs = ["endpoint/test_dispatcher.cpp"],
+    deps = [
+        "//src:jsonrpc_lib",
+        "@catch2//:catch2_main",
+    ],
+)
+
+cc_test(
+    name = "test_request",
+    size = "small",
+    srcs = ["endpoint/test_request.cpp"],
+    deps = [
+        "//src:jsonrpc_lib",
+        "@catch2//:catch2_main",
+    ],
+)
+
+cc_test(
+    name = "test_response",
+    size = "small",
+    srcs = ["endpoint/test_response.cpp"],
+    deps = [
+        "//src:jsonrpc_lib",
         "@catch2//:catch2_main",
     ],
 )
@@ -48,36 +78,6 @@ cc_test(
         "common/mock_transport.hpp",
         "server/test_server.cpp",
     ],
-    deps = [
-        "//src:jsonrpc_lib",
-        "@catch2//:catch2_main",
-    ],
-)
-
-cc_test(
-    name = "test_dispatcher",
-    size = "small",
-    srcs = ["server/test_dispatcher.cpp"],
-    deps = [
-        "//src:jsonrpc_lib",
-        "@catch2//:catch2_main",
-    ],
-)
-
-cc_test(
-    name = "test_request",
-    size = "small",
-    srcs = ["server/test_request.cpp"],
-    deps = [
-        "//src:jsonrpc_lib",
-        "@catch2//:catch2_main",
-    ],
-)
-
-cc_test(
-    name = "test_response",
-    size = "small",
-    srcs = ["server/test_response.cpp"],
     deps = [
         "//src:jsonrpc_lib",
         "@catch2//:catch2_main",

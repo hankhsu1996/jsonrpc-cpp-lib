@@ -1,126 +1,240 @@
 #include <memory>
-#include <thread>
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <fmt/core.h>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 
 #include "../common/mock_transport.hpp"
 #include "jsonrpc/endpoint/endpoint.hpp"
+#include "jsonrpc/endpoint/id_generator.hpp"
 
 using Json = nlohmann::json;
 
-TEST_CASE("RpcEndpoint starts and stops correctly", "[RpcEndpoint]") {
+// Request Tests
+TEST_CASE("Endpoint Request handling", "[Endpoint][Request]") {
   auto transport = std::make_unique<MockTransport>();
+  auto* transport_ptr = transport.get();
+
+  // Create a separate ID generator to predict IDs
+  jsonrpc::endpoint::IncrementalIdGenerator test_id_gen;
+
+  // ID generator should be internal to endpoint
   jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
 
-  endpoint.Start();
-  REQUIRE(endpoint.IsRunning() == true);
-  REQUIRE(endpoint.HasPendingRequests() == false);
+  SECTION("Method call with parameters") {
+    endpoint.Start();
 
-  endpoint.Stop();
-  REQUIRE(endpoint.IsRunning() == false);
-}
+    // We know the endpoint's internal ID generator will generate the same
+    // sequence
+    auto predicted_id = test_id_gen.NextId();
+    nlohmann::json response;
+    response["jsonrpc"] = "2.0";
+    response["result"] = {{"value", "test"}};
+    response["id"] = std::get<int64_t>(predicted_id);
+    transport_ptr->SetResponse(response);
 
-TEST_CASE(
-    "RpcEndpoint handles method call responses correctly", "[RpcEndpoint]") {
-  auto transport = std::make_unique<MockTransport>();
-  transport->SetResponse(R"({"jsonrpc":"2.0","result":"success","id":0})");
+    // Make the call
+    Json params = {{"param1", "value1"}, {"param2", 42}};
+    auto response_received = endpoint.SendMethodCall("test_method", params);
 
-  jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
-  endpoint.Start();
+    // Verify the sent request format
+    REQUIRE(!transport_ptr->sent_requests.empty());
+    auto sent_request = Json::parse(transport_ptr->sent_requests.back());
+    REQUIRE(sent_request["jsonrpc"] == "2.0");
+    REQUIRE(sent_request["method"] == "test_method");
+    REQUIRE(sent_request["params"] == params);
+    REQUIRE(sent_request["id"] == std::get<int64_t>(predicted_id));
 
-  REQUIRE(endpoint.HasPendingRequests() == false);
-  auto response = endpoint.SendMethodCall("test_method");
-  REQUIRE(endpoint.HasPendingRequests() == false);
+    // Verify response matches exactly
+    REQUIRE(response_received == response);
 
-  REQUIRE(response["result"] == "success");
-
-  endpoint.Stop();
-}
-
-TEST_CASE(
-    "RpcEndpoint sends notifications without expecting response",
-    "[RpcEndpoint]") {
-  auto transport = std::make_unique<MockTransport>();
-  MockTransport* transport_ptr = transport.get();
-
-  jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
-  endpoint.Start();
-
-  endpoint.SendNotification(
-      "notify_event", nlohmann::json({{"param1", "value1"}}));
-
-  REQUIRE(endpoint.HasPendingRequests() == false);
-  REQUIRE(transport_ptr->sent_requests.size() == 1);
-  REQUIRE(
-      transport_ptr->sent_requests[0].find("notify_event") !=
-      std::string::npos);
-
-  endpoint.Stop();
-}
-
-TEST_CASE(
-    "RpcEndpoint handles async method calls correctly",
-    "[RpcEndpoint][Async]") {
-  auto transport = std::make_unique<MockTransport>();
-  MockTransport* transport_ptr = transport.get();
-
-  transport_ptr->SetResponse(
-      R"({"jsonrpc":"2.0","result":"async_success","id":0})");
-
-  jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
-  endpoint.Start();
-
-  auto future_response = endpoint.SendMethodCallAsync("async_test_method");
-
-  REQUIRE(
-      future_response.wait_for(std::chrono::seconds(1)) ==
-      std::future_status::ready);
-  nlohmann::json response = future_response.get();
-
-  REQUIRE(endpoint.HasPendingRequests() == false);
-  REQUIRE(response["result"] == "async_success");
-
-  endpoint.Stop();
-}
-
-TEST_CASE(
-    "RpcEndpoint handles multiple async calls concurrently",
-    "[RpcEndpoint][Async]") {
-  auto transport = std::make_unique<MockTransport>();
-  MockTransport* transport_ptr = transport.get();
-
-  const int num_requests = 5;
-  for (int i = 0; i < num_requests; ++i) {
-    transport_ptr->SetResponse(fmt::format(
-        R"({{"jsonrpc":"2.0","result":"success_{}","id":{}}})", i, i));
+    REQUIRE_FALSE(endpoint.HasPendingRequests());
+    endpoint.Stop();
   }
 
-  jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
-  endpoint.Start();
+  SECTION("Method call without parameters") {
+    endpoint.Start();
 
-  std::vector<std::future<nlohmann::json>> futures;
+    auto predicted_id = test_id_gen.NextId();
+    nlohmann::json response;
+    response["jsonrpc"] = "2.0";
+    response["result"] = "success";
+    response["id"] = std::get<int64_t>(predicted_id);
+    transport_ptr->SetResponse(response);
 
-  // Send all requests first
-  for (int i = 0; i < num_requests; ++i) {
-    futures.push_back(
-        endpoint.SendMethodCallAsync(fmt::format("async_test_method_{}", i)));
+    auto response_received = endpoint.SendMethodCall("test_method");
+
+    // Verify request and response
+    auto sent_request = Json::parse(transport_ptr->sent_requests.back());
+    REQUIRE(sent_request["id"] == std::get<int64_t>(predicted_id));
+    REQUIRE(response_received == response);
+
+    REQUIRE_FALSE(endpoint.HasPendingRequests());
+    endpoint.Stop();
   }
 
-  // Wait for and verify each response
-  for (int i = 0; i < num_requests; ++i) {
+  SECTION("Notification") {
+    endpoint.Start();
+
+    Json params = {{"event", "update"}, {"value", 100}};
+    endpoint.SendNotification("test_notification", params);
+
+    // Verify notification was sent through transport
+    REQUIRE(!transport_ptr->sent_requests.empty());
+
+    // Parse and verify notification format
+    auto sent_notification = Json::parse(transport_ptr->sent_requests.back());
+    REQUIRE(sent_notification["jsonrpc"] == "2.0");
+    REQUIRE(sent_notification["method"] == "test_notification");
+    REQUIRE(sent_notification["params"] == params);
+    REQUIRE_FALSE(
+        sent_notification.contains("id"));  // Notifications must not have an ID
+
+    endpoint.Stop();
+  }
+}
+
+// Response Tests
+TEST_CASE("Endpoint Response handling", "[Endpoint][Response]") {
+  auto transport = std::make_unique<MockTransport>();
+  auto* transport_ptr = transport.get();
+
+  // Create a separate ID generator to predict IDs
+  jsonrpc::endpoint::IncrementalIdGenerator test_id_gen;
+
+  jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
+
+  SECTION("Success response") {
+    endpoint.Start();
+
+    auto predicted_id = test_id_gen.NextId();
+    nlohmann::json response;
+    response["jsonrpc"] = "2.0";
+    response["result"] = "success";
+    response["id"] = std::get<int64_t>(predicted_id);
+    transport_ptr->SetResponse(response);
+
+    auto response_received = endpoint.SendMethodCall("test_method");
+
+    REQUIRE(response_received["result"] == "success");
+    REQUIRE(response_received["id"] == std::get<int64_t>(predicted_id));
+
+    endpoint.Stop();
+  }
+
+  SECTION("Error response") {
+    endpoint.Start();
+
+    auto predicted_id = test_id_gen.NextId();
+    nlohmann::json response;
+    response["jsonrpc"] = "2.0";
+    response["error"] = {{"code", -32601}, {"message", "Method not found"}};
+    response["id"] = std::get<int64_t>(predicted_id);
+    transport_ptr->SetResponse(response);
+
+    auto response_received = endpoint.SendMethodCall("invalid_method");
+
+    REQUIRE(response_received.contains("error"));
+    REQUIRE(response_received["error"]["code"] == -32601);
+    REQUIRE(response_received["error"]["message"] == "Method not found");
+    REQUIRE(response_received["id"] == std::get<int64_t>(predicted_id));
+
+    endpoint.Stop();
+  }
+}
+
+// Configuration Tests
+TEST_CASE("Endpoint configuration", "[Endpoint][Config]") {
+  auto transport = std::make_unique<MockTransport>();
+  jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
+
+  SECTION("Request timeout configuration") {
+    const auto new_timeout = std::chrono::milliseconds(5000);
+    endpoint.SetRequestTimeout(new_timeout);
+    REQUIRE(endpoint.GetRequestTimeout() == new_timeout);
+  }
+
+  SECTION("Max batch size configuration") {
+    const size_t new_batch_size = 50;
+    endpoint.SetMaxBatchSize(new_batch_size);
+    REQUIRE(endpoint.GetMaxBatchSize() == new_batch_size);
+  }
+}
+
+// Thread Safety Tests
+TEST_CASE("Endpoint thread safety", "[Endpoint][ThreadSafety]") {
+  auto transport = std::make_unique<MockTransport>();
+  auto* transport_ptr = transport.get();
+  jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
+
+  // Create a separate ID generator to predict IDs
+  jsonrpc::endpoint::IncrementalIdGenerator test_id_gen;
+
+  SECTION("Async method call with response") {
+    endpoint.Start();
+
+    // We know the endpoint's internal ID generator will generate the same
+    // sequence
+    auto predicted_id = test_id_gen.NextId();
+    nlohmann::json response;
+    response["jsonrpc"] = "2.0";
+    response["result"] = "async_success";
+    response["id"] = std::get<int64_t>(predicted_id);
+    transport_ptr->SetResponse(response);
+
+    // Make async call and verify we can get response
+    auto future = endpoint.SendMethodCallAsync("async_method");
     REQUIRE(
-        futures[i].wait_for(std::chrono::seconds(1)) ==
-        std::future_status::ready);
-    nlohmann::json response = futures[i].get();
-    REQUIRE(response["result"] == fmt::format("success_{}", i));
+        future.wait_for(std::chrono::seconds(1)) == std::future_status::ready);
+
+    auto result = future.get();
+    REQUIRE(result["result"] == "async_success");
+    REQUIRE(result["id"] == std::get<int64_t>(predicted_id));
+
+    endpoint.Stop();
   }
 
-  // Give some time for the message processing thread to clean up
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  SECTION("Multiple pending requests") {
+    endpoint.Start();
 
-  REQUIRE(endpoint.HasPendingRequests() == false);
-  endpoint.Stop();
+    // Test that endpoint can handle multiple pending requests
+    const int num_requests = 5;
+    std::vector<std::future<nlohmann::json>> futures;
+    std::vector<int64_t> expected_ids;
+
+    // Set up responses with predicted IDs
+    for (int i = 0; i < num_requests; i++) {
+      auto predicted_id = test_id_gen.NextId();
+      expected_ids.push_back(std::get<int64_t>(predicted_id));
+
+      nlohmann::json response;
+      response["jsonrpc"] = "2.0";
+      response["result"] = fmt::format("result_{}", i);
+      response["id"] = expected_ids.back();
+      transport_ptr->SetResponse(response);
+    }
+
+    // Send requests
+    for (int i = 0; i < num_requests; i++) {
+      futures.push_back(
+          endpoint.SendMethodCallAsync(fmt::format("method_{}", i)));
+    }
+
+    // Verify all requests complete with correct IDs
+    REQUIRE(endpoint.HasPendingRequests());
+
+    for (size_t i = 0; i < futures.size(); i++) {
+      REQUIRE(
+          futures[i].wait_for(std::chrono::seconds(1)) ==
+          std::future_status::ready);
+      auto result = futures[i].get();
+      REQUIRE(result["id"] == expected_ids[i]);
+      REQUIRE(result["result"] == fmt::format("result_{}", i));
+    }
+
+    REQUIRE_FALSE(endpoint.HasPendingRequests());
+    endpoint.Stop();
+  }
 }
