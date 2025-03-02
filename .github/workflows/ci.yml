@@ -10,6 +10,7 @@ on:
 
 jobs:
   clang-format-check:
+    name: Check Code Format
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +23,7 @@ jobs:
           clang-format-version: 18
 
   build-and-test-cmake:
+    name: Build and Test (CMake)
     runs-on: ubuntu-latest
 
     steps:
@@ -60,6 +62,7 @@ jobs:
         run: ctest --preset release
 
   build-and-test-bazel:
+    name: Build and Test (Bazel)
     runs-on: ubuntu-latest
 
     steps:
@@ -88,6 +91,7 @@ jobs:
           bazel test //... --config=debug
 
   docs:
+    name: Generate Documentation
     runs-on: ubuntu-latest
     container: hankhsu1996/doxygen:1.11.0
 
@@ -107,6 +111,7 @@ jobs:
           path: docs/generated/html
 
   deploy:
+    name: Deploy Documentation
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: docs
     runs-on: ubuntu-latest
