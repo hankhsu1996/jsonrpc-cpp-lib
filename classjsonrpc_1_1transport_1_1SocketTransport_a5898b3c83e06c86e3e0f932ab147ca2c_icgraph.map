@@ -1,0 +1,5 @@
+<map id="jsonrpc::transport::SocketTransport::Close" name="jsonrpc::transport::SocketTransport::Close">
+<area shape="rect" id="Node000001" title="Closes the transport, interrupting any pending operations." alt="" coords="195,13,372,53"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#a2180ab77872ad9238c6a0b30d4f0b6bc" title=" " alt="" coords="5,5,147,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,35,147,35,147,30,181,30"/>
+</map>

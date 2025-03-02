@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['haspendingrequests_0',['HasPendingRequests',['../classjsonrpc_1_1client_1_1Client.html#ac31537f3ff223ea391c3b552daf2aaa9',1,'jsonrpc::client::Client']]]
+  ['haspendingrequests_0',['HasPendingRequests',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64',1,'jsonrpc::endpoint::RpcEndpoint']]]
 ];

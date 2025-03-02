@@ -1,5 +1,5 @@
 <map id="jsonrpc::transport::SocketTransport" name="jsonrpc::transport::SocketTransport">
-<area shape="rect" id="Node000001" title="Transport implementation using TCP/IP sockets." alt="" coords="5,273,159,513"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html" title="Base class for JSON&#45;RPC transport." alt="" coords="7,5,157,225"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,239,85,273,79,273,79,239"/>
+<area shape="rect" id="Node000001" title="Transport implementation using TCP/IP sockets." alt="" coords="5,293,159,553"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html" title="Base class for JSON&#45;RPC transport." alt="" coords="7,5,157,245"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,259,85,293,79,293,79,259"/>
 </map>

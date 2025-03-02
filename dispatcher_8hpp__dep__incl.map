@@ -1,9 +1,9 @@
-<map id="include/jsonrpc/server/dispatcher.hpp" name="include/jsonrpc/server/dispatcher.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="104,5,269,45"/>
-<area shape="rect" id="Node000002" href="$server_8hpp.html" title=" " alt="" coords="5,93,171,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,56,112,95,108,91,153,52"/>
-<area shape="rect" id="Node000004" href="$dispatcher_8cpp.html" title=" " alt="" coords="195,101,379,126"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="221,52,275,98,271,102,217,56"/>
-<area shape="rect" id="Node000003" href="$server_8cpp.html" title=" " alt="" coords="9,181,167,207"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="91,147,91,181,85,181,85,147"/>
+<map id="include/jsonrpc/endpoint/dispatcher.hpp" name="include/jsonrpc/endpoint/dispatcher.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="117,5,298,45"/>
+<area shape="rect" id="Node000002" href="$endpoint_8hpp.html" title=" " alt="" coords="10,93,191,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,56,126,95,123,91,171,52"/>
+<area shape="rect" id="Node000004" href="$dispatcher_8cpp.html" title=" " alt="" coords="215,101,415,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="243,52,302,98,299,102,240,56"/>
+<area shape="rect" id="Node000003" href="$endpoint_8cpp.html" title=" " alt="" coords="5,181,196,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,147,103,181,98,181,98,147"/>
 </map>

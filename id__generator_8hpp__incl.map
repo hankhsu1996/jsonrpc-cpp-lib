@@ -1,0 +1,19 @@
+<map id="include/jsonrpc/endpoint/id_generator.hpp" name="include/jsonrpc/endpoint/id_generator.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="126,5,307,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="106,93,173,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,47,162,85,158,82,196,44"/>
+<area shape="rect" id="Node000003" href="$types_8hpp.html" title=" " alt="" coords="196,93,395,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="238,44,276,82,272,85,234,47"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,167,92,192"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="256,121,102,165,101,160,255,116"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="117,167,191,192"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="274,121,190,163,188,158,271,116"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="215,167,274,192"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="289,121,263,157,259,154,285,117"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="299,167,396,192"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="306,117,333,154,329,157,302,121"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="420,167,488,192"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="322,116,417,159,415,163,320,121"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="513,167,659,192"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="343,116,527,161,525,166,341,121"/>
+</map>

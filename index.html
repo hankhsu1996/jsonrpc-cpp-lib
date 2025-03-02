@@ -122,6 +122,7 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 <ul>
 <li><b>Fully Compliant with JSON-RPC 2.0</b>: Supports method calls, notifications, comprehensive error handling, and batch requests.</li>
 <li><b>Modern and Lightweight</b>: Leverages C++20 features with minimal dependencies, focusing solely on the JSON-RPC protocol.</li>
+<li><b>Unified Endpoint Design</b>: Single <code>RpcEndpoint</code> class that can act as both client and server, following JSON-RPC 2.0's symmetric design.</li>
 <li><b>Transport-Agnostic</b>: Abstract transport layer allows use of provided implementations or custom ones.</li>
 <li><b>Simple JSON Integration</b>: Uses <a href="https://github.com/nlohmann/json">nlohmann/json</a> for easy JSON object interaction, requiring no learning curve.</li>
 <li><b>Flexible Handler Registration</b>: Register handlers using <code>std::function</code>, supporting lambdas, function pointers, and other callable objects.</li>
@@ -168,60 +169,49 @@ Optional: Using CMake FetchContent</h2>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
 📖 Usage and Examples</h1>
 <h2><a class="anchor" id="autotoc_md8"></a>
-Creating a JSON-RPC Server</h2>
-<p>Here’s how to create a simple JSON-RPC server:</p>
-<div class="fragment"><div class="line"><span class="keyword">using </span><a class="code hl_class" href="classjsonrpc_1_1server_1_1Server.html">jsonrpc::server::Server</a>;</div>
+Creating a JSON-RPC Endpoint</h2>
+<p>Here's how to create a simple JSON-RPC endpoint that both sends and receives method calls:</p>
+<div class="fragment"><div class="line"><span class="keyword">using </span><a class="code hl_class" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">jsonrpc::endpoint::RpcEndpoint</a>;</div>
 <div class="line"><span class="keyword">using </span><a class="code hl_class" href="classjsonrpc_1_1transport_1_1StdioTransport.html">jsonrpc::transport::StdioTransport</a>;</div>
 <div class="line"><span class="keyword">using </span>Json = nlohmann::json;</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Create a server with an stdio transport</span></div>
-<div class="line">Server server(std::make_unique&lt;StdioTransport&gt;());</div>
+<div class="line"><span class="comment">// Create an endpoint with stdio transport</span></div>
+<div class="line"><span class="keyword">auto</span> endpoint = RpcEndpoint(std::make_unique&lt;StdioTransport&gt;());</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Register a method named &quot;add&quot; that adds two numbers</span></div>
-<div class="line">server.RegisterMethodCall(<span class="stringliteral">&quot;add&quot;</span>, [](<span class="keyword">const</span> std::optional&lt;Json&gt; &amp;params) {</div>
+<div class="line">endpoint.RegisterMethodCall(<span class="stringliteral">&quot;add&quot;</span>, [](<span class="keyword">const</span> std::optional&lt;Json&gt; &amp;params) {</div>
 <div class="line">  <span class="keywordtype">int</span> result = params.value()[<span class="stringliteral">&quot;a&quot;</span>] + params.value()[<span class="stringliteral">&quot;b&quot;</span>];</div>
 <div class="line">  <span class="keywordflow">return</span> Json{{<span class="stringliteral">&quot;result&quot;</span>, result}};</div>
 <div class="line">});</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Register a notification named &quot;stop&quot; to stop the server</span></div>
-<div class="line">server.RegisterNotification(<span class="stringliteral">&quot;stop&quot;</span>, [&amp;server](<span class="keyword">const</span> std::optional&lt;Json&gt; &amp;) {</div>
-<div class="line">  server.Stop();</div>
+<div class="line"><span class="comment">// Register a notification named &quot;stop&quot; to stop the endpoint</span></div>
+<div class="line">endpoint.RegisterNotification(<span class="stringliteral">&quot;stop&quot;</span>, [&amp;endpoint](<span class="keyword">const</span> std::optional&lt;Json&gt; &amp;) {</div>
+<div class="line">  endpoint.Stop();</div>
 <div class="line">});</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Start the server</span></div>
-<div class="line">server.Start();</div>
-<div class="ttc" id="aclassjsonrpc_1_1server_1_1Server_html"><div class="ttname"><a href="classjsonrpc_1_1server_1_1Server.html">jsonrpc::server::Server</a></div><div class="ttdoc">A JSON-RPC server for handling requests and notifications.</div><div class="ttdef"><b>Definition</b> <a href="server_8hpp_source.html#l00023">server.hpp:23</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1StdioTransport_html"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1StdioTransport.html">jsonrpc::transport::StdioTransport</a></div><div class="ttdoc">Transport layer using standard I/O for JSON-RPC communication.</div><div class="ttdef"><b>Definition</b> <a href="stdio__transport_8hpp_source.html#l00012">stdio_transport.hpp:12</a></div></div>
-</div><!-- fragment --><p>To register a method, you need to provide a function that takes optional <code>Json</code> parameters and returns a <code>Json</code> object containing either a <code>result</code> or <code>error</code> field. The <code>error</code> field must follow the JSON-RPC spec, including code and message. For simplicity, this library does not provide a more structured way to create error responses.</p>
-<h2><a class="anchor" id="autotoc_md9"></a>
-Creating a JSON-RPC Client</h2>
-<p>Here’s how to create a JSON-RPC client:</p>
-<div class="fragment"><div class="line"><span class="keyword">using </span><a class="code hl_class" href="classjsonrpc_1_1client_1_1Client.html">jsonrpc::client::Client</a>;</div>
-<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classjsonrpc_1_1transport_1_1StdioTransport.html">jsonrpc::transport::StdioTransport</a>;</div>
-<div class="line"><span class="keyword">using </span>Json = nlohmann::json;</div>
+<div class="line"><span class="comment">// Start the endpoint</span></div>
+<div class="line">endpoint.Start();</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Create a client with a standard I/O transport</span></div>
-<div class="line">Client client(std::make_unique&lt;StdioTransport&gt;());</div>
-<div class="line">client.Start();</div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// Perform addition</span></div>
-<div class="line"><span class="keyword">auto</span> response = client.SendMethodCall(<span class="stringliteral">&quot;add&quot;</span>, Json({{<span class="stringliteral">&quot;a&quot;</span>, 10}, {<span class="stringliteral">&quot;b&quot;</span>, 5}}));</div>
+<div class="line"><span class="comment">// Send a method call to another endpoint</span></div>
+<div class="line"><span class="keyword">auto</span> response = endpoint.SendMethodCall(<span class="stringliteral">&quot;add&quot;</span>, Json({{<span class="stringliteral">&quot;a&quot;</span>, 10}, {<span class="stringliteral">&quot;b&quot;</span>, 5}}));</div>
 <div class="line">spdlog::info(<span class="stringliteral">&quot;Add result: {}&quot;</span>, response.dump());</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Send stop notification</span></div>
-<div class="line">client.SendNotification(<span class="stringliteral">&quot;stop&quot;</span>);</div>
-<div class="ttc" id="aclassjsonrpc_1_1client_1_1Client_html"><div class="ttname"><a href="classjsonrpc_1_1client_1_1Client.html">jsonrpc::client::Client</a></div><div class="ttdoc">A JSON-RPC client for sending requests and receiving responses.</div><div class="ttdef"><b>Definition</b> <a href="client_8hpp_source.html#l00027">client.hpp:27</a></div></div>
-</div><!-- fragment --><p>These examples demonstrate the basic usage of setting up a JSON-RPC server and client. For more examples and detailed usage, please refer to the <a href="./examples/">examples folder</a>.</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<div class="line"><span class="comment">// Send a notification</span></div>
+<div class="line">endpoint.SendNotification(<span class="stringliteral">&quot;stop&quot;</span>);</div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">jsonrpc::endpoint::RpcEndpoint</a></div><div class="ttdoc">A JSON-RPC endpoint that can act as both client and server.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8hpp_source.html#l00041">endpoint.hpp:41</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1StdioTransport_html"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1StdioTransport.html">jsonrpc::transport::StdioTransport</a></div><div class="ttdoc">Transport layer using standard I/O for JSON-RPC communication.</div><div class="ttdef"><b>Definition</b> <a href="stdio__transport_8hpp_source.html#l00012">stdio_transport.hpp:12</a></div></div>
+</div><!-- fragment --><p>Each endpoint can both register methods to handle incoming calls and send outgoing calls to other endpoints. The transport layer (e.g., stdio, socket, pipe) determines how endpoints connect to each other.</p>
+<p>These examples demonstrate the basic usage of JSON-RPC endpoints. For more examples including different transport types and complete applications, please refer to the <a href="./examples/">examples folder</a>.</p>
+<h1><a class="anchor" id="autotoc_md9"></a>
 🛠️ Developer Guide</h1>
 <p>Follow these steps to build, test, and set up your development environment. Bazel is the preferred method.</p>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Option 1: Using Bazel (Preferred)</h2>
 <p><b>Step 1: Build the Project</b></p>
 <div class="fragment"><div class="line">bazel build //...</div>
 </div><!-- fragment --><p><b>Step 2: Run Tests</b></p>
 <div class="fragment"><div class="line">bazel test //...</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
 Option 2: Using CMake and Conan</h2>
 <p><b>Step 1: Install Dependencies</b></p>
 <div class="fragment"><div class="line">conan profile detect --force</div>
@@ -232,19 +222,19 @@ Option 2: Using CMake and Conan</h2>
 <div class="line">cmake --build --preset release</div>
 </div><!-- fragment --><p><b>Step 3: Run Tests</b></p>
 <div class="fragment"><div class="line">ctest --preset release</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
 Optional: Debug Configuration</h2>
 <p>For Debug configuration:</p>
 <div class="fragment"><div class="line">cmake --preset debug</div>
 <div class="line">cmake --build --preset debug</div>
 <div class="line">ctest --preset debug</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md14"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md13"></a>
 Optional: CMake without Conan</h2>
 <p>If you prefer not to use Conan, you can build the project with CMake directly:</p>
 <div class="fragment"><div class="line">cmake -S . -B build</div>
 <div class="line">cmake --build build</div>
 <div class="line">ctest --test-dir build</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md14"></a>
 Compilation Database</h2>
 <p>Generate the <code>compile_commands.json</code> file for tools like <code>clang-tidy</code> and <code>clangd</code>:</p>
 <ul>
@@ -252,10 +242,10 @@ Compilation Database</h2>
 <li><b>CMake</b>: Simply build the project. The database will be generated automatically.</li>
 </ul>
 <p>In both cases, the <code>compile_commands.json</code> file will be placed in the root directory.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 🤝 Contributing</h1>
 <p>We welcome contributions! If you have suggestions or find any issues, feel free to open an issue or pull request.</p>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 📄 License</h1>
 <p>This project is licensed under the MIT License. See the <a href="./LICENSE">LICENSE</a> file for more details. </p>
 </div></div><!-- PageDoc -->

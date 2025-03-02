@@ -1,5 +1,0 @@
-<map id="jsonrpc::server::Response::CreateLibError" name="jsonrpc::server::Response::CreateLibError">
-<area shape="rect" id="Node000001" title="Creates a Response object for a library error." alt="" coords="249,5,439,45"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1server_1_1Dispatcher.html#a5f43ee36351c5d1a8d39d7ad163fcd78" title="Processes a JSON&#45;RPC request." alt="" coords="5,5,201,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,28,202,28,202,23,236,23"/>
-</map>

@@ -114,23 +114,27 @@ $(function(){initNavTree('types_8hpp.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">types.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;string_view&gt;</code><br />
 <code>#include &lt;variant&gt;</code><br />
 <code>#include &lt;nlohmann/json.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for types.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="types_8hpp__incl.svg" width="462" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="types_8hpp__incl.svg" width="666" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="types_8hpp__dep__incl.svg" width="558" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="types_8hpp__dep__incl.svg" width="779" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="types_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -139,27 +143,62 @@ This graph shows which files directly or indirectly include this file:</div>
 Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc.html">jsonrpc</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1server.html">jsonrpc::server</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html">jsonrpc::endpoint</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ac8d637644941e15c78da445655e95444" id="r_ac8d637644941e15c78da445655e95444"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1server.html#ac8d637644941e15c78da445655e95444">jsonrpc::server::MethodCallHandler</a></td></tr>
-<tr class="memdesc:ac8d637644941e15c78da445655e95444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type alias for method call handler functions.  <br /></td></tr>
-<tr class="separator:ac8d637644941e15c78da445655e95444"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f43d4eeec1a7837e83fde5608e97495" id="r_a4f43d4eeec1a7837e83fde5608e97495"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1server.html#a4f43d4eeec1a7837e83fde5608e97495">jsonrpc::server::NotificationHandler</a></td></tr>
-<tr class="memdesc:a4f43d4eeec1a7837e83fde5608e97495"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type alias for notification handler functions.  <br /></td></tr>
-<tr class="separator:a4f43d4eeec1a7837e83fde5608e97495"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a685ae7ca2110b67a59efc787a76354f3" id="r_a685ae7ca2110b67a59efc787a76354f3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1server.html#a685ae7ca2110b67a59efc787a76354f3">jsonrpc::server::Handler</a> = std::variant&lt;<a class="el" href="namespacejsonrpc_1_1server.html#ac8d637644941e15c78da445655e95444">MethodCallHandler</a>, <a class="el" href="namespacejsonrpc_1_1server.html#a4f43d4eeec1a7837e83fde5608e97495">NotificationHandler</a>&gt;</td></tr>
-<tr class="memdesc:a685ae7ca2110b67a59efc787a76354f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type alias for a handler which can be either a method call handler or a notification handler.  <br /></td></tr>
-<tr class="separator:a685ae7ca2110b67a59efc787a76354f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7820fe3ffe99ddbd431a8d25c012a113" id="r_a7820fe3ffe99ddbd431a8d25c012a113"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a7820fe3ffe99ddbd431a8d25c012a113">jsonrpc::endpoint::RequestId</a> = std::variant&lt;int64_t, std::string&gt;</td></tr>
+<tr class="memdesc:a7820fe3ffe99ddbd431a8d25c012a113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for request IDs that can be either integer or string.  <br /></td></tr>
+<tr class="separator:a7820fe3ffe99ddbd431a8d25c012a113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d9c276a372d73ce449d661b60a9768f" id="r_a9d9c276a372d73ce449d661b60a9768f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a9d9c276a372d73ce449d661b60a9768f">jsonrpc::endpoint::ResponseCallback</a> = std::function&lt;void(const nlohmann::json&amp;)&gt;</td></tr>
+<tr class="memdesc:a9d9c276a372d73ce449d661b60a9768f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for handling responses to requests.  <br /></td></tr>
+<tr class="separator:a9d9c276a372d73ce449d661b60a9768f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a392ab1c40a5b783c98af8ce2e36e71" id="r_a2a392ab1c40a5b783c98af8ce2e36e71"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a2a392ab1c40a5b783c98af8ce2e36e71">jsonrpc::endpoint::MethodCallHandler</a></td></tr>
+<tr class="memdesc:a2a392ab1c40a5b783c98af8ce2e36e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for handling method calls.  <br /></td></tr>
+<tr class="separator:a2a392ab1c40a5b783c98af8ce2e36e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dfb5ff7ee025515610c83aa4121cd8a" id="r_a6dfb5ff7ee025515610c83aa4121cd8a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a6dfb5ff7ee025515610c83aa4121cd8a">jsonrpc::endpoint::NotificationHandler</a></td></tr>
+<tr class="memdesc:a6dfb5ff7ee025515610c83aa4121cd8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for handling notifications.  <br /></td></tr>
+<tr class="separator:a6dfb5ff7ee025515610c83aa4121cd8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9b1ecbaac1e2cf95e82245a99c5a12b" id="r_ab9b1ecbaac1e2cf95e82245a99c5a12b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#ab9b1ecbaac1e2cf95e82245a99c5a12b">jsonrpc::endpoint::ErrorHandler</a> = std::function&lt;void(<a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a>, const std::string&amp;)&gt;</td></tr>
+<tr class="memdesc:ab9b1ecbaac1e2cf95e82245a99c5a12b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for handling errors.  <br /></td></tr>
+<tr class="separator:ab9b1ecbaac1e2cf95e82245a99c5a12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe1afdee88ee6cd87b6a0e88fdf950dc" id="r_abe1afdee88ee6cd87b6a0e88fdf950dc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#abe1afdee88ee6cd87b6a0e88fdf950dc">jsonrpc::endpoint::Handler</a> = std::variant&lt;<a class="el" href="namespacejsonrpc_1_1endpoint.html#a2a392ab1c40a5b783c98af8ce2e36e71">MethodCallHandler</a>, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a6dfb5ff7ee025515610c83aa4121cd8a">NotificationHandler</a>&gt;</td></tr>
+<tr class="separator:abe1afdee88ee6cd87b6a0e88fdf950dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a046f8f30c33d765e7861d48c239257cd" id="r_a046f8f30c33d765e7861d48c239257cd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">jsonrpc::endpoint::ErrorCode</a> { <br />
+&#160;&#160;<a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda70bc2f6598437e307b2b8d35f1c49a18">jsonrpc::endpoint::kParseError</a> = -32700
+, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">jsonrpc::endpoint::kInvalidRequest</a> = -32600
+, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdaa0fcc6e288e7806a406405f780cdaf0f">jsonrpc::endpoint::kMethodNotFound</a> = -32601
+, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::endpoint::kInvalidParams</a> = -32602
+, <br />
+&#160;&#160;<a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394">jsonrpc::endpoint::kInternalError</a> = -32603
+, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdac0743fba36fbd100b50c78be97655ae8">jsonrpc::endpoint::kServerError</a> = -32000
+<br />
+ }</td></tr>
+<tr class="memdesc:a046f8f30c33d765e7861d48c239257cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard JSON-RPC 2.0 error codes.  <a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">More...</a><br /></td></tr>
+<tr class="separator:a046f8f30c33d765e7861d48c239257cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a7f0e2e6c3174ba320dab909a312b3a1f" id="r_a7f0e2e6c3174ba320dab909a312b3a1f"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a7f0e2e6c3174ba320dab909a312b3a1f">jsonrpc::endpoint::kJsonRpcVersion</a> = &quot;2.0&quot;</td></tr>
+<tr class="memdesc:a7f0e2e6c3174ba320dab909a312b3a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">JSON-RPC 2.0 protocol version string.  <br /></td></tr>
+<tr class="separator:a7f0e2e6c3174ba320dab909a312b3a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af708291be52090bcccbb1b60caf9d6e8" id="r_af708291be52090bcccbb1b60caf9d6e8"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#af708291be52090bcccbb1b60caf9d6e8">jsonrpc::endpoint::kDefaultRequestTimeout</a> = std::chrono::milliseconds(30000)</td></tr>
+<tr class="memdesc:af708291be52090bcccbb1b60caf9d6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default request timeout in milliseconds.  <br /></td></tr>
+<tr class="separator:af708291be52090bcccbb1b60caf9d6e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45fe723f73ee42928b4bebb579926bb" id="r_ac45fe723f73ee42928b4bebb579926bb"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#ac45fe723f73ee42928b4bebb579926bb">jsonrpc::endpoint::kDefaultMaxBatchSize</a> = 100</td></tr>
+<tr class="memdesc:ac45fe723f73ee42928b4bebb579926bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum batch size.  <br /></td></tr>
+<tr class="separator:ac45fe723f73ee42928b4bebb579926bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_91acd94fd8e19b606395a4f5e16e64f3.html">jsonrpc</a></li><li class="navelem"><a class="el" href="dir_bf2d1ebfe983e97e1c574c9975f7ce3f.html">server</a></li><li class="navelem"><a class="el" href="types_8hpp.html">types.hpp</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_91acd94fd8e19b606395a4f5e16e64f3.html">jsonrpc</a></li><li class="navelem"><a class="el" href="dir_755483ad69aacbc7da0500fa430543ae.html">endpoint</a></li><li class="navelem"><a class="el" href="types_8hpp.html">types.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
   </ul>
 </div>

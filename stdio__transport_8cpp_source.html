@@ -125,24 +125,38 @@ $(function(){initNavTree('stdio__transport_8cpp_source.html',''); initResizable(
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="foldopen" id="foldopen00009" data-start="{" data-end="}">
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1StdioTransport.html#aeb0ea2c246b0229442991aba4cfbe630">    9</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1StdioTransport.html#aeb0ea2c246b0229442991aba4cfbe630">StdioTransport::SendMessage</a>(<span class="keyword">const</span> std::string &amp;message) {</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  spdlog::debug(<span class="stringliteral">&quot;StdioTransport sending message: {}&quot;</span>, message);</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  std::cout &lt;&lt; message &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>}</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keywordflow">if</span> (is_closed_) {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Transport is closed&quot;</span>);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  }</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  spdlog::debug(<span class="stringliteral">&quot;StdioTransport sending message: {}&quot;</span>, message);</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  std::cout &lt;&lt; message &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>}</div>
 </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a1efa8737b61b6c9c1fe0ea6b56e7d51f">   14</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a1efa8737b61b6c9c1fe0ea6b56e7d51f">StdioTransport::ReceiveMessage</a>() -&gt; std::string {</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  std::string response;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordflow">if</span> (!std::getline(std::cin, response)) {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to receive message&quot;</span>);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  }</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  spdlog::debug(<span class="stringliteral">&quot;StdioTransport received response: {}&quot;</span>, response);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keywordflow">return</span> response;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a1efa8737b61b6c9c1fe0ea6b56e7d51f">   17</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a1efa8737b61b6c9c1fe0ea6b56e7d51f">StdioTransport::ReceiveMessage</a>() -&gt; std::string {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordflow">if</span> (is_closed_) {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Transport is closed&quot;</span>);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  }</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  std::string response;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordflow">if</span> (!std::getline(std::cin, response)) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to receive message&quot;</span>);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  }</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  spdlog::debug(<span class="stringliteral">&quot;StdioTransport received response: {}&quot;</span>, response);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordflow">return</span> response;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
 </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>}  <span class="comment">// namespace jsonrpc::transport</span></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1StdioTransport_html_a1efa8737b61b6c9c1fe0ea6b56e7d51f"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1StdioTransport.html#a1efa8737b61b6c9c1fe0ea6b56e7d51f">jsonrpc::transport::StdioTransport::ReceiveMessage</a></div><div class="ttdeci">auto ReceiveMessage() -&gt; std::string override</div><div class="ttdoc">Receives a message from the transport layer.</div><div class="ttdef"><b>Definition</b> <a href="#l00014">stdio_transport.cpp:14</a></div></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a91c7335bbbe461a64d1828890995b450">   29</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a91c7335bbbe461a64d1828890995b450">StdioTransport::Close</a>() {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  is_closed_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  spdlog::info(<span class="stringliteral">&quot;Stdio transport closed&quot;</span>);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
+</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}  <span class="comment">// namespace jsonrpc::transport</span></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1StdioTransport_html_a1efa8737b61b6c9c1fe0ea6b56e7d51f"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1StdioTransport.html#a1efa8737b61b6c9c1fe0ea6b56e7d51f">jsonrpc::transport::StdioTransport::ReceiveMessage</a></div><div class="ttdeci">auto ReceiveMessage() -&gt; std::string override</div><div class="ttdoc">Receives a message from the transport layer.</div><div class="ttdef"><b>Definition</b> <a href="#l00017">stdio_transport.cpp:17</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1StdioTransport_html_a91c7335bbbe461a64d1828890995b450"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1StdioTransport.html#a91c7335bbbe461a64d1828890995b450">jsonrpc::transport::StdioTransport::Close</a></div><div class="ttdeci">void Close() override</div><div class="ttdoc">Closes the transport, interrupting any pending operations.</div><div class="ttdef"><b>Definition</b> <a href="#l00029">stdio_transport.cpp:29</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1StdioTransport_html_aeb0ea2c246b0229442991aba4cfbe630"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1StdioTransport.html#aeb0ea2c246b0229442991aba4cfbe630">jsonrpc::transport::StdioTransport::SendMessage</a></div><div class="ttdeci">void SendMessage(const std::string &amp;message) override</div><div class="ttdoc">Sends a message in string to the transport layer.</div><div class="ttdef"><b>Definition</b> <a href="#l00009">stdio_transport.cpp:9</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1transport_html"><div class="ttname"><a href="namespacejsonrpc_1_1transport.html">jsonrpc::transport</a></div><div class="ttdef"><b>Definition</b> <a href="framed__pipe__transport_8hpp_source.html#l00010">framed_pipe_transport.hpp:10</a></div></div>
 <div class="ttc" id="astdio__transport_8hpp_html"><div class="ttname"><a href="stdio__transport_8hpp.html">stdio_transport.hpp</a></div></div>

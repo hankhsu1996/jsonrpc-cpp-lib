@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['methodcallhandler_0',['MethodCallHandler',['../namespacejsonrpc_1_1server.html#ac8d637644941e15c78da445655e95444',1,'jsonrpc::server']]]
+  ['methodcallhandler_0',['MethodCallHandler',['../namespacejsonrpc_1_1endpoint.html#a2a392ab1c40a5b783c98af8ce2e36e71',1,'jsonrpc::endpoint']]]
 ];

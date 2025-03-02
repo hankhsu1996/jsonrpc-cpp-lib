@@ -1,0 +1,5 @@
+<map id="jsonrpc::endpoint::RpcEndpoint::Stop" name="jsonrpc::endpoint::RpcEndpoint::Stop">
+<area shape="rect" id="Node000001" title="Stops the endpoint&#39;s message processing." alt="" coords="5,5,148,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html#ac8503e78b7382408dcbf75c2bf1f69a0" title="Closes the transport, interrupting any pending operations." alt="" coords="196,5,332,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,23,182,23,182,28,148,28"/>
+</map>

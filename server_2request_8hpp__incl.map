@@ -1,9 +1,0 @@
-<map id="include/jsonrpc/server/request.hpp" name="include/jsonrpc/server/request.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="51,5,216,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,80,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,48,68,86,65,82,110,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="104,93,163,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="136,46,136,79,131,79,131,46"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="187,93,333,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="165,43,231,84,229,88,163,48"/>
-</map>

@@ -1,15 +1,13 @@
 var annotated_dup =
 [
     [ "jsonrpc", "namespacejsonrpc.html", [
-      [ "client", "namespacejsonrpc_1_1client.html", [
-        [ "Client", "classjsonrpc_1_1client_1_1Client.html", "classjsonrpc_1_1client_1_1Client" ],
-        [ "Request", "classjsonrpc_1_1client_1_1Request.html", "classjsonrpc_1_1client_1_1Request" ]
-      ] ],
-      [ "server", "namespacejsonrpc_1_1server.html", [
-        [ "Dispatcher", "classjsonrpc_1_1server_1_1Dispatcher.html", "classjsonrpc_1_1server_1_1Dispatcher" ],
-        [ "Request", "classjsonrpc_1_1server_1_1Request.html", "classjsonrpc_1_1server_1_1Request" ],
-        [ "Response", "classjsonrpc_1_1server_1_1Response.html", "classjsonrpc_1_1server_1_1Response" ],
-        [ "Server", "classjsonrpc_1_1server_1_1Server.html", "classjsonrpc_1_1server_1_1Server" ]
+      [ "endpoint", "namespacejsonrpc_1_1endpoint.html", [
+        [ "Dispatcher", "classjsonrpc_1_1endpoint_1_1Dispatcher.html", "classjsonrpc_1_1endpoint_1_1Dispatcher" ],
+        [ "IdGenerator", "classjsonrpc_1_1endpoint_1_1IdGenerator.html", "classjsonrpc_1_1endpoint_1_1IdGenerator" ],
+        [ "IncrementalIdGenerator", "classjsonrpc_1_1endpoint_1_1IncrementalIdGenerator.html", "classjsonrpc_1_1endpoint_1_1IncrementalIdGenerator" ],
+        [ "Request", "classjsonrpc_1_1endpoint_1_1Request.html", "classjsonrpc_1_1endpoint_1_1Request" ],
+        [ "Response", "classjsonrpc_1_1endpoint_1_1Response.html", "classjsonrpc_1_1endpoint_1_1Response" ],
+        [ "RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html", "classjsonrpc_1_1endpoint_1_1RpcEndpoint" ]
       ] ],
       [ "transport", "namespacejsonrpc_1_1transport.html", [
         [ "FramedPipeTransport", "classjsonrpc_1_1transport_1_1FramedPipeTransport.html", "classjsonrpc_1_1transport_1_1FramedPipeTransport" ],

@@ -115,17 +115,17 @@ $(function(){initNavTree('functions_func.html',''); initResizable(true); });
 <div class="textblock">Here is a list of all functions with links to the classes they belong to:</div>
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
-<li>Client()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a410fec15b4b28b1cec3cc0631c9b2923">jsonrpc::client::Client</a></li>
-<li>CreateLibError()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Response.html#a4d3d3ed7003b276b730ef0eb4ede14d7">jsonrpc::server::Response</a></li>
-<li>CreateResult()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Response.html#a87a35354cc869015c577efbdf09681bd">jsonrpc::server::Response</a></li>
-<li>CreateUserError()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Response.html#a6ef4d397ad35b7bc83f6f86ffc1b6e28">jsonrpc::server::Response</a></li>
+<li>Close()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#af6214ca2ec07e6346fcda4be8fc94d0b">jsonrpc::transport::PipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#a5898b3c83e06c86e3e0f932ab147ca2c">jsonrpc::transport::SocketTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a91c7335bbbe461a64d1828890995b450">jsonrpc::transport::StdioTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#ac8503e78b7382408dcbf75c2bf1f69a0">jsonrpc::transport::Transport</a></li>
+<li>CreateLibError()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#aca2429718ff868360a16fdb0cbf104dc">jsonrpc::endpoint::Response</a></li>
+<li>CreateResult()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#a47334682c3565852fc493381c19521b4">jsonrpc::endpoint::Response</a></li>
+<li>CreateUserError()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#a28cc6e8b588ea9d2a7d226d97c8d4747">jsonrpc::endpoint::Response</a></li>
 </ul>
 
 
 <h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
-<li>Dispatcher()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Dispatcher.html#a3cfd95e262c562cbb74c40ffa1a75eb2">jsonrpc::server::Dispatcher</a></li>
-<li>DispatchRequest()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Dispatcher.html#a5f43ee36351c5d1a8d39d7ad163fcd78">jsonrpc::server::Dispatcher</a></li>
-<li>Dump()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Request.html#a31d47b69972bbbd83f9c4b95fcd543db">jsonrpc::client::Request</a></li>
+<li>Dispatcher()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a41618e497114b13c65952f8293b95eed">jsonrpc::endpoint::Dispatcher</a></li>
+<li>DispatchRequest()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#ab77eca2c1b1495b1750c30583935be87">jsonrpc::endpoint::Dispatcher</a></li>
+<li>Dump()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#ab06a29b8ccbf8d947e8640c776f9031c">jsonrpc::endpoint::Request</a></li>
 </ul>
 
 
@@ -133,32 +133,43 @@ $(function(){initNavTree('functions_func.html',''); initResizable(true); });
 <li>FramedPipeTransport()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#afd862ce1abe6cd9b599fd4c675551e94">jsonrpc::transport::FramedPipeTransport</a></li>
 <li>FramedSocketTransport()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1FramedSocketTransport.html#accad3bb209c34cae01e3bf2ee4208189">jsonrpc::transport::FramedSocketTransport</a></li>
 <li>FrameMessage()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1FramedTransport.html#ae5317dd37dd2638b8e7c013854719dec">jsonrpc::transport::FramedTransport</a></li>
-<li>FromJson()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Request.html#a148c5ec33fd15819878d71148fbd67cf">jsonrpc::server::Request</a></li>
-<li>FromUserResponse()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Response.html#abb9f9a13816cf9d8bf1f238e27f0ad77">jsonrpc::server::Response</a></li>
+<li>FromJson()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#a2101279416a9f9fad5fd7abdd4df5d32">jsonrpc::endpoint::Request</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#a3c90a69a0e364b1c53e1bce193e574eb">jsonrpc::endpoint::Response</a></li>
 </ul>
 
 
 <h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
-<li>GetId()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Request.html#a4060ec64596f59b72dece2e59ff783e1">jsonrpc::server::Request</a></li>
-<li>GetKey()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Request.html#a6303de433c6db9cc23863ea2fef5cc09">jsonrpc::client::Request</a></li>
-<li>GetMethod()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Request.html#aa6693e593a3e8719e477b369fac4d9aa">jsonrpc::server::Request</a></li>
-<li>GetParams()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Request.html#a1d2e3e95d623a7972759c9e074826502">jsonrpc::server::Request</a></li>
+<li>GetError()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#aa186f2c6882041cfea79a1103c6e617f">jsonrpc::endpoint::Response</a></li>
+<li>GetId()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#a65f87c28ed1278c1133bdbea25bc35dd">jsonrpc::endpoint::Request</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#a392cb93f0cefc47802ef25bf99c41bd9">jsonrpc::endpoint::Response</a></li>
+<li>GetMaxBatchSize()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae9ccb692e5443f20ef896ba455929671">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>GetMethod()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#a0bda024faebe36b8deafd4f45ad0297a">jsonrpc::endpoint::Request</a></li>
+<li>GetParams()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#a4b9ee1bbd1d06f7b58bc038079366937">jsonrpc::endpoint::Request</a></li>
+<li>GetPendingRequestCount()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5092fe182ec82d48f29c9f974096561e">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>GetRequestTimeout()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ad3952e20b3ed095ba6c35fe6b926efcf">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>GetResult()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#a1c033921f18c991bbeba0fa2adcea199">jsonrpc::endpoint::Response</a></li>
 <li>GetSocket()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765">jsonrpc::transport::PipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#a336ccd597046e343c7f4026359c7887c">jsonrpc::transport::SocketTransport</a></li>
 </ul>
 
 
 <h3><a id="index_h" name="index_h"></a>- h -</h3><ul>
-<li>HasPendingRequests()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#ac31537f3ff223ea391c3b552daf2aaa9">jsonrpc::client::Client</a></li>
+<li>HasPendingRequests()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64">jsonrpc::endpoint::RpcEndpoint</a></li>
 </ul>
 
 
 <h3><a id="index_i" name="index_i"></a>- i -</h3><ul>
-<li>IsRunning()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a44383894360161c920275c5919a96ca0">jsonrpc::client::Client</a>, <a class="el" href="classjsonrpc_1_1server_1_1Server.html#a0a89acb21d8672178fc9176a7105c638">jsonrpc::server::Server</a></li>
+<li>IdGenerator()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1IdGenerator.html#adfd4668b46e42df92fc804e10d385c68">jsonrpc::endpoint::IdGenerator</a></li>
+<li>IsNotification()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#a71e4ab2af822107ce1052bb7d76d6c5b">jsonrpc::endpoint::Request</a></li>
+<li>IsRunning()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aae3ce7f968e4da001e1c2c18c03e8a69">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>IsSuccess()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#a7e0ce30e43cffc66d173f5fc942fdc76">jsonrpc::endpoint::Response</a></li>
+</ul>
+
+
+<h3><a id="index_n" name="index_n"></a>- n -</h3><ul>
+<li>NextId()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1IdGenerator.html#a1d83902cdf3118dfeeda8461cf1dbdab">jsonrpc::endpoint::IdGenerator</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1IncrementalIdGenerator.html#abd4c6426824ea61a5b8e966bd12a5143">jsonrpc::endpoint::IncrementalIdGenerator</a></li>
 </ul>
 
 
 <h3><a id="index_o" name="index_o"></a>- o -</h3><ul>
-<li>operator=()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a2061dc0087aae33a0bf17f93f3536a49">jsonrpc::client::Client</a>, <a class="el" href="classjsonrpc_1_1server_1_1Dispatcher.html#a8338264fc03f06dfcaab2c82a6def9ad">jsonrpc::server::Dispatcher</a>, <a class="el" href="classjsonrpc_1_1server_1_1Response.html#a909237b96cf7263204e2c3190ed110e0">jsonrpc::server::Response</a>, <a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a82d970bd587be51d60cf1d3c3e650954">jsonrpc::transport::PipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#ada04bca29bf91f91deec2f278d75595f">jsonrpc::transport::SocketTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a44f3f24dcd3e464f31545dee06a06869">jsonrpc::transport::Transport</a></li>
+<li>operator=()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b043ed3536c6c403620d928b5a35df6">jsonrpc::endpoint::Dispatcher</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1IdGenerator.html#ae037d64c46dfb525be40c65a1757f008">jsonrpc::endpoint::IdGenerator</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#afd636f26a7b694459be64ca6492e64b0">jsonrpc::endpoint::Response</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a2ba351ea31bda43fc5ef1e62718dd523">jsonrpc::endpoint::RpcEndpoint</a>, <a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a82d970bd587be51d60cf1d3c3e650954">jsonrpc::transport::PipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#ada04bca29bf91f91deec2f278d75595f">jsonrpc::transport::SocketTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a44f3f24dcd3e464f31545dee06a06869">jsonrpc::transport::Transport</a></li>
 </ul>
 
 
@@ -173,38 +184,47 @@ $(function(){initNavTree('functions_func.html',''); initResizable(true); });
 <li>ReadHeadersFromStream()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1FramedTransport.html#acff87f9e3a92ba801e4c08785ed3c699">jsonrpc::transport::FramedTransport</a></li>
 <li>ReceiveFramedMessage()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a851f26072486db46285fd5526f308633">jsonrpc::transport::FramedTransport</a></li>
 <li>ReceiveMessage()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a972c800cb6bb542dc8cda5ac31d877db">jsonrpc::transport::FramedPipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1FramedSocketTransport.html#a5f2031a67a065d99de51e8005c3a0c67">jsonrpc::transport::FramedSocketTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1FramedStdioTransport.html#a3ca58ce6438e08b3f0a32dc2fb179b45">jsonrpc::transport::FramedStdioTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a994d8b790263d63bea69dd16384a87ec">jsonrpc::transport::PipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#ab65f77d96b697549689100eee4f36abc">jsonrpc::transport::SocketTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a1efa8737b61b6c9c1fe0ea6b56e7d51f">jsonrpc::transport::StdioTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a2543ac586b9a5021665208a8176f0998">jsonrpc::transport::Transport</a></li>
-<li>RegisterMethodCall()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Dispatcher.html#a5bc867602341178fdb6d2ca4398fc625">jsonrpc::server::Dispatcher</a>, <a class="el" href="classjsonrpc_1_1server_1_1Server.html#a0d555953f59dc176f334bcb9905f382e">jsonrpc::server::Server</a></li>
-<li>RegisterNotification()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a3bd309f284b632b9295a2e2d78f455ef">jsonrpc::client::Client</a>, <a class="el" href="classjsonrpc_1_1server_1_1Dispatcher.html#ae50585fd4f68289d01ffe27b31c6767e">jsonrpc::server::Dispatcher</a>, <a class="el" href="classjsonrpc_1_1server_1_1Server.html#a1d630d4f32a0ac5e37cc6c7f4715a0a0">jsonrpc::server::Server</a></li>
-<li>Request()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Request.html#acd004d8dc5850a9107e5298beda5bfc2">jsonrpc::client::Request</a>, <a class="el" href="classjsonrpc_1_1server_1_1Request.html#ad6a5301ec5dc8b168511e95daeebe404">jsonrpc::server::Request</a></li>
-<li>RequiresResponse()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Request.html#a6fd7068e78b1a088915d70f9bc536073">jsonrpc::client::Request</a></li>
-<li>Response()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Response.html#a9377b842b4ff56716211c47f69ecbcc9">jsonrpc::server::Response</a></li>
+<li>RegisterMethodCall()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a91858af35b7e497e6e422eaafca49d9f">jsonrpc::endpoint::Dispatcher</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ad745c722415cc71a0d8a9323366cb871">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>RegisterNotification()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957">jsonrpc::endpoint::Dispatcher</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aff6e443566fcf9ede5e10aa662dd4e37">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>Request()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#a85a554ca354958606a3419da6f8804c9">jsonrpc::endpoint::Request</a></li>
+<li>RequiresResponse()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#a7e10c91fcfd2a58dac4c4f675d983482">jsonrpc::endpoint::Request</a></li>
+<li>Response()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#aa620d8a3542d7e9ea79a30e0c03b3224">jsonrpc::endpoint::Response</a></li>
+<li>RpcEndpoint()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a564e3222df869a54c7a52a39d7d478d3">jsonrpc::endpoint::RpcEndpoint</a></li>
 </ul>
 
 
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>SendMessage()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a1f50d7b4d0284cafbf21f948f0e0c978">jsonrpc::transport::FramedPipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1FramedSocketTransport.html#ac7ba899a7161670a536c7aae727723e6">jsonrpc::transport::FramedSocketTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1FramedStdioTransport.html#ab79aff17d8959059d617ffb75a499fe6">jsonrpc::transport::FramedStdioTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a044249bd5b751d6853f7bbb0ed0bf2a5">jsonrpc::transport::PipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#a51bbeceff1c2073621e50f7ea716354b">jsonrpc::transport::SocketTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1StdioTransport.html#aeb0ea2c246b0229442991aba4cfbe630">jsonrpc::transport::StdioTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#aa67a43c8e46dab82801b2c3af77f2a88">jsonrpc::transport::Transport</a></li>
-<li>SendMethodCall()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a47aa4c2260c5fa0ea56b0eb21dac448d">jsonrpc::client::Client</a></li>
-<li>SendMethodCallAsync()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a7e180e92c54c91be2fac3c01a3a051a0">jsonrpc::client::Client</a></li>
-<li>SendNotification()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a23da9136a74834da7852d35af8d394c3">jsonrpc::client::Client</a>, <a class="el" href="classjsonrpc_1_1server_1_1Server.html#afd736916c94f187911a8a578506524bc">jsonrpc::server::Server</a></li>
-<li>Server()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Server.html#a6a0755ca19e216e23879d2e3a1eebc03">jsonrpc::server::Server</a></li>
+<li>SendMethodCall()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a49dc0751118a99486590a62171c4c375">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>SendMethodCallAsync()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6f8d757a53798066150a89551d7f353a">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>SendNotification()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#afa76038c7eedd3b7a4a95a7a41fcb734">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>SetErrorHandler()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a93b27978503f54019e62443ec359fbc3">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>SetMaxBatchSize()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a4e4a8d66e28771a4b1cfb80f5bbfa10c">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>SetRequestTimeout()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae9dca6961edf0477da655ac20cdbe5ff">jsonrpc::endpoint::RpcEndpoint</a></li>
 <li>SocketTransport()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#a8c5b98c6bc57cbe0812e47152545cf6e">jsonrpc::transport::SocketTransport</a></li>
-<li>Start()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a24c4afc320a6e5951ca80908cab286f4">jsonrpc::client::Client</a>, <a class="el" href="classjsonrpc_1_1server_1_1Server.html#a02556987956f30de5480fad7cd07d335">jsonrpc::server::Server</a></li>
-<li>Stop()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#abfad9508403f9eecfd2574fda00d70b8">jsonrpc::client::Client</a>, <a class="el" href="classjsonrpc_1_1server_1_1Server.html#a79dbe3ca28cd13ab385bedc620c5ec7f">jsonrpc::server::Server</a></li>
+<li>Start()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ac59d19f086022a7c3a200a3f60c73376">jsonrpc::endpoint::RpcEndpoint</a></li>
+<li>Stop()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a25c3d2dcde38c38d57625e28507aa791">jsonrpc::endpoint::RpcEndpoint</a></li>
 </ul>
 
 
 <h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
-<li>ToJson()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Request.html#acf560e12ea752b65477dbd9724287ad3">jsonrpc::server::Request</a>, <a class="el" href="classjsonrpc_1_1server_1_1Response.html#a4f10ef904202d130b49c541e89a00c80">jsonrpc::server::Response</a></li>
-<li>ToStr()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Response.html#af99bc60d85c7635e797536feb3caa020">jsonrpc::server::Response</a></li>
+<li>ToJson()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#a82cd14ec1dd3f15d068e5737e409663d">jsonrpc::endpoint::Request</a>, <a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#afc719e5a409f9cb65758dd49f45d1bc7">jsonrpc::endpoint::Response</a></li>
+<li>ToStr()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#aa0f35616912775b73f177f0ebcc8eb8c">jsonrpc::endpoint::Response</a></li>
 <li>Transport()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a5f7c41185c1c124f0ece0eb7899a09d4">jsonrpc::transport::Transport</a></li>
 </ul>
 
 
+<h3><a id="index_v" name="index_v"></a>- v -</h3><ul>
+<li>ValidateJson()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html#aa7400f37a5ac389581a120d935be82a5">jsonrpc::endpoint::Request</a></li>
+</ul>
+
+
 <h3><a id="index__7E" name="index__7E"></a>- ~ -</h3><ul>
-<li>~Client()&#160;:&#160;<a class="el" href="classjsonrpc_1_1client_1_1Client.html#a11196eccdb86b5cedc3301065aeb32b2">jsonrpc::client::Client</a></li>
-<li>~Dispatcher()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Dispatcher.html#a06f263a5db1c20b2efd58201d192416a">jsonrpc::server::Dispatcher</a></li>
+<li>~Dispatcher()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a6e63bb793fd9f2b36bce6221ef57f2d8">jsonrpc::endpoint::Dispatcher</a></li>
+<li>~IdGenerator()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1IdGenerator.html#a18d64767cb3a6f278420f1a9ab66094c">jsonrpc::endpoint::IdGenerator</a></li>
 <li>~PipeTransport()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#ad64f2634a0b5bf9865b9ba8818531ef3">jsonrpc::transport::PipeTransport</a></li>
-<li>~Response()&#160;:&#160;<a class="el" href="classjsonrpc_1_1server_1_1Response.html#ad7f6e821b64aa396c4eae310fe915cce">jsonrpc::server::Response</a></li>
+<li>~Response()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html#a5581758ca49c0b120e3735d258c1deed">jsonrpc::endpoint::Response</a></li>
+<li>~RpcEndpoint()&#160;:&#160;<a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ac92e935320b1c69e9b06833b9d2df1e3">jsonrpc::endpoint::RpcEndpoint</a></li>
 <li>~SocketTransport()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#a2180ab77872ad9238c6a0b30d4f0b6bc">jsonrpc::transport::SocketTransport</a></li>
 <li>~Transport()&#160;:&#160;<a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a41ecc943dcac4073f965983859f48f2a">jsonrpc::transport::Transport</a></li>
 </ul>

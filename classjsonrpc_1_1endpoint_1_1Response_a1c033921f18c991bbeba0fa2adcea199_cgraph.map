@@ -1,0 +1,5 @@
+<map id="jsonrpc::endpoint::Response::GetResult" name="jsonrpc::endpoint::Response::GetResult">
+<area shape="rect" id="Node000001" title="Gets the result if this is a success response." alt="" coords="5,5,163,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Response.html#a7e0ce30e43cffc66d173f5fc942fdc76" title="Checks if the response indicates success." alt="" coords="211,5,367,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,23,197,23,197,28,163,28"/>
+</map>

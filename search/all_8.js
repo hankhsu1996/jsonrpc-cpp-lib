@@ -16,6 +16,5 @@ var searchData=
   ['framedtransport_13',['FramedTransport',['../classjsonrpc_1_1transport_1_1FramedTransport.html',1,'jsonrpc::transport']]],
   ['framedtransporttest_14',['FramedTransportTest',['../classjsonrpc_1_1transport_1_1FramedTransport.html#ab17de8da018257c556c0a31e0a05b16f',1,'jsonrpc::transport::FramedTransport']]],
   ['framemessage_15',['FrameMessage',['../classjsonrpc_1_1transport_1_1FramedTransport.html#ae5317dd37dd2638b8e7c013854719dec',1,'jsonrpc::transport::FramedTransport']]],
-  ['fromjson_16',['FromJson',['../classjsonrpc_1_1server_1_1Request.html#a148c5ec33fd15819878d71148fbd67cf',1,'jsonrpc::server::Request']]],
-  ['fromuserresponse_17',['FromUserResponse',['../classjsonrpc_1_1server_1_1Response.html#abb9f9a13816cf9d8bf1f238e27f0ad77',1,'jsonrpc::server::Response']]]
+  ['fromjson_16',['FromJson',['../classjsonrpc_1_1endpoint_1_1Request.html#a2101279416a9f9fad5fd7abdd4df5d32',1,'jsonrpc::endpoint::Request::FromJson()'],['../classjsonrpc_1_1endpoint_1_1Response.html#a3c90a69a0e364b1c53e1bce193e574eb',1,'jsonrpc::endpoint::Response::FromJson()']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['client_0',['Client',['../classjsonrpc_1_1client_1_1Client.html',1,'jsonrpc::client']]]
+  ['dispatcher_0',['Dispatcher',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html',1,'jsonrpc::endpoint']]]
 ];

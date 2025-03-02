@@ -1,7 +1,7 @@
 <map id="jsonrpc::transport::FramedStdioTransport" name="jsonrpc::transport::FramedStdioTransport">
-<area shape="rect" id="Node000001" title="Transport layer using framed messaging over standard I/O for JSON&#45;RPC communication." alt="" coords="109,273,273,373"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html" title="Base class for JSON&#45;RPC transport." alt="" coords="5,5,155,225"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,236,167,272,162,274,143,239"/>
-<area shape="rect" id="Node000003" href="$classjsonrpc_1_1transport_1_1FramedTransport.html" title="Base class for framed transport mechanisms." alt="" coords="179,35,426,195"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,209,220,274,215,272,251,207"/>
+<area shape="rect" id="Node000001" title="Transport layer using framed messaging over standard I/O for JSON&#45;RPC communication." alt="" coords="109,293,273,393"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html" title="Base class for JSON&#45;RPC transport." alt="" coords="5,5,155,245"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,257,168,292,163,294,145,259"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1transport_1_1FramedTransport.html" title="Base class for framed transport mechanisms." alt="" coords="179,45,426,205"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="258,219,218,294,214,292,253,217"/>
 </map>

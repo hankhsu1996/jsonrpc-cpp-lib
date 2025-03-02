@@ -1,0 +1,5 @@
+<map id="jsonrpc::endpoint::RpcEndpoint::SendMethodCallAsync" name="jsonrpc::endpoint::RpcEndpoint::SendMethodCallAsync">
+<area shape="rect" id="Node000001" title="Sends a method call asynchronously." alt="" coords="5,5,223,60"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html#aa67a43c8e46dab82801b2c3af77f2a88" title="Sends a message in string to the transport layer." alt="" coords="271,13,459,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,30,257,30,257,35,223,35"/>
+</map>

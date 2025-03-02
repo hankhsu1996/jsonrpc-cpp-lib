@@ -126,12 +126,12 @@ $(function(){initNavTree('classjsonrpc_1_1transport_1_1Transport.html',''); init
 <div class="dynheader">
 Inheritance diagram for jsonrpc::transport::Transport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport__inherit__graph.svg" width="702" height="687"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport__inherit__graph.svg" width="702" height="727"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for jsonrpc::transport::Transport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport__coll__graph.svg" width="160" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport__coll__graph.svg" width="160" height="251"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -154,6 +154,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2543ac586b9a5021665208a8176f0998" id="r_a2543ac586b9a5021665208a8176f0998"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2543ac586b9a5021665208a8176f0998">ReceiveMessage</a> () -&gt; std::string=0</td></tr>
 <tr class="memdesc:a2543ac586b9a5021665208a8176f0998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives a message from the transport layer.  <br /></td></tr>
 <tr class="separator:a2543ac586b9a5021665208a8176f0998"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8503e78b7382408dcbf75c2bf1f69a0" id="r_ac8503e78b7382408dcbf75c2bf1f69a0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8503e78b7382408dcbf75c2bf1f69a0">Close</a> ()=0</td></tr>
+<tr class="memdesc:ac8503e78b7382408dcbf75c2bf1f69a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the transport, interrupting any pending operations.  <br /></td></tr>
+<tr class="separator:ac8503e78b7382408dcbf75c2bf1f69a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for JSON-RPC transport. </p>
@@ -262,6 +265,42 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac8503e78b7382408dcbf75c2bf1f69a0" name="ac8503e78b7382408dcbf75c2bf1f69a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8503e78b7382408dcbf75c2bf1f69a0">&#9670;&#160;</a></span>Close()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void jsonrpc::transport::Transport::Close </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Closes the transport, interrupting any pending operations. </p>
+
+<p>Implemented in <a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#af6214ca2ec07e6346fcda4be8fc94d0b">jsonrpc::transport::PipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#a5898b3c83e06c86e3e0f932ab147ca2c">jsonrpc::transport::SocketTransport</a>, and <a class="el" href="classjsonrpc_1_1transport_1_1StdioTransport.html#a91c7335bbbe461a64d1828890995b450">jsonrpc::transport::StdioTransport</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00058">jsonrpc::endpoint::RpcEndpoint::Stop()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport_ac8503e78b7382408dcbf75c2bf1f69a0_icgraph.svg" width="588" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a44f3f24dcd3e464f31545dee06a06869" name="a44f3f24dcd3e464f31545dee06a06869"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a44f3f24dcd3e464f31545dee06a06869">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
@@ -374,6 +413,13 @@ Public Member Functions</h2></td></tr>
 </dl>
 
 <p>Implemented in <a class="el" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a1f50d7b4d0284cafbf21f948f0e0c978">jsonrpc::transport::FramedPipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1FramedSocketTransport.html#ac7ba899a7161670a536c7aae727723e6">jsonrpc::transport::FramedSocketTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1FramedStdioTransport.html#ab79aff17d8959059d617ffb75a499fe6">jsonrpc::transport::FramedStdioTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a044249bd5b751d6853f7bbb0ed0bf2a5">jsonrpc::transport::PipeTransport</a>, <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html#a51bbeceff1c2073621e50f7ea716354b">jsonrpc::transport::SocketTransport</a>, and <a class="el" href="classjsonrpc_1_1transport_1_1StdioTransport.html#aeb0ea2c246b0229442991aba4cfbe630">jsonrpc::transport::StdioTransport</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00083">jsonrpc::endpoint::RpcEndpoint::SendMethodCallAsync()</a>, and <a class="el" href="endpoint_8cpp_source.html#l00104">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport_aa67a43c8e46dab82801b2c3af77f2a88_icgraph.svg" width="466" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

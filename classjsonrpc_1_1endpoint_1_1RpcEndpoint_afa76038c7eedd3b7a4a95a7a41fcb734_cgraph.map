@@ -1,0 +1,9 @@
+<map id="jsonrpc::endpoint::RpcEndpoint::SendNotification" name="jsonrpc::endpoint::RpcEndpoint::SendNotification">
+<area shape="rect" id="Node000001" title="Sends a notification." alt="" coords="5,37,224,77"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Request.html#ab06a29b8ccbf8d947e8640c776f9031c" title="Serializes the request to a JSON string." alt="" coords="295,5,437,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,41,281,33,281,39,225,46"/>
+<area shape="rect" id="Node000004" href="$classjsonrpc_1_1transport_1_1Transport.html#aa67a43c8e46dab82801b2c3af77f2a88" title="Sends a message in string to the transport layer." alt="" coords="272,69,460,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="225,69,259,73,258,78,224,74"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1Request.html#a82cd14ec1dd3f15d068e5737e409663d" title="Converts the request to a JSON object." alt="" coords="508,5,651,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="437,23,494,23,494,28,437,28"/>
+</map>
