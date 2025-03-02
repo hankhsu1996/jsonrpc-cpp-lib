@@ -9,6 +9,21 @@ cc_library(
     ],
 )
 
+# Endpoint
+cc_test(
+    name = "test_endpoint",
+    size = "small",
+    srcs = [
+        "common/mock_transport.hpp",
+        "endpoint/test_endpoint.cpp",
+    ],
+    deps = [
+        "//src:jsonrpc_lib",
+        "//tests:mock_transport",
+        "@catch2//:catch2_main",
+    ],
+)
+
 # Client
 cc_test(
     name = "test_client",
