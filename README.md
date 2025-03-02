@@ -10,6 +10,7 @@ Welcome to the **JSON-RPC 2.0 Modern C++ Library**! This library provides a ligh
 
 - **Fully Compliant with JSON-RPC 2.0**: Supports method calls, notifications, comprehensive error handling, and batch requests.
 - **Modern and Lightweight**: Leverages C++20 features with minimal dependencies, focusing solely on the JSON-RPC protocol.
+- **Unified Endpoint Design**: Single `RpcEndpoint` class that can act as both client and server, following JSON-RPC 2.0's symmetric design.
 - **Transport-Agnostic**: Abstract transport layer allows use of provided implementations or custom ones.
 - **Simple JSON Integration**: Uses [nlohmann/json](https://github.com/nlohmann/json) for easy JSON object interaction, requiring no learning curve.
 - **Flexible Handler Registration**: Register handlers using `std::function`, supporting lambdas, function pointers, and other callable objects.
@@ -66,57 +67,43 @@ FetchContent_MakeAvailable(jsonrpc-cpp-lib)
 
 ## 📖 Usage and Examples
 
-### Creating a JSON-RPC Server
+### Creating a JSON-RPC Endpoint
 
-Here’s how to create a simple JSON-RPC server:
+Here's how to create a simple JSON-RPC endpoint that both sends and receives method calls:
 
 ```cpp
-using jsonrpc::server::Server;
+using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::StdioTransport;
 using Json = nlohmann::json;
 
-// Create a server with an stdio transport
-Server server(std::make_unique<StdioTransport>());
+// Create an endpoint with stdio transport
+auto endpoint = RpcEndpoint(std::make_unique<StdioTransport>());
 
 // Register a method named "add" that adds two numbers
-server.RegisterMethodCall("add", [](const std::optional<Json> &params) {
+endpoint.RegisterMethodCall("add", [](const std::optional<Json> &params) {
   int result = params.value()["a"] + params.value()["b"];
   return Json{{"result", result}};
 });
 
-// Register a notification named "stop" to stop the server
-server.RegisterNotification("stop", [&server](const std::optional<Json> &) {
-  server.Stop();
+// Register a notification named "stop" to stop the endpoint
+endpoint.RegisterNotification("stop", [&endpoint](const std::optional<Json> &) {
+  endpoint.Stop();
 });
 
-// Start the server
-server.Start();
-```
+// Start the endpoint
+endpoint.Start();
 
-To register a method, you need to provide a function that takes optional `Json` parameters and returns a `Json` object containing either a `result` or `error` field. The `error` field must follow the JSON-RPC spec, including code and message. For simplicity, this library does not provide a more structured way to create error responses.
-
-### Creating a JSON-RPC Client
-
-Here’s how to create a JSON-RPC client:
-
-```cpp
-using jsonrpc::client::Client;
-using jsonrpc::transport::StdioTransport;
-using Json = nlohmann::json;
-
-// Create a client with a standard I/O transport
-Client client(std::make_unique<StdioTransport>());
-client.Start();
-
-// Perform addition
-auto response = client.SendMethodCall("add", Json({{"a", 10}, {"b", 5}}));
+// Send a method call to another endpoint
+auto response = endpoint.SendMethodCall("add", Json({{"a", 10}, {"b", 5}}));
 spdlog::info("Add result: {}", response.dump());
 
-// Send stop notification
-client.SendNotification("stop");
+// Send a notification
+endpoint.SendNotification("stop");
 ```
 
-These examples demonstrate the basic usage of setting up a JSON-RPC server and client. For more examples and detailed usage, please refer to the [examples folder](./examples/).
+Each endpoint can both register methods to handle incoming calls and send outgoing calls to other endpoints. The transport layer (e.g., stdio, socket, pipe) determines how endpoints connect to each other.
+
+These examples demonstrate the basic usage of JSON-RPC endpoints. For more examples including different transport types and complete applications, please refer to the [examples folder](./examples/).
 
 ## 🛠️ Developer Guide
 
