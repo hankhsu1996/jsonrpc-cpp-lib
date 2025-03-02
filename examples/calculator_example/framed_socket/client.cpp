@@ -1,6 +1,6 @@
 #include <memory>
 
-#include <jsonrpc/client/client.hpp>
+#include <jsonrpc/endpoint/endpoint.hpp>
 #include <jsonrpc/transport/framed_pipe_transport.hpp>
 #include <nlohmann/json.hpp>
 #include <spdlog/sinks/basic_file_sink.h>
@@ -8,7 +8,7 @@
 
 #include "jsonrpc/transport/framed_socket_transport.hpp"
 
-using jsonrpc::client::Client;
+using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::FramedSocketTransport;
 using Json = nlohmann::json;
 
@@ -21,7 +21,7 @@ auto main() -> int {
   const std::string host = "127.0.0.1";
   const uint16_t port = 12345;
   auto transport = std::make_unique<FramedSocketTransport>(host, port, false);
-  Client client(std::move(transport));
+  RpcEndpoint client(std::move(transport));
   client.Start();
 
   const int add_op1 = 10;

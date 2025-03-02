@@ -163,6 +163,43 @@ TEST_CASE("Endpoint configuration", "[Endpoint][Config]") {
   }
 }
 
+// Basic Lifecycle Tests
+TEST_CASE("Endpoint lifecycle", "[Endpoint][Lifecycle]") {
+  auto transport = std::make_unique<MockTransport>();
+  jsonrpc::endpoint::RpcEndpoint endpoint(std::move(transport));
+
+  SECTION("Basic start and stop") {
+    REQUIRE_FALSE(endpoint.IsRunning());
+    endpoint.Start();
+    REQUIRE(endpoint.IsRunning());
+    endpoint.Stop();
+    REQUIRE_FALSE(endpoint.IsRunning());
+  }
+
+  SECTION("Start-stop with pending notification") {
+    endpoint.Start();
+    REQUIRE(endpoint.IsRunning());
+
+    // Send notification which should not block
+    Json params = {{"event", "shutdown"}, {"reason", "test"}};
+    endpoint.SendNotification("test_notification", params);
+
+    // Should be able to stop immediately
+    endpoint.Stop();
+    REQUIRE_FALSE(endpoint.IsRunning());
+  }
+
+  SECTION("Multiple start-stop cycles") {
+    for (int i = 0; i < 3; ++i) {
+      REQUIRE_FALSE(endpoint.IsRunning());
+      endpoint.Start();
+      REQUIRE(endpoint.IsRunning());
+      endpoint.Stop();
+      REQUIRE_FALSE(endpoint.IsRunning());
+    }
+  }
+}
+
 // Thread Safety Tests
 TEST_CASE("Endpoint thread safety", "[Endpoint][ThreadSafety]") {
   auto transport = std::make_unique<MockTransport>();
@@ -204,27 +241,29 @@ TEST_CASE("Endpoint thread safety", "[Endpoint][ThreadSafety]") {
     std::vector<std::future<nlohmann::json>> futures;
     std::vector<int64_t> expected_ids;
 
-    // Set up responses with predicted IDs
+    spdlog::info(
+        "Starting multiple requests test with {} requests", num_requests);
+    // Send requests first
     for (int i = 0; i < num_requests; i++) {
       auto predicted_id = test_id_gen.NextId();
       expected_ids.push_back(std::get<int64_t>(predicted_id));
-
-      nlohmann::json response;
-      response["jsonrpc"] = "2.0";
-      response["result"] = fmt::format("result_{}", i);
-      response["id"] = expected_ids.back();
-      transport_ptr->SetResponse(response);
-    }
-
-    // Send requests
-    for (int i = 0; i < num_requests; i++) {
       futures.push_back(
           endpoint.SendMethodCallAsync(fmt::format("method_{}", i)));
     }
 
-    // Verify all requests complete with correct IDs
     REQUIRE(endpoint.HasPendingRequests());
+    spdlog::info("All requests sent, setting up responses");
 
+    // Then set up responses with predicted IDs
+    for (int i = 0; i < num_requests; i++) {
+      nlohmann::json response;
+      response["jsonrpc"] = "2.0";
+      response["result"] = fmt::format("result_{}", i);
+      response["id"] = expected_ids[i];
+      transport_ptr->SetResponse(response);
+    }
+
+    // Verify all requests complete with correct IDs
     for (size_t i = 0; i < futures.size(); i++) {
       REQUIRE(
           futures[i].wait_for(std::chrono::seconds(1)) ==
@@ -233,6 +272,7 @@ TEST_CASE("Endpoint thread safety", "[Endpoint][ThreadSafety]") {
       REQUIRE(result["id"] == expected_ids[i]);
       REQUIRE(result["result"] == fmt::format("result_{}", i));
     }
+    spdlog::info("All requests completed successfully");
 
     REQUIRE_FALSE(endpoint.HasPendingRequests());
     endpoint.Stop();

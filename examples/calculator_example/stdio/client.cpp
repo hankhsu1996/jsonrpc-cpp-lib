@@ -1,12 +1,12 @@
 #include <memory>
 
-#include <jsonrpc/client/client.hpp>
+#include <jsonrpc/endpoint/endpoint.hpp>
 #include <jsonrpc/transport/stdio_transport.hpp>
 #include <nlohmann/json.hpp>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
-using jsonrpc::client::Client;
+using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::StdioTransport;
 using Json = nlohmann::json;
 
@@ -17,7 +17,7 @@ auto main() -> int {
   spdlog::flush_on(spdlog::level::debug);
 
   auto transport = std::make_unique<StdioTransport>();
-  Client client(std::move(transport));
+  RpcEndpoint client(std::move(transport));
   client.Start();
 
   const int add_op1 = 10;

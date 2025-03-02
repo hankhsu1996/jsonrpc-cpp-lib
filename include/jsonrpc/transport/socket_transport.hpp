@@ -34,6 +34,7 @@ class SocketTransport : public Transport {
 
   void SendMessage(const std::string &message) override;
   auto ReceiveMessage() -> std::string override;
+  void Close() override;
 
  protected:
   auto GetSocket() -> asio::ip::tcp::socket &;
@@ -47,6 +48,7 @@ class SocketTransport : public Transport {
   std::string host_;
   uint16_t port_;
   bool is_server_;
+  bool is_closed_{false};
 };
 
 }  // namespace jsonrpc::transport

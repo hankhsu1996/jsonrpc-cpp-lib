@@ -1,5 +1,7 @@
 #include "jsonrpc/transport/socket_transport.hpp"
 
+#include <array>
+#include <span>
 #include <stdexcept>
 
 #include <spdlog/spdlog.h>
@@ -10,7 +12,8 @@ SocketTransport::SocketTransport(
     const std::string &host, uint16_t port, bool is_server)
     : socket_(io_context_), host_(host), port_(port), is_server_(is_server) {
   spdlog::info(
-      "Initializing SocketTransport with host: {} and port: {}", host, port);
+      "Initializing SocketTransport with host: {}, port: {}. IsServer: {}",
+      host, port, is_server);
 
   if (is_server_) {
     BindAndListen();
@@ -24,13 +27,16 @@ auto SocketTransport::GetSocket() -> asio::ip::tcp::socket & {
 }
 
 SocketTransport::~SocketTransport() {
-  spdlog::info("Closing socket and shutting down SocketTransport.");
-  std::error_code ec;
-  socket_.close(ec);
-  if (ec) {
-    spdlog::warn("Socket close error: {}", ec.message());
-  }
+  Close();
   io_context_.stop();
+}
+
+void SocketTransport::Close() {
+  if (!is_closed_) {
+    spdlog::info("SocketTransport: Closing socket transport");
+    socket_.close();
+    is_closed_ = true;
+  }
 }
 
 void SocketTransport::Connect() {
@@ -84,28 +90,69 @@ void SocketTransport::BindAndListen() {
 }
 
 void SocketTransport::SendMessage(const std::string &message) {
+  if (is_closed_) {
+    throw std::runtime_error("Transport is closed");
+  }
   try {
-    asio::write(socket_, asio::buffer(message + "\n"));
-    spdlog::debug("Sent message: {}", message);
+    std::string full_message = message + "\n";
+    asio::write(socket_, asio::buffer(full_message));
+    spdlog::debug("SocketTransport: Message sent");
   } catch (const std::exception &e) {
-    spdlog::error("Error sending message: {}", e.what());
+    spdlog::error("SocketTransport: Send error: {}", e.what());
     throw std::runtime_error("Error sending message");
   }
 }
 
 auto SocketTransport::ReceiveMessage() -> std::string {
+  if (is_closed_) {
+    throw std::runtime_error("Transport is closed");
+  }
   try {
     asio::streambuf buffer;
-    asio::read_until(socket_, buffer, '\n');
-    std::istream is(&buffer);
+    socket_.non_blocking(true);
+
+    std::error_code ec;
     std::string message;
-    std::getline(is, message);
-    spdlog::debug("Received message: {}", message);
-    return message;
+    std::array<char, 1024> data{};
+
+    // Try to read until we get a complete message or error
+    while (true) {
+      size_t bytes =
+          socket_.read_some(asio::buffer(data.data(), data.size()), ec);
+
+      if (ec == asio::error::would_block) {
+        // No data available yet, try again
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        continue;
+      }
+
+      if (ec == asio::error::eof || ec == asio::error::connection_reset) {
+        socket_.close();
+        is_closed_ = true;
+        return "";
+      }
+
+      if (ec) {
+        spdlog::error("SocketTransport: Receive error: {}", ec.message());
+        throw std::runtime_error("Error receiving message");
+      }
+
+      // Look for newline in the received data
+      std::span<const char> data_view(data.data(), bytes);
+      for (const char c : data_view) {
+        if (c == '\n') {
+          return message;
+        }
+        message += c;
+      }
+    }
   } catch (const std::exception &e) {
-    spdlog::error("Error receiving message: {}", e.what());
-    socket_.close();
-    return "";
+    if (!is_closed_) {
+      spdlog::error("SocketTransport: Receive error: {}", e.what());
+      socket_.close();
+      is_closed_ = true;
+    }
+    throw std::runtime_error("Error receiving message");
   }
 }
 

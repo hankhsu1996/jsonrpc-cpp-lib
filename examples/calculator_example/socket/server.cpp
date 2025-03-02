@@ -1,6 +1,6 @@
 #include <memory>
 
-#include <jsonrpc/server/server.hpp>
+#include <jsonrpc/endpoint/endpoint.hpp>
 #include <jsonrpc/transport/socket_transport.hpp>
 #include <nlohmann/json.hpp>
 #include <spdlog/sinks/basic_file_sink.h>
@@ -8,7 +8,7 @@
 
 #include "../calculator.hpp"
 
-using jsonrpc::server::Server;
+using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::SocketTransport;
 using Json = nlohmann::json;
 
@@ -22,7 +22,7 @@ auto main() -> int {
   const uint16_t port = 12345;
 
   auto transport = std::make_unique<SocketTransport>(host, port, true);
-  Server server(std::move(transport));
+  RpcEndpoint server(std::move(transport));
 
   server.RegisterMethodCall("add", [](const std::optional<Json> &params) {
     return Calculator::Add(params.value());

@@ -26,9 +26,13 @@ auto PipeTransport::GetSocket() -> asio::local::stream_protocol::socket & {
 }
 
 PipeTransport::~PipeTransport() {
-  spdlog::info("Closing socket and shutting down PipeTransport.");
-  socket_.close();
+  Close();
   io_context_.stop();
+}
+
+void PipeTransport::Close() {
+  spdlog::info("Closing socket");
+  socket_.close();
 }
 
 void PipeTransport::RemoveExistingSocketFile() {

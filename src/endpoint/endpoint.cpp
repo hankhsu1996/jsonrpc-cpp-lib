@@ -59,6 +59,10 @@ void RpcEndpoint::Stop() {
   if (is_running_) {
     spdlog::info("Stopping JSON-RPC endpoint");
     is_running_.store(false);
+
+    // Close transport first to unblock any pending reads
+    WithTransport([](transport::Transport& transport) { transport.Close(); });
+
     if (message_thread_.joinable()) {
       message_thread_.join();
     }

@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <jsonrpc/server/server.hpp>
+#include <jsonrpc/endpoint/endpoint.hpp>
 #include <nlohmann/json.hpp>
 #include <spdlog/sinks/ostream_sink.h>
 #include <spdlog/spdlog.h>
@@ -20,7 +20,7 @@ auto ParsePipeArguments(const std::vector<std::string>& args) -> std::string {
   return args[1].substr(pipe_prefix.length());
 }
 
-void RegisterLSPHandlers(jsonrpc::server::Server& server) {
+void RegisterLSPHandlers(jsonrpc::endpoint::RpcEndpoint& server) {
   server.RegisterMethodCall("initialize", [](const std::optional<Json>&) {
     spdlog::info("Received initialize request.");
     Json response;

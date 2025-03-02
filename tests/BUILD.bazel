@@ -54,36 +54,6 @@ cc_test(
     ],
 )
 
-# Client
-cc_test(
-    name = "test_client",
-    size = "small",
-    srcs = [
-        "client/test_client.cpp",
-        "common/mock_transport.hpp",
-    ],
-    defines = ["TESTING"],
-    deps = [
-        "//src:jsonrpc_lib",
-        "//tests:mock_transport",
-        "@catch2//:catch2_main",
-    ],
-)
-
-# Server
-cc_test(
-    name = "test_server",
-    size = "small",
-    srcs = [
-        "common/mock_transport.hpp",
-        "server/test_server.cpp",
-    ],
-    deps = [
-        "//src:jsonrpc_lib",
-        "@catch2//:catch2_main",
-    ],
-)
-
 # Transport
 cc_test(
     name = "test_stdio_transport",

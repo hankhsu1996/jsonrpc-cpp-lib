@@ -13,6 +13,10 @@ class StdioTransport : public Transport {
  public:
   void SendMessage(const std::string &message) override;
   auto ReceiveMessage() -> std::string override;
+  void Close() override;
+
+ private:
+  bool is_closed_{false};
 };
 
 }  // namespace jsonrpc::transport

@@ -1,12 +1,12 @@
 #include <string>
 
-#include <jsonrpc/server/server.hpp>
+#include <jsonrpc/endpoint/endpoint.hpp>
 #include <jsonrpc/transport/framed_pipe_transport.hpp>
 #include <spdlog/spdlog.h>
 
 #include "../utils.hpp"
 
-using jsonrpc::server::Server;
+using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::FramedPipeTransport;
 
 auto main(int argc, char* argv[]) -> int {
@@ -16,7 +16,7 @@ auto main(int argc, char* argv[]) -> int {
     SetupLogger();
 
     auto transport = std::make_unique<FramedPipeTransport>(pipe_name, false);
-    Server server(std::move(transport));
+    RpcEndpoint server(std::move(transport));
 
     RegisterLSPHandlers(server);
 

@@ -1,10 +1,9 @@
-#include <jsonrpc/server/server.hpp>
 #include <jsonrpc/transport/framed_socket_transport.hpp>
 #include <spdlog/spdlog.h>
 
 #include "../utils.hpp"
 
-using jsonrpc::server::Server;
+using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::FramedSocketTransport;
 
 auto main() -> int {
@@ -13,7 +12,7 @@ auto main() -> int {
 
     auto transport =
         std::make_unique<FramedSocketTransport>("localhost", 2087, false);
-    Server server(std::move(transport));
+    RpcEndpoint server(std::move(transport));
 
     RegisterLSPHandlers(server);
 

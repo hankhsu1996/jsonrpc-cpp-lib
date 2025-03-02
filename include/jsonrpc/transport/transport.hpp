@@ -31,6 +31,11 @@ class Transport {
    * @return The JSON-RPC response as a string.
    */
   virtual auto ReceiveMessage() -> std::string = 0;
+
+  /**
+   * @brief Closes the transport, interrupting any pending operations.
+   */
+  virtual void Close() = 0;
 };
 
 }  // namespace jsonrpc::transport

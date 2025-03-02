@@ -1,12 +1,12 @@
 #include <memory>
 
-#include <jsonrpc/client/client.hpp>
+#include <jsonrpc/endpoint/endpoint.hpp>
 #include <jsonrpc/transport/pipe_transport.hpp>
 #include <nlohmann/json.hpp>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
-using jsonrpc::client::Client;
+using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::PipeTransport;
 using Json = nlohmann::json;
 
@@ -18,7 +18,7 @@ auto main() -> int {
 
   const std::string socket_path = "/tmp/calculator_pipe";
   auto transport = std::make_unique<PipeTransport>(socket_path, false);
-  Client client(std::move(transport));
+  RpcEndpoint client(std::move(transport));
   client.Start();
 
   const int add_op1 = 10;

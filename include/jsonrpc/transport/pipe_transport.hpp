@@ -34,6 +34,7 @@ class PipeTransport : public Transport {
 
   void SendMessage(const std::string &message) override;
   auto ReceiveMessage() -> std::string override;
+  void Close() override;
 
  protected:
   auto GetSocket() -> asio::local::stream_protocol::socket &;
