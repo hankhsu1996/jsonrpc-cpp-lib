@@ -18,7 +18,7 @@ auto main() -> int {
   spdlog::set_level(spdlog::level::debug);
   spdlog::flush_on(spdlog::level::debug);
 
-  const std::string host = "0.0.0.0";
+  const std::string host = "127.0.0.1";
   const uint16_t port = 12345;
 
   auto transport = std::make_unique<SocketTransport>(host, port, true);
@@ -32,9 +32,11 @@ auto main() -> int {
     return Calculator::Divide(params.value());
   });
 
-  server.RegisterNotification(
-      "stop", [&server](const std::optional<Json> &) { server.Stop(); });
+  server.RegisterNotification("stop", [&server](const std::optional<Json> &) {
+    server.Shutdown().get();
+  });
 
   server.Start();
+  server.Wait();
   return 0;
 }

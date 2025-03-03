@@ -1,21 +1,5 @@
 # examples/BUILD.bazel
 
-# Calculator example using Standard I/O transport
-cc_binary(
-    name = "stdio_client",
-    srcs = ["calculator_example/stdio/client.cpp"],
-    deps = ["//src:jsonrpc_lib"],
-)
-
-cc_binary(
-    name = "stdio_server",
-    srcs = [
-        "calculator_example/calculator.hpp",
-        "calculator_example/stdio/server.cpp",
-    ],
-    deps = ["//src:jsonrpc_lib"],
-)
-
 # Calculator example using Unix domain socket (pipe) transport
 cc_binary(
     name = "pipe_client",

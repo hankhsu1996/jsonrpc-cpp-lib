@@ -43,6 +43,12 @@ class Response {
   static auto FromJson(const nlohmann::json& json) -> Response;
 
   /**
+   * @brief Constructs a Response object from a JSON object.
+   * @param response The JSON object representing the response.
+   */
+  explicit Response(nlohmann::json response);
+
+  /**
    * @brief Creates a successful Response object.
    * @param result The result of the method call.
    * @param id The ID of the request.
@@ -85,6 +91,14 @@ class Response {
   [[nodiscard]] auto GetId() const -> std::optional<RequestId>;
 
   /**
+   * @brief Gets the underlying JSON object.
+   * @return The JSON representation of the response.
+   */
+  [[nodiscard]] auto GetJson() const -> const nlohmann::json& {
+    return response_;
+  }
+
+  /**
    * @brief Serializes the Response object to a JSON object.
    * @return The JSON representation of the response.
    */
@@ -97,8 +111,6 @@ class Response {
   [[nodiscard]] auto ToStr() const -> std::string;
 
  private:
-  explicit Response(nlohmann::json response);
-
   /// @brief Validates the Response object.
   void ValidateResponse() const;
 

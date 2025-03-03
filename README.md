@@ -71,6 +71,8 @@ FetchContent_MakeAvailable(jsonrpc-cpp-lib)
 
 Here's how to create a simple JSON-RPC endpoint that both sends and receives method calls:
 
+// need to change!!! we dont support stdio anymore
+
 ```cpp
 using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::StdioTransport;

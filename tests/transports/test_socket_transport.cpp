@@ -16,11 +16,11 @@ TEST_CASE(
     jsonrpc::transport::SocketTransport server_transport(host, port, true);
 
     // Wait for a message from the client
-    std::string received_message = server_transport.ReceiveMessage();
+    std::string received_message = server_transport.ReceiveMessage().get();
     REQUIRE(received_message == "Hello, Server!");
 
     // Send a response back to the client
-    server_transport.SendMessage("Hello, Client!");
+    server_transport.SendMessage("Hello, Client!").get();
   });
 
   // Give the server some time to start
@@ -30,10 +30,10 @@ TEST_CASE(
   jsonrpc::transport::SocketTransport client_transport(host, port, false);
 
   // Send a message to the server
-  client_transport.SendMessage("Hello, Server!");
+  client_transport.SendMessage("Hello, Server!").get();
 
   // Wait for a response from the server
-  std::string response = client_transport.ReceiveMessage();
+  std::string response = client_transport.ReceiveMessage().get();
   REQUIRE(response == "Hello, Client!");
 
   server_thread.join();
@@ -49,7 +49,7 @@ TEST_CASE(
     jsonrpc::transport::SocketTransport server_transport(host, port, true);
 
     // Send an empty message to the client
-    server_transport.SendMessage("");
+    server_transport.SendMessage("").get();
   });
 
   // Give the server some time to start
@@ -59,7 +59,7 @@ TEST_CASE(
   jsonrpc::transport::SocketTransport client_transport(host, port, false);
 
   // Wait for the empty response from the server
-  std::string response = client_transport.ReceiveMessage();
+  std::string response = client_transport.ReceiveMessage().get();
   REQUIRE(response.empty());
 
   server_thread.join();

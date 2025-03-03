@@ -1,5 +1,7 @@
 #include "jsonrpc/endpoint/dispatcher.hpp"
 
+#include "spdlog/spdlog.h"
+
 namespace jsonrpc::endpoint {
 
 namespace {}  // namespace
@@ -11,12 +13,15 @@ Dispatcher::Dispatcher(bool enable_multithreading, size_t num_threads)
 
 auto Dispatcher::DispatchRequest(const std::string& request_str)
     -> std::optional<std::string> {
+  spdlog::debug("Dispatching request: {}", request_str);
   auto request_json = ParseAndValidateJson(request_str);
   if (!request_json.has_value()) {
+    spdlog::error("Failed to parse request JSON");
     return Response::CreateLibError(ErrorCode::kParseError).ToStr();
   }
 
   if (request_json->is_array()) {
+    spdlog::debug("Processing batch request");
     return DispatchBatchRequest(*request_json);
   }
 
@@ -26,8 +31,10 @@ auto Dispatcher::DispatchRequest(const std::string& request_str)
 auto Dispatcher::ParseAndValidateJson(const std::string& request_str)
     -> std::optional<nlohmann::json> {
   try {
-    return nlohmann::json::parse(request_str);
-  } catch (const nlohmann::json::parse_error&) {
+    auto json = nlohmann::json::parse(request_str);
+    return json;
+  } catch (const nlohmann::json::parse_error& e) {
+    spdlog::error("JSON parse error: {}", e.what());
     return std::nullopt;
   }
 }
@@ -43,14 +50,18 @@ auto Dispatcher::DispatchSingleRequest(const nlohmann::json& request_json)
 
 auto Dispatcher::DispatchSingleRequestInner(const nlohmann::json& request_json)
     -> std::optional<nlohmann::json> {
+  spdlog::debug("Dispatching single request: {}", request_json.dump());
   auto validation_error = ValidateRequest(request_json);
   if (validation_error.has_value()) {
+    spdlog::error("Request validation failed");
     return validation_error->ToJson();
   }
 
   Request request = Request::FromJson(request_json);
+  spdlog::debug("Looking for handler for method: {}", request.GetMethod());
   auto optional_handler = FindHandler(handlers_, request.GetMethod());
   if (!optional_handler.has_value()) {
+    spdlog::error("Method not found: {}", request.GetMethod());
     if (!request.IsNotification()) {
       return Response::CreateLibError(
                  ErrorCode::kMethodNotFound, request.GetId())
@@ -59,6 +70,7 @@ auto Dispatcher::DispatchSingleRequestInner(const nlohmann::json& request_json)
     return std::nullopt;
   }
 
+  spdlog::debug("Handler found for method: {}", request.GetMethod());
   return HandleRequest(request, optional_handler.value());
 }
 
@@ -142,20 +154,24 @@ auto Dispatcher::FindHandler(
 
 auto Dispatcher::HandleRequest(const Request& request, const Handler& handler)
     -> std::optional<nlohmann::json> {
+  spdlog::debug("Handling request for method: {}", request.GetMethod());
+
   if (!request.IsNotification()) {
+    spdlog::debug("Processing method call");
     if (std::holds_alternative<MethodCallHandler>(handler)) {
       const auto& method_call_handler = std::get<MethodCallHandler>(handler);
       Response response = HandleMethodCall(request, method_call_handler);
       return response.ToJson();
     }
+    spdlog::error("Invalid handler type for method call");
     return Response::CreateLibError(ErrorCode::kInvalidRequest, request.GetId())
         .ToJson();
   }
 
+  spdlog::debug("Processing notification");
   if (std::holds_alternative<NotificationHandler>(handler)) {
     const auto& notification_handler = std::get<NotificationHandler>(handler);
     HandleNotification(request, notification_handler);
-    return std::nullopt;
   }
 
   return std::nullopt;
@@ -164,9 +180,12 @@ auto Dispatcher::HandleRequest(const Request& request, const Handler& handler)
 auto Dispatcher::HandleMethodCall(
     const Request& request, const MethodCallHandler& handler) -> Response {
   try {
+    spdlog::debug("Executing method call handler for: {}", request.GetMethod());
     nlohmann::json response_json = handler(request.GetParams());
+    spdlog::debug("Method handler executed successfully");
     return Response::CreateResult(response_json, request.GetId());
-  } catch (const std::exception&) {
+  } catch (const std::exception& e) {
+    spdlog::error("Error in method call handler: {}", e.what());
     return Response::CreateLibError(ErrorCode::kInternalError, request.GetId());
   }
 }
@@ -174,8 +193,11 @@ auto Dispatcher::HandleMethodCall(
 void Dispatcher::HandleNotification(
     const Request& request, const NotificationHandler& handler) {
   try {
+    spdlog::debug(
+        "Executing notification handler for: {}", request.GetMethod());
     handler(request.GetParams());
-  } catch (const std::exception&) {
+  } catch (const std::exception& e) {
+    spdlog::error("Error in notification handler: {}", e.what());
     // Notifications don't return errors
   }
 }

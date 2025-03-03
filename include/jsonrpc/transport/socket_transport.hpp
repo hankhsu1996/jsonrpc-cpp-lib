@@ -1,6 +1,8 @@
 #pragma once
 
+#include <array>
 #include <asio.hpp>
+#include <atomic>
 #include <string>
 
 #include "jsonrpc/transport/transport.hpp"
@@ -22,7 +24,7 @@ class SocketTransport : public Transport {
    * @param isServer True if the transport acts as a server; false if it acts as
    * a client.
    */
-  SocketTransport(const std::string &host, uint16_t port, bool is_server);
+  SocketTransport(std::string host, uint16_t port, bool is_server);
 
   ~SocketTransport() override;
 
@@ -32,23 +34,27 @@ class SocketTransport : public Transport {
   SocketTransport(SocketTransport &&) = delete;
   auto operator=(SocketTransport &&) -> SocketTransport & = delete;
 
-  void SendMessage(const std::string &message) override;
-  auto ReceiveMessage() -> std::string override;
-  void Close() override;
+  auto SendMessage(const std::string &message) -> std::future<void> override;
+  auto ReceiveMessage() -> std::future<std::string> override;
+  auto Close() -> std::future<void> override;
 
  protected:
   auto GetSocket() -> asio::ip::tcp::socket &;
 
  private:
-  void Connect();
-  void BindAndListen();
+  auto Connect() -> std::future<void>;
+  auto BindAndListen() -> std::future<void>;
 
   asio::io_context io_context_;
   asio::ip::tcp::socket socket_;
   std::string host_;
   uint16_t port_;
   bool is_server_;
-  bool is_closed_{false};
+  std::atomic<bool> is_closed_{false};
+
+  // Buffer for receiving data
+  std::array<char, 1024> read_buffer_;
+  std::string message_buffer_;
 };
 
 }  // namespace jsonrpc::transport

@@ -17,24 +17,25 @@ auto main() -> int {
   spdlog::flush_on(spdlog::level::debug);
 
   const std::string socket_path = "/tmp/calculator_pipe";
-  auto transport = std::make_unique<PipeTransport>(socket_path, false);
-  RpcEndpoint client(std::move(transport));
-  client.Start();
+  auto client = RpcEndpoint::CreateClient(
+      std::make_unique<PipeTransport>(socket_path, false));
 
   const int add_op1 = 10;
   const int add_op2 = 5;
   Json add_resp =
-      client.SendMethodCall("add", Json({{"a", add_op1}, {"b", add_op2}}));
+      client->SendMethodCall("add", Json({{"a", add_op1}, {"b", add_op2}}));
   spdlog::info("Add result: {}", add_resp.dump());
 
   const int div_op1 = 10;
   const int div_op2 = 2;
   Json div_resp =
-      client.SendMethodCall("divide", Json({{"a", div_op1}, {"b", div_op2}}));
+      client->SendMethodCall("divide", Json({{"a", div_op1}, {"b", div_op2}}));
   spdlog::info("Divide result: {}", div_resp.dump());
 
-  client.SendNotification("stop");
+  // Tell server to stop
+  client->SendNotification("stop");
 
-  client.Stop();
+  // Clean shutdown of client
+  client->Shutdown().get();
   return 0;
 }

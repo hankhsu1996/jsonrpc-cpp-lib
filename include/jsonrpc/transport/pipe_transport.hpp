@@ -1,6 +1,9 @@
 #pragma once
 
+#include <array>
 #include <asio.hpp>
+#include <asio/local/stream_protocol.hpp>
+#include <atomic>
 #include <string>
 
 #include "jsonrpc/transport/transport.hpp"
@@ -11,18 +14,18 @@ namespace jsonrpc::transport {
  * @brief Transport implementation using Unix domain sockets.
  *
  * This class provides transport functionality over Unix domain sockets,
- * supporting both client and server modes for inter-process communication
- * on the same machine.
+ * supporting local communication between processes on the same machine.
  */
 class PipeTransport : public Transport {
  public:
   /**
    * @brief Constructs a PipeTransport.
-   * @param socketPath Path to the Unix domain socket.
-   * @param isServer True if the transport acts as a server; false if it acts as
-   * a client.
+   *
+   * @param socket_path The path to the Unix domain socket.
+   * @param is_server True if the transport acts as a server; false if it acts
+   * as a client.
    */
-  PipeTransport(const std::string &socket_path, bool is_server);
+  explicit PipeTransport(std::string socket_path, bool is_server = false);
 
   ~PipeTransport() override;
 
@@ -32,22 +35,31 @@ class PipeTransport : public Transport {
   PipeTransport(PipeTransport &&) = delete;
   auto operator=(PipeTransport &&) -> PipeTransport & = delete;
 
-  void SendMessage(const std::string &message) override;
-  auto ReceiveMessage() -> std::string override;
-  void Close() override;
+  auto SendMessage(const std::string &message) -> std::future<void> override;
+  auto ReceiveMessage() -> std::future<std::string> override;
+  auto Close() -> std::future<void> override;
 
- protected:
+  /**
+   * @brief Gets the underlying socket.
+   * @return A reference to the socket.
+   */
   auto GetSocket() -> asio::local::stream_protocol::socket &;
 
- private:
+ protected:
   void RemoveExistingSocketFile();
-  void Connect();
-  void BindAndListen();
+  auto Connect() -> std::future<void>;
+  auto BindAndListen() -> std::future<void>;
 
+ private:
   asio::io_context io_context_;
   asio::local::stream_protocol::socket socket_;
   std::string socket_path_;
   bool is_server_;
+  std::atomic<bool> is_closed_{false};
+
+  // Buffer for receiving data
+  std::array<char, 1024> read_buffer_;
+  std::string message_buffer_;
 };
 
 }  // namespace jsonrpc::transport

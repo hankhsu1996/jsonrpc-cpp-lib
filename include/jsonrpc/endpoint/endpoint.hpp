@@ -2,6 +2,8 @@
 
 #include <atomic>
 #include <chrono>
+#include <condition_variable>
+#include <functional>
 #include <future>
 #include <memory>
 #include <mutex>
@@ -19,6 +21,11 @@
 #include "jsonrpc/transport/transport.hpp"
 
 namespace jsonrpc::endpoint {
+
+/**
+ * @brief Error handler function type.
+ */
+using ErrorHandler = std::function<void(ErrorCode, const std::string&)>;
 
 /**
  * @brief A JSON-RPC endpoint that can act as both client and server.
@@ -43,18 +50,28 @@ class RpcEndpoint {
   /**
    * @brief Constructs an RPC endpoint with a specified transport layer.
    *
+   * This constructor is typically used for server-style endpoints where you
+   * want explicit control over the lifecycle. Call Start() to begin processing.
+   *
    * @param transport A unique pointer to a transport layer for communication.
    * @param id_generator A unique pointer to an ID generator strategy.
-   * @param enable_multithreading Whether to enable multithreaded request
-   * processing.
-   * @param num_threads Number of threads to use when multithreading is enabled.
    */
   explicit RpcEndpoint(
       std::unique_ptr<transport::Transport> transport,
       std::unique_ptr<IdGenerator> id_generator =
-          std::make_unique<IncrementalIdGenerator>(),
-      bool enable_multithreading = true,
-      size_t num_threads = std::thread::hardware_concurrency());
+          std::make_unique<IncrementalIdGenerator>());
+
+  /**
+   * @brief Creates a client endpoint that starts automatically.
+   *
+   * This factory method creates and starts an endpoint configured for client
+   * usage. The endpoint begins processing messages immediately.
+   *
+   * @param transport A unique pointer to a transport layer for communication.
+   * @return A unique pointer to the configured and started RpcEndpoint.
+   */
+  static auto CreateClient(std::unique_ptr<transport::Transport> transport)
+      -> std::unique_ptr<RpcEndpoint>;
 
   /// @brief Destructor ensures clean shutdown.
   ~RpcEndpoint();
@@ -70,31 +87,48 @@ class RpcEndpoint {
   /**
    * @brief Starts the endpoint's message processing.
    *
-   * Initializes the message processing thread that handles incoming messages,
-   * including method calls, notifications, and responses.
+   * This method is typically used with server-style endpoints after
+   * construction. For client endpoints created with CreateClient(), this is
+   * called automatically.
+   *
+   * @throws std::runtime_error if the endpoint is already running
+   * @return A task that completes when the endpoint is started
    */
-  void Start();
+  auto Start() -> std::future<void>;
 
   /**
-   * @brief Stops the endpoint's message processing.
+   * @brief Blocks until the endpoint is shut down.
    *
-   * Stops the message processing thread and cleans up resources.
+   * This method blocks until Shutdown() is called from another thread
+   * and all cleanup is complete. Typically used with server-style endpoints.
    */
-  void Stop();
+  void Wait();
 
   /**
-   * @brief Checks if the endpoint is running.
+   * @brief Initiates a graceful shutdown of the endpoint.
    *
-   * @return True if the message processing thread is active.
+   * This method stops message processing and cleans up resources.
+   * It is safe to call multiple times and from any thread.
+   *
+   * @return A task that completes when shutdown is complete
+   */
+  auto Shutdown() -> std::future<void>;
+
+  /**
+   * @brief Checks if the endpoint is currently running.
+   * @return True if the endpoint is running; false otherwise.
    */
   auto IsRunning() const -> bool;
 
   /**
    * @brief Sends a method call and waits for the response.
    *
-   * @param method The name of the method to call.
-   * @param params Optional parameters for the method.
-   * @return The response from the remote endpoint.
+   * This is a blocking call that sends a request and waits for the response.
+   *
+   * @param method The method name to call.
+   * @param params Optional parameters for the method call.
+   * @return The JSON-RPC response.
+   * @throws std::runtime_error if the transport is closed or on I/O errors
    */
   auto SendMethodCall(
       const std::string& method,
@@ -103,9 +137,12 @@ class RpcEndpoint {
   /**
    * @brief Sends a method call asynchronously.
    *
-   * @param method The name of the method to call.
-   * @param params Optional parameters for the method.
-   * @return A future that will contain the response.
+   * This is a non-blocking call that returns a future for the response.
+   *
+   * @param method The method name to call.
+   * @param params Optional parameters for the method call.
+   * @return A task that resolves to the JSON-RPC response.
+   * @throws std::runtime_error if the transport is closed or on I/O errors
    */
   auto SendMethodCallAsync(
       const std::string& method,
@@ -115,123 +152,95 @@ class RpcEndpoint {
   /**
    * @brief Sends a notification.
    *
-   * @param method The name of the notification method.
+   * This is a fire-and-forget call that doesn't expect a response.
+   *
+   * @param method The method name for the notification.
    * @param params Optional parameters for the notification.
+   * @return A task that completes when the notification is sent
+   * @throws std::runtime_error if the transport is closed or on I/O errors
    */
-  void SendNotification(
+  auto SendNotification(
       const std::string& method,
-      std::optional<nlohmann::json> params = std::nullopt);
+      std::optional<nlohmann::json> params = std::nullopt) -> std::future<void>;
 
   /**
-   * @brief Registers a method call handler.
+   * @brief Registers a method handler for incoming method calls.
    *
-   * @param method The name of the method to handle.
-   * @param handler The function to handle the method call.
+   * @param method The method name to register.
+   * @param handler The handler function to call when the method is invoked.
    */
   void RegisterMethodCall(
-      const std::string& method, const MethodCallHandler& handler);
+      const std::string& method,
+      std::function<nlohmann::json(const nlohmann::json&)> handler);
 
   /**
-   * @brief Registers a notification handler.
+   * @brief Registers a notification handler for incoming notifications.
    *
-   * @param method The name of the notification to handle.
-   * @param handler The function to handle the notification.
+   * @param method The method name to register.
+   * @param handler The handler function to call when the notification is
+   * received.
    */
   void RegisterNotification(
-      const std::string& method, const NotificationHandler& handler);
+      const std::string& method,
+      std::function<void(const nlohmann::json&)> handler);
 
   /**
    * @brief Checks if there are any pending requests.
-   *
-   * @return True if there are pending requests awaiting responses.
+   * @return True if there are pending requests; false otherwise.
    */
   [[nodiscard]] auto HasPendingRequests() const -> bool;
 
   /**
-   * @brief Sets the timeout for method call requests.
-   *
-   * @param timeout The timeout duration. Use 0 for no timeout.
-   */
-  void SetRequestTimeout(std::chrono::milliseconds timeout);
-
-  /**
-   * @brief Sets the maximum number of requests in a batch.
-   *
-   * @param max_size The maximum number of requests allowed in a batch.
-   */
-  void SetMaxBatchSize(size_t max_size);
-
-  /**
-   * @brief Sets a handler for protocol-level errors.
-   *
-   * @param handler The function to handle errors.
+   * @brief Sets a handler for transport errors.
+   * @param handler The error handler function.
    */
   void SetErrorHandler(ErrorHandler handler);
 
-  /**
-   * @brief Gets the number of pending requests.
-   *
-   * @return The number of requests awaiting responses.
-   */
-  [[nodiscard]] auto GetPendingRequestCount() const -> size_t;
-
-  /**
-   * @brief Gets the current request timeout.
-   *
-   * @return The current timeout duration.
-   */
-  [[nodiscard]] auto GetRequestTimeout() const -> std::chrono::milliseconds;
-
-  /**
-   * @brief Gets the maximum batch size.
-   *
-   * @return The maximum number of requests allowed in a batch.
-   */
-  [[nodiscard]] auto GetMaxBatchSize() const -> size_t;
-
  private:
-  /// @brief Processes incoming messages from the transport layer.
-  void ProcessMessages();
+  /**
+   * @brief Processes incoming messages from the transport layer.
+   */
+  auto ProcessMessages() -> std::future<void>;
 
   /**
-   * @brief Handles an incoming message.
+   * @brief Handles a received message.
    *
-   * Routes messages to appropriate handlers:
-   * - For responses: resolves pending client requests
-   * - For requests/notifications: forwards to dispatcher
+   * This method parses the message and dispatches it to the appropriate
+   * handler based on whether it's a request, notification, or response.
    *
-   * @param message The raw message string.
+   * @param message The JSON-RPC message as a string.
    */
   void HandleMessage(const std::string& message);
 
   /**
-   * @brief Handles an incoming response.
+   * @brief Handles a response to a previous request.
    *
-   * Processes a response by finding and resolving the corresponding pending
-   * request's promise.
+   * This method finds the corresponding promise for the response ID
+   * and fulfills it with the response.
    *
-   * @param response The parsed response object.
+   * @param response The JSON-RPC response.
    */
   void HandleResponse(const Response& response);
 
   /**
-   * @brief Generates the next request ID.
-   *
-   * @return A unique request ID.
+   * @brief Gets the next request ID from the ID generator.
+   * @return The next request ID.
    */
   auto GetNextRequestId() -> RequestId;
 
   /**
-   * @brief Executes a function with the transport under mutex protection.
+   * @brief Executes a function with the transport.
    *
-   * @tparam Func The type of the function to execute.
+   * This method acquires the transport mutex and executes the provided
+   * function with the transport.
+   *
    * @param f The function to execute with the transport.
    * @return The result of the function.
    */
   template <typename Func>
   auto WithTransport(Func&& f) -> decltype(auto) {
     std::lock_guard<std::mutex> lock(transport_mutex_);
-    return std::forward<Func>(f)(*transport_);
+    return f(*transport_);
   }
 
   /**
@@ -241,6 +250,9 @@ class RpcEndpoint {
    * @param message The error message.
    */
   void ReportError(ErrorCode code, const std::string& message);
+
+  /// Default timeout for shutdown
+  static constexpr auto kShutdownTimeout = std::chrono::milliseconds(5000);
 
   /// Transport layer for communication
   std::unique_ptr<transport::Transport> transport_;
@@ -257,26 +269,30 @@ class RpcEndpoint {
   /// Mutex for protecting the pending requests map
   mutable std::mutex pending_requests_mutex_;
 
-  /// Message processing thread
-  std::thread message_thread_;
-
   /// Flag indicating if the endpoint is running
   std::atomic<bool> is_running_{false};
 
   /// Mutex for protecting transport access
   mutable std::mutex transport_mutex_;
 
-  /// Request timeout duration
-  std::chrono::milliseconds request_timeout_{kDefaultRequestTimeout};
-
-  /// Maximum batch size
-  size_t max_batch_size_{kDefaultMaxBatchSize};
-
   /// Error handler
   ErrorHandler error_handler_;
 
   /// Mutex for protecting error handler
   mutable std::mutex error_handler_mutex_;
+
+  /// Task for message processing
+  std::optional<std::future<void>> message_task_;
+
+  // Thread synchronization for clean shutdown
+  std::mutex shutdown_mutex_;
+  std::condition_variable shutdown_cv_;
+  std::thread message_thread_;
+  bool message_thread_started_ = false;
+
+  // Helper methods for message processing
+  void ProcessMessagesLoop();
+  bool ProcessSingleMessage();
 };
 
 }  // namespace jsonrpc::endpoint

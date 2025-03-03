@@ -22,14 +22,13 @@ auto main(int argc, char* argv[]) -> int {
     RpcEndpoint server(std::move(transport));
 
     RegisterLSPHandlers(server);
-
-    spdlog::info("Starting LSP server...");
     server.Start();
+    server.Wait();
+
+    return 0;
 
   } catch (const std::exception& ex) {
-    spdlog::error("Exception: {}", ex.what());
+    spdlog::error("Fatal error: {}", ex.what());
     return 1;
   }
-
-  return 0;
 }

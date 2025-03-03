@@ -1,12 +1,5 @@
 # examples/CMakeLists.txt
 
-# Calculator example using Standard I/O transport
-add_executable(stdio_client calculator_example/stdio/client.cpp)
-target_link_libraries(stdio_client PRIVATE jsonrpc-cpp-lib)
-
-add_executable(stdio_server calculator_example/stdio/server.cpp)
-target_link_libraries(stdio_server PRIVATE jsonrpc-cpp-lib)
-
 # Calculator example using Unix domain socket (pipe) transport
 add_executable(pipe_client calculator_example/pipe/client.cpp)
 target_link_libraries(pipe_client PRIVATE jsonrpc-cpp-lib)

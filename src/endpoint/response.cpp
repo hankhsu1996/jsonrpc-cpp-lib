@@ -50,6 +50,12 @@ auto Response::CreateLibError(
     case ErrorCode::kServerError:
       message = "Server error";
       break;
+    case ErrorCode::kTransportError:
+      message = "Transport error";
+      break;
+    case ErrorCode::kTimeoutError:
+      message = "Timeout error";
+      break;
   }
   return Response{CreateErrorResponse(message, code, id)};
 }

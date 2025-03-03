@@ -23,7 +23,9 @@ enum class ErrorCode {
   kInternalError = -32603,   ///< Internal JSON-RPC error
 
   // Implementation-defined server errors
-  kServerError = -32000,  ///< Generic server error
+  kServerError = -32000,     ///< Generic server error
+  kTransportError = -32010,  ///< Transport-related error
+  kTimeoutError = -32001,    ///< Timeout error
 };
 
 /// Type for request IDs that can be either integer or string
