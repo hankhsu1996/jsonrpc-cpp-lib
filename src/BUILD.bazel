@@ -9,6 +9,5 @@ cc_library(
         "@asio",
         "@nlohmann_json//:json",
         "@spdlog",
-        "@thread_pool",
     ],
 )

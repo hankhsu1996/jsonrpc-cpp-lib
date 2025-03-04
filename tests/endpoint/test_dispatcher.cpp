@@ -1,3 +1,5 @@
+#include <asio.hpp>
+
 #include <catch2/catch_test_macros.hpp>
 #include <fmt/core.h>
 #include <nlohmann/json.hpp>
@@ -9,19 +11,22 @@ using jsonrpc::endpoint::Dispatcher;
 using jsonrpc::endpoint::ErrorCode;
 
 TEST_CASE("Dispatcher initialization", "[Dispatcher]") {
-  SECTION("Single-threaded initialization") {
-    Dispatcher dispatcher(false);
+  SECTION("Without strand initialization") {
+    Dispatcher dispatcher(nullptr);
     REQUIRE_NOTHROW(dispatcher.DispatchRequest("{}"));
   }
 
-  SECTION("Multi-threaded initialization") {
-    Dispatcher dispatcher(true, 4);
+  SECTION("With strand initialization") {
+    asio::io_context io_ctx;
+    auto strand = new asio::io_context::strand(io_ctx);
+    Dispatcher dispatcher(strand);
     REQUIRE_NOTHROW(dispatcher.DispatchRequest("{}"));
+    delete strand;
   }
 }
 
 TEST_CASE("Method registration and handling", "[Dispatcher]") {
-  Dispatcher dispatcher(false);
+  Dispatcher dispatcher(nullptr);
 
   SECTION("Register and call method") {
     dispatcher.RegisterMethodCall(
@@ -61,7 +66,7 @@ TEST_CASE("Method registration and handling", "[Dispatcher]") {
 }
 
 TEST_CASE("Batch request handling", "[Dispatcher]") {
-  Dispatcher dispatcher(false);
+  Dispatcher dispatcher(nullptr);
 
   SECTION("Valid batch request") {
     dispatcher.RegisterMethodCall(
@@ -110,7 +115,7 @@ TEST_CASE("Batch request handling", "[Dispatcher]") {
 }
 
 TEST_CASE("Error handling", "[Dispatcher]") {
-  Dispatcher dispatcher(false);
+  Dispatcher dispatcher(nullptr);
 
   SECTION("Method not found") {
     auto response = dispatcher.DispatchRequest(
@@ -152,8 +157,10 @@ TEST_CASE("Error handling", "[Dispatcher]") {
   }
 }
 
-TEST_CASE("Thread safety in multi-threaded mode", "[Dispatcher]") {
-  Dispatcher dispatcher(true, 4);
+TEST_CASE("Thread safety with strand", "[Dispatcher]") {
+  asio::io_context io_ctx;
+  auto strand = new asio::io_context::strand(io_ctx);
+  Dispatcher dispatcher(strand);
   std::atomic<int> sum{0};
 
   dispatcher.RegisterMethodCall(
@@ -188,4 +195,6 @@ TEST_CASE("Thread safety in multi-threaded mode", "[Dispatcher]") {
 
   // Sum should be 55 (1+2+3+...+10)
   REQUIRE(sum == 55);
+
+  delete strand;
 }

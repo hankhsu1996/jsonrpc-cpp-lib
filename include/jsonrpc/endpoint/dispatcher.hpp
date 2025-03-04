@@ -1,11 +1,11 @@
 #pragma once
 
+#include <asio.hpp>
 #include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#include <BS_thread_pool.hpp>
 #include <nlohmann/json.hpp>
 
 #include "jsonrpc/endpoint/request.hpp"
@@ -18,20 +18,17 @@ namespace jsonrpc::endpoint {
  * @brief Dispatcher for JSON-RPC requests.
  *
  * Dispatcher manages the registration and execution of method call and
- * notification handlers for JSON-RPC requests. It can operate in
- * single-threaded or multi-threaded mode.
+ * notification handlers for JSON-RPC requests. It can operate with
+ * ASIO strand for thread safety.
  */
 class Dispatcher {
  public:
   /**
    * @brief Constructs a Dispatcher.
    *
-   * @param enableMultithreading Enable multi-threading support.
-   * @param numThreads Number of threads to use if multi-threading is enabled.
+   * @param strand Optional pointer to an ASIO strand for thread safety.
    */
-  explicit Dispatcher(
-      bool enable_multithreading = true,
-      size_t num_threads = std::thread::hardware_concurrency());
+  explicit Dispatcher(asio::io_context::strand *strand = nullptr);
 
   Dispatcher(const Dispatcher &) = delete;
   Dispatcher(Dispatcher &&) = delete;
@@ -116,8 +113,8 @@ class Dispatcher {
    * @brief Dispatches a batch request to the appropriate handlers and returns a
    * JSON string.
    *
-   * Handles a batch of JSON-RPC requests, processing each one concurrently if
-   * multithreading is enabled.
+   * Handles a batch of JSON-RPC requests, processing each one using the
+   * configured strand.
    *
    * @param requestJson The parsed JSON batch request.
    * @return The batch response as a JSON string, or std::nullopt if no
@@ -130,8 +127,7 @@ class Dispatcher {
    * @brief Internal method to dispatch a batch request to the appropriate
    * handlers and returns a vector of JSON objects.
    *
-   * Processes each request in the batch, potentially using multithreading to
-   * handle multiple requests concurrently.
+   * Processes each request in the batch, using the strand if available.
    *
    * @param requestJson The parsed JSON batch request.
    * @return A vector of JSON objects representing the responses.
@@ -208,11 +204,8 @@ class Dispatcher {
   /// @brief A map of method names to method call handlers.
   std::unordered_map<std::string, Handler> handlers_;
 
-  /// @brief Flag to enable multi-threading support.
-  bool enable_multithreading_;
-
-  /// @brief Thread pool for multi-threading.
-  BS::thread_pool thread_pool_;
+  /// @brief ASIO strand for thread safety.
+  asio::io_context::strand *strand_;
 };
 
 }  // namespace jsonrpc::endpoint

@@ -2,15 +2,17 @@
 
 #include <array>
 #include <stdexcept>
-#include <thread>
 
 #include <spdlog/spdlog.h>
 
 namespace jsonrpc::transport {
 
 SocketTransport::SocketTransport(
-    std::string host, uint16_t port, bool is_server)
-    : socket_(io_context_),
+    std::string host, uint16_t port, bool is_server,
+    asio::io_context *external_io_context)
+    : Transport(external_io_context),
+      strand_(*io_context_),
+      socket_(*io_context_),
       host_(std::move(host)),
       port_(port),
       is_server_(is_server),
@@ -47,17 +49,66 @@ auto SocketTransport::SendMessage(const std::string &message)
   auto future = promise.get_future();
 
   try {
-    // For now, we'll use synchronous write and wrap it in a promise
-    // In a future version, we could use asio's async_write
-    asio::write(socket_, asio::buffer(message + "\n"));
-    spdlog::debug("SocketTransport sent message: {}", message);
-    promise.set_value();
+    // Add a newline at the end of the message for line-based protocol
+    auto message_with_newline = message + "\n";
+
+    // Use asio's async_write with strand for thread safety
+    asio::async_write(
+        socket_, asio::buffer(message_with_newline),
+        asio::bind_executor(
+            strand_, [promise = std::move(promise)](
+                         const asio::error_code &ec,
+                         std::size_t /*bytes_transferred*/) mutable {
+              if (ec) {
+                spdlog::error("SocketTransport: Send error: {}", ec.message());
+                promise.set_exception(
+                    std::make_exception_ptr(std::runtime_error(ec.message())));
+              } else {
+                spdlog::debug("Message sent successfully");
+                promise.set_value();
+              }
+            }));
+
+    // Make sure the io_context is running
+    Transport::EnsureIoContextRunning();
   } catch (const std::exception &e) {
-    spdlog::error("SocketTransport: Send error: {}", e.what());
+    spdlog::error("SocketTransport: Send setup error: {}", e.what());
     promise.set_exception(std::current_exception());
   }
 
   return future;
+}
+
+void SocketTransport::DoAsyncSendMessage(
+    const std::string &message, SendHandler handler) {
+  if (is_closed_) {
+    spdlog::error("Cannot send message - transport is closed");
+    asio::post(
+        GetIoContext()->get_executor(), [handler = std::move(handler)]() {
+          handler(asio::error_code(
+              asio::error::not_connected, asio::system_category()));
+        });
+    return;
+  }
+
+  // Add a newline at the end of the message for line-based protocol
+  auto shared_message = std::make_shared<std::string>(message + "\n");
+
+  // Use asio's async_write with strand for thread safety
+  asio::async_write(
+      socket_, asio::buffer(*shared_message),
+      asio::bind_executor(
+          strand_, [handler = std::move(handler), shared_message](
+                       const asio::error_code &ec,
+                       std::size_t /*bytes_transferred*/) mutable {
+            if (ec) {
+              spdlog::error("SocketTransport: Send error: {}", ec.message());
+              handler(ec);
+            } else {
+              spdlog::debug("Message sent successfully");
+              handler(asio::error_code());
+            }
+          }));
 }
 
 auto SocketTransport::ReceiveMessage() -> std::future<std::string> {
@@ -68,107 +119,147 @@ auto SocketTransport::ReceiveMessage() -> std::future<std::string> {
   std::promise<std::string> promise;
   auto future = promise.get_future();
 
-  try {
-    // Use a shared_ptr to track if this particular request has been closed
-    // This helps prevent use-after-close issues
-    auto request_active = std::make_shared<std::atomic<bool>>(true);
+  // Create a shared pointer to the buffer to ensure it lives until the async
+  // operation completes
+  auto buffer = std::make_shared<asio::streambuf>();
 
-    socket_.non_blocking(true);
-
-    // Create a thread to handle the asynchronous read
-    std::thread([this, p = std::move(promise), request_active]() mutable {
-      try {
-        while (!is_closed_ && request_active->load()) {
-          std::error_code ec;
-
-          // Guard against using a closed socket
-          if (!socket_.is_open()) {
-            is_closed_ = true;
-            p.set_value("");  // Signal closed connection with empty string
-            return;
-          }
-
-          size_t bytes = socket_.read_some(asio::buffer(read_buffer_), ec);
-
-          if (ec == asio::error::would_block) {
-            // No data available yet, sleep briefly and try again
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
-            continue;
-          }
-
-          if (ec == asio::error::eof || ec == asio::error::connection_reset ||
-              ec == asio::error::bad_descriptor) {
-            // Handle connection closed or socket error
-            try {
-              if (socket_.is_open()) {
+  // Use asio's async_read_until to read a line with proper strand management
+  asio::async_read_until(
+      socket_, *buffer, '\n',
+      asio::bind_executor(
+          strand_, [this, promise = std::move(promise), buffer](
+                       const asio::error_code &ec,
+                       [[maybe_unused]] std::size_t bytes_transferred) mutable {
+            if (ec) {
+              if (ec == asio::error::eof ||
+                  ec == asio::error::connection_reset) {
+                spdlog::info("Connection closed by peer");
                 socket_.close();
+                is_closed_ = true;
+                promise.set_exception(std::make_exception_ptr(
+                    std::runtime_error("Transport was closed")));
+              } else {
+                spdlog::error("Error receiving message: {}", ec.message());
+                promise.set_exception(
+                    std::make_exception_ptr(std::runtime_error(ec.message())));
               }
-            } catch (...) {
-              // Ignore errors during close
+            } else {
+              // Extract the message from the buffer
+              std::istream is(buffer.get());
+              std::string message;
+              std::getline(is, message);
+
+              spdlog::debug("Message received: {}", message);
+              promise.set_value(message);
             }
+          }));
 
-            is_closed_ = true;
-            p.set_value("");  // Signal closed connection with empty string
-            return;
-          }
+  // Make sure the io_context is running
+  Transport::EnsureIoContextRunning();
 
-          if (ec) {
-            throw std::runtime_error("Socket error: " + ec.message());
-          }
+  return future;
+}
 
-          // Process the received data
-          std::string_view chunk(read_buffer_.data(), bytes);
-          message_buffer_.append(chunk);
-
-          // Check if we have a complete message (ending with newline)
-          auto newline_pos = message_buffer_.find('\n');
-          if (newline_pos != std::string::npos) {
-            std::string message = message_buffer_.substr(0, newline_pos);
-            message_buffer_ = message_buffer_.substr(newline_pos + 1);
-            spdlog::debug("SocketTransport received message: {}", message);
-            p.set_value(std::move(message));
-            return;
-          }
-        }
-
-        // If we get here, the transport was closed during the read
-        p.set_value("");
-      } catch (const std::exception &e) {
-        spdlog::error("SocketTransport: Receive error: {}", e.what());
-        p.set_exception(std::current_exception());
-      }
-    }).detach();
-
-    return future;
-  } catch (const std::exception &e) {
-    spdlog::error("SocketTransport: Receive setup error: {}", e.what());
-    throw;
+void SocketTransport::DoAsyncReceiveMessage(ReceiveHandler handler) {
+  if (is_closed_) {
+    spdlog::error("Cannot receive message - transport is closed");
+    asio::post(
+        GetIoContext()->get_executor(), [handler = std::move(handler)]() {
+          handler(
+              asio::error_code(
+                  asio::error::not_connected, asio::system_category()),
+              "");
+        });
+    return;
   }
+
+  // Create a shared pointer to the buffer to ensure it lives until the async
+  // operation completes
+  auto buffer = std::make_shared<asio::streambuf>();
+
+  // Use asio's async_read_until to read a line with proper strand management
+  asio::async_read_until(
+      socket_, *buffer, '\n',
+      asio::bind_executor(
+          strand_, [this, handler = std::move(handler), buffer](
+                       const asio::error_code &ec,
+                       [[maybe_unused]] std::size_t bytes_transferred) mutable {
+            if (ec) {
+              if (ec == asio::error::eof ||
+                  ec == asio::error::connection_reset) {
+                spdlog::info("Connection closed by peer");
+                socket_.close();
+                is_closed_ = true;
+                handler(
+                    asio::error_code(
+                        asio::error::connection_reset, asio::system_category()),
+                    "");
+              } else {
+                spdlog::error("Error receiving message: {}", ec.message());
+                handler(ec, "");
+              }
+            } else {
+              // Extract the message from the buffer
+              std::istream is(buffer.get());
+              std::string message;
+              std::getline(is, message);
+
+              spdlog::debug("Message received: {}", message);
+              handler(asio::error_code(), message);
+            }
+          }));
 }
 
 auto SocketTransport::Close() -> std::future<void> {
   std::promise<void> promise;
   auto future = promise.get_future();
 
-  try {
-    if (!is_closed_) {
-      spdlog::info("Closing socket transport");
-      is_closed_ = true;
+  // Post the close operation to the strand to ensure thread safety
+  asio::post(strand_, [this, promise = std::move(promise)]() mutable {
+    try {
+      if (!is_closed_) {
+        spdlog::info("Closing socket transport");
+        is_closed_ = true;
 
-      if (socket_.is_open()) {
-        socket_.close();
+        if (socket_.is_open()) {
+          socket_.close();
+        }
+
+        promise.set_value();
+      } else {
+        promise.set_value();  // Already closed, just fulfill the promise
       }
-
-      promise.set_value();
-    } else {
-      promise.set_value();  // Already closed, just fulfill the promise
+    } catch (const std::exception &e) {
+      spdlog::error("Error closing socket: {}", e.what());
+      promise.set_exception(std::current_exception());
     }
-  } catch (const std::exception &e) {
-    spdlog::error("Error closing socket: {}", e.what());
-    promise.set_exception(std::current_exception());
-  }
+  });
 
   return future;
+}
+
+void SocketTransport::DoAsyncClose(CloseHandler handler) {
+  // Post the close operation to the strand to ensure thread safety
+  asio::post(strand_, [this, handler = std::move(handler)]() mutable {
+    try {
+      if (!is_closed_) {
+        spdlog::info("Closing socket transport");
+        is_closed_ = true;
+
+        if (socket_.is_open()) {
+          socket_.close();
+        }
+
+        handler(asio::error_code());
+      } else {
+        handler(asio::error_code());  // Already closed
+      }
+    } catch (const std::exception &e) {
+      spdlog::error("Error closing socket: {}", e.what());
+      handler(asio::error_code(
+          asio::error::operation_aborted, asio::system_category()));
+    }
+  });
 }
 
 auto SocketTransport::GetSocket() -> asio::ip::tcp::socket & {
@@ -183,15 +274,12 @@ auto SocketTransport::Connect() -> std::future<void> {
     spdlog::info("Connecting to {}:{}", host_, port_);
 
     // Resolve the host name
-    asio::ip::tcp::resolver resolver(io_context_);
+    asio::ip::tcp::resolver resolver(*io_context_);
     auto endpoints = resolver.resolve(host_, std::to_string(port_));
 
     // Set up a timer for connection timeout
-    asio::steady_timer timer(io_context_);
+    asio::steady_timer timer(*io_context_);
     timer.expires_after(std::chrono::seconds(5));
-
-    // Track the connection result
-    std::error_code ec;
 
     // Start an asynchronous connect operation
     asio::async_connect(
@@ -224,8 +312,8 @@ auto SocketTransport::Connect() -> std::future<void> {
     });
 
     // Run the io_context to process the async operations
-    io_context_.run();
-    io_context_.restart();
+    io_context_->run();
+    io_context_->restart();
   } catch (const std::exception &e) {
     spdlog::error("Error during connect: {}", e.what());
     promise.set_exception(std::current_exception());
@@ -243,7 +331,7 @@ auto SocketTransport::BindAndListen() -> std::future<void> {
 
     // Create an acceptor
     asio::ip::tcp::acceptor acceptor(
-        io_context_, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port_));
+        *io_context_, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port_));
 
     // Accept one connection
     acceptor.async_accept(
@@ -262,8 +350,8 @@ auto SocketTransport::BindAndListen() -> std::future<void> {
         });
 
     // Run the io_context to process the async operations
-    io_context_.run();
-    io_context_.restart();
+    io_context_->run();
+    io_context_->restart();
   } catch (const std::exception &e) {
     spdlog::error("Error during bind and listen: {}", e.what());
     promise.set_exception(std::current_exception());

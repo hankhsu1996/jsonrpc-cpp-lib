@@ -32,14 +32,12 @@ if(USE_CONAN)
     # Find and link dependencies via Conan
     find_package(nlohmann_json REQUIRED)
     find_package(spdlog REQUIRED)
-    find_package(bshoshany-thread-pool REQUIRED)
     find_package(asio REQUIRED)
 
     # Link dependencies
     target_link_libraries(jsonrpc-cpp-lib PUBLIC
         nlohmann_json::nlohmann_json
         spdlog::spdlog
-        bshoshany-thread-pool::bshoshany-thread-pool
         asio::asio
     )
 else()
@@ -61,19 +59,6 @@ else()
     FetchContent_MakeAvailable(spdlog)
 
     FetchContent_Declare(
-        bshoshany_thread_pool
-        GIT_REPOSITORY https://github.com/bshoshany/thread-pool.git
-        GIT_TAG v4.1.0
-    )
-    FetchContent_MakeAvailable(bshoshany_thread_pool)
-
-    # Manually create the bshoshany-thread-pool target
-    add_library(bshoshany-thread-pool INTERFACE)
-    target_include_directories(bshoshany-thread-pool INTERFACE
-        ${bshoshany_thread_pool_SOURCE_DIR}/include
-    )
-
-    FetchContent_Declare(
         asio
         GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
         GIT_TAG asio-1-28-2
@@ -90,7 +75,6 @@ else()
     target_link_libraries(jsonrpc-cpp-lib PUBLIC
         nlohmann_json::nlohmann_json
         spdlog::spdlog
-        bshoshany-thread-pool
         asio
     )
 endif()

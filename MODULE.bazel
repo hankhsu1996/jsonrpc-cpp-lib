@@ -16,13 +16,6 @@ bazel_dep(name = "catch2", version = "3.6.0")
 
 # Dependency using traditional HTTP archive
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-http_archive(
-    name = "thread_pool",
-    build_file = "//third_party/thread_pool:BUILD.bazel",
-    sha256 = "be7abecbc420bb87919eeef729b13ff7c29d5ce547bdae284923296c695415bd",
-    strip_prefix = "thread-pool-4.1.0",
-    urls = ["https://github.com/bshoshany/thread-pool/archive/refs/tags/v4.1.0.tar.gz"],
-)
 
 http_archive(
     name = "bazel_clang_tidy",

@@ -58,15 +58,15 @@ class FramedTransport {
    */
   static auto ReceiveFramedMessage(std::istream &input) -> std::string;
 
- private:
   /**
-   * @brief Parses the content length from the header value.
-   *
-   * @param header_value The header value containing the content length.
+   * @brief Parses a Content-Length header value to an integer.
+   * @param header_value The header value to parse.
    * @return The parsed content length.
+   * @throws std::runtime_error If the header value is invalid.
    */
   static auto ParseContentLength(const std::string &header_value) -> int;
 
+ private:
   friend class FramedTransportTest;
 };
 

@@ -11,6 +11,8 @@
 
 class MockTransport : public jsonrpc::transport::Transport {
  public:
+  MockTransport() = default;
+
   auto SendMessage(const std::string& message) -> std::future<void> override {
     if (is_closed_) {
       throw std::runtime_error("Transport is closed");
@@ -54,6 +56,67 @@ class MockTransport : public jsonrpc::transport::Transport {
     auto future = promise.get_future();
     promise.set_value();
     return future;
+  }
+
+  // Override the async methods from Transport to provide efficient testing
+  // implementations
+  void DoAsyncSendMessage(
+      const std::string& message, SendHandler handler) override {
+    if (is_closed_) {
+      asio::post(
+          GetIoContext()->get_executor(), [handler = std::move(handler)]() {
+            handler(asio::error_code(
+                asio::error::not_connected, asio::system_category()));
+          });
+      return;
+    }
+
+    sent_requests_.push_back(message);
+
+    // Post successful completion to the io_context to ensure async behavior
+    asio::post(
+        GetIoContext()->get_executor(),
+        [handler = std::move(handler)]() { handler(asio::error_code()); });
+  }
+
+  void DoAsyncReceiveMessage(ReceiveHandler handler) override {
+    if (is_closed_) {
+      asio::post(
+          GetIoContext()->get_executor(), [handler = std::move(handler)]() {
+            handler(
+                asio::error_code(
+                    asio::error::not_connected, asio::system_category()),
+                "");
+          });
+      return;
+    }
+
+    // Post completion to the io_context to ensure async behavior
+    asio::post(
+        GetIoContext()->get_executor(),
+        [this, handler = std::move(handler)]() mutable {
+          if (!incoming_messages_.empty()) {
+            auto message = incoming_messages_.front();
+            incoming_messages_.pop();
+            handler(asio::error_code(), message);
+          } else {
+            handler(
+                asio::error_code(),
+                "");  // Empty string indicates no message available
+          }
+        });
+  }
+
+  void DoAsyncClose(CloseHandler handler) override {
+    if (!is_closed_) {
+      is_closed_ = true;
+      spdlog::info("Closing mock transport asynchronously");
+    }
+
+    // Post successful completion to the io_context to ensure async behavior
+    asio::post(
+        GetIoContext()->get_executor(),
+        [handler = std::move(handler)]() { handler(asio::error_code()); });
   }
 
   // Add a message to the incoming queue

@@ -6,9 +6,7 @@ namespace jsonrpc::endpoint {
 
 namespace {}  // namespace
 
-Dispatcher::Dispatcher(bool enable_multithreading, size_t num_threads)
-    : enable_multithreading_(enable_multithreading),
-      thread_pool_(enable_multithreading ? num_threads : 0) {
+Dispatcher::Dispatcher(asio::io_context::strand* strand) : strand_(strand) {
 }
 
 auto Dispatcher::DispatchRequest(const std::string& request_str)
@@ -90,32 +88,63 @@ auto Dispatcher::DispatchBatchRequest(const nlohmann::json& request_json)
 
 auto Dispatcher::DispatchBatchRequestInner(const nlohmann::json& request_json)
     -> std::vector<nlohmann::json> {
-  std::vector<std::future<std::optional<nlohmann::json>>> futures;
+  // If a strand is provided, use it to process requests in a thread-safe way
+  if (strand_ != nullptr) {
+    // Create a shared state for collecting responses
+    struct SharedState {
+      std::mutex mutex;
+      std::vector<nlohmann::json> responses;
+      size_t pending_count;
 
-  for (const auto& element : request_json) {
-    if (enable_multithreading_) {
-      futures.emplace_back(thread_pool_.submit_task(
-          [this, element]() -> std::optional<nlohmann::json> {
-            return DispatchSingleRequestInner(element);
-          }));
-    } else {
-      futures.emplace_back(std::async(
-          std::launch::deferred,
-          [this, element]() -> std::optional<nlohmann::json> {
-            return DispatchSingleRequestInner(element);
-          }));
+      explicit SharedState(size_t count) : pending_count(count) {
+      }
+    };
+
+    auto shared_state = std::make_shared<SharedState>(request_json.size());
+
+    // Post each request processing to the strand
+    for (const auto& element : request_json) {
+      asio::post(*strand_, [this, element, shared_state]() {
+        auto response = DispatchSingleRequestInner(element);
+
+        if (response.has_value()) {
+          // Add response to the shared vector in a thread-safe way
+          std::lock_guard<std::mutex> lock(shared_state->mutex);
+          shared_state->responses.push_back(response.value());
+        }
+
+        // Decrement the pending count
+        {
+          std::lock_guard<std::mutex> lock(shared_state->mutex);
+          shared_state->pending_count--;
+        }
+      });
     }
-  }
 
-  std::vector<nlohmann::json> responses;
-  for (auto& future : futures) {
-    std::optional<nlohmann::json> response = future.get();
-    if (response.has_value()) {
-      responses.push_back(response.value());
+    // Wait for all requests to be processed
+    // This is not ideal as it introduces synchronous waiting, but
+    // replacing with a fully asynchronous model would require API changes
+    while (true) {
+      std::unique_lock<std::mutex> lock(shared_state->mutex);
+      if (shared_state->pending_count == 0) {
+        return shared_state->responses;
+      }
+      lock.unlock();
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-  }
+  } else {
+    // No strand available, process sequentially
+    std::vector<nlohmann::json> responses;
 
-  return responses;
+    for (const auto& element : request_json) {
+      auto response = DispatchSingleRequestInner(element);
+      if (response.has_value()) {
+        responses.push_back(response.value());
+      }
+    }
+
+    return responses;
+  }
 }
 
 auto Dispatcher::ValidateRequest(const nlohmann::json& request_json)

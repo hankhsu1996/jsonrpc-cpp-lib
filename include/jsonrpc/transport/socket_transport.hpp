@@ -23,8 +23,12 @@ class SocketTransport : public Transport {
    * @param port The port number.
    * @param isServer True if the transport acts as a server; false if it acts as
    * a client.
+   * @param external_io_context Optional external io_context to use. If nullptr,
+   * creates an internal io_context.
    */
-  SocketTransport(std::string host, uint16_t port, bool is_server);
+  SocketTransport(
+      std::string host, uint16_t port, bool is_server,
+      asio::io_context *external_io_context = nullptr);
 
   ~SocketTransport() override;
 
@@ -41,11 +45,18 @@ class SocketTransport : public Transport {
  protected:
   auto GetSocket() -> asio::ip::tcp::socket &;
 
+  // Override the async methods from Transport to provide efficient
+  // implementations
+  void DoAsyncSendMessage(
+      const std::string &message, SendHandler handler) override;
+  void DoAsyncReceiveMessage(ReceiveHandler handler) override;
+  void DoAsyncClose(CloseHandler handler) override;
+
  private:
   auto Connect() -> std::future<void>;
   auto BindAndListen() -> std::future<void>;
 
-  asio::io_context io_context_;
+  asio::io_context::strand strand_;
   asio::ip::tcp::socket socket_;
   std::string host_;
   uint16_t port_;

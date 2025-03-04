@@ -11,9 +11,22 @@ RpcEndpoint::RpcEndpoint(
     std::unique_ptr<transport::Transport> transport,
     std::unique_ptr<IdGenerator> id_generator)
     : transport_(std::move(transport)),
-      dispatcher_(std::make_unique<Dispatcher>()),
       id_generator_(std::move(id_generator)),
-      is_running_(false) {
+      is_running_(false),
+      shutdown_promise_(std::make_shared<std::promise<void>>()) {
+  // Create the strand with the transport's io_context
+  auto* io_context = transport_->GetIoContext();
+  if (io_context != nullptr) {
+    endpoint_strand_ = std::make_unique<asio::io_context::strand>(*io_context);
+    spdlog::debug("Created endpoint strand with transport's io_context");
+  } else {
+    spdlog::error(
+        "Transport has no io_context, endpoint operations may not be properly "
+        "serialized");
+  }
+
+  // Create the dispatcher with the endpoint strand
+  dispatcher_ = std::make_unique<Dispatcher>(endpoint_strand_.get());
 }
 
 auto RpcEndpoint::CreateClient(std::unique_ptr<transport::Transport> transport)
@@ -35,66 +48,80 @@ auto RpcEndpoint::Start() -> std::future<void> {
   std::promise<void> promise;
   auto future = promise.get_future();
 
-  // Ensure we don't start multiple message threads
-  {
-    std::lock_guard<std::mutex> lock(shutdown_mutex_);
-    if (is_running_) {
-      spdlog::error("RPC endpoint already running");
-      throw std::runtime_error("RPC endpoint already running");
-    }
-    is_running_ = true;
-  }
-
-  // Start message processing
-  message_task_ = ProcessMessages();
-
-  promise.set_value();
-  return future;
-}
-
-void RpcEndpoint::Wait() {
-  // Wait until the endpoint is no longer running
-  while (is_running_) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  }
-}
-
-auto RpcEndpoint::Shutdown() -> std::future<void> {
-  if (!is_running_) {
-    std::promise<void> promise;
-    auto future = promise.get_future();
-    promise.set_value();
+  if (!endpoint_strand_) {
+    promise.set_exception(
+        std::make_exception_ptr(std::runtime_error("Endpoint strand is null")));
     return future;
   }
 
-  // Create a promise for the shutdown completion
+  // Use the strand to ensure thread safety
+  asio::dispatch(
+      *endpoint_strand_, [this, promise = std::move(promise)]() mutable {
+        if (is_running_) {
+          promise.set_exception(std::make_exception_ptr(
+              std::runtime_error("RpcEndpoint is already running")));
+          return;
+        }
+
+        is_running_.store(true);
+
+        // Start the transport's io_context if it's not already running
+        auto* io_context = transport_->GetIoContext();
+        if ((io_context != nullptr) && !io_context->stopped()) {
+          spdlog::debug("Ensuring io_context is running");
+        }
+
+        // Start the asynchronous message processing chain
+        StartMessageProcessing();
+
+        // Set the promise value to indicate start completed
+        promise.set_value();
+      });
+
+  return future;
+}
+
+auto RpcEndpoint::Wait() -> std::future<void> {
+  return shutdown_promise_->get_future();
+}
+
+auto RpcEndpoint::Shutdown() -> std::future<void> {
   std::promise<void> promise;
   auto future = promise.get_future();
 
-  // Set running flag to false and notify waiting threads
-  {
-    std::lock_guard<std::mutex> lock(shutdown_mutex_);
-    is_running_.store(false);
-  }
-  shutdown_cv_.notify_all();
-
-  // Close the transport to unblock any pending operations
-  try {
-    WithTransport([](transport::Transport& transport) {
-      transport.Close().get();
-      return;
-    });
-  } catch (const std::exception& e) {
-    spdlog::warn("Error during transport close: {}", e.what());
+  if (!endpoint_strand_) {
+    promise.set_exception(
+        std::make_exception_ptr(std::runtime_error("Endpoint strand is null")));
+    return future;
   }
 
-  // Mark the message thread as stopped
-  {
-    std::lock_guard<std::mutex> lock(shutdown_mutex_);
-    message_thread_started_ = false;
-  }
+  // Use the strand to ensure thread safety
+  asio::dispatch(
+      *endpoint_strand_, [this, promise = std::move(promise)]() mutable {
+        if (!is_running_) {
+          promise.set_value();
+          return;
+        }
 
-  promise.set_value();
+        is_running_.store(false);
+
+        // Close the transport to cancel any pending operations
+        try {
+          transport_->Close().get();
+        } catch (const std::exception& e) {
+          spdlog::warn("Error during transport close: {}", e.what());
+        }
+
+        // Signal any waiting threads
+        try {
+          shutdown_promise_->set_value();
+        } catch (const std::future_error&) {
+          // Promise might already be satisfied, that's ok
+        }
+
+        promise.set_value();
+      });
+
   return future;
 }
 
@@ -112,30 +139,44 @@ auto RpcEndpoint::SendMethodCall(
 auto RpcEndpoint::SendMethodCallAsync(
     const std::string& method,
     std::optional<nlohmann::json> params) -> std::future<nlohmann::json> {
-  auto request_id = GetNextRequestId();
-  Request request(method, std::move(params), request_id);
-  auto request_json = request.ToJson();
-
-  std::promise<nlohmann::json> promise;
-  auto future = promise.get_future();
-
-  {
-    std::lock_guard<std::mutex> lock(pending_requests_mutex_);
-    pending_requests_[request_id] = std::move(promise);
+  if (!endpoint_strand_) {
+    std::promise<nlohmann::json> error_promise;
+    error_promise.set_exception(
+        std::make_exception_ptr(std::runtime_error("Endpoint strand is null")));
+    return error_promise.get_future();
   }
 
-  try {
-    WithTransport([&request_json](transport::Transport& transport) {
-      transport.SendMessage(request_json.dump()).get();
-    });
-  } catch (const std::exception& e) {
-    std::lock_guard<std::mutex> lock(pending_requests_mutex_);
-    auto it = pending_requests_.find(request_id);
-    if (it != pending_requests_.end()) {
-      it->second.set_exception(std::current_exception());
-      pending_requests_.erase(it);
-    }
+  if (!is_running_) {
+    std::promise<nlohmann::json> error_promise;
+    error_promise.set_exception(std::make_exception_ptr(
+        std::runtime_error("RpcEndpoint is not running")));
+    return error_promise.get_future();
   }
+
+  // Create a shared promise/future pair that will be used across strand
+  // invocations
+  auto shared_promise = std::make_shared<std::promise<nlohmann::json>>();
+  auto future = shared_promise->get_future();
+
+  // Use the strand to ensure thread safety
+  asio::post(
+      *endpoint_strand_,
+      [this, method, params = std::move(params), shared_promise]() mutable {
+        try {
+          auto request_id = GetNextRequestId();
+          Request request(method, std::move(params), request_id);
+          auto request_json = request.ToJson();
+
+          // Store the promise in the pending requests map
+          pending_requests_[request_id] = std::move(*shared_promise);
+
+          // Send the request using the transport
+          transport_->SendMessage(request_json.dump()).get();
+        } catch (const std::exception& e) {
+          // Set the exception on the promise in case of error
+          shared_promise->set_exception(std::current_exception());
+        }
+      });
 
   return future;
 }
@@ -143,119 +184,46 @@ auto RpcEndpoint::SendMethodCallAsync(
 auto RpcEndpoint::SendNotification(
     const std::string& method,
     std::optional<nlohmann::json> params) -> std::future<void> {
-  Request request(method, std::move(params));
-  auto request_json = request.ToJson();
-
-  std::promise<void> promise;
-  auto future = promise.get_future();
-
-  try {
-    WithTransport([&request_json](transport::Transport& transport) {
-      transport.SendMessage(request_json.dump()).get();
-    });
-    promise.set_value();
-  } catch (const std::exception& e) {
-    spdlog::error("Failed to send notification: {}", e.what());
-    promise.set_exception(std::current_exception());
+  if (!endpoint_strand_) {
+    std::promise<void> error_promise;
+    error_promise.set_exception(
+        std::make_exception_ptr(std::runtime_error("Endpoint strand is null")));
+    return error_promise.get_future();
   }
 
-  return future;
-}
+  if (!is_running_) {
+    std::promise<void> error_promise;
+    error_promise.set_exception(std::make_exception_ptr(
+        std::runtime_error("RpcEndpoint is not running")));
+    return error_promise.get_future();
+  }
 
-auto RpcEndpoint::ProcessMessages() -> std::future<void> {
-  std::promise<void> promise;
-  auto future = promise.get_future();
+  // Create a shared promise/future pair that will be used across strand
+  // invocations
+  auto shared_promise = std::make_shared<std::promise<void>>();
+  auto future = shared_promise->get_future();
 
-  try {
-    // Start the message processing loop in a separate thread
-    std::thread([this, p = std::move(promise)]() mutable {
-      try {
-        ProcessMessagesLoop();
-        p.set_value();
-      } catch (const std::exception& e) {
-        spdlog::error("Error in message processing loop: {}", e.what());
+  // Use the strand to ensure thread safety
+  asio::post(
+      *endpoint_strand_,
+      [this, method, params = std::move(params), shared_promise]() mutable {
         try {
-          p.set_exception(std::current_exception());
-        } catch (...) {
-          spdlog::error("Failed to set exception on promise");
+          Request request(method, std::move(params));
+          auto request_json = request.ToJson();
+
+          // Send the notification using the transport
+          transport_->SendMessage(request_json.dump()).get();
+
+          // Set the value on the promise
+          shared_promise->set_value();
+        } catch (const std::exception& e) {
+          spdlog::error("Failed to send notification: {}", e.what());
+          // Set the exception on the promise in case of error
+          shared_promise->set_exception(std::current_exception());
         }
-      }
-    }).detach();
-  } catch (const std::exception& e) {
-    spdlog::error("Failed to start message processing: {}", e.what());
-    promise.set_exception(std::current_exception());
-  }
+      });
 
   return future;
-}
-
-void RpcEndpoint::ProcessMessagesLoop() {
-  while (is_running_) {
-    bool processed = false;
-    try {
-      processed = ProcessSingleMessage();
-    } catch (const std::exception& e) {
-      spdlog::error(
-          "Unexpected exception in ProcessSingleMessage: {}", e.what());
-      // Continue the loop despite the error
-    }
-
-    if (!processed) {
-      // If no message was processed, wait a bit to avoid busy-waiting
-      std::unique_lock<std::mutex> lock(shutdown_mutex_);
-      shutdown_cv_.wait_for(
-          lock, std::chrono::milliseconds(10), [this] { return !is_running_; });
-    }
-  }
-}
-
-auto RpcEndpoint::ProcessSingleMessage() -> bool {
-  try {
-    // Check if we're still running before attempting to receive
-    if (!is_running_) {
-      return false;
-    }
-
-    // Try to receive a message with non-blocking approach
-    auto receive_future = WithTransport([](transport::Transport& transport) {
-      auto future = transport.ReceiveMessage();
-      return future;
-    });
-
-    // Check if message is ready without blocking
-    auto status = receive_future.wait_for(std::chrono::milliseconds(10));
-    if (status == std::future_status::ready) {
-      try {
-        std::string message = receive_future.get();
-        if (!message.empty()) {
-          HandleMessage(message);
-          return true;
-        }
-
-      } catch (const std::exception& e) {
-        spdlog::error("Exception getting message from future: {}", e.what());
-      }
-    } else if (status == std::future_status::timeout) {
-      // Timeout handling
-    } else {
-      // Deferred handling
-    }
-  } catch (const std::runtime_error& e) {
-    // Only report errors if we're still running
-    if (is_running_) {
-      // Always log transport errors
-      spdlog::error("Transport error in ProcessSingleMessage: {}", e.what());
-      ReportError(ErrorCode::kTransportError, e.what());
-    }
-  } catch (const std::exception& e) {
-    if (is_running_) {
-      // Always log unexpected errors
-      spdlog::error("Unexpected error in ProcessSingleMessage: {}", e.what());
-      ReportError(ErrorCode::kInternalError, e.what());
-    }
-  }
-
-  return false;
 }
 
 void RpcEndpoint::HandleMessage(const std::string& message) {
@@ -333,7 +301,6 @@ void RpcEndpoint::HandleResponse(const Response& response) {
     return;
   }
 
-  std::lock_guard<std::mutex> lock(pending_requests_mutex_);
   auto it = pending_requests_.find(*request_id);
   if (it != pending_requests_.end()) {
     it->second.set_value(response.GetJson());
@@ -346,8 +313,21 @@ void RpcEndpoint::HandleResponse(const Response& response) {
 }
 
 auto RpcEndpoint::HasPendingRequests() const -> bool {
-  std::lock_guard<std::mutex> lock(pending_requests_mutex_);
-  return !pending_requests_.empty();
+  // This needs to be checked from the strand
+  if (!endpoint_strand_) {
+    return false;
+  }
+
+  // Using a synchronous operation for simplicity in this check method
+  // For production code, you might want to make this asynchronous too
+  std::promise<bool> promise;
+  auto future = promise.get_future();
+
+  asio::post(*endpoint_strand_, [this, &promise]() {
+    promise.set_value(!pending_requests_.empty());
+  });
+
+  return future.get();
 }
 
 void RpcEndpoint::RegisterMethodCall(
@@ -390,14 +370,181 @@ auto RpcEndpoint::GetNextRequestId() -> RequestId {
 }
 
 void RpcEndpoint::SetErrorHandler(ErrorHandler handler) {
-  std::lock_guard<std::mutex> lock(error_handler_mutex_);
-  error_handler_ = std::move(handler);
+  if (!endpoint_strand_) {
+    throw std::runtime_error("Endpoint strand is null");
+  }
+
+  asio::dispatch(
+      *endpoint_strand_, [this, handler = std::move(handler)]() mutable {
+        error_handler_ = std::move(handler);
+      });
 }
 
 void RpcEndpoint::ReportError(ErrorCode code, const std::string& message) {
-  std::lock_guard<std::mutex> lock(error_handler_mutex_);
-  if (error_handler_) {
-    error_handler_(code, message);
+  if (!endpoint_strand_) {
+    spdlog::error("Cannot report error: Endpoint strand is null");
+    return;
+  }
+
+  asio::dispatch(*endpoint_strand_, [this, code, message]() {
+    if (error_handler_) {
+      error_handler_(code, message);
+    }
+  });
+}
+
+void RpcEndpoint::StartMessageProcessing() {
+  if (!endpoint_strand_) {
+    spdlog::error("Cannot start message processing: endpoint_strand_ is null");
+    return;
+  }
+
+  spdlog::debug("Starting asynchronous message processing chain");
+  asio::post(*endpoint_strand_, [this]() { ProcessNextMessage(); });
+}
+
+void RpcEndpoint::ProcessNextMessage() {
+  // Check if endpoint is still running before proceeding
+  if (!is_running_) {
+    spdlog::debug(
+        "Message processing stopped because endpoint is no longer running");
+    return;
+  }
+
+  auto* io_context = transport_->GetIoContext();
+  if ((io_context == nullptr) || !endpoint_strand_) {
+    spdlog::error("Cannot process messages: missing io_context or strand");
+    return;
+  }
+
+  try {
+    // Start a non-blocking async operation to initiate message receiving
+    asio::post(*endpoint_strand_, [this, io_context_ptr = io_context]() {
+      if (!is_running_) {
+        return;
+      }
+
+      // Use a shared future to avoid copying the string multiple times
+      auto receive_future_shared = std::make_shared<std::future<std::string>>();
+
+      try {
+        // Initialize the future with the transport's ReceiveMessage operation
+        *receive_future_shared =
+            WithTransport([](transport::Transport& transport) {
+              return transport.ReceiveMessage();
+            });
+
+        // Create a timer to check for future completion without blocking a
+        // thread
+        auto poll_timer = std::make_shared<asio::steady_timer>(
+            *io_context_ptr, std::chrono::milliseconds(10));
+
+        // Define the future checking function
+        std::function<void(const asio::error_code&)> check_future;
+
+        // Initialize the function with a recursive lambda
+        check_future = [this, receive_future_shared, poll_timer, io_context_ptr,
+                        &check_future](const asio::error_code& ec) {
+          if (ec) {
+            // Timer was cancelled or errored
+            if (ec != asio::error::operation_aborted && is_running_) {
+              spdlog::error(
+                  "Timer error in message processing: {}", ec.message());
+              asio::post(*endpoint_strand_, [this]() { ProcessNextMessage(); });
+            }
+            return;
+          }
+
+          if (!is_running_) {
+            return;  // Endpoint is shutting down
+          }
+
+          // Check if the future is ready without blocking
+          auto status =
+              receive_future_shared->wait_for(std::chrono::seconds(0));
+
+          if (status == std::future_status::ready) {
+            // Get the message and process it within the strand
+            try {
+              std::string message = receive_future_shared->get();
+              asio::post(
+                  *endpoint_strand_, [this, message = std::move(message)]() {
+                    if (!is_running_) {
+                      return;
+                    }
+
+                    if (!message.empty()) {
+                      HandleMessage(message);
+                    }
+
+                    // Continue the message processing chain
+                    ProcessNextMessage();
+                  });
+            } catch (const std::exception& e) {
+              asio::post(
+                  *endpoint_strand_,
+                  [this, error = std::string(e.what()), io_context_ptr]() {
+                    if (!is_running_) {
+                      return;
+                    }
+
+                    spdlog::error("Error getting message: {}", error);
+                    ReportError(ErrorCode::kTransportError, error);
+
+                    // Retry after a delay
+                    auto retry_timer = std::make_shared<asio::steady_timer>(
+                        *io_context_ptr, std::chrono::milliseconds(100));
+                    retry_timer->async_wait(
+                        [this, retry_timer](const asio::error_code& ec) {
+                          if (!ec && is_running_) {
+                            ProcessNextMessage();
+                          }
+                        });
+                  });
+            }
+          } else {
+            // Future not ready yet, check again after a short delay
+            poll_timer->expires_after(std::chrono::milliseconds(10));
+            poll_timer->async_wait(check_future);
+          }
+        };
+
+        // Start polling
+        poll_timer->async_wait(check_future);
+
+      } catch (const std::exception& e) {
+        // Handle initialization errors
+        spdlog::error("Error starting message receive: {}", e.what());
+        ReportError(ErrorCode::kTransportError, e.what());
+
+        // Retry after a delay
+        auto retry_timer = std::make_shared<asio::steady_timer>(
+            *io_context_ptr, std::chrono::milliseconds(100));
+        retry_timer->async_wait(
+            [this, retry_timer](const asio::error_code& ec) {
+              if (!ec && is_running_) {
+                ProcessNextMessage();
+              }
+            });
+      }
+    });
+  } catch (const std::exception& e) {
+    // Only log and report if we're still running
+    if (is_running_) {
+      spdlog::error("Error in message processing loop: {}", e.what());
+      ReportError(ErrorCode::kTransportError, e.what());
+
+      // Try to restart processing after a delay
+      if ((io_context != nullptr) && endpoint_strand_) {
+        auto timer = std::make_shared<asio::steady_timer>(
+            *io_context, std::chrono::milliseconds(100));
+        timer->async_wait([this, timer](const asio::error_code& ec) {
+          if (!ec && is_running_) {
+            ProcessNextMessage();
+          }
+        });
+      }
+    }
   }
 }
 

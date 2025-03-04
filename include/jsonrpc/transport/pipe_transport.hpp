@@ -24,8 +24,12 @@ class PipeTransport : public Transport {
    * @param socket_path The path to the Unix domain socket.
    * @param is_server True if the transport acts as a server; false if it acts
    * as a client.
+   * @param external_io_context Optional external io_context to use. If nullptr,
+   * creates an internal io_context.
    */
-  explicit PipeTransport(std::string socket_path, bool is_server = false);
+  explicit PipeTransport(
+      std::string socket_path, bool is_server = false,
+      asio::io_context *external_io_context = nullptr);
 
   ~PipeTransport() override;
 
@@ -50,8 +54,15 @@ class PipeTransport : public Transport {
   auto Connect() -> std::future<void>;
   auto BindAndListen() -> std::future<void>;
 
+  // Override the async methods from Transport to provide efficient
+  // implementations
+  void DoAsyncSendMessage(
+      const std::string &message, SendHandler handler) override;
+  void DoAsyncReceiveMessage(ReceiveHandler handler) override;
+  void DoAsyncClose(CloseHandler handler) override;
+
  private:
-  asio::io_context io_context_;
+  asio::io_context::strand strand_;
   asio::local::stream_protocol::socket socket_;
   std::string socket_path_;
   bool is_server_;

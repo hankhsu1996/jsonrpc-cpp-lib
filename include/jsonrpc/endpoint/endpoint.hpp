@@ -1,5 +1,6 @@
 #pragma once
 
+#include <asio.hpp>
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
@@ -97,12 +98,12 @@ class RpcEndpoint {
   auto Start() -> std::future<void>;
 
   /**
-   * @brief Blocks until the endpoint is shut down.
+   * @brief Waits for the endpoint to complete all pending operations.
    *
-   * This method blocks until Shutdown() is called from another thread
-   * and all cleanup is complete. Typically used with server-style endpoints.
+   * This method creates a waitable operation that completes when the endpoint
+   * is shut down. Typically used with server-style endpoints.
    */
-  void Wait();
+  auto Wait() -> std::future<void>;
 
   /**
    * @brief Initiates a graceful shutdown of the endpoint.
@@ -198,9 +199,21 @@ class RpcEndpoint {
 
  private:
   /**
-   * @brief Processes incoming messages from the transport layer.
+   * @brief Starts asynchronous message processing chain.
+   *
+   * This method initiates the asynchronous message processing chain by posting
+   * a task to the endpoint's strand to process the next message.
    */
-  auto ProcessMessages() -> std::future<void>;
+  void StartMessageProcessing();
+
+  /**
+   * @brief Processes the next message asynchronously.
+   *
+   * This method asynchronously processes the next message from the transport,
+   * dispatches it to the appropriate handler, and then chains to process
+   * the next message.
+   */
+  void ProcessNextMessage();
 
   /**
    * @brief Handles a received message.
@@ -229,18 +242,80 @@ class RpcEndpoint {
   auto GetNextRequestId() -> RequestId;
 
   /**
-   * @brief Executes a function with the transport.
+   * @brief Executes a function with the transport via the endpoint strand.
    *
-   * This method acquires the transport mutex and executes the provided
-   * function with the transport.
+   * This method ensures that transport operations are serialized through
+   * the strand to avoid data races.
    *
    * @param f The function to execute with the transport.
    * @return The result of the function.
    */
   template <typename Func>
-  auto WithTransport(Func&& f) -> decltype(auto) {
-    std::lock_guard<std::mutex> lock(transport_mutex_);
-    return f(*transport_);
+  auto WithTransport(Func&& f)
+      -> std::enable_if_t<
+          !std::is_void_v<std::invoke_result_t<Func, transport::Transport&>>,
+          std::invoke_result_t<Func, transport::Transport&>> {
+    using ReturnType = std::invoke_result_t<Func, transport::Transport&>;
+
+    // Direct execution if we're already in the strand or no strand exists
+    if (!endpoint_strand_ || endpoint_strand_->running_in_this_thread()) {
+      return f(*transport_);
+    }
+
+    // For asynchronous usage, create a promise/future pair and block
+    std::promise<ReturnType> promise;
+    auto future = promise.get_future();
+
+    asio::post(
+        *endpoint_strand_, [this, f = std::forward<Func>(f),
+                            promise = std::move(promise)]() mutable {
+          try {
+            promise.set_value(f(*transport_));
+          } catch (...) {
+            promise.set_exception(std::current_exception());
+          }
+        });
+
+    // Synchronous wait for the result
+    return future.get();
+  }
+
+  /**
+   * @brief Executes a void-returning function with the transport via the
+   * endpoint strand.
+   *
+   * This is a specialized version for functions that return void.
+   *
+   * @param f The function to execute with the transport.
+   */
+  template <typename Func>
+  auto WithTransport(Func&& f)
+      -> std::enable_if_t<
+          std::is_void_v<std::invoke_result_t<Func, transport::Transport&>>,
+          void> {
+    // Direct execution if we're already in the strand or no strand exists
+    if (!endpoint_strand_ || endpoint_strand_->running_in_this_thread()) {
+      f(*transport_);
+      return;
+    }
+
+    // For asynchronous usage, create a promise/future pair and block
+    std::promise<void> promise;
+    auto future = promise.get_future();
+
+    asio::post(
+        *endpoint_strand_, [this, f = std::forward<Func>(f),
+                            promise = std::move(promise)]() mutable {
+          try {
+            f(*transport_);
+            promise.set_value();
+          } catch (...) {
+            promise.set_exception(std::current_exception());
+          }
+        });
+
+    // Synchronous wait for completion
+    future.get();
   }
 
   /**
@@ -266,33 +341,17 @@ class RpcEndpoint {
   /// Map of pending requests and their promises
   std::unordered_map<RequestId, std::promise<nlohmann::json>> pending_requests_;
 
-  /// Mutex for protecting the pending requests map
-  mutable std::mutex pending_requests_mutex_;
-
   /// Flag indicating if the endpoint is running
   std::atomic<bool> is_running_{false};
-
-  /// Mutex for protecting transport access
-  mutable std::mutex transport_mutex_;
 
   /// Error handler
   ErrorHandler error_handler_;
 
-  /// Mutex for protecting error handler
-  mutable std::mutex error_handler_mutex_;
+  /// Strand for serializing endpoint operations
+  std::unique_ptr<asio::io_context::strand> endpoint_strand_;
 
-  /// Task for message processing
-  std::optional<std::future<void>> message_task_;
-
-  // Thread synchronization for clean shutdown
-  std::mutex shutdown_mutex_;
-  std::condition_variable shutdown_cv_;
-  std::thread message_thread_;
-  bool message_thread_started_ = false;
-
-  // Helper methods for message processing
-  void ProcessMessagesLoop();
-  bool ProcessSingleMessage();
+  /// Shutdown promise for Wait() operation
+  std::shared_ptr<std::promise<void>> shutdown_promise_;
 };
 
 }  // namespace jsonrpc::endpoint
