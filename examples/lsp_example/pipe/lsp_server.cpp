@@ -1,6 +1,6 @@
-#include <asio.hpp>
 #include <string>
 
+#include <asio.hpp>
 #include <jsonrpc/endpoint/endpoint.hpp>
 #include <jsonrpc/transport/framed_pipe_transport.hpp>
 #include <spdlog/spdlog.h>
@@ -10,33 +10,53 @@
 using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::FramedPipeTransport;
 
-auto main(int argc, char* argv[]) -> int {
-  try {
-    std::vector<std::string> args(argv, argv + argc);
-    std::string pipe_name = ParsePipeArguments(args);
-    SetupLogger();
+/**
+ * @brief LSP Server Example using Framed Pipe Transport
+ *
+ * This is a simple demonstration of a JSON-RPC server using framed pipe
+ * transport. While this example shows the full flexibility of the library,
+ * production applications might benefit from helper functions to reduce
+ * boilerplate.
+ */
 
-    // Create a shared io_context for all components
+auto main(int argc, char* argv[]) -> int {
+  // Setup logging
+  SetupLogger();
+
+  // Check command line arguments
+  const std::vector<std::string> args(argv, argv + argc);
+  const std::string pipe_name = ParsePipeArguments(args);
+  spdlog::info("Starting LSP server on pipe: {}", pipe_name);
+
+  try {
+    // Create an io_context for asio operations
     asio::io_context io_context;
 
-    // The 'false' argument indicates that the transport is acting as a client.
-    // In this setup, VS Code creates and owns the pipe, and the LSP server
-    // (this process) connects to the pipe as a client.
+    // Create the transport and RPC endpoint
     auto transport =
-        std::make_unique<FramedPipeTransport>(pipe_name, false, &io_context);
+        std::make_unique<FramedPipeTransport>(io_context, pipe_name, false);
+    RpcEndpoint server(io_context, std::move(transport));
 
-    RpcEndpoint server(std::move(transport));
-
+    // Register LSP method handlers
     RegisterLSPHandlers(server);
-    server.Start();
 
-    // Run the io_context in the main thread
-    asio::executor_work_guard<asio::io_context::executor_type> work_guard(
-        io_context.get_executor());
+    // Start server asynchronously
+    asio::co_spawn(io_context, server.Start(), asio::detached);
+
+    // Wait for server shutdown
+    asio::co_spawn(
+        io_context,
+        [&server]() -> asio::awaitable<void> {
+          co_await server.WaitForShutdown();
+          spdlog::info("Server shutdown monitoring complete");
+          co_return;
+        }(),
+        asio::detached);
+
+    // Run the io_context
     io_context.run();
 
-    server.Wait();
-
+    spdlog::info("Server shutdown complete");
     return 0;
 
   } catch (const std::exception& ex) {

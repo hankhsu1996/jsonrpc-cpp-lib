@@ -10,7 +10,7 @@ FramedPipeTransport::FramedPipeTransport(
     asio::io_context& io_context, const std::string& socket_path,
     bool is_server)
     : PipeTransport(io_context, socket_path, is_server) {
-  spdlog::info(
+  spdlog::debug(
       "FramedPipeTransport initialized with socket path: {}", socket_path);
 }
 
@@ -30,12 +30,12 @@ void FramedPipeTransport::CloseNow() {
 
 auto FramedPipeTransport::Start() -> asio::awaitable<void> {
   try {
-    spdlog::info("Starting FramedPipeTransport");
+    spdlog::debug("Starting FramedPipeTransport");
 
     // Call the parent (PipeTransport) Start() method to handle socket setup
     co_await PipeTransport::Start();
 
-    spdlog::info("FramedPipeTransport started successfully");
+    spdlog::debug("FramedPipeTransport started successfully");
     co_return;
   } catch (const std::exception& e) {
     spdlog::error("Error starting FramedPipeTransport: {}", e.what());

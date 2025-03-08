@@ -18,23 +18,25 @@ RpcEndpoint::RpcEndpoint(
           std::make_shared<TaskExecutor>(4)),  // Use 4 threads by default
       dispatcher_(task_executor_),
       endpoint_strand_(asio::make_strand(io_ctx.get_executor())) {
-  spdlog::debug("Created RPC endpoint");
 }
 
 auto RpcEndpoint::CreateClient(
     asio::io_context &io_ctx, std::unique_ptr<transport::Transport> transport)
-    -> std::unique_ptr<RpcEndpoint> {
+    -> asio::awaitable<std::unique_ptr<RpcEndpoint>> {
+  // Create the endpoint
   auto endpoint = std::make_unique<RpcEndpoint>(io_ctx, std::move(transport));
 
-  // Start the client endpoint
-  asio::co_spawn(
-      io_ctx,
-      [endpoint = endpoint.get()]() -> asio::awaitable<void> {
-        co_await endpoint->Start();
-      },
-      asio::detached);
+  // Start the endpoint and wait for it to be ready
+  try {
+    co_await endpoint->Start();
+    spdlog::debug("Client endpoint initialized");
+  } catch (const std::exception &e) {
+    spdlog::error("Error starting client endpoint: {}", e.what());
+    throw;
+  }
 
-  return endpoint;
+  // Return the fully initialized endpoint
+  co_return endpoint;
 }
 
 auto RpcEndpoint::Start() -> asio::awaitable<void> {
@@ -42,7 +44,7 @@ auto RpcEndpoint::Start() -> asio::awaitable<void> {
     throw std::runtime_error("RPC endpoint is already running");
   }
 
-  spdlog::info("Starting RPC endpoint...");
+  spdlog::info("Starting RPC endpoint");
   pending_requests_.clear();
 
   // Start the transport
@@ -56,8 +58,6 @@ auto RpcEndpoint::Start() -> asio::awaitable<void> {
 }
 
 auto RpcEndpoint::WaitForShutdown() -> asio::awaitable<void> {
-  spdlog::info("Awaiting RPC endpoint shutdown...");
-
   // If already shut down, return immediately
   if (!is_running_) {
     co_return;
@@ -72,17 +72,14 @@ auto RpcEndpoint::WaitForShutdown() -> asio::awaitable<void> {
     co_await timer.async_wait(asio::use_awaitable);
     timer.expires_after(std::chrono::milliseconds(100));
   }
-
-  spdlog::info("RPC endpoint shutdown complete.");
 }
 
 auto RpcEndpoint::Shutdown() -> asio::awaitable<void> {
   if (!is_running_.exchange(false)) {
-    spdlog::info("RPC endpoint already shut down");
     co_return;
   }
 
-  spdlog::info("Shutting down RPC endpoint...");
+  spdlog::info("Shutting down RPC endpoint");
 
   // Cancel all pending requests
   asio::post(endpoint_strand_, [this]() {
@@ -95,7 +92,6 @@ auto RpcEndpoint::Shutdown() -> asio::awaitable<void> {
   // Close the transport - this ensures any pending operations are canceled
   co_await transport_->Close();
 
-  spdlog::info("Shutdown complete.");
   co_return;
 }
 
@@ -183,13 +179,12 @@ void RpcEndpoint::SetErrorHandler(ErrorHandler handler) {
 void RpcEndpoint::ReportError(ErrorCode code, const std::string &message) {
   if (error_handler_) {
     error_handler_(code, message);
-  } else {
-    spdlog::error("JSON-RPC error ({}): {}", static_cast<int>(code), message);
   }
+
+  spdlog::error("JSON-RPC error ({}): {}", static_cast<int>(code), message);
 }
 
 void RpcEndpoint::StartMessageProcessing() {
-  spdlog::info("Starting message processing");
   asio::co_spawn(
       endpoint_strand_,
       [this]() -> asio::awaitable<void> { co_await ProcessNextMessage(); },
@@ -244,9 +239,8 @@ auto RpcEndpoint::HandleMessage(const std::string &message)
     }
   } catch (const std::exception &e) {
     spdlog::error("Error handling message: {}", e.what());
+    throw;
   }
-
-  co_return;
 }
 
 auto RpcEndpoint::HandleResponse(const Response &response)

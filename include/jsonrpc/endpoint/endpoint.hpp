@@ -44,15 +44,19 @@ class RpcEndpoint {
       std::unique_ptr<transport::Transport> transport);
 
   /**
-   * @brief Create a client endpoint
+   * @brief Create a client endpoint asynchronously
+   *
+   * Creates and initializes a client endpoint. The returned awaitable resolves
+   * when the endpoint is fully initialized and ready to use.
    *
    * @param io_ctx The IO context to use
    * @param transport The transport layer to use
-   * @return std::unique_ptr<RpcEndpoint> The client endpoint
+   * @return asio::awaitable<std::unique_ptr<RpcEndpoint>> Awaitable that
+   * resolves to the initialized client
    */
   static auto CreateClient(
       asio::io_context &io_ctx, std::unique_ptr<transport::Transport> transport)
-      -> std::unique_ptr<RpcEndpoint>;
+      -> asio::awaitable<std::unique_ptr<RpcEndpoint>>;
 
   // Delete copy and move constructors/assignments
   RpcEndpoint(const RpcEndpoint &) = delete;

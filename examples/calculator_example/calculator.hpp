@@ -1,34 +1,34 @@
 #pragma once
 
+#include <asio/awaitable.hpp>
 #include <nlohmann/json.hpp>
-#include <spdlog/spdlog.h>
 
-const int kDivideByZeroErrorCode = -32602;
+static constexpr int kDivideByZeroErrorCode = -32000;
 
 class Calculator {
  public:
-  static auto Add(const nlohmann::json &params) -> nlohmann::json {
-    spdlog::debug("Received add request with params: {}", params.dump());
+  static auto Add(const std::optional<nlohmann::json>& params)
+      -> asio::awaitable<nlohmann::json> {
+    const auto& p = params.value_or(nlohmann::json::object());
+    double a_double = p["a"];
+    double b_double = p["b"];
 
-    double a_double = params["a"];
-    double b_double = params["b"];
-
-    return {{"result", a_double + b_double}};
+    co_return nlohmann::json{{"result", a_double + b_double}};
   }
 
-  static auto Divide(const nlohmann::json &params) -> nlohmann::json {
-    spdlog::debug("Received divide request with params: {}", params.dump());
-
-    double a_double = params["a"];
-    double b_double = params["b"];
+  static auto Divide(const std::optional<nlohmann::json>& params)
+      -> asio::awaitable<nlohmann::json> {
+    const auto& p = params.value_or(nlohmann::json::object());
+    double a_double = p["a"];
+    double b_double = p["b"];
 
     if (b_double == 0) {
-      return {
+      co_return nlohmann::json{
           {"error",
            {{"code", kDivideByZeroErrorCode},
             {"message", "Division by zero"}}}};
     }
 
-    return {{"result", a_double / b_double}};
+    co_return nlohmann::json{{"result", a_double / b_double}};
   }
 };

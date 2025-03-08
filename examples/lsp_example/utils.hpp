@@ -21,27 +21,32 @@ auto ParsePipeArguments(const std::vector<std::string>& args) -> std::string {
 }
 
 void RegisterLSPHandlers(jsonrpc::endpoint::RpcEndpoint& server) {
-  server.RegisterMethodCall("initialize", [](const std::optional<Json>&) {
-    spdlog::info("LSP Server initialized");
-    Json response = {
-        {"capabilities",
-         {{"positionEncoding", "utf-16"},
-          {"textDocumentSync",
-           {{"openClose", true},
-            {"change", 1},
-            {"save", {{"includeText", false}}}}},
-          {"completionProvider",
-           {{"resolveProvider", false}, {"triggerCharacters", {" "}}}}}},
-        {"serverInfo", {{"name", "LSP Example Server"}, {"version", "1.0"}}}};
-    return response;
-  });
+  server.RegisterMethodCall(
+      "initialize", [](const std::optional<Json>&) -> asio::awaitable<Json> {
+        spdlog::info("LSP Server initialized");
+        Json response = {
+            {"capabilities",
+             {{"positionEncoding", "utf-16"},
+              {"textDocumentSync",
+               {{"openClose", true},
+                {"change", 1},
+                {"save", {{"includeText", false}}}}},
+              {"completionProvider",
+               {{"resolveProvider", false}, {"triggerCharacters", {" "}}}}}},
+            {"serverInfo",
+             {{"name", "LSP Example Server"}, {"version", "1.0"}}}};
+        co_return response;
+      });
 
-  server.RegisterNotification("initialized", [](const std::optional<Json>&) {
-    spdlog::info("Client initialized");
-  });
+  server.RegisterNotification(
+      "initialized", [](const std::optional<Json>&) -> asio::awaitable<void> {
+        spdlog::info("Client initialized");
+        co_return;
+      });
 
   server.RegisterMethodCall(
-      "textDocument/completion", [](const std::optional<Json>& params) {
+      "textDocument/completion",
+      [](const std::optional<Json>& params) -> asio::awaitable<Json> {
         Json response;
         if (params && params->contains("textDocument") &&
             params->contains("position")) {
@@ -50,18 +55,20 @@ void RegisterLSPHandlers(jsonrpc::endpoint::RpcEndpoint& server) {
         } else {
           response = Json::array();
         }
-        return response;
+        co_return response;
       });
 
-  server.RegisterMethodCall("shutdown", [](const std::optional<Json>&) {
-    spdlog::info("Server shutting down");
-    return Json::object();
-  });
+  server.RegisterMethodCall(
+      "shutdown", [](const std::optional<Json>&) -> asio::awaitable<Json> {
+        spdlog::info("Server shutting down");
+        co_return Json::object();
+      });
 
-  server.RegisterNotification("exit", [&server](const std::optional<Json>&) {
-    spdlog::info("Server exiting");
-    server.Shutdown().get();
-  });
+  server.RegisterNotification(
+      "exit", [&server](const std::optional<Json>&) -> asio::awaitable<void> {
+        spdlog::info("Server exiting");
+        co_await server.Shutdown();
+      });
 }
 
 void SetupLogger() {

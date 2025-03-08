@@ -1,8 +1,6 @@
-#include <memory>
-
+#include <asio.hpp>
 #include <jsonrpc/endpoint/endpoint.hpp>
 #include <jsonrpc/transport/framed_pipe_transport.hpp>
-#include <nlohmann/json.hpp>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
@@ -12,7 +10,17 @@ using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::FramedPipeTransport;
 using Json = nlohmann::json;
 
+/**
+ * @brief Calculator Server Example using Framed Pipe Transport
+ *
+ * This is a simple demonstration of a JSON-RPC server using framed pipe
+ * transport. While this example shows the full flexibility of the library,
+ * production applications might benefit from helper functions to reduce
+ * boilerplate.
+ */
+
 auto main() -> int {
+  // Setup logging
   auto logger = spdlog::basic_logger_mt("server", "logs/server.log", true);
   spdlog::set_default_logger(logger);
   spdlog::set_level(spdlog::level::debug);
@@ -21,40 +29,46 @@ auto main() -> int {
   const std::string socket_path = "/tmp/calculator_framed_pipe";
   spdlog::info("Starting server on socket: {}", socket_path);
 
-  auto transport = std::make_unique<FramedPipeTransport>(socket_path, true);
-  RpcEndpoint server(std::move(transport));
+  try {
+    // Create an io_context for asio operations
+    asio::io_context io_context;
 
-  server.RegisterMethodCall("add", [](const std::optional<Json> &params) {
-    spdlog::debug(
-        "Handling 'add' method call with params: {}",
-        params.has_value() ? params.value().dump() : "null");
-    auto result = Calculator::Add(params.value());
-    spdlog::debug("Add result: {}", result.dump());
-    return result;
-  });
+    // Create the transport and RPC endpoint
+    auto transport =
+        std::make_unique<FramedPipeTransport>(io_context, socket_path, true);
+    RpcEndpoint server(io_context, std::move(transport));
 
-  server.RegisterMethodCall("divide", [](const std::optional<Json> &params) {
-    spdlog::debug(
-        "Handling 'divide' method call with params: {}",
-        params.has_value() ? params.value().dump() : "null");
-    auto result = Calculator::Divide(params.value());
-    spdlog::debug("Divide result: {}", result.dump());
-    return result;
-  });
+    // Register RPC methods
+    server.RegisterMethodCall("add", Calculator::Add);
+    server.RegisterMethodCall("divide", Calculator::Divide);
 
-  server.RegisterNotification("stop", [&server](const std::optional<Json> &) {
-    spdlog::info("Received stop notification, shutting down");
-    server.Shutdown().get();
-  });
+    // Register stop notification
+    server.RegisterNotification(
+        "stop", [&server](const std::optional<Json>&) -> asio::awaitable<void> {
+          co_await server.Shutdown();
+          co_return;
+        });
 
-  // Start the server and wait for shutdown
-  spdlog::info("Server started, waiting for requests...");
-  server.Start();
+    // Start server asynchronously
+    asio::co_spawn(io_context, server.Start(), asio::detached);
 
-  // Wait for server to finish
-  spdlog::info("Waiting for server to finish...");
-  server.Wait();
+    // Wait for server shutdown
+    asio::co_spawn(
+        io_context,
+        [&server]() -> asio::awaitable<void> {
+          co_await server.WaitForShutdown();
+          co_return;
+        }(),
+        asio::detached);
 
-  spdlog::info("Server shutdown complete");
-  return 0;
+    // Run the io_context
+    io_context.run();
+
+    spdlog::info("Server shutdown complete");
+    return 0;
+
+  } catch (const std::exception& e) {
+    spdlog::error("Error: {}", e.what());
+    return 1;
+  }
 }

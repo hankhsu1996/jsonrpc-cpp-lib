@@ -17,7 +17,7 @@ PipeTransport::PipeTransport(
       socket_path_(std::move(socket_path)),
       is_server_(is_server),
       read_buffer_() {
-  spdlog::info(
+  spdlog::debug(
       "PipeTransport initialized ({}): {}", is_server_ ? "server" : "client",
       socket_path_);
 
@@ -48,7 +48,7 @@ void PipeTransport::CloseNow() {
   try {
     // Cancel and close the socket synchronously
     if (socket_.is_open()) {
-      spdlog::info("Closing socket synchronously");
+      spdlog::debug("Closing socket synchronously");
       socket_.cancel();
       asio::error_code ec;
       socket_.close(ec);
@@ -59,7 +59,7 @@ void PipeTransport::CloseNow() {
 
     // Cancel and close the acceptor safely
     if (is_server_ && acceptor_ && acceptor_->is_open()) {
-      spdlog::info("Closing acceptor synchronously");
+      spdlog::debug("Closing acceptor synchronously");
       acceptor_->cancel();
       asio::error_code ec;
       acceptor_->close(ec);
@@ -73,7 +73,7 @@ void PipeTransport::CloseNow() {
         std::filesystem::exists(socket_path_)) {
       try {
         std::filesystem::remove(socket_path_);
-        spdlog::info("Removed socket file: {}", socket_path_);
+        spdlog::debug("Removed socket file: {}", socket_path_);
       } catch (const std::exception &e) {
         spdlog::warn("Error removing socket file: {}", e.what());
       }
@@ -88,11 +88,12 @@ auto PipeTransport::Start() -> asio::awaitable<void> {
     co_await asio::post(GetStrand(), asio::use_awaitable);
 
     if (is_started_) {
-      spdlog::info("PipeTransport already started");
+      spdlog::debug("PipeTransport already started");
       co_return;
     }
 
     if (is_closed_) {
+      spdlog::error("Cannot start a closed transport");
       throw std::runtime_error("Cannot start a closed transport");
     }
 
@@ -104,14 +105,15 @@ auto PipeTransport::Start() -> asio::awaitable<void> {
       spdlog::info("Starting PipeTransport server at {}", socket_path_);
       co_await BindAndListen();
     } else {
-      // For client, we don't connect immediately
-      // Connection will happen on first send/receive
-      spdlog::info("PipeTransport client ready to connect to {}", socket_path_);
+      // For client, connect to the server
+      spdlog::info("Connecting PipeTransport client to {}", socket_path_);
+      co_await Connect();
+      spdlog::debug("PipeTransport client connected to {}", socket_path_);
     }
 
     co_return;
   } catch (const std::exception &e) {
-    spdlog::error("Error starting PipeTransport: {}", e.what());
+    spdlog::error("Error in PipeTransport::Start(): {}", e.what());
     is_started_ = false;
     throw;
   }
@@ -126,7 +128,7 @@ void PipeTransport::RemoveExistingSocketFile() {
     // Check if the socket file exists and remove it if it does
     if (std::filesystem::exists(socket_path_)) {
       std::filesystem::remove(socket_path_);
-      spdlog::info("Removed existing socket file: {}", socket_path_);
+      spdlog::debug("Removed existing socket file: {}", socket_path_);
     }
   } catch (const std::exception &e) {
     spdlog::error("Error removing socket file: {}", e.what());
@@ -148,11 +150,7 @@ auto PipeTransport::SendMessage(const std::string &message)
       throw std::runtime_error("Transport not started before sending message");
     }
 
-    // Connect if needed (only for client and if not already connected)
-    if (!is_server_ && !is_connected_) {
-      co_await Connect();
-    }
-
+    // No lazy connection - Start() should have connected if needed
     if (!socket_.is_open()) {
       throw std::runtime_error("Socket not open");
     }
@@ -175,15 +173,9 @@ auto PipeTransport::ReceiveMessage() -> asio::awaitable<std::string> {
       co_return std::string();
     }
 
-    // Ensure transport is started
     if (!is_started_) {
       throw std::runtime_error(
           "Transport not started before receiving message");
-    }
-
-    // Connect if needed (only for client and if not already connected)
-    if (!is_server_ && !is_connected_) {
-      co_await Connect();
     }
 
     if (!socket_.is_open()) {
@@ -191,31 +183,34 @@ auto PipeTransport::ReceiveMessage() -> asio::awaitable<std::string> {
       co_return std::string();
     }
 
+    // Clear any existing message buffer
     message_buffer_.clear();
 
-    while (!is_closed_) {
-      spdlog::info("Reading message from socket");
-      std::size_t bytes_read = co_await socket_.async_read_some(
-          asio::buffer(read_buffer_), asio::use_awaitable);
+    // Read data from socket
+    std::size_t bytes_read = co_await socket_.async_read_some(
+        asio::buffer(read_buffer_), asio::use_awaitable);
 
-      spdlog::info("Read {} bytes from socket", bytes_read);
-      if (bytes_read == 0) {
-        if (message_buffer_.empty()) {
-          co_return std::string();
-        }
-        break;
+    if (bytes_read == 0) {
+      if (is_closed_) {
+        co_return std::string();
       }
-
-      message_buffer_.append(read_buffer_.data(), bytes_read);
-      break;
+      throw std::runtime_error("Connection closed by peer");
     }
 
-    if (is_closed_) {
-      co_return std::string();
-    }
-
+    message_buffer_.append(read_buffer_.data(), bytes_read);
     spdlog::debug("Received message: {}", message_buffer_);
     co_return std::move(message_buffer_);
+  } catch (const asio::system_error &e) {
+    // Handle ASIO-specific errors
+    if (e.code() == asio::error::eof) {
+      spdlog::debug("Connection closed by peer (EOF)");
+      is_connected_ = false;
+    } else if (e.code() == asio::error::operation_aborted) {
+      spdlog::debug("Receive operation aborted");
+    } else {
+      spdlog::error("ASIO error receiving message: {}", e.what());
+    }
+    throw;
   } catch (const std::exception &e) {
     spdlog::error("Error receiving message: {}", e.what());
     throw;
@@ -226,17 +221,18 @@ auto PipeTransport::Close() -> asio::awaitable<void> {
   try {
     co_await asio::post(GetStrand(), asio::use_awaitable);
 
-    spdlog::info("Closing pipe transport");
+    spdlog::debug("Closing pipe transport");
 
     if (is_closed_) {
       co_return;  // Already closed
     }
+
     is_closed_ = true;
     is_connected_ = false;
 
     // Cancel and close the socket safely
     if (socket_.is_open()) {
-      spdlog::info("Closing socket");
+      spdlog::debug("Closing socket");
       socket_.cancel();
       asio::error_code ec;
       socket_.close(ec);
@@ -247,7 +243,7 @@ auto PipeTransport::Close() -> asio::awaitable<void> {
 
     // Cancel and close the acceptor safely
     if (is_server_ && acceptor_ && acceptor_->is_open()) {
-      spdlog::info("Closing acceptor");
+      spdlog::debug("Closing acceptor");
       acceptor_->cancel();
       asio::error_code ec;
       acceptor_->close(ec);
@@ -261,7 +257,7 @@ auto PipeTransport::Close() -> asio::awaitable<void> {
         std::filesystem::exists(socket_path_)) {
       try {
         std::filesystem::remove(socket_path_);
-        spdlog::info("Removed socket file: {}", socket_path_);
+        spdlog::debug("Removed socket file: {}", socket_path_);
       } catch (const std::exception &e) {
         spdlog::warn("Error removing socket file: {}", e.what());
       }
@@ -279,7 +275,7 @@ auto PipeTransport::Close() -> asio::awaitable<void> {
 }
 
 auto PipeTransport::Connect() -> asio::awaitable<void> {
-  spdlog::info("Connecting to {}", socket_path_);
+  spdlog::debug("Connecting to {}", socket_path_);
 
   // Make sure we're not already connected
   if (is_connected_) {
@@ -287,22 +283,51 @@ auto PipeTransport::Connect() -> asio::awaitable<void> {
   }
 
   try {
-    if (socket_.is_open()) {
-      socket_.close();
+    // Check if we're closed
+    if (is_closed_) {
+      throw std::runtime_error("Cannot connect a closed transport");
     }
 
+    // Close any existing socket
+    if (socket_.is_open()) {
+      asio::error_code ec;
+      socket_.close(ec);
+      if (ec) {
+        spdlog::warn("Error closing socket before reconnect: {}", ec.message());
+      }
+    }
+
+    // Create a new socket if needed
+    if (!socket_.is_open()) {
+      socket_ = asio::local::stream_protocol::socket(GetIoContext());
+    }
+
+    // Create the endpoint and connect
     asio::local::stream_protocol::endpoint endpoint(socket_path_);
     co_await socket_.async_connect(endpoint, asio::use_awaitable);
+
+    // Set connected flag only after successful connection
     is_connected_ = true;
-    spdlog::info("Connected to {}", socket_path_);
+    spdlog::debug("Connected to {}", socket_path_);
   } catch (const std::exception &e) {
     spdlog::error("Error connecting to {}: {}", socket_path_, e.what());
+
+    // Reset socket to clean state
+    try {
+      if (socket_.is_open()) {
+        asio::error_code ec;
+        socket_.close(ec);
+      }
+    } catch (...) {
+      // Ignore errors during cleanup
+    }
+
     throw;
   }
 }
 
 auto PipeTransport::BindAndListen() -> asio::awaitable<void> {
-  spdlog::info("Binding to {}", socket_path_);
+  spdlog::debug("Binding to {}", socket_path_);
 
   try {
     // Remove any existing socket file
@@ -316,12 +341,12 @@ auto PipeTransport::BindAndListen() -> asio::awaitable<void> {
     acceptor_->bind(endpoint);
     acceptor_->listen();
 
-    spdlog::info("Listening on {}", socket_path_);
+    spdlog::debug("Listening on {}", socket_path_);
 
     // Accept a connection
     co_await acceptor_->async_accept(socket_, asio::use_awaitable);
     is_connected_ = true;
-    spdlog::info("Accepted connection on {}", socket_path_);
+    spdlog::debug("Accepted connection on {}", socket_path_);
   } catch (const std::exception &e) {
     spdlog::error("Error binding/listening on {}: {}", socket_path_, e.what());
     throw;
