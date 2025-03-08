@@ -59,6 +59,16 @@ class Request {
   static auto FromJson(const nlohmann::json& json_obj) -> Request;
 
   /**
+   * @brief Parses and validates a JSON string as a JSON-RPC request.
+   *
+   * @param request_str The JSON string to parse and validate.
+   * @return An optional containing the parsed JSON object if valid, or nullopt
+   * if invalid.
+   */
+  static auto ParseAndValidateJson(const std::string& request_str)
+      -> std::optional<nlohmann::json>;
+
+  /**
    * @brief Validates a JSON object as a request.
    *
    * @param json_obj The JSON object to validate.

@@ -1,7 +1,7 @@
 #pragma once
 
+#include <asio.hpp>
 #include <cstddef>
-#include <istream>
 #include <ostream>
 #include <string>
 #include <unordered_map>
@@ -16,6 +16,7 @@ class FramedTransportTest;
  * Provides modular functionality for sending and receiving framed messages.
  */
 class FramedTransport {
+ public:
   /// @brief A map of headers to their values.
   using HeaderMap = std::unordered_map<std::string, std::string>;
 
@@ -34,29 +35,28 @@ class FramedTransport {
    */
   static void FrameMessage(std::ostream &output, const std::string &message);
 
-  static auto ReadHeadersFromStream(std::istream &input) -> HeaderMap;
-  static auto ReadContentLengthFromStream(std::istream &input) -> int;
+  /**
+   * @brief Reads headers from a buffer.
+   * @param buffer The buffer containing the headers.
+   * @return A map of header names to values.
+   */
+  static auto ReadHeadersFromBuffer(asio::streambuf &buffer) -> HeaderMap;
 
   /**
-   * @brief Reads content from the input stream based on the content length.
-   *
-   * @param input The input stream to read the content from.
-   * @param content_length The length of the content to be read.
+   * @brief Reads content length from headers.
+   * @param headers The headers to read from.
+   * @return The content length value.
+   */
+  static auto ReadContentLength(const HeaderMap &headers) -> int;
+
+  /**
+   * @brief Reads content from a buffer.
+   * @param buffer The buffer to read from.
+   * @param content_length The length of content to read.
    * @return The content as a string.
    */
-  static auto ReadContent(std::istream &input, std::size_t content_length)
+  static auto ReadContent(asio::streambuf &buffer, std::size_t content_length)
       -> std::string;
-
-  /**
-   * @brief Receives a framed message.
-   *
-   * Reads headers to determine the content length, then reads the message
-   * content based on that length.
-   *
-   * @param input The input stream to read the framed message.
-   * @return The received message content.
-   */
-  static auto ReceiveFramedMessage(std::istream &input) -> std::string;
 
   /**
    * @brief Parses a Content-Length header value to an integer.

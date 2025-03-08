@@ -1,7 +1,5 @@
 #include "jsonrpc/transport/framed_pipe_transport.hpp"
 
-#include <future>
-#include <stdexcept>
 #include <unistd.h>
 
 #include <spdlog/spdlog.h>
@@ -9,272 +7,196 @@
 namespace jsonrpc::transport {
 
 FramedPipeTransport::FramedPipeTransport(
-    const std::string& socket_path, bool is_server,
-    asio::io_context* external_io_context)
-    : PipeTransport(socket_path, is_server, external_io_context) {
+    asio::io_context& io_context, const std::string& socket_path,
+    bool is_server)
+    : PipeTransport(io_context, socket_path, is_server) {
   spdlog::info(
       "FramedPipeTransport initialized with socket path: {}", socket_path);
 }
 
-auto FramedPipeTransport::SendMessage(const std::string& message)
-    -> std::future<void> {
-  auto promise_ptr = std::make_shared<std::promise<void>>();
-  auto future = promise_ptr->get_future();
-
-  AsyncSendMessage(message, [promise_ptr](const asio::error_code& ec) {
-    if (ec) {
-      promise_ptr->set_exception(
-          std::make_exception_ptr(std::runtime_error(ec.message())));
-    } else {
-      promise_ptr->set_value();
-    }
-  });
-
-  return future;
-}
-
-auto FramedPipeTransport::ReceiveMessage() -> std::future<std::string> {
-  auto promise_ptr = std::make_shared<std::promise<std::string>>();
-  auto future = promise_ptr->get_future();
-
-  AsyncReceiveMessage(
-      [promise_ptr](const asio::error_code& ec, std::string message) {
-        if (ec) {
-          promise_ptr->set_exception(
-              std::make_exception_ptr(std::runtime_error(ec.message())));
-        } else {
-          promise_ptr->set_value(std::move(message));
-        }
-      });
-
-  return future;
-}
-
-auto FramedPipeTransport::ReadFramedMessage(std::chrono::milliseconds timeout)
-    -> std::string {
-  asio::streambuf buffer;
-  asio::error_code ec;
-  GetSocket().non_blocking(true);
-
-  auto deadline = std::chrono::steady_clock::now() + timeout;
-
-  // Read headers until \r\n\r\n delimiter
-  ReadHeaders(buffer, deadline, ec);
-
-  // Use FramedTransport to process the message
-  std::istream stream(&buffer);
-
-  // Try to use ReceiveFramedMessage directly if possible
+FramedPipeTransport::~FramedPipeTransport() {
   try {
-    // Extract content length from the headers
-    int content_length = ReadContentLengthFromStream(stream);
-
-    // Read remaining content
-    ReadContent(buffer, content_length, deadline, ec);
-
-    // Extract the message content
-    std::string content(
-        asio::buffers_begin(buffer.data()), asio::buffers_end(buffer.data()));
-    return content;
+    // Always call CloseNow() - it's safe to call multiple times
+    CloseNow();
   } catch (const std::exception& e) {
-    throw std::runtime_error(
-        std::string("Failed to read framed message: ") + e.what());
+    spdlog::error("Error in FramedPipeTransport destructor: {}", e.what());
   }
 }
 
-void FramedPipeTransport::ReadHeaders(
-    asio::streambuf& buffer, std::chrono::steady_clock::time_point deadline,
-    asio::error_code& ec) {
-  while (std::chrono::steady_clock::now() < deadline) {
-    asio::read_until(GetSocket(), buffer, kHeaderDelimiter, ec);
-    if (ec == asio::error::would_block) {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1));
-      continue;
-    }
-    if (ec) {
-      throw std::runtime_error(
-          "Failed to read message headers: " + ec.message());
-    }
-    return;
-  }
-  throw std::runtime_error("Timeout waiting for response");
+void FramedPipeTransport::CloseNow() {
+  // Just delegate to the parent class implementation
+  PipeTransport::CloseNow();
 }
 
-void FramedPipeTransport::ReadContent(
-    asio::streambuf& buffer, int content_length,
-    std::chrono::steady_clock::time_point deadline, asio::error_code& ec) {
-  // Calculate how much more content we need to read
-  std::size_t remaining_content_length = content_length - buffer.size();
+auto FramedPipeTransport::Start() -> asio::awaitable<void> {
+  try {
+    spdlog::info("Starting FramedPipeTransport");
 
-  // Read any remaining content directly into the buffer
-  if (remaining_content_length > 0) {
-    while (std::chrono::steady_clock::now() < deadline) {
-      asio::read(GetSocket(), buffer.prepare(remaining_content_length), ec);
-      if (ec == asio::error::would_block) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        continue;
-      }
-      if (ec && ec != asio::error::eof) {
-        throw std::runtime_error(
-            "Failed to read message content: " + ec.message());
-      }
-      buffer.commit(remaining_content_length);
-      return;
-    }
-    throw std::runtime_error("Timeout waiting for response");
+    // Call the parent (PipeTransport) Start() method to handle socket setup
+    co_await PipeTransport::Start();
+
+    spdlog::info("FramedPipeTransport started successfully");
+    co_return;
+  } catch (const std::exception& e) {
+    spdlog::error("Error starting FramedPipeTransport: {}", e.what());
+    throw;
   }
 }
 
-void FramedPipeTransport::DoAsyncSendMessage(
-    const std::string& message, SendHandler handler) {
-  // Post to the strand of the underlying PipeTransport to ensure thread safety
-  asio::post(
-      GetIoContext()->get_executor(),
-      [this, message, handler = std::move(handler)]() mutable {
-        try {
-          // Create a framed message
-          asio::streambuf message_buf;
-          std::ostream message_stream(&message_buf);
-          FrameMessage(message_stream, message);
+auto FramedPipeTransport::SendMessage(const std::string& message)
+    -> asio::awaitable<void> {
+  try {
+    // Create a framed message using a temporary stream
+    asio::streambuf message_buf;
+    std::ostream message_stream(&message_buf);
+    FrameMessage(message_stream, message);
 
-          // Use asio's async_write with the underlying socket
-          asio::async_write(
-              GetSocket(), message_buf.data(),
-              [handler = std::move(handler)](
-                  const asio::error_code& ec,
-                  std::size_t bytes_written) mutable {
-                if (ec) {
-                  spdlog::error(
-                      "FramedPipeTransport failed to send message: {}",
-                      ec.message());
-                  handler(ec);
-                } else {
-                  spdlog::info(
-                      "FramedPipeTransport sent message with {} bytes",
-                      bytes_written);
-                  handler(asio::error_code());
-                }
-              });
-        } catch (const std::exception& e) {
-          spdlog::error(
-              "FramedPipeTransport failed to setup send message: {}", e.what());
-          asio::error_code ec(asio::error::operation_aborted);
-          asio::post(
-              GetIoContext()->get_executor(),
-              [handler = std::move(handler), ec]() mutable { handler(ec); });
-        }
-      });
+    // Convert the streambuf to a string
+    std::string framed_message(
+        asio::buffer_cast<const char*>(message_buf.data()), message_buf.size());
+
+    // Send the framed message using the parent class
+    co_await PipeTransport::SendMessage(framed_message);
+  } catch (const std::exception& e) {
+    spdlog::error("Error framing/sending message: {}", e.what());
+    throw;
+  }
 }
 
-void FramedPipeTransport::DoAsyncReceiveMessage(ReceiveHandler handler) {
-  // Post to the strand of the underlying PipeTransport to ensure thread safety
-  asio::post(
-      GetIoContext()->get_executor(),
-      [this, handler = std::move(handler)]() mutable {
-        try {
-          // Create a buffer for the headers
-          auto buffer = std::make_shared<asio::streambuf>();
+auto FramedPipeTransport::ReceiveMessage() -> asio::awaitable<std::string> {
+  try {
+    // Create a buffer to receive data
+    asio::streambuf buffer;
 
-          // First read the headers up to the double newline
-          asio::async_read_until(
-              GetSocket(), *buffer, "\r\n\r\n",
-              [this, buffer, handler = std::move(handler)](
-                  const asio::error_code& ec,
-                  std::size_t bytes_transferred) mutable {
-                if (ec) {
-                  spdlog::error(
-                      "FramedPipeTransport failed to read headers: {}",
-                      ec.message());
-                  handler(ec, "");
-                  return;
-                }
+    // Read headers
+    co_await ReadHeaders(buffer);
 
-                // Process the headers
-                try {
-                  // Extract the data from the buffer
-                  std::istream is(buffer.get());
-                  auto headers = ReadHeadersFromStream(is);
+    // Parse headers
+    auto headers = ReadHeadersFromBuffer(buffer);
 
-                  // Find the Content-Length header
-                  auto it = headers.find("Content-Length");
-                  if (it == headers.end()) {
-                    throw std::runtime_error("Content-Length header not found");
-                  }
+    // Get content length
+    int content_length = ReadContentLength(headers);
+    if (content_length <= 0) {
+      throw std::runtime_error("Invalid content length");
+    }
 
-                  // Parse the content length - using the static method with
-                  // proper scope
-                  int content_length =
-                      FramedTransport::ParseContentLength(it->second);
+    // Read content
+    std::string content = co_await ReadContent(buffer, content_length);
 
-                  // Read the content
-                  asio::async_read(
-                      GetSocket(), *buffer,
-                      asio::transfer_exactly(
-                          content_length - buffer->size() + bytes_transferred),
-                      [buffer, content_length, handler = std::move(handler)](
-                          const asio::error_code& ec,
-                          std::size_t /*bytes_transferred*/) mutable {
-                        if (ec) {
-                          spdlog::error(
-                              "FramedPipeTransport failed to read content: {}",
-                              ec.message());
-                          handler(ec, "");
-                          return;
-                        }
-
-                        try {
-                          // Extract the content
-                          std::istream is(buffer.get());
-                          // Skip the headers and empty line
-                          std::string line;
-                          while (std::getline(is, line) && !line.empty() &&
-                                 line != "\r") {
-                            // Skip headers
-                          }
-
-                          // Read the content
-                          std::string content(content_length, '\0');
-                          is.read(content.data(), content_length);
-
-                          spdlog::info(
-                              "FramedPipeTransport received message with {} "
-                              "bytes",
-                              content.length());
-                          handler(asio::error_code(), content);
-                        } catch (const std::exception& e) {
-                          spdlog::error(
-                              "FramedPipeTransport failed to process content: "
-                              "{}",
-                              e.what());
-                          asio::error_code ec(asio::error::operation_aborted);
-                          handler(ec, "");
-                        }
-                      });
-                } catch (const std::exception& e) {
-                  spdlog::error(
-                      "FramedPipeTransport failed to process headers: {}",
-                      e.what());
-                  asio::error_code ec(asio::error::operation_aborted);
-                  handler(ec, "");
-                }
-              });
-        } catch (const std::exception& e) {
-          spdlog::error(
-              "FramedPipeTransport failed to setup receive message: {}",
-              e.what());
-          asio::error_code ec(asio::error::operation_aborted);
-          asio::post(
-              GetIoContext()->get_executor(),
-              [handler = std::move(handler), ec]() mutable {
-                handler(ec, "");
-              });
-        }
-      });
+    co_return content;
+  } catch (const std::exception& e) {
+    spdlog::error("Error receiving framed message: {}", e.what());
+    throw;
+  }
 }
 
-void FramedPipeTransport::DoAsyncClose(CloseHandler handler) {
-  // Delegate to the base class implementation
-  PipeTransport::DoAsyncClose(std::move(handler));
+auto FramedPipeTransport::Close() -> asio::awaitable<void> {
+  try {
+    // Call the parent class Close method
+    co_await PipeTransport::Close();
+
+    // Add our own synchronization point for extra safety
+    co_await asio::post(GetStrand(), asio::use_awaitable);
+
+    co_return;
+  } catch (const std::exception& e) {
+    spdlog::error("Error closing FramedPipeTransport: {}", e.what());
+    throw;
+  }
+}
+
+auto FramedPipeTransport::ReadHeaders(asio::streambuf& buffer)
+    -> asio::awaitable<void> {
+  // Read until we hit the double newline (end of headers)
+  std::string delimiter = "\r\n\r\n";
+  auto& socket = GetSocket();
+
+  co_await asio::async_read_until(
+      socket, buffer, delimiter, asio::use_awaitable);
+}
+
+auto FramedPipeTransport::ReadContent(
+    asio::streambuf& buffer,
+    int content_length) -> asio::awaitable<std::string> {
+  auto& socket = GetSocket();
+
+  // Check if we already have enough data in the buffer
+  if (buffer.size() < static_cast<std::size_t>(content_length)) {
+    // Read more data to get the full content
+    co_await asio::async_read(
+        socket, buffer, asio::transfer_exactly(content_length - buffer.size()),
+        asio::use_awaitable);
+  }
+
+  // Extract the content from the buffer
+  std::string content(
+      asio::buffer_cast<const char*>(buffer.data()) + buffer.size() -
+          content_length,
+      content_length);
+
+  // Consume the content from the buffer
+  buffer.consume(content_length);
+
+  co_return content;
+}
+
+auto FramedPipeTransport::ReadHeadersFromBuffer(asio::streambuf& buffer)
+    -> FramedTransport::HeaderMap {
+  // Create a header map
+  FramedTransport::HeaderMap headers;
+
+  // Convert buffer to a string for parsing
+  std::string header_str(
+      asio::buffer_cast<const char*>(buffer.data()), buffer.size());
+
+  // Find the end of headers marker
+  size_t pos = header_str.find("\r\n\r\n");
+  if (pos == std::string::npos) {
+    return headers;  // No valid headers
+  }
+
+  // Parse each header line
+  std::istringstream header_stream(header_str.substr(0, pos));
+  std::string line;
+  while (std::getline(header_stream, line) && !line.empty() && line != "\r") {
+    // Remove trailing \r if present
+    if (!line.empty() && line.back() == '\r') {
+      line.pop_back();
+    }
+
+    // Find the colon separator
+    size_t colon_pos = line.find(':');
+    if (colon_pos != std::string::npos) {
+      std::string key = line.substr(0, colon_pos);
+      std::string value = line.substr(colon_pos + 1);
+
+      // Trim whitespace
+      value.erase(0, value.find_first_not_of(" \t"));
+
+      headers[key] = value;
+    }
+  }
+
+  // Consume the headers from the buffer, leaving only the content
+  buffer.consume(pos + 4);  // +4 for the \r\n\r\n delimiter
+
+  return headers;
+}
+
+auto FramedPipeTransport::ReadContentLength(
+    const FramedTransport::HeaderMap& headers) -> int {
+  // Look for Content-Length header
+  auto it = headers.find("Content-Length");
+  if (it == headers.end()) {
+    return 0;  // No Content-Length header
+  }
+
+  // Parse the content length
+  try {
+    return std::stoi(it->second);
+  } catch (const std::exception&) {
+    return 0;  // Invalid Content-Length
+  }
 }
 
 }  // namespace jsonrpc::transport

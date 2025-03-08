@@ -1,8 +1,8 @@
 #pragma once
 
-#include <asio.hpp>
-#include <asio/local/stream_protocol.hpp>
 #include <string>
+
+#include <asio.hpp>
 
 #include "jsonrpc/transport/framed_transport.hpp"
 #include "jsonrpc/transport/pipe_transport.hpp"
@@ -18,49 +18,81 @@ class FramedPipeTransport : public PipeTransport, protected FramedTransport {
   /**
    * @brief Constructs a FramedPipeTransport.
    *
+   * @param io_context The io_context to use for async operations.
    * @param socket_path The path to the Unix domain socket.
    * @param is_server True if the transport acts as a server; false if it acts
    * as a client.
-   * @param external_io_context Optional external io_context to use. If nullptr,
-   * creates an internal io_context.
    */
   FramedPipeTransport(
-      const std::string& socket_path, bool is_server,
-      asio::io_context* external_io_context = nullptr);
+      asio::io_context& io_context, const std::string& socket_path,
+      bool is_server);
 
-  auto SendMessage(const std::string& message) -> std::future<void> override;
-  auto ReceiveMessage() -> std::future<std::string> override;
+  // Delete copy and move constructors/assignments
+  FramedPipeTransport(const FramedPipeTransport&) = delete;
+  auto operator=(const FramedPipeTransport&) -> FramedPipeTransport& = delete;
+  FramedPipeTransport(FramedPipeTransport&&) = delete;
+  auto operator=(FramedPipeTransport&&) -> FramedPipeTransport& = delete;
 
- protected:
-  /**
-   * @brief Asynchronously sends a framed message.
-   * @param message The message to send.
-   * @param handler The callback to invoke after sending.
-   */
-  void DoAsyncSendMessage(
-      const std::string& message, SendHandler handler) override;
+  ~FramedPipeTransport() override;
 
   /**
-   * @brief Asynchronously receives a framed message.
-   * @param handler The callback to invoke after receiving.
+   * @brief Start the transport
+   *
+   * Calls PipeTransport::Start() to set up socket connections
+   *
+   * @return asio::awaitable<void>
    */
-  void DoAsyncReceiveMessage(ReceiveHandler handler) override;
+  auto Start() -> asio::awaitable<void> override;
+
+  // Override virtual methods from PipeTransport
+  auto SendMessage(const std::string& message)
+      -> asio::awaitable<void> override;
+  auto ReceiveMessage() -> asio::awaitable<std::string> override;
+  auto Close() -> asio::awaitable<void> override;
 
   /**
-   * @brief Asynchronously closes the transport.
-   * @param handler The callback to invoke after closing.
+   * @brief Close the transport synchronously.
+   *
+   * Safe to use in destructors. Delegates to the parent class.
    */
-  void DoAsyncClose(CloseHandler handler) override;
+  void CloseNow() override;
 
  private:
-  // Helper methods to reduce cognitive complexity
-  auto ReadFramedMessage(std::chrono::milliseconds timeout) -> std::string;
-  void ReadHeaders(
-      asio::streambuf& buffer, std::chrono::steady_clock::time_point deadline,
-      asio::error_code& ec);
-  void ReadContent(
-      asio::streambuf& buffer, int content_length,
-      std::chrono::steady_clock::time_point deadline, asio::error_code& ec);
+  /**
+   * @brief Reads headers from the transport.
+   *
+   * @param buffer The buffer to read from.
+   * @return Awaitable that completes when headers are read.
+   */
+  auto ReadHeaders(asio::streambuf& buffer) -> asio::awaitable<void>;
+
+  /**
+   * @brief Reads content from the transport.
+   *
+   * @param buffer The buffer to read from.
+   * @param content_length The length of the content to read.
+   * @return Awaitable that completes with the content.
+   */
+  auto ReadContent(asio::streambuf& buffer, int content_length)
+      -> asio::awaitable<std::string>;
+
+  /**
+   * @brief Reads headers from a buffer.
+   *
+   * @param buffer The buffer to read from.
+   * @return Header map.
+   */
+  static auto ReadHeadersFromBuffer(asio::streambuf& buffer)
+      -> FramedTransport::HeaderMap;
+
+  /**
+   * @brief Reads content length from headers.
+   *
+   * @param headers The headers to read from.
+   * @return Content length.
+   */
+  static auto ReadContentLength(const FramedTransport::HeaderMap& headers)
+      -> int;
 };
 
 }  // namespace jsonrpc::transport

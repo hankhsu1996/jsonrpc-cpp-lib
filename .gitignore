@@ -52,6 +52,7 @@ docs/generated/
 # IDE specific files
 .idea/
 .vscode/
+.cursor/
 *.swp
 
 # Logs

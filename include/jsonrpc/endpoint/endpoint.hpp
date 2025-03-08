@@ -1,357 +1,256 @@
 #pragma once
 
-#include <asio.hpp>
 #include <atomic>
-#include <chrono>
-#include <condition_variable>
 #include <functional>
-#include <future>
 #include <memory>
-#include <mutex>
 #include <optional>
 #include <string>
-#include <thread>
 #include <unordered_map>
 
+#include <asio/awaitable.hpp>
+#include <asio/io_context.hpp>
+#include <asio/steady_timer.hpp>
+#include <asio/strand.hpp>
 #include <nlohmann/json.hpp>
 
 #include "jsonrpc/endpoint/dispatcher.hpp"
-#include "jsonrpc/endpoint/id_generator.hpp"
+#include "jsonrpc/endpoint/pending_request.hpp"
 #include "jsonrpc/endpoint/response.hpp"
+#include "jsonrpc/endpoint/task_executor.hpp"
 #include "jsonrpc/endpoint/types.hpp"
 #include "jsonrpc/transport/transport.hpp"
 
 namespace jsonrpc::endpoint {
 
-/**
- * @brief Error handler function type.
- */
-using ErrorHandler = std::function<void(ErrorCode, const std::string&)>;
+using ErrorHandler = std::function<void(ErrorCode, const std::string &)>;
 
 /**
- * @brief A JSON-RPC endpoint that can act as both client and server.
+ * @brief RPC endpoint for sending and receiving JSON-RPC messages
  *
- * This class implements the full JSON-RPC 2.0 specification, allowing an
- * endpoint to both send and receive method calls and notifications. Each
- * endpoint can:
- * - Send method calls and receive responses (client role)
- * - Send notifications (client role)
- * - Receive and handle method calls (server role)
- * - Receive and handle notifications (server role)
- *
- * The endpoint is symmetric in its capabilities, meaning it can simultaneously:
- * - Act as a client by making requests to other endpoints
- * - Act as a server by handling requests from other endpoints
- *
- * This unified approach follows the JSON-RPC 2.0 specification where endpoints
- * are peers that can freely exchange requests and responses.
+ * This class provides a JSON-RPC endpoint that can be used to call methods
+ * on a remote endpoint and register method handlers for handling incoming
+ * requests.
  */
 class RpcEndpoint {
  public:
   /**
-   * @brief Constructs an RPC endpoint with a specified transport layer.
+   * @brief Construct a new RPC endpoint
    *
-   * This constructor is typically used for server-style endpoints where you
-   * want explicit control over the lifecycle. Call Start() to begin processing.
-   *
-   * @param transport A unique pointer to a transport layer for communication.
-   * @param id_generator A unique pointer to an ID generator strategy.
+   * @param io_ctx The IO context to use
+   * @param transport The transport layer to use
    */
   explicit RpcEndpoint(
-      std::unique_ptr<transport::Transport> transport,
-      std::unique_ptr<IdGenerator> id_generator =
-          std::make_unique<IncrementalIdGenerator>());
+      asio::io_context &io_ctx,
+      std::unique_ptr<transport::Transport> transport);
 
   /**
-   * @brief Creates a client endpoint that starts automatically.
+   * @brief Create a client endpoint
    *
-   * This factory method creates and starts an endpoint configured for client
-   * usage. The endpoint begins processing messages immediately.
-   *
-   * @param transport A unique pointer to a transport layer for communication.
-   * @return A unique pointer to the configured and started RpcEndpoint.
+   * @param io_ctx The IO context to use
+   * @param transport The transport layer to use
+   * @return std::unique_ptr<RpcEndpoint> The client endpoint
    */
-  static auto CreateClient(std::unique_ptr<transport::Transport> transport)
+  static auto CreateClient(
+      asio::io_context &io_ctx, std::unique_ptr<transport::Transport> transport)
       -> std::unique_ptr<RpcEndpoint>;
 
-  /// @brief Destructor ensures clean shutdown.
-  ~RpcEndpoint();
-
-  // Delete copy constructor and assignment
-  RpcEndpoint(const RpcEndpoint&) = delete;
-  auto operator=(const RpcEndpoint&) -> RpcEndpoint& = delete;
-
-  // Delete move constructor and assignment
-  RpcEndpoint(RpcEndpoint&&) = delete;
-  auto operator=(RpcEndpoint&&) -> RpcEndpoint& = delete;
+  // Delete copy and move constructors/assignments
+  RpcEndpoint(const RpcEndpoint &) = delete;
+  auto operator=(const RpcEndpoint &) -> RpcEndpoint & = delete;
+  RpcEndpoint(RpcEndpoint &&) = delete;
+  auto operator=(RpcEndpoint &&) -> RpcEndpoint & = delete;
 
   /**
-   * @brief Starts the endpoint's message processing.
-   *
-   * This method is typically used with server-style endpoints after
-   * construction. For client endpoints created with CreateClient(), this is
-   * called automatically.
-   *
-   * @throws std::runtime_error if the endpoint is already running
-   * @return A task that completes when the endpoint is started
+   * @brief Destructor
    */
-  auto Start() -> std::future<void>;
+  ~RpcEndpoint() = default;
 
   /**
-   * @brief Waits for the endpoint to complete all pending operations.
+   * @brief Start the endpoint
    *
-   * This method creates a waitable operation that completes when the endpoint
-   * is shut down. Typically used with server-style endpoints.
+   * Begins processing incoming messages and allows outgoing calls
+   *
+   * @return asio::awaitable<void>
    */
-  auto Wait() -> std::future<void>;
+  auto Start() -> asio::awaitable<void>;
 
   /**
-   * @brief Initiates a graceful shutdown of the endpoint.
+   * @brief Wait for the endpoint to shut down
    *
-   * This method stops message processing and cleans up resources.
-   * It is safe to call multiple times and from any thread.
+   * This will poll periodically until is_running_ is false
    *
-   * @return A task that completes when shutdown is complete
+   * @return asio::awaitable<void>
    */
-  auto Shutdown() -> std::future<void>;
+  auto WaitForShutdown() -> asio::awaitable<void>;
 
   /**
-   * @brief Checks if the endpoint is currently running.
-   * @return True if the endpoint is running; false otherwise.
+   * @brief Shut down the endpoint
+   *
+   * Stops processing messages and cancels pending requests
+   *
+   * @return asio::awaitable<void>
    */
-  auto IsRunning() const -> bool;
+  auto Shutdown() -> asio::awaitable<void>;
 
   /**
-   * @brief Sends a method call and waits for the response.
+   * @brief Check if the endpoint is running
    *
-   * This is a blocking call that sends a request and waits for the response.
-   *
-   * @param method The method name to call.
-   * @param params Optional parameters for the method call.
-   * @return The JSON-RPC response.
-   * @throws std::runtime_error if the transport is closed or on I/O errors
+   * @return bool True if running, false otherwise
    */
-  auto SendMethodCall(
-      const std::string& method,
-      std::optional<nlohmann::json> params = std::nullopt) -> nlohmann::json;
+  [[nodiscard]] auto IsRunning() const -> bool {
+    return is_running_.load();
+  }
 
   /**
-   * @brief Sends a method call asynchronously.
+   * @brief Call a method on the remote endpoint
    *
-   * This is a non-blocking call that returns a future for the response.
-   *
-   * @param method The method name to call.
-   * @param params Optional parameters for the method call.
-   * @return A task that resolves to the JSON-RPC response.
-   * @throws std::runtime_error if the transport is closed or on I/O errors
+   * @param method The method name
+   * @param params The method parameters (optional)
+   * @return asio::awaitable<nlohmann::json> The result
    */
-  auto SendMethodCallAsync(
-      const std::string& method,
+  auto CallMethod(
+      const std::string &method,
       std::optional<nlohmann::json> params = std::nullopt)
-      -> std::future<nlohmann::json>;
+      -> asio::awaitable<nlohmann::json>;
 
   /**
-   * @brief Sends a notification.
+   * @brief Send a notification to the remote endpoint
    *
-   * This is a fire-and-forget call that doesn't expect a response.
-   *
-   * @param method The method name for the notification.
-   * @param params Optional parameters for the notification.
-   * @return A task that completes when the notification is sent
-   * @throws std::runtime_error if the transport is closed or on I/O errors
+   * @param method The method name
+   * @param params The method parameters (optional)
+   * @return asio::awaitable<void>
    */
   auto SendNotification(
-      const std::string& method,
-      std::optional<nlohmann::json> params = std::nullopt) -> std::future<void>;
+      const std::string &method, std::optional<nlohmann::json> params =
+                                     std::nullopt) -> asio::awaitable<void>;
 
   /**
-   * @brief Registers a method handler for incoming method calls.
+   * @brief Register a method call handler
    *
-   * @param method The method name to register.
-   * @param handler The handler function to call when the method is invoked.
+   * @param method The method name
+   * @param handler The handler
    */
   void RegisterMethodCall(
-      const std::string& method,
-      std::function<nlohmann::json(const nlohmann::json&)> handler);
+      const std::string &method,
+      typename Dispatcher::MethodCallHandler handler);
 
   /**
-   * @brief Registers a notification handler for incoming notifications.
+   * @brief Register a notification handler
    *
-   * @param method The method name to register.
-   * @param handler The handler function to call when the notification is
-   * received.
+   * @param method The method name
+   * @param handler The handler
    */
   void RegisterNotification(
-      const std::string& method,
-      std::function<void(const nlohmann::json&)> handler);
+      const std::string &method,
+      typename Dispatcher::NotificationHandler handler);
 
   /**
-   * @brief Checks if there are any pending requests.
-   * @return True if there are pending requests; false otherwise.
+   * @brief Check if there are pending requests
+   *
+   * @return bool True if there are pending requests, false otherwise
    */
   [[nodiscard]] auto HasPendingRequests() const -> bool;
 
   /**
-   * @brief Sets a handler for transport errors.
-   * @param handler The error handler function.
+   * @brief Set the error handler
+   *
+   * @param handler The error handler
    */
   void SetErrorHandler(ErrorHandler handler);
 
+  /**
+   * @brief Report an error
+   *
+   * @param code The error code
+   * @param message The error message
+   */
+  void ReportError(ErrorCode code, const std::string &message);
+
  private:
   /**
-   * @brief Starts asynchronous message processing chain.
-   *
-   * This method initiates the asynchronous message processing chain by posting
-   * a task to the endpoint's strand to process the next message.
+   * @brief Start message processing
    */
   void StartMessageProcessing();
 
   /**
-   * @brief Processes the next message asynchronously.
+   * @brief Process the next message
    *
-   * This method asynchronously processes the next message from the transport,
-   * dispatches it to the appropriate handler, and then chains to process
-   * the next message.
+   * @return asio::awaitable<void>
    */
-  void ProcessNextMessage();
+  auto ProcessNextMessage() -> asio::awaitable<void>;
 
   /**
-   * @brief Handles a received message.
+   * @brief Handle a message
    *
-   * This method parses the message and dispatches it to the appropriate
-   * handler based on whether it's a request, notification, or response.
-   *
-   * @param message The JSON-RPC message as a string.
+   * @param message The message
    */
-  void HandleMessage(const std::string& message);
+  auto HandleMessage(const std::string &message) -> asio::awaitable<void>;
 
   /**
-   * @brief Handles a response to a previous request.
+   * @brief Handle a response
    *
-   * This method finds the corresponding promise for the response ID
-   * and fulfills it with the response.
-   *
-   * @param response The JSON-RPC response.
+   * @param response The response
    */
-  void HandleResponse(const Response& response);
+  auto HandleResponse(const Response &response) -> asio::awaitable<void>;
 
   /**
-   * @brief Gets the next request ID from the ID generator.
-   * @return The next request ID.
-   */
-  auto GetNextRequestId() -> RequestId;
-
-  /**
-   * @brief Executes a function with the transport via the endpoint strand.
+   * @brief Get the next request ID
    *
-   * This method ensures that transport operations are serialized through
-   * the strand to avoid data races.
-   *
-   * @param f The function to execute with the transport.
-   * @return The result of the function.
+   * @return int64_t The next request ID
    */
-  template <typename Func>
-  auto WithTransport(Func&& f)
-      -> std::enable_if_t<
-          !std::is_void_v<std::invoke_result_t<Func, transport::Transport&>>,
-          std::invoke_result_t<Func, transport::Transport&>> {
-    using ReturnType = std::invoke_result_t<Func, transport::Transport&>;
-
-    // Direct execution if we're already in the strand or no strand exists
-    if (!endpoint_strand_ || endpoint_strand_->running_in_this_thread()) {
-      return f(*transport_);
-    }
-
-    // For asynchronous usage, create a promise/future pair and block
-    std::promise<ReturnType> promise;
-    auto future = promise.get_future();
-
-    asio::post(
-        *endpoint_strand_, [this, f = std::forward<Func>(f),
-                            promise = std::move(promise)]() mutable {
-          try {
-            promise.set_value(f(*transport_));
-          } catch (...) {
-            promise.set_exception(std::current_exception());
-          }
-        });
-
-    // Synchronous wait for the result
-    return future.get();
+  auto GetNextRequestId() -> int64_t {
+    return next_request_id_++;
   }
 
   /**
-   * @brief Executes a void-returning function with the transport via the
-   * endpoint strand.
-   *
-   * This is a specialized version for functions that return void.
-   *
-   * @param f The function to execute with the transport.
+   * @brief Schedule a retry for message processing
    */
-  template <typename Func>
-  auto WithTransport(Func&& f)
-      -> std::enable_if_t<
-          std::is_void_v<std::invoke_result_t<Func, transport::Transport&>>,
-          void> {
-    // Direct execution if we're already in the strand or no strand exists
-    if (!endpoint_strand_ || endpoint_strand_->running_in_this_thread()) {
-      f(*transport_);
-      return;
-    }
+  void ScheduleRetryProcessing();
 
-    // For asynchronous usage, create a promise/future pair and block
-    std::promise<void> promise;
-    auto future = promise.get_future();
+  /// Reference to the IO context
+  asio::io_context &io_ctx_;
 
-    asio::post(
-        *endpoint_strand_, [this, f = std::forward<Func>(f),
-                            promise = std::move(promise)]() mutable {
-          try {
-            f(*transport_);
-            promise.set_value();
-          } catch (...) {
-            promise.set_exception(std::current_exception());
-          }
-        });
-
-    // Synchronous wait for completion
-    future.get();
-  }
-
-  /**
-   * @brief Reports an error through the error handler if set.
-   *
-   * @param code The error code.
-   * @param message The error message.
-   */
-  void ReportError(ErrorCode code, const std::string& message);
-
-  /// Default timeout for shutdown
-  static constexpr auto kShutdownTimeout = std::chrono::milliseconds(5000);
-
-  /// Transport layer for communication
+  /// Transport layer
   std::unique_ptr<transport::Transport> transport_;
 
-  /// Dispatcher for handling incoming requests and notifications
-  std::unique_ptr<Dispatcher> dispatcher_;
+  /// Task executor for async processing
+  std::shared_ptr<TaskExecutor> task_executor_;
 
-  /// ID generator for generating request IDs
-  std::unique_ptr<IdGenerator> id_generator_;
+  /// Dispatcher for handling requests
+  Dispatcher dispatcher_;
 
-  /// Map of pending requests and their promises
-  std::unordered_map<RequestId, std::promise<nlohmann::json>> pending_requests_;
+  /// Pending requests
+  std::unordered_map<int64_t, std::shared_ptr<PendingRequest>>
+      pending_requests_;
 
-  /// Flag indicating if the endpoint is running
+  /// Running state flag
   std::atomic<bool> is_running_{false};
 
   /// Error handler
   ErrorHandler error_handler_;
 
-  /// Strand for serializing endpoint operations
-  std::unique_ptr<asio::io_context::strand> endpoint_strand_;
+  /// Strand for endpoint operations
+  asio::strand<asio::any_io_executor> endpoint_strand_;
 
-  /// Shutdown promise for Wait() operation
-  std::shared_ptr<std::promise<void>> shutdown_promise_;
+  /// Next request ID
+  std::atomic<int64_t> next_request_id_{0};
+};
+
+/**
+ * @brief Exception class for RPC errors
+ */
+class RpcError : public std::runtime_error {
+ public:
+  RpcError(ErrorCode code, const std::string &message)
+      : std::runtime_error(message), code_(code) {
+  }
+
+  [[nodiscard]] auto GetCode() const -> ErrorCode {
+    return code_;
+  }
+
+ private:
+  ErrorCode code_;
 };
 
 }  // namespace jsonrpc::endpoint

@@ -1,211 +1,67 @@
 #pragma once
 
-#include <asio.hpp>
+#include <functional>
+#include <memory>
 #include <optional>
 #include <string>
 #include <unordered_map>
-#include <vector>
 
+#include <asio.hpp>
 #include <nlohmann/json.hpp>
 
-#include "jsonrpc/endpoint/request.hpp"
 #include "jsonrpc/endpoint/response.hpp"
-#include "jsonrpc/endpoint/types.hpp"
+#include "jsonrpc/endpoint/task_executor.hpp"
 
 namespace jsonrpc::endpoint {
 
-/**
- * @brief Dispatcher for JSON-RPC requests.
- *
- * Dispatcher manages the registration and execution of method call and
- * notification handlers for JSON-RPC requests. It can operate with
- * ASIO strand for thread safety.
- */
 class Dispatcher {
  public:
-  /**
-   * @brief Constructs a Dispatcher.
-   *
-   * @param strand Optional pointer to an ASIO strand for thread safety.
-   */
-  explicit Dispatcher(asio::io_context::strand *strand = nullptr);
+  using MethodCallHandler = std::function<asio::awaitable<nlohmann::json>(
+      const std::optional<nlohmann::json>&)>;
+  using NotificationHandler = std::function<asio::awaitable<void>(
+      const std::optional<nlohmann::json>&)>;
 
-  Dispatcher(const Dispatcher &) = delete;
-  Dispatcher(Dispatcher &&) = delete;
-  auto operator=(const Dispatcher &) -> Dispatcher & = delete;
-  auto operator=(Dispatcher &&) -> Dispatcher & = delete;
+  explicit Dispatcher(std::shared_ptr<TaskExecutor> executor);
 
-  /// @brief Destructor.
+  Dispatcher(const Dispatcher&) = delete;
+  Dispatcher(Dispatcher&&) = delete;
+  auto operator=(const Dispatcher&) -> Dispatcher& = delete;
+  auto operator=(Dispatcher&&) -> Dispatcher& = delete;
   virtual ~Dispatcher() = default;
 
-  /**
-   * @brief Processes a JSON-RPC request.
-   *
-   * Dispatches the request to the appropriate handler.
-   *
-   * @param request The JSON-RPC request as a string.
-   * @return The response from the handler as a JSON string, or std::nullopt if
-   * no response is needed.
-   */
-  auto DispatchRequest(const std::string &request)
-      -> std::optional<std::string>;
-
-  /**
-   * @brief Registers a method call handler.
-   *
-   * @param method The name of the RPC method.
-   * @param handler The handler function for this method.
-   */
+  /// @brief Register a method call handler
   void RegisterMethodCall(
-      const std::string &method, const MethodCallHandler &handler);
+      const std::string& method, const MethodCallHandler& handler);
 
-  /**
-   * @brief Registers a notification handler.
-   *
-   * @param method The name of the RPC notification.
-   * @param handler The handler function for this notification.
-   */
+  /// @brief Register a notification handler
   void RegisterNotification(
-      const std::string &method, const NotificationHandler &handler);
+      const std::string& method, const NotificationHandler& handler);
+
+  /// @brief Dispatch a request
+  auto DispatchRequest(const std::string& request)
+      -> asio::awaitable<std::optional<std::string>>;
 
  private:
-  /**
-   * @brief Parses and validates the JSON request string.
-   *
-   * Attempts to parse the input string as JSON. If parsing fails, logs an error
-   * and returns std::nullopt.
-   *
-   * @param requestStr The JSON-RPC request as a string.
-   * @return The parsed JSON object, or std::nullopt if parsing failed.
-   */
-  static auto ParseAndValidateJson(const std::string &request_str)
-      -> std::optional<nlohmann::json>;
+  /// @brief Dispatch a single request
+  auto DispatchSingleRequest(const nlohmann::json& request_json)
+      -> asio::awaitable<std::optional<nlohmann::json>>;
 
-  /**
-   * @brief Dispatches a single request to the appropriate handler and returns a
-   * JSON string.
-   *
-   * This method handles single JSON-RPC requests, delegating to the appropriate
-   * handler or generating an error response.
-   *
-   * @param requestJson The parsed JSON request.
-   * @return The response as a JSON string, or std::nullopt if no response is
-   * needed.
-   */
-  auto DispatchSingleRequest(const nlohmann::json &request_json)
-      -> std::optional<std::string>;
+  /// @brief Dispatch a batch request
+  auto DispatchBatchRequest(const nlohmann::json& request_json)
+      -> asio::awaitable<std::optional<std::string>>;
 
-  /**
-   * @brief Internal method to dispatch a single request to the appropriate
-   * handler and returns a JSON object.
-   *
-   * Validates the request, finds the appropriate handler, and processes the
-   * request. If an error occurs, a JSON error response is generated.
-   *
-   * @param requestJson The parsed JSON request.
-   * @return The response as a JSON object, or std::nullopt if no response is
-   * needed.
-   */
-  auto DispatchSingleRequestInner(const nlohmann::json &request_json)
-      -> std::optional<nlohmann::json>;
-
-  /**
-   * @brief Dispatches a batch request to the appropriate handlers and returns a
-   * JSON string.
-   *
-   * Handles a batch of JSON-RPC requests, processing each one using the
-   * configured strand.
-   *
-   * @param requestJson The parsed JSON batch request.
-   * @return The batch response as a JSON string, or std::nullopt if no
-   * responses are needed.
-   */
-  auto DispatchBatchRequest(const nlohmann::json &request_json)
-      -> std::optional<std::string>;
-
-  /**
-   * @brief Internal method to dispatch a batch request to the appropriate
-   * handlers and returns a vector of JSON objects.
-   *
-   * Processes each request in the batch, using the strand if available.
-   *
-   * @param requestJson The parsed JSON batch request.
-   * @return A vector of JSON objects representing the responses.
-   */
-  auto DispatchBatchRequestInner(const nlohmann::json &request_json)
-      -> std::vector<nlohmann::json>;
-
-  /**
-   * @brief Validates the request JSON object.
-   *
-   * Checks the structure and required fields of a JSON-RPC request. If
-   * validation fails, returns an appropriate error response.
-   *
-   * @param requestJson The JSON-RPC request object.
-   * @return An error response if validation fails, or std::nullopt if
-   * validation succeeds.
-   */
-  static auto ValidateRequest(const nlohmann::json &request_json)
+  /// @brief Validate a request
+  static auto ValidateRequest(const nlohmann::json& request_json)
       -> std::optional<Response>;
 
-  /**
-   * @brief Finds the handler for the specified method.
-   *
-   * Looks up the handler for a given method name in the registered handlers
-   * map.
-   *
-   * @param handlers The map of method names to handlers.
-   * @param method The name of the method to find.
-   * @return The handler for the method, or std::nullopt if not found.
-   */
-  static auto FindHandler(
-      const std::unordered_map<std::string, Handler> &handlers,
-      const std::string &method) -> std::optional<Handler>;
+  /// @brief Method call handlers
+  std::unordered_map<std::string, MethodCallHandler> method_handlers_;
 
-  /**
-   * @brief Handles the request (method call or notification) using the
-   * appropriate handler.
-   *
-   * Determines whether the request is a method call or notification, and
-   * processes it accordingly using the provided handler.
-   *
-   * @param request The parsed JSON-RPC request.
-   * @param handler The handler to process the request.
-   * @return The response as a JSON object, or std::nullopt if no response is
-   * needed.
-   */
-  static auto HandleRequest(const Request &request, const Handler &handler)
-      -> std::optional<nlohmann::json>;
+  /// @brief Notification handlers
+  std::unordered_map<std::string, NotificationHandler> notification_handlers_;
 
-  /**
-   * @brief Handles a method call request.
-   *
-   * Executes the registered method call handler and returns the response.
-   *
-   * @param request The parsed JSON-RPC request.
-   * @param handler The method call handler to execute.
-   * @return The JSON-RPC response object.
-   */
-  static auto HandleMethodCall(
-      const Request &request, const MethodCallHandler &handler) -> Response;
-
-  /**
-   * @brief Handles a notification request.
-   *
-   * Executes the registered notification handler. Notifications do not require
-   * a response.
-   *
-   * @param request The parsed JSON-RPC request.
-   * @param handler The notification handler to execute.
-   */
-  static void HandleNotification(
-      const Request &request, const NotificationHandler &handler);
-
-  /// @brief A map of method names to method call handlers.
-  std::unordered_map<std::string, Handler> handlers_;
-
-  /// @brief ASIO strand for thread safety.
-  asio::io_context::strand *strand_;
+  /// @brief Task execution manager
+  std::shared_ptr<TaskExecutor> executor_;
 };
 
 }  // namespace jsonrpc::endpoint

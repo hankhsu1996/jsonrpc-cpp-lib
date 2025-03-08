@@ -48,37 +48,11 @@ cc_binary(
     deps = ["//src:jsonrpc_lib"],
 )
 
-# Calculator example using Framed ASIO socket transport
-cc_binary(
-    name = "framed_socket_client",
-    srcs = ["calculator_example/framed_socket/client.cpp"],
-    deps = ["//src:jsonrpc_lib"],
-)
-
-cc_binary(
-    name = "framed_socket_server",
-    srcs = [
-        "calculator_example/calculator.hpp",
-        "calculator_example/framed_socket/server.cpp",
-    ],
-    deps = ["//src:jsonrpc_lib"],
-)
-
 # LSP example using Unix domain socket (pipe) transport
 cc_binary(
     name = "pipe_lsp_server",
     srcs = [
         "lsp_example/pipe/lsp_server.cpp",
-        "lsp_example/utils.hpp",
-    ],
-    deps = ["//src:jsonrpc_lib"],
-)
-
-# LSP example using ASIO socket transport
-cc_binary(
-    name = "socket_lsp_server",
-    srcs = [
-        "lsp_example/socket/lsp_server.cpp",
         "lsp_example/utils.hpp",
     ],
     deps = ["//src:jsonrpc_lib"],

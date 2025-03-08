@@ -1,74 +1,112 @@
 #pragma once
 
 #include <array>
-#include <asio.hpp>
-#include <asio/local/stream_protocol.hpp>
 #include <atomic>
 #include <string>
+
+#include <asio.hpp>
+#include <asio/local/stream_protocol.hpp>
 
 #include "jsonrpc/transport/transport.hpp"
 
 namespace jsonrpc::transport {
 
 /**
- * @brief Transport implementation using Unix domain sockets.
+ * @brief Unix domain socket transport implementation.
  *
- * This class provides transport functionality over Unix domain sockets,
- * supporting local communication between processes on the same machine.
+ * This transport uses Unix domain sockets to communicate between endpoints.
  */
 class PipeTransport : public Transport {
  public:
   /**
-   * @brief Constructs a PipeTransport.
+   * @brief Constructs a new Pipe Transport object.
    *
-   * @param socket_path The path to the Unix domain socket.
-   * @param is_server True if the transport acts as a server; false if it acts
-   * as a client.
-   * @param external_io_context Optional external io_context to use. If nullptr,
-   * creates an internal io_context.
+   * @param io_context The IO context to use.
+   * @param socket_path The path to the socket file.
+   * @param is_server Whether this endpoint is a server (true) or client
+   * (false).
    */
   explicit PipeTransport(
-      std::string socket_path, bool is_server = false,
-      asio::io_context *external_io_context = nullptr);
+      asio::io_context& io_context, std::string socket_path,
+      bool is_server = false);
 
+  /**
+   * @brief Destroys the Pipe Transport object.
+   */
   ~PipeTransport() override;
 
-  PipeTransport(const PipeTransport &) = delete;
-  auto operator=(const PipeTransport &) -> PipeTransport & = delete;
+  // Delete copy and move constructors/assignments
+  PipeTransport(const PipeTransport&) = delete;
+  auto operator=(const PipeTransport&) -> PipeTransport& = delete;
 
-  PipeTransport(PipeTransport &&) = delete;
-  auto operator=(PipeTransport &&) -> PipeTransport & = delete;
-
-  auto SendMessage(const std::string &message) -> std::future<void> override;
-  auto ReceiveMessage() -> std::future<std::string> override;
-  auto Close() -> std::future<void> override;
+  PipeTransport(PipeTransport&&) = delete;
+  auto operator=(PipeTransport&&) -> PipeTransport& = delete;
 
   /**
    * @brief Gets the underlying socket.
-   * @return A reference to the socket.
+   *
+   * @return Reference to the socket
    */
-  auto GetSocket() -> asio::local::stream_protocol::socket &;
+  auto GetSocket() -> asio::local::stream_protocol::socket&;
+
+  /**
+   * @brief Start the transport
+   *
+   * For server: Sets up the socket and begins listening
+   * For client: Connects to the server
+   *
+   * @return asio::awaitable<void>
+   */
+  auto Start() -> asio::awaitable<void> override;
+
+  auto SendMessage(const std::string& message)
+      -> asio::awaitable<void> override;
+
+  auto ReceiveMessage() -> asio::awaitable<std::string> override;
+
+  auto Close() -> asio::awaitable<void> override;
+
+  /**
+   * @brief Close the transport synchronously.
+   *
+   * Safe to use in destructors. Immediately cancels operations and closes
+   * socket connections.
+   */
+  void CloseNow() override;
 
  protected:
+  /**
+   * @brief Removes the socket file if it exists.
+   *
+   * This is called before binding to ensure that the socket file doesn't
+   * already exist.
+   */
   void RemoveExistingSocketFile();
-  auto Connect() -> std::future<void>;
-  auto BindAndListen() -> std::future<void>;
 
-  // Override the async methods from Transport to provide efficient
-  // implementations
-  void DoAsyncSendMessage(
-      const std::string &message, SendHandler handler) override;
-  void DoAsyncReceiveMessage(ReceiveHandler handler) override;
-  void DoAsyncClose(CloseHandler handler) override;
+  /**
+   * @brief Connects to a server.
+   *
+   * @return asio::awaitable<void>
+   */
+  auto Connect() -> asio::awaitable<void>;
+
+  /**
+   * @brief Binds to a socket and starts listening.
+   *
+   * @return asio::awaitable<void>
+   */
+  auto BindAndListen() -> asio::awaitable<void>;
 
  private:
-  asio::io_context::strand strand_;
   asio::local::stream_protocol::socket socket_;
+  std::shared_ptr<asio::local::stream_protocol::acceptor> acceptor_;
   std::string socket_path_;
   bool is_server_;
   std::atomic<bool> is_closed_{false};
+  std::atomic<bool> is_started_{false};
+  std::atomic<bool> is_connected_{false};
 
-  // Buffer for receiving data
+  // Buffer for reading data
   std::array<char, 1024> read_buffer_;
   std::string message_buffer_;
 };

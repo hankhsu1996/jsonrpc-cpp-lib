@@ -7,16 +7,17 @@
 namespace jsonrpc::transport {
 
 void FramedTransport::FrameMessage(
-    std::ostream &output, const std::string &message) {
+    std::ostream& output, const std::string& message) {
   output << "Content-Length: " << message.size() << "\r\n"
          << "Content-Type: application/vscode-jsonrpc; charset=utf-8\r\n"
          << "\r\n"
          << message;
 }
 
-auto FramedTransport::ReadHeadersFromStream(std::istream &input)
+auto FramedTransport::ReadHeadersFromBuffer(asio::streambuf& buffer)
     -> FramedTransport::HeaderMap {
   HeaderMap headers;
+  std::istream input(&buffer);
   std::string line;
 
   while (std::getline(input, line) && !line.empty() && line != "\r") {
@@ -35,8 +36,7 @@ auto FramedTransport::ReadHeadersFromStream(std::istream &input)
   return headers;
 }
 
-auto FramedTransport::ReadContentLengthFromStream(std::istream &input) -> int {
-  auto headers = ReadHeadersFromStream(input);
+auto FramedTransport::ReadContentLength(const HeaderMap& headers) -> int {
   auto it = headers.find("Content-Length");
   if (it == headers.end()) {
     throw std::runtime_error("Content-Length header missing");
@@ -45,7 +45,8 @@ auto FramedTransport::ReadContentLengthFromStream(std::istream &input) -> int {
 }
 
 auto FramedTransport::ReadContent(
-    std::istream &input, std::size_t content_length) -> std::string {
+    asio::streambuf& buffer, std::size_t content_length) -> std::string {
+  std::istream input(&buffer);
   std::string content(content_length, '\0');
   input.read(content.data(), static_cast<std::streamsize>(content_length));
   if (input.gcount() != static_cast<std::streamsize>(content_length)) {
@@ -54,18 +55,13 @@ auto FramedTransport::ReadContent(
   return content;
 }
 
-auto FramedTransport::ReceiveFramedMessage(std::istream &input) -> std::string {
-  int content_length = ReadContentLengthFromStream(input);
-  return ReadContent(input, content_length);
-}
-
-auto FramedTransport::ParseContentLength(const std::string &header_value)
+auto FramedTransport::ParseContentLength(const std::string& header_value)
     -> int {
   try {
     return std::stoi(header_value);
-  } catch (const std::invalid_argument &) {
+  } catch (const std::invalid_argument&) {
     throw std::runtime_error("Invalid Content-Length value");
-  } catch (const std::out_of_range &) {
+  } catch (const std::out_of_range&) {
     throw std::runtime_error("Content-Length value out of range");
   }
 }

@@ -7,7 +7,7 @@ IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^"jsonrpc/.*"'
     Priority: 3
-  - Regex: "^<(jsonrpc|nlohmann|fmt|spdlog|BS_thread_pool|catch2).*>"
+  - Regex: "^<(jsonrpc|nlohmann|fmt|spdlog|catch2|asio).*>"
     Priority: 2
   - Regex: "^<.*>"
     Priority: 1
