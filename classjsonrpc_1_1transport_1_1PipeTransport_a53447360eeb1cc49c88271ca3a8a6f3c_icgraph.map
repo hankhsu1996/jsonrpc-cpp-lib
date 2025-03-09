@@ -1,0 +1,5 @@
+<map id="jsonrpc::transport::PipeTransport::Close" name="jsonrpc::transport::PipeTransport::Close">
+<area shape="rect" id="Node000001" title="Closes the transport asynchronously." alt="" coords="220,13,383,53"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a77ba21a178c18f1bbd00f08e7bffd5fc" title="Closes the transport asynchronously." alt="" coords="5,5,172,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,35,172,35,172,30,206,30"/>
+</map>

@@ -1,7 +1,0 @@
-<map id="jsonrpc::transport::FramedPipeTransport::SendMessage" name="jsonrpc::transport::FramedPipeTransport::SendMessage">
-<area shape="rect" id="Node000001" title="Sends a message in string to the transport layer." alt="" coords="5,30,172,85"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedTransport.html#ae5317dd37dd2638b8e7c013854719dec" title="Constructs a framed message." alt="" coords="220,5,467,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,44,206,40,206,45,173,50"/>
-<area shape="rect" id="Node000003" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765" title=" " alt="" coords="247,69,439,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,65,234,73,233,78,172,70"/>
-</map>

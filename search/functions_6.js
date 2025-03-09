@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['nextid_0',['NextId',['../classjsonrpc_1_1endpoint_1_1IdGenerator.html#a1d83902cdf3118dfeeda8461cf1dbdab',1,'jsonrpc::endpoint::IdGenerator::NextId()'],['../classjsonrpc_1_1endpoint_1_1IncrementalIdGenerator.html#abd4c6426824ea61a5b8e966bd12a5143',1,'jsonrpc::endpoint::IncrementalIdGenerator::NextId()']]]
+  ['haserror_0',['HasError',['../classjsonrpc_1_1endpoint_1_1PendingRequest.html#a2caf3afebb4080eee862104ffbe9465f',1,'jsonrpc::endpoint::PendingRequest']]],
+  ['haspendingrequests_1',['HasPendingRequests',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64',1,'jsonrpc::endpoint::RpcEndpoint']]]
 ];

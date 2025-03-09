@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html" target="_top" xlink:title="A JSON&#45;RPC endpoint that can act as both client and server.">
+<g id="a_Node000000"><a xlink:href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html" target="_top" xlink:title="RPC endpoint for sending and receiving JSON&#45;RPC messages.">
 <polygon fill="white" stroke="#666666" points="107,-30 0,-30 0,0 107,0 107,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::endpoint::</text>
 <text text-anchor="middle" x="53.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RpcEndpoint</text>

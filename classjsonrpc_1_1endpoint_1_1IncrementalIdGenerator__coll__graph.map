@@ -1,5 +1,0 @@
-<map id="jsonrpc::endpoint::IncrementalIdGenerator" name="jsonrpc::endpoint::IncrementalIdGenerator">
-<area shape="rect" id="Node000001" title="Generates incrementing numeric IDs starting from 0." alt="" coords="5,253,175,333"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1IdGenerator.html" title="Interface for generating request IDs." alt="" coords="23,5,157,205"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,219,93,253,87,253,87,219"/>
-</map>

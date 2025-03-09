@@ -1,0 +1,5 @@
+<map id="jsonrpc::endpoint::Request::ParseAndValidateJson" name="jsonrpc::endpoint::Request::ParseAndValidateJson">
+<area shape="rect" id="Node000001" title="Parses and validates a JSON string as a JSON&#45;RPC request." alt="" coords="264,5,487,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Dispatcher.html#a9775a517982e4d9c08851239453934ff" title="Dispatch a request." alt="" coords="5,5,216,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,28,216,28,216,23,250,23"/>
+</map>

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Dispatcher for JSON&#45;RPC requests.">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="transparent" points="126,-180 0,-180 0,0 126,0 126,-180"/>
 <text text-anchor="start" x="17.5" y="-168" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::endpoint::</text>
 <text text-anchor="start" x="36.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">Dispatcher</text>
@@ -29,11 +29,11 @@
 <text text-anchor="start" x="4" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">~Dispatcher()</text>
 <text text-anchor="start" x="4" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">DispatchRequest()</text>
+<text text-anchor="start" x="17" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">RegisterMethodCall()</text>
 <text text-anchor="start" x="4" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">RegisterMethodCall()</text>
+<text text-anchor="start" x="17" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">RegisterNotification()</text>
 <text text-anchor="start" x="4" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RegisterNotification()</text>
+<text text-anchor="start" x="17" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">DispatchRequest()</text>
 <polygon fill="#666666" stroke="#666666" points="0,-152 0,-152 126,-152 126,-152 0,-152"/>
 <polygon fill="#666666" stroke="#666666" points="0,-137 0,-137 126,-137 126,-137 0,-137"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-180 126,-180 126,0 0,0"/>

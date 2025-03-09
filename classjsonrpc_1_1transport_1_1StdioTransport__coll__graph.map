@@ -1,5 +1,0 @@
-<map id="jsonrpc::transport::StdioTransport" name="jsonrpc::transport::StdioTransport">
-<area shape="rect" id="Node000001" title="Transport layer using standard I/O for JSON&#45;RPC communication." alt="" coords="5,293,155,413"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html" title="Base class for JSON&#45;RPC transport." alt="" coords="5,5,155,245"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,260,83,293,77,293,77,260"/>
-</map>

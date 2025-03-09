@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['methodcallhandler_0',['MethodCallHandler',['../namespacejsonrpc_1_1endpoint.html#a2a392ab1c40a5b783c98af8ce2e36e71',1,'jsonrpc::endpoint']]],
-  ['modern_20c_20library_1',['JSON-RPC 2.0 Modern C++ Library',['../index.html',1,'']]]
+  ['liberrorkind_0',['LibErrorKind',['../namespacejsonrpc_1_1endpoint.html#a2e18db7323b95f7c68d7afb25f3f9f44',1,'jsonrpc::endpoint']]],
+  ['library_1',['JSON-RPC 2.0 Modern C++ Library',['../index.html',1,'']]],
+  ['license_2',['License',['../index.html#autotoc_md19',1,'']]]
 ];

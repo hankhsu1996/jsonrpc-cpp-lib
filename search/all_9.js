@@ -1,14 +1,15 @@
 var searchData=
 [
-  ['geterror_0',['GetError',['../classjsonrpc_1_1endpoint_1_1Response.html#aa186f2c6882041cfea79a1103c6e617f',1,'jsonrpc::endpoint::Response']]],
-  ['getid_1',['GetId',['../classjsonrpc_1_1endpoint_1_1Request.html#a65f87c28ed1278c1133bdbea25bc35dd',1,'jsonrpc::endpoint::Request::GetId()'],['../classjsonrpc_1_1endpoint_1_1Response.html#a392cb93f0cefc47802ef25bf99c41bd9',1,'jsonrpc::endpoint::Response::GetId()']]],
-  ['getmaxbatchsize_2',['GetMaxBatchSize',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae9ccb692e5443f20ef896ba455929671',1,'jsonrpc::endpoint::RpcEndpoint']]],
-  ['getmethod_3',['GetMethod',['../classjsonrpc_1_1endpoint_1_1Request.html#a0bda024faebe36b8deafd4f45ad0297a',1,'jsonrpc::endpoint::Request']]],
-  ['getparams_4',['GetParams',['../classjsonrpc_1_1endpoint_1_1Request.html#a4b9ee1bbd1d06f7b58bc038079366937',1,'jsonrpc::endpoint::Request']]],
-  ['getpendingrequestcount_5',['GetPendingRequestCount',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5092fe182ec82d48f29c9f974096561e',1,'jsonrpc::endpoint::RpcEndpoint']]],
-  ['getrequesttimeout_6',['GetRequestTimeout',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ad3952e20b3ed095ba6c35fe6b926efcf',1,'jsonrpc::endpoint::RpcEndpoint']]],
-  ['getresult_7',['GetResult',['../classjsonrpc_1_1endpoint_1_1Response.html#a1c033921f18c991bbeba0fa2adcea199',1,'jsonrpc::endpoint::Response']]],
-  ['getsocket_8',['GetSocket',['../classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765',1,'jsonrpc::transport::PipeTransport::GetSocket()'],['../classjsonrpc_1_1transport_1_1SocketTransport.html#a336ccd597046e343c7f4026359c7887c',1,'jsonrpc::transport::SocketTransport::GetSocket()']]],
-  ['getting_20started_9',['🚀 Getting Started',['../index.html#autotoc_md2',1,'']]],
-  ['guide_10',['🛠️ Developer Guide',['../index.html#autotoc_md9',1,'']]]
+  ['features_0',['Features',['../index.html#autotoc_md1',1,'']]],
+  ['fetchcontent_1',['A. As a Build-Time Dependency (FetchContent)',['../index.html#autotoc_md7',1,'']]],
+  ['find_5fpackage_2',['B. As a System-Wide Installation (find_package)',['../index.html#autotoc_md8',1,'']]],
+  ['framed_5fpipe_5ftransport_2ecpp_3',['framed_pipe_transport.cpp',['../framed__pipe__transport_8cpp.html',1,'']]],
+  ['framed_5fpipe_5ftransport_2ehpp_4',['framed_pipe_transport.hpp',['../framed__pipe__transport_8hpp.html',1,'']]],
+  ['framed_5ftransport_2ecpp_5',['framed_transport.cpp',['../framed__transport_8cpp.html',1,'']]],
+  ['framed_5ftransport_2ehpp_6',['framed_transport.hpp',['../framed__transport_8hpp.html',1,'']]],
+  ['framedpipetransport_7',['FramedPipeTransport',['../classjsonrpc_1_1transport_1_1FramedPipeTransport.html',1,'jsonrpc::transport::FramedPipeTransport'],['../classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a82b55ba871a8da2af1af6b4154af7dc9',1,'jsonrpc::transport::FramedPipeTransport::FramedPipeTransport(asio::io_context &amp;io_context, const std::string &amp;socket_path, bool is_server)'],['../classjsonrpc_1_1transport_1_1FramedPipeTransport.html#ade201d03ad5729c86f885076f1a38fcb',1,'jsonrpc::transport::FramedPipeTransport::FramedPipeTransport(const FramedPipeTransport &amp;)=delete'],['../classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a9acd2436449902deaa39a89e443fb3a5',1,'jsonrpc::transport::FramedPipeTransport::FramedPipeTransport(FramedPipeTransport &amp;&amp;)=delete']]],
+  ['framedtransport_8',['FramedTransport',['../classjsonrpc_1_1transport_1_1FramedTransport.html',1,'jsonrpc::transport']]],
+  ['framedtransporttest_9',['FramedTransportTest',['../classjsonrpc_1_1transport_1_1FramedTransport.html#ab17de8da018257c556c0a31e0a05b16f',1,'jsonrpc::transport::FramedTransport']]],
+  ['framemessage_10',['FrameMessage',['../classjsonrpc_1_1transport_1_1FramedTransport.html#ae5317dd37dd2638b8e7c013854719dec',1,'jsonrpc::transport::FramedTransport']]],
+  ['fromjson_11',['FromJson',['../classjsonrpc_1_1endpoint_1_1Request.html#a2101279416a9f9fad5fd7abdd4df5d32',1,'jsonrpc::endpoint::Request::FromJson()'],['../classjsonrpc_1_1endpoint_1_1Response.html#a3c90a69a0e364b1c53e1bce193e574eb',1,'jsonrpc::endpoint::Response::FromJson()']]]
 ];

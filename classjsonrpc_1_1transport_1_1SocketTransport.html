@@ -114,33 +114,33 @@ $(function(){initNavTree('classjsonrpc_1_1transport_1_1SocketTransport.html','')
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classjsonrpc_1_1transport_1_1SocketTransport-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">jsonrpc::transport::SocketTransport Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Base class for JSON-RPC transport.">Transport</a> implementation using TCP/IP sockets.  
+<p><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> implementation using TCP/IP sockets.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="socket__transport_8hpp_source.html">socket_transport.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for jsonrpc::transport::SocketTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport__inherit__graph.svg" width="202" height="727"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport__inherit__graph.svg" width="164" height="699"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for jsonrpc::transport::SocketTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport__coll__graph.svg" width="164" height="559"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport__coll__graph.svg" width="164" height="699"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8c5b98c6bc57cbe0812e47152545cf6e" id="r_a8c5b98c6bc57cbe0812e47152545cf6e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c5b98c6bc57cbe0812e47152545cf6e">SocketTransport</a> (const std::string &amp;host, uint16_t port, bool is_server)</td></tr>
-<tr class="memdesc:a8c5b98c6bc57cbe0812e47152545cf6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html" title="Transport implementation using TCP/IP sockets.">SocketTransport</a>.  <br /></td></tr>
-<tr class="separator:a8c5b98c6bc57cbe0812e47152545cf6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5c5c0a96777b4885a4d6fc5bba770fe" id="r_af5c5c0a96777b4885a4d6fc5bba770fe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af5c5c0a96777b4885a4d6fc5bba770fe">SocketTransport</a> (asio::io_context &amp;io_context, std::string address, uint16_t port, bool is_server)</td></tr>
+<tr class="memdesc:af5c5c0a96777b4885a4d6fc5bba770fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html" title="Transport implementation using TCP/IP sockets.">SocketTransport</a>.  <br /></td></tr>
+<tr class="separator:af5c5c0a96777b4885a4d6fc5bba770fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2180ab77872ad9238c6a0b30d4f0b6bc" id="r_a2180ab77872ad9238c6a0b30d4f0b6bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2180ab77872ad9238c6a0b30d4f0b6bc">~SocketTransport</a> () override</td></tr>
+<tr class="memdesc:a2180ab77872ad9238c6a0b30d4f0b6bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the Socket <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> object.  <br /></td></tr>
 <tr class="separator:a2180ab77872ad9238c6a0b30d4f0b6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12c350060c4e9e644ec1b2b19883e0a7" id="r_a12c350060c4e9e644ec1b2b19883e0a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12c350060c4e9e644ec1b2b19883e0a7">SocketTransport</a> (const <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html">SocketTransport</a> &amp;)=delete</td></tr>
 <tr class="separator:a12c350060c4e9e644ec1b2b19883e0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,42 +150,56 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9e027155d75752e62a639b8b40259dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adae9119f0cf28e0c3a9cc8fccd0b1ade" id="r_adae9119f0cf28e0c3a9cc8fccd0b1ade"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adae9119f0cf28e0c3a9cc8fccd0b1ade">operator=</a> (<a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html">SocketTransport</a> &amp;&amp;) -&gt; <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html">SocketTransport</a> &amp;=delete</td></tr>
 <tr class="separator:adae9119f0cf28e0c3a9cc8fccd0b1ade"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51bbeceff1c2073621e50f7ea716354b" id="r_a51bbeceff1c2073621e50f7ea716354b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51bbeceff1c2073621e50f7ea716354b">SendMessage</a> (const std::string &amp;message) override</td></tr>
-<tr class="memdesc:a51bbeceff1c2073621e50f7ea716354b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message in string to the transport layer.  <br /></td></tr>
-<tr class="separator:a51bbeceff1c2073621e50f7ea716354b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab65f77d96b697549689100eee4f36abc" id="r_ab65f77d96b697549689100eee4f36abc"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab65f77d96b697549689100eee4f36abc">ReceiveMessage</a> () -&gt; std::string override</td></tr>
-<tr class="memdesc:ab65f77d96b697549689100eee4f36abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives a message from the transport layer.  <br /></td></tr>
-<tr class="separator:ab65f77d96b697549689100eee4f36abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5898b3c83e06c86e3e0f932ab147ca2c" id="r_a5898b3c83e06c86e3e0f932ab147ca2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5898b3c83e06c86e3e0f932ab147ca2c">Close</a> () override</td></tr>
-<tr class="memdesc:a5898b3c83e06c86e3e0f932ab147ca2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the transport, interrupting any pending operations.  <br /></td></tr>
-<tr class="separator:a5898b3c83e06c86e3e0f932ab147ca2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c2d2f5a88fd2ff4f674700400b4ccc" id="r_aa6c2d2f5a88fd2ff4f674700400b4ccc"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6c2d2f5a88fd2ff4f674700400b4ccc">Start</a> () -&gt; asio::awaitable&lt; void &gt; override</td></tr>
+<tr class="memdesc:aa6c2d2f5a88fd2ff4f674700400b4ccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the transport.  <br /></td></tr>
+<tr class="separator:aa6c2d2f5a88fd2ff4f674700400b4ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8984cd6fef9695166e7fa47abbee6aa8" id="r_a8984cd6fef9695166e7fa47abbee6aa8"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8984cd6fef9695166e7fa47abbee6aa8">SendMessage</a> (const std::string &amp;message) -&gt; asio::awaitable&lt; void &gt; override</td></tr>
+<tr class="memdesc:a8984cd6fef9695166e7fa47abbee6aa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message over the transport.  <br /></td></tr>
+<tr class="separator:a8984cd6fef9695166e7fa47abbee6aa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae189909322dfce4794a1b6d1864e95c7" id="r_ae189909322dfce4794a1b6d1864e95c7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae189909322dfce4794a1b6d1864e95c7">ReceiveMessage</a> () -&gt; asio::awaitable&lt; std::string &gt; override</td></tr>
+<tr class="memdesc:ae189909322dfce4794a1b6d1864e95c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives a message over the transport.  <br /></td></tr>
+<tr class="separator:ae189909322dfce4794a1b6d1864e95c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a896c717f1201f08578b49323ca8b46b8" id="r_a896c717f1201f08578b49323ca8b46b8"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a896c717f1201f08578b49323ca8b46b8">Close</a> () -&gt; asio::awaitable&lt; void &gt; override</td></tr>
+<tr class="memdesc:a896c717f1201f08578b49323ca8b46b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the transport asynchronously.  <br /></td></tr>
+<tr class="separator:a896c717f1201f08578b49323ca8b46b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2e12c6709d9fd67204429f381801aa4" id="r_aa2e12c6709d9fd67204429f381801aa4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2e12c6709d9fd67204429f381801aa4">CloseNow</a> () override</td></tr>
+<tr class="memdesc:aa2e12c6709d9fd67204429f381801aa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the transport synchronously.  <br /></td></tr>
+<tr class="separator:aa2e12c6709d9fd67204429f381801aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a336ccd597046e343c7f4026359c7887c" id="r_a336ccd597046e343c7f4026359c7887c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a336ccd597046e343c7f4026359c7887c">GetSocket</a> () -&gt; asio::ip::tcp::socket &amp;</td></tr>
+<tr class="memdesc:a336ccd597046e343c7f4026359c7887c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets access to the underlying socket.  <br /></td></tr>
+<tr class="separator:a336ccd597046e343c7f4026359c7887c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classjsonrpc_1_1transport_1_1Transport"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classjsonrpc_1_1transport_1_1Transport')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">jsonrpc::transport::Transport</a></td></tr>
-<tr class="memitem:a5f7c41185c1c124f0ece0eb7899a09d4 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a5f7c41185c1c124f0ece0eb7899a09d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a5f7c41185c1c124f0ece0eb7899a09d4">Transport</a> ()=default</td></tr>
-<tr class="separator:a5f7c41185c1c124f0ece0eb7899a09d4 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41ecc943dcac4073f965983859f48f2a inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a41ecc943dcac4073f965983859f48f2a"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a41ecc943dcac4073f965983859f48f2a">~Transport</a> ()=default</td></tr>
-<tr class="separator:a41ecc943dcac4073f965983859f48f2a inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c07800ee26d8d9fdfa03fae9615cef4 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a6c07800ee26d8d9fdfa03fae9615cef4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a6c07800ee26d8d9fdfa03fae9615cef4">Transport</a> (const <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;)=default</td></tr>
-<tr class="separator:a6c07800ee26d8d9fdfa03fae9615cef4 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44f3f24dcd3e464f31545dee06a06869 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a44f3f24dcd3e464f31545dee06a06869"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a44f3f24dcd3e464f31545dee06a06869">operator=</a> (const <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;) -&gt; <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;=default</td></tr>
-<tr class="separator:a44f3f24dcd3e464f31545dee06a06869 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49cc017de20720650e8252cfb6bd534c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a49cc017de20720650e8252cfb6bd534c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a49cc017de20720650e8252cfb6bd534c">Transport</a> (asio::io_context &amp;io_context)</td></tr>
+<tr class="memdesc:a49cc017de20720650e8252cfb6bd534c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> with the given io_context.  <br /></td></tr>
+<tr class="separator:a49cc017de20720650e8252cfb6bd534c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92e283464e36b663c8acebdb831c3e02 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a92e283464e36b663c8acebdb831c3e02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a92e283464e36b663c8acebdb831c3e02">Transport</a> (const <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;)=delete</td></tr>
+<tr class="separator:a92e283464e36b663c8acebdb831c3e02 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9abc84d6799e166a165e6493dc50a31c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a9abc84d6799e166a165e6493dc50a31c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a9abc84d6799e166a165e6493dc50a31c">Transport</a> (<a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:a9abc84d6799e166a165e6493dc50a31c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a474077ebd8d13dc61783bae2d8e4cd17 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a474077ebd8d13dc61783bae2d8e4cd17"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a474077ebd8d13dc61783bae2d8e4cd17">operator=</a> (const <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;) -&gt; <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;=delete</td></tr>
+<tr class="separator:a474077ebd8d13dc61783bae2d8e4cd17 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0243b852e7f88f411746c5a461bf62d inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_aa0243b852e7f88f411746c5a461bf62d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#aa0243b852e7f88f411746c5a461bf62d">operator=</a> (<a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;&amp;) -&gt; <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;=delete</td></tr>
 <tr class="separator:aa0243b852e7f88f411746c5a461bf62d inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a336ccd597046e343c7f4026359c7887c" id="r_a336ccd597046e343c7f4026359c7887c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a336ccd597046e343c7f4026359c7887c">GetSocket</a> () -&gt; asio::ip::tcp::socket &amp;</td></tr>
-<tr class="separator:a336ccd597046e343c7f4026359c7887c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41ecc943dcac4073f965983859f48f2a inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a41ecc943dcac4073f965983859f48f2a"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a41ecc943dcac4073f965983859f48f2a">~Transport</a> ()=default</td></tr>
+<tr class="separator:a41ecc943dcac4073f965983859f48f2a inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa05650e34376a1750716f0865b0c3bd2 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_aa05650e34376a1750716f0865b0c3bd2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#aa05650e34376a1750716f0865b0c3bd2">GetExecutor</a> () const -&gt; asio::any_io_executor</td></tr>
+<tr class="memdesc:aa05650e34376a1750716f0865b0c3bd2 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the executor from the io_context.  <br /></td></tr>
+<tr class="separator:aa05650e34376a1750716f0865b0c3bd2 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a149e6eea070a77bb785d2d0476f927f0 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a149e6eea070a77bb785d2d0476f927f0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a149e6eea070a77bb785d2d0476f927f0">GetIoContext</a> () -&gt; asio::io_context &amp;</td></tr>
+<tr class="memdesc:a149e6eea070a77bb785d2d0476f927f0 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the IO context directly.  <br /></td></tr>
+<tr class="separator:a149e6eea070a77bb785d2d0476f927f0 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a741f42264ef5595a1fab8d9a0f00c472 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a741f42264ef5595a1fab8d9a0f00c472"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472">GetStrand</a> () -&gt; asio::strand&lt; asio::io_context::executor_type &gt; &amp;</td></tr>
+<tr class="memdesc:a741f42264ef5595a1fab8d9a0f00c472 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the strand used for synchronization.  <br /></td></tr>
+<tr class="separator:a741f42264ef5595a1fab8d9a0f00c472 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Base class for JSON-RPC transport.">Transport</a> implementation using TCP/IP sockets. </p>
+<div class="textblock"><p><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> implementation using TCP/IP sockets. </p>
 <p>This class provides transport functionality over TCP/IP sockets, supporting both client and server modes for communication over a network. </p>
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8hpp_source.html#l00016">16</a> of file <a class="el" href="socket__transport_8hpp_source.html">socket_transport.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8hpp_source.html#l00019">19</a> of file <a class="el" href="socket__transport_8hpp_source.html">socket_transport.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8c5b98c6bc57cbe0812e47152545cf6e" name="a8c5b98c6bc57cbe0812e47152545cf6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c5b98c6bc57cbe0812e47152545cf6e">&#9670;&#160;</a></span>SocketTransport() <span class="overload">[1/3]</span></h2>
+<a id="af5c5c0a96777b4885a4d6fc5bba770fe" name="af5c5c0a96777b4885a4d6fc5bba770fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5c5c0a96777b4885a4d6fc5bba770fe">&#9670;&#160;</a></span>SocketTransport() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +207,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">jsonrpc::transport::SocketTransport::SocketTransport </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>host</em></span>, </td>
+          <td class="paramtype">asio::io_context &amp;</td>          <td class="paramname"><span class="paramname"><em>io_context</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>address</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -211,25 +230,26 @@ Protected Member Functions</h2></td></tr>
 <p>Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1SocketTransport.html" title="Transport implementation using TCP/IP sockets.">SocketTransport</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">host</td><td>The host address (IP or domain name). </td></tr>
+    <tr><td class="paramname">io_context</td><td>The io_context to use for async operations. </td></tr>
+    <tr><td class="paramname">address</td><td>The host address (IP or domain name). </td></tr>
     <tr><td class="paramname">port</td><td>The port number. </td></tr>
-    <tr><td class="paramname">isServer</td><td>True if the transport acts as a server; false if it acts as a client. </td></tr>
+    <tr><td class="paramname">is_server</td><td>True if the transport acts as a server; false if it acts as a client. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00011">11</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   13</span>    : socket_(io_context_), host_(host), port_(port), is_server_(is_server) {</div>
-<div class="line"><span class="lineno">   14</span>  spdlog::info(</div>
-<div class="line"><span class="lineno">   15</span>      <span class="stringliteral">&quot;Initializing SocketTransport with host: {}, port: {}. IsServer: {}&quot;</span>,</div>
-<div class="line"><span class="lineno">   16</span>      host, port, is_server);</div>
-<div class="line"><span class="lineno">   17</span> </div>
-<div class="line"><span class="lineno">   18</span>  <span class="keywordflow">if</span> (is_server_) {</div>
-<div class="line"><span class="lineno">   19</span>    BindAndListen();</div>
-<div class="line"><span class="lineno">   20</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   21</span>    Connect();</div>
-<div class="line"><span class="lineno">   22</span>  }</div>
-<div class="line"><span class="lineno">   23</span>}</div>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00010">10</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   13</span>    : <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a49cc017de20720650e8252cfb6bd534c">Transport</a>(io_context),</div>
+<div class="line"><span class="lineno">   14</span>      socket_(io_context),</div>
+<div class="line"><span class="lineno">   15</span>      address_(std::move(address)),</div>
+<div class="line"><span class="lineno">   16</span>      port_(port),</div>
+<div class="line"><span class="lineno">   17</span>      is_server_(is_server),</div>
+<div class="line"><span class="lineno">   18</span>      read_buffer_() {</div>
+<div class="line"><span class="lineno">   19</span>  spdlog::debug(</div>
+<div class="line"><span class="lineno">   20</span>      <span class="stringliteral">&quot;SocketTransport initialized ({}): {}:{}&quot;</span>,</div>
+<div class="line"><span class="lineno">   21</span>      is_server_ ? <span class="stringliteral">&quot;server&quot;</span> : <span class="stringliteral">&quot;client&quot;</span>, address_, port_);</div>
+<div class="line"><span class="lineno">   22</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1Transport_html_a49cc017de20720650e8252cfb6bd534c"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1Transport.html#a49cc017de20720650e8252cfb6bd534c">jsonrpc::transport::Transport::Transport</a></div><div class="ttdeci">Transport(asio::io_context &amp;io_context)</div><div class="ttdoc">Constructs a Transport with the given io_context.</div><div class="ttdef"><b>Definition</b> <a href="transport_8hpp_source.html#l00019">transport.hpp:19</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -256,18 +276,26 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00029">29</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>                                  {</div>
-<div class="line"><span class="lineno">   30</span>  <a class="code hl_function" href="#a5898b3c83e06c86e3e0f932ab147ca2c">Close</a>();</div>
-<div class="line"><span class="lineno">   31</span>  io_context_.stop();</div>
-<div class="line"><span class="lineno">   32</span>}</div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1SocketTransport_html_a5898b3c83e06c86e3e0f932ab147ca2c"><div class="ttname"><a href="#a5898b3c83e06c86e3e0f932ab147ca2c">jsonrpc::transport::SocketTransport::Close</a></div><div class="ttdeci">void Close() override</div><div class="ttdoc">Closes the transport, interrupting any pending operations.</div><div class="ttdef"><b>Definition</b> <a href="socket__transport_8cpp_source.html#l00034">socket_transport.cpp:34</a></div></div>
+<p>Destroys the Socket <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> object. </p>
+
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00024">24</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>                                  {</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">   26</span>    <span class="comment">// If we haven&#39;t closed explicitly, do it now synchronously</span></div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">if</span> (!is_closed_) {</div>
+<div class="line"><span class="lineno">   28</span>      <a class="code hl_function" href="#aa2e12c6709d9fd67204429f381801aa4">CloseNow</a>();</div>
+<div class="line"><span class="lineno">   29</span>    }</div>
+<div class="line"><span class="lineno">   30</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><span class="lineno">   31</span>    spdlog::error(<span class="stringliteral">&quot;Error in SocketTransport destructor: {}&quot;</span>, e.what());</div>
+<div class="line"><span class="lineno">   32</span>  }</div>
+<div class="line"><span class="lineno">   33</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1SocketTransport_html_aa2e12c6709d9fd67204429f381801aa4"><div class="ttname"><a href="#aa2e12c6709d9fd67204429f381801aa4">jsonrpc::transport::SocketTransport::CloseNow</a></div><div class="ttdeci">void CloseNow() override</div><div class="ttdoc">Close the transport synchronously.</div><div class="ttdef"><b>Definition</b> <a href="socket__transport_8cpp_source.html#l00035">socket_transport.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="socket__transport_8cpp_source.html#l00034">Close()</a>.</p>
+<p class="reference">References <a class="el" href="socket__transport_8cpp_source.html#l00035">CloseNow()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport_a2180ab77872ad9238c6a0b30d4f0b6bc_cgraph.svg" width="378" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport_a2180ab77872ad9238c6a0b30d4f0b6bc_cgraph.svg" width="407" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -323,8 +351,8 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5898b3c83e06c86e3e0f932ab147ca2c" name="a5898b3c83e06c86e3e0f932ab147ca2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5898b3c83e06c86e3e0f932ab147ca2c">&#9670;&#160;</a></span>Close()</h2>
+<a id="a896c717f1201f08578b49323ca8b46b8" name="a896c717f1201f08578b49323ca8b46b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a896c717f1201f08578b49323ca8b46b8">&#9670;&#160;</a></span>Close()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -333,7 +361,75 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void jsonrpc::transport::SocketTransport::Close </td>
+          <td class="memname">auto jsonrpc::transport::SocketTransport::Close </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> -&gt;  asio::awaitable&lt; void &gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Closes the transport asynchronously. </p>
+<p>This is the asynchronous version of close, which should be used during normal operation.</p>
+<dl class="section return"><dt>Returns</dt><dd>asio::awaitable&lt;void&gt; </dd></dl>
+
+<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#ad2bc800d0872e94b51a6fb20e8a8f466">jsonrpc::transport::Transport</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00177">177</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  177</span>                                                   {</div>
+<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  179</span>    <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472">GetStrand</a>(), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">if</span> (is_closed_) {</div>
+<div class="line"><span class="lineno">  182</span>      <span class="keyword">co_return</span>;  <span class="comment">// Already closed</span></div>
+<div class="line"><span class="lineno">  183</span>    }</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>    is_closed_ = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  186</span>    is_connected_ = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  187</span> </div>
+<div class="line"><span class="lineno">  188</span>    spdlog::debug(<span class="stringliteral">&quot;Closing socket transport&quot;</span>);</div>
+<div class="line"><span class="lineno">  189</span> </div>
+<div class="line"><span class="lineno">  190</span>    <span class="comment">// Cancel and close the socket safely</span></div>
+<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">if</span> (socket_.is_open()) {</div>
+<div class="line"><span class="lineno">  192</span>      spdlog::debug(<span class="stringliteral">&quot;Closing socket&quot;</span>);</div>
+<div class="line"><span class="lineno">  193</span>      socket_.cancel();</div>
+<div class="line"><span class="lineno">  194</span>      asio::error_code ec;</div>
+<div class="line"><span class="lineno">  195</span>      socket_.close(ec);</div>
+<div class="line"><span class="lineno">  196</span>      <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">  197</span>        spdlog::warn(<span class="stringliteral">&quot;Error closing socket: {}&quot;</span>, ec.message());</div>
+<div class="line"><span class="lineno">  198</span>      }</div>
+<div class="line"><span class="lineno">  199</span>    }</div>
+<div class="line"><span class="lineno">  200</span> </div>
+<div class="line"><span class="lineno">  201</span>    <span class="comment">// Add an additional synchronization point to ensure all operations posted</span></div>
+<div class="line"><span class="lineno">  202</span>    <span class="comment">// to the strand complete</span></div>
+<div class="line"><span class="lineno">  203</span>    <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472">GetStrand</a>(), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">  204</span> </div>
+<div class="line"><span class="lineno">  205</span>    <span class="keyword">co_return</span>;</div>
+<div class="line"><span class="lineno">  206</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><span class="lineno">  207</span>    spdlog::error(<span class="stringliteral">&quot;Error closing socket transport: {}&quot;</span>, e.what());</div>
+<div class="line"><span class="lineno">  208</span>    <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  209</span>  }</div>
+<div class="line"><span class="lineno">  210</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1Transport_html_a741f42264ef5595a1fab8d9a0f00c472"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472">jsonrpc::transport::Transport::GetStrand</a></div><div class="ttdeci">auto GetStrand() -&gt; asio::strand&lt; asio::io_context::executor_type &gt; &amp;</div><div class="ttdoc">Get the strand used for synchronization.</div><div class="ttdef"><b>Definition</b> <a href="transport_8hpp_source.html#l00084">transport.hpp:84</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa2e12c6709d9fd67204429f381801aa4" name="aa2e12c6709d9fd67204429f381801aa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e12c6709d9fd67204429f381801aa4">&#9670;&#160;</a></span>CloseNow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void jsonrpc::transport::SocketTransport::CloseNow </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -346,24 +442,38 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Closes the transport, interrupting any pending operations. </p>
+<p>Close the transport synchronously. </p>
+<p>Safe to use in destructors. Immediately cancels operations and closes socket connections. </p>
 
-<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#ac8503e78b7382408dcbf75c2bf1f69a0">jsonrpc::transport::Transport</a>.</p>
+<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a57d389c7035b7f587194646db2c80bd4">jsonrpc::transport::Transport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00034">34</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>                            {</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (!is_closed_) {</div>
-<div class="line"><span class="lineno">   36</span>    spdlog::info(<span class="stringliteral">&quot;SocketTransport: Closing socket transport&quot;</span>);</div>
-<div class="line"><span class="lineno">   37</span>    socket_.close();</div>
-<div class="line"><span class="lineno">   38</span>    is_closed_ = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   39</span>  }</div>
-<div class="line"><span class="lineno">   40</span>}</div>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00035">35</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>                               {</div>
+<div class="line"><span class="lineno">   36</span>  <span class="comment">// Set closed flag to prevent concurrent operations</span></div>
+<div class="line"><span class="lineno">   37</span>  is_closed_ = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   38</span>  is_connected_ = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">   41</span>    <span class="comment">// Cancel and close the socket synchronously</span></div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> (socket_.is_open()) {</div>
+<div class="line"><span class="lineno">   43</span>      spdlog::debug(<span class="stringliteral">&quot;Closing socket synchronously&quot;</span>);</div>
+<div class="line"><span class="lineno">   44</span>      socket_.cancel();</div>
+<div class="line"><span class="lineno">   45</span>      asio::error_code ec;</div>
+<div class="line"><span class="lineno">   46</span>      socket_.close(ec);</div>
+<div class="line"><span class="lineno">   47</span>      <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">   48</span>        spdlog::warn(<span class="stringliteral">&quot;Error closing socket: {}&quot;</span>, ec.message());</div>
+<div class="line"><span class="lineno">   49</span>      }</div>
+<div class="line"><span class="lineno">   50</span>    }</div>
+<div class="line"><span class="lineno">   51</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><span class="lineno">   52</span>    spdlog::error(<span class="stringliteral">&quot;Error in synchronous close: {}&quot;</span>, e.what());</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="line"><span class="lineno">   54</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="socket__transport_8cpp_source.html#l00029">~SocketTransport()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="socket__transport_8cpp_source.html#l00024">~SocketTransport()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport_a5898b3c83e06c86e3e0f932ab147ca2c_icgraph.svg" width="378" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport_aa2e12c6709d9fd67204429f381801aa4_icgraph.svg" width="407" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -373,36 +483,24 @@ Here is the caller graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">auto jsonrpc::transport::SocketTransport::GetSocket </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> -&gt; asio::ip::tcp::socket &amp;</td>
+          <td> -&gt; asio::ip::tcp::socket&amp;</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00025">25</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>                                                     {</div>
-<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">return</span> socket_;</div>
-<div class="line"><span class="lineno">   27</span>}</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="framed__socket__transport_8cpp_source.html#l00019">jsonrpc::transport::FramedSocketTransport::SendMessage()</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1SocketTransport_a336ccd597046e343c7f4026359c7887c_icgraph.svg" width="448" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<p>Gets access to the underlying socket. </p>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the socket. </dd></dl>
 
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00094">94</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>                                                     {</div>
+<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">return</span> socket_;</div>
+<div class="line"><span class="lineno">   96</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="ada04bca29bf91f91deec2f278d75595f" name="ada04bca29bf91f91deec2f278d75595f"></a>
@@ -455,8 +553,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ab65f77d96b697549689100eee4f36abc" name="ab65f77d96b697549689100eee4f36abc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab65f77d96b697549689100eee4f36abc">&#9670;&#160;</a></span>ReceiveMessage()</h2>
+<a id="ae189909322dfce4794a1b6d1864e95c7" name="ae189909322dfce4794a1b6d1864e95c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae189909322dfce4794a1b6d1864e95c7">&#9670;&#160;</a></span>ReceiveMessage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -468,7 +566,7 @@ Here is the caller graph for this function:</div>
           <td class="memname">auto jsonrpc::transport::SocketTransport::ReceiveMessage </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> -&gt;  std::string</td>
+          <td> -&gt;  asio::awaitable&lt; std::string &gt;</td>
         </tr>
       </table>
   </td>
@@ -478,69 +576,69 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Receives a message from the transport layer. </p>
-<dl class="section return"><dt>Returns</dt><dd>The JSON-RPC response as a string. </dd></dl>
+<p>Receives a message over the transport. </p>
 
-<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a2543ac586b9a5021665208a8176f0998">jsonrpc::transport::Transport</a>.</p>
+<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#accf8ffb72dcfd866faf38ddaa2e26817">jsonrpc::transport::Transport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00106">106</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>                                                  {</div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">if</span> (is_closed_) {</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Transport is closed&quot;</span>);</div>
-<div class="line"><span class="lineno">  109</span>  }</div>
-<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  111</span>    asio::streambuf buffer;</div>
-<div class="line"><span class="lineno">  112</span>    socket_.non_blocking(<span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>    std::error_code ec;</div>
-<div class="line"><span class="lineno">  115</span>    std::string message;</div>
-<div class="line"><span class="lineno">  116</span>    std::array&lt;char, 1024&gt; data{};</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>    <span class="comment">// Try to read until we get a complete message or error</span></div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><span class="lineno">  120</span>      <span class="keywordtype">size_t</span> bytes =</div>
-<div class="line"><span class="lineno">  121</span>          socket_.read_some(asio::buffer(data.data(), data.size()), ec);</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>      <span class="keywordflow">if</span> (ec == asio::error::would_block) {</div>
-<div class="line"><span class="lineno">  124</span>        <span class="comment">// No data available yet, try again</span></div>
-<div class="line"><span class="lineno">  125</span>        std::this_thread::sleep_for(std::chrono::milliseconds(1));</div>
-<div class="line"><span class="lineno">  126</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  127</span>      }</div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span>      <span class="keywordflow">if</span> (ec == asio::error::eof || ec == asio::error::connection_reset) {</div>
-<div class="line"><span class="lineno">  130</span>        socket_.close();</div>
-<div class="line"><span class="lineno">  131</span>        is_closed_ = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  133</span>      }</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>      <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  136</span>        spdlog::error(<span class="stringliteral">&quot;SocketTransport: Receive error: {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Error receiving message&quot;</span>);</div>
-<div class="line"><span class="lineno">  138</span>      }</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>      <span class="comment">// Look for newline in the received data</span></div>
-<div class="line"><span class="lineno">  141</span>      std::span&lt;const char&gt; data_view(data.data(), bytes);</div>
-<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keywordtype">char</span> c : data_view) {</div>
-<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;\n&#39;</span>) {</div>
-<div class="line"><span class="lineno">  144</span>          <span class="keywordflow">return</span> message;</div>
-<div class="line"><span class="lineno">  145</span>        }</div>
-<div class="line"><span class="lineno">  146</span>        message += c;</div>
-<div class="line"><span class="lineno">  147</span>      }</div>
-<div class="line"><span class="lineno">  148</span>    }</div>
-<div class="line"><span class="lineno">  149</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
-<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">if</span> (!is_closed_) {</div>
-<div class="line"><span class="lineno">  151</span>      spdlog::error(<span class="stringliteral">&quot;SocketTransport: Receive error: {}&quot;</span>, e.what());</div>
-<div class="line"><span class="lineno">  152</span>      socket_.close();</div>
-<div class="line"><span class="lineno">  153</span>      is_closed_ = <span class="keyword">true</span>;</div>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00123">123</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>                                                                 {</div>
+<div class="line"><span class="lineno">  124</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472">GetStrand</a>(), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">if</span> (is_closed_) {</div>
+<div class="line"><span class="lineno">  128</span>      spdlog::warn(<span class="stringliteral">&quot;ReceiveMessage() called after transport was closed&quot;</span>);</div>
+<div class="line"><span class="lineno">  129</span>      <span class="keyword">co_return</span> std::string();</div>
+<div class="line"><span class="lineno">  130</span>    }</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">if</span> (!is_started_) {</div>
+<div class="line"><span class="lineno">  133</span>      <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">  134</span>          <span class="stringliteral">&quot;Transport not started before receiving message&quot;</span>);</div>
+<div class="line"><span class="lineno">  135</span>    }</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">if</span> (!socket_.is_open()) {</div>
+<div class="line"><span class="lineno">  138</span>      spdlog::warn(<span class="stringliteral">&quot;Socket not open in ReceiveMessage()&quot;</span>);</div>
+<div class="line"><span class="lineno">  139</span>      <span class="keyword">co_return</span> std::string();</div>
+<div class="line"><span class="lineno">  140</span>    }</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>    <span class="comment">// Clear any existing message buffer</span></div>
+<div class="line"><span class="lineno">  143</span>    message_buffer_.clear();</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>    <span class="comment">// Read data from socket</span></div>
+<div class="line"><span class="lineno">  146</span>    <span class="keywordtype">size_t</span> bytes_read = <span class="keyword">co_await</span> socket_.async_read_some(</div>
+<div class="line"><span class="lineno">  147</span>        asio::buffer(read_buffer_), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>    <span class="keywordflow">if</span> (bytes_read == 0) {</div>
+<div class="line"><span class="lineno">  150</span>      <span class="keywordflow">if</span> (is_closed_) {</div>
+<div class="line"><span class="lineno">  151</span>        <span class="keyword">co_return</span> std::string();</div>
+<div class="line"><span class="lineno">  152</span>      }</div>
+<div class="line"><span class="lineno">  153</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Connection closed by peer&quot;</span>);</div>
 <div class="line"><span class="lineno">  154</span>    }</div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Error receiving message&quot;</span>);</div>
-<div class="line"><span class="lineno">  156</span>  }</div>
-<div class="line"><span class="lineno">  157</span>}</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>    message_buffer_.append(read_buffer_.data(), bytes_read);</div>
+<div class="line"><span class="lineno">  157</span>    spdlog::debug(<span class="stringliteral">&quot;Received {} bytes&quot;</span>, bytes_read);</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>    <span class="keyword">co_return</span> std::move(message_buffer_);</div>
+<div class="line"><span class="lineno">  160</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> asio::system_error &amp;e) {</div>
+<div class="line"><span class="lineno">  161</span>    <span class="comment">// Handle ASIO-specific errors</span></div>
+<div class="line"><span class="lineno">  162</span>    <span class="keywordflow">if</span> (e.code() == asio::error::eof) {</div>
+<div class="line"><span class="lineno">  163</span>      spdlog::debug(<span class="stringliteral">&quot;EOF received, connection closed by peer&quot;</span>);</div>
+<div class="line"><span class="lineno">  164</span>      is_connected_ = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  165</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (e.code() == asio::error::operation_aborted) {</div>
+<div class="line"><span class="lineno">  166</span>      spdlog::debug(<span class="stringliteral">&quot;Read operation aborted&quot;</span>);</div>
+<div class="line"><span class="lineno">  167</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  168</span>      spdlog::error(<span class="stringliteral">&quot;ASIO error in ReceiveMessage(): {}&quot;</span>, e.what());</div>
+<div class="line"><span class="lineno">  169</span>    }</div>
+<div class="line"><span class="lineno">  170</span>    <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  171</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><span class="lineno">  172</span>    spdlog::error(<span class="stringliteral">&quot;Exception in ReceiveMessage(): {}&quot;</span>, e.what());</div>
+<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  174</span>  }</div>
+<div class="line"><span class="lineno">  175</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a51bbeceff1c2073621e50f7ea716354b" name="a51bbeceff1c2073621e50f7ea716354b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51bbeceff1c2073621e50f7ea716354b">&#9670;&#160;</a></span>SendMessage()</h2>
+<a id="a8984cd6fef9695166e7fa47abbee6aa8" name="a8984cd6fef9695166e7fa47abbee6aa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8984cd6fef9695166e7fa47abbee6aa8">&#9670;&#160;</a></span>SendMessage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -549,10 +647,10 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void jsonrpc::transport::SocketTransport::SendMessage </td>
+          <td class="memname">auto jsonrpc::transport::SocketTransport::SendMessage </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
-          <td></td>
+          <td> -&gt;  asio::awaitable&lt; void &gt;</td>
         </tr>
       </table>
   </td>
@@ -562,30 +660,104 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Sends a message in string to the transport layer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">request</td><td>The JSON-RPC request as a string. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Sends a message over the transport. </p>
 
-<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#aa67a43c8e46dab82801b2c3af77f2a88">jsonrpc::transport::Transport</a>.</p>
+<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a3fa9dc4d334da2d4232a29f0984db208">jsonrpc::transport::Transport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00092">92</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>                                                          {</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (is_closed_) {</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Transport is closed&quot;</span>);</div>
-<div class="line"><span class="lineno">   95</span>  }</div>
-<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">   97</span>    std::string full_message = message + <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   98</span>    asio::write(socket_, asio::buffer(full_message));</div>
-<div class="line"><span class="lineno">   99</span>    spdlog::debug(<span class="stringliteral">&quot;SocketTransport: Message sent&quot;</span>);</div>
-<div class="line"><span class="lineno">  100</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
-<div class="line"><span class="lineno">  101</span>    spdlog::error(<span class="stringliteral">&quot;SocketTransport: Send error: {}&quot;</span>, e.what());</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Error sending message&quot;</span>);</div>
-<div class="line"><span class="lineno">  103</span>  }</div>
-<div class="line"><span class="lineno">  104</span>}</div>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00098">98</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   99</span>                           {</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472">GetStrand</a>(), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (is_closed_) {</div>
+<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SendMessage() called on closed transport&quot;</span>);</div>
+<div class="line"><span class="lineno">  105</span>    }</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> (!is_started_) {</div>
+<div class="line"><span class="lineno">  108</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Transport not started before sending message&quot;</span>);</div>
+<div class="line"><span class="lineno">  109</span>    }</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">if</span> (!socket_.is_open()) {</div>
+<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Socket not open in SendMessage()&quot;</span>);</div>
+<div class="line"><span class="lineno">  113</span>    }</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>    <span class="keyword">co_await</span> asio::async_write(</div>
+<div class="line"><span class="lineno">  116</span>        socket_, asio::buffer(message), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">  117</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><span class="lineno">  118</span>    spdlog::error(<span class="stringliteral">&quot;Exception in SendMessage(): {}&quot;</span>, e.what());</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  120</span>  }</div>
+<div class="line"><span class="lineno">  121</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa6c2d2f5a88fd2ff4f674700400b4ccc" name="aa6c2d2f5a88fd2ff4f674700400b4ccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6c2d2f5a88fd2ff4f674700400b4ccc">&#9670;&#160;</a></span>Start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto jsonrpc::transport::SocketTransport::Start </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> -&gt; asio::awaitable&lt;void&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Start the transport. </p>
+<p>For server: Binds to the specified address/port and starts listening For client: Connects to the specified server address/port</p>
+<dl class="section return"><dt>Returns</dt><dd>asio::awaitable&lt;void&gt; </dd></dl>
+
+<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#ad96235fbb21dd09223a2c404aaf389b6">jsonrpc::transport::Transport</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00056">56</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>                                                   {</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472">GetStrand</a>(), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">if</span> (is_started_) {</div>
+<div class="line"><span class="lineno">   61</span>      spdlog::debug(<span class="stringliteral">&quot;SocketTransport already started&quot;</span>);</div>
+<div class="line"><span class="lineno">   62</span>      <span class="keyword">co_return</span>;</div>
+<div class="line"><span class="lineno">   63</span>    }</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> (is_closed_) {</div>
+<div class="line"><span class="lineno">   66</span>      spdlog::error(<span class="stringliteral">&quot;Cannot start a closed transport&quot;</span>);</div>
+<div class="line"><span class="lineno">   67</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot start a closed transport&quot;</span>);</div>
+<div class="line"><span class="lineno">   68</span>    }</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    <span class="comment">// Set started flag before performing operations</span></div>
+<div class="line"><span class="lineno">   71</span>    is_started_ = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> (is_server_) {</div>
+<div class="line"><span class="lineno">   74</span>      <span class="comment">// For server, bind and listen for connections</span></div>
+<div class="line"><span class="lineno">   75</span>      spdlog::info(<span class="stringliteral">&quot;Starting SocketTransport server at {}:{}&quot;</span>, address_, port_);</div>
+<div class="line"><span class="lineno">   76</span>      <span class="keyword">co_await</span> BindAndListen();</div>
+<div class="line"><span class="lineno">   77</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   78</span>      <span class="comment">// For client, fully connect immediately</span></div>
+<div class="line"><span class="lineno">   79</span>      spdlog::info(</div>
+<div class="line"><span class="lineno">   80</span>          <span class="stringliteral">&quot;Connecting SocketTransport client to {}:{}&quot;</span>, address_, port_);</div>
+<div class="line"><span class="lineno">   81</span>      <span class="keyword">co_await</span> Connect();</div>
+<div class="line"><span class="lineno">   82</span>      spdlog::debug(</div>
+<div class="line"><span class="lineno">   83</span>          <span class="stringliteral">&quot;SocketTransport client connected to {}:{}&quot;</span>, address_, port_);</div>
+<div class="line"><span class="lineno">   84</span>    }</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>    <span class="keyword">co_return</span>;</div>
+<div class="line"><span class="lineno">   87</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><span class="lineno">   88</span>    spdlog::error(<span class="stringliteral">&quot;Error in Start(): {}&quot;</span>, e.what());</div>
+<div class="line"><span class="lineno">   89</span>    is_started_ = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">   91</span>  }</div>
+<div class="line"><span class="lineno">   92</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

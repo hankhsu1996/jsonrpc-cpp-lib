@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['json_20rpc_202_200_20modern_20c_20library_0',['JSON-RPC 2.0 Modern C++ Library',['../index.html',1,'']]],
-  ['json_20rpc_20endpoint_1',['Creating a JSON-RPC Endpoint',['../index.html#autotoc_md8',1,'']]],
-  ['jsonrpc_2',['jsonrpc',['../namespacejsonrpc.html',1,'']]],
-  ['jsonrpc_3a_3aendpoint_3',['endpoint',['../namespacejsonrpc_1_1endpoint.html',1,'jsonrpc']]],
-  ['jsonrpc_3a_3atransport_4',['transport',['../namespacejsonrpc_1_1transport.html',1,'jsonrpc']]],
-  ['jsonrpc_3a_3autils_5',['utils',['../namespacejsonrpc_1_1utils.html',1,'jsonrpc']]]
+  ['installation_20find_5fpackage_0',['B. As a System-Wide Installation (find_package)',['../index.html#autotoc_md8',1,'']]],
+  ['isnotification_1',['IsNotification',['../classjsonrpc_1_1endpoint_1_1Request.html#a71e4ab2af822107ce1052bb7d76d6c5b',1,'jsonrpc::endpoint::Request']]],
+  ['isready_2',['IsReady',['../classjsonrpc_1_1endpoint_1_1PendingRequest.html#a28e7633b25b470db7b64201813d40ed7',1,'jsonrpc::endpoint::PendingRequest']]],
+  ['isrunning_3',['IsRunning',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aae3ce7f968e4da001e1c2c18c03e8a69',1,'jsonrpc::endpoint::RpcEndpoint']]],
+  ['issuccess_4',['IsSuccess',['../classjsonrpc_1_1endpoint_1_1Response.html#a7e0ce30e43cffc66d173f5fc942fdc76',1,'jsonrpc::endpoint::Response']]]
 ];

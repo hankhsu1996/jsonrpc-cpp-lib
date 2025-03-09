@@ -125,7 +125,7 @@ $(function(){initNavTree('framed__transport_8cpp_source.html',''); initResizable
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="foldopen" id="foldopen00009" data-start="{" data-end="}">
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#ae5317dd37dd2638b8e7c013854719dec">    9</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#ae5317dd37dd2638b8e7c013854719dec">FramedTransport::FrameMessage</a>(</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    std::ostream &amp;output, <span class="keyword">const</span> std::string &amp;message) {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    std::ostream&amp; output, <span class="keyword">const</span> std::string&amp; message) {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  output &lt;&lt; <span class="stringliteral">&quot;Content-Length: &quot;</span> &lt;&lt; message.size() &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>         &lt;&lt; <span class="stringliteral">&quot;Content-Type: application/vscode-jsonrpc; charset=utf-8\r\n&quot;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>         &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span></div>
@@ -134,31 +134,31 @@ $(function(){initNavTree('framed__transport_8cpp_source.html',''); initResizable
 </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#acff87f9e3a92ba801e4c08785ed3c699">   17</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#acff87f9e3a92ba801e4c08785ed3c699">FramedTransport::ReadHeadersFromStream</a>(std::istream &amp;input)</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    -&gt; FramedTransport::HeaderMap {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  HeaderMap headers;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  std::string line;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordflow">while</span> (std::getline(input, line) &amp;&amp; !line.empty() &amp;&amp; line != <span class="stringliteral">&quot;\r&quot;</span>) {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">auto</span> colon_pos = line.find(<span class="charliteral">&#39;:&#39;</span>);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">if</span> (colon_pos != std::string::npos) {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      std::string header_key = <a class="code hl_function" href="namespacejsonrpc_1_1utils.html#af7bc95c38b3f575dfe5fc73eb9450581">utils::Trim</a>(line.substr(0, colon_pos));</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      std::string header_value = <a class="code hl_function" href="namespacejsonrpc_1_1utils.html#af7bc95c38b3f575dfe5fc73eb9450581">utils::Trim</a>(line.substr(colon_pos + 1));</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>      headers[header_key] = header_value;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">if</span> (headers.empty()) {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to read headers&quot;</span>);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">return</span> headers;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#ae79806aa8c8382fc56a78f714d706d11">   17</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#ae79806aa8c8382fc56a78f714d706d11">FramedTransport::ReadHeadersFromBuffer</a>(asio::streambuf&amp; buffer)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    -&gt; <a class="code hl_typedef" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a708210b36150124897d8dab4ffc731d0">FramedTransport::HeaderMap</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <a class="code hl_typedef" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a708210b36150124897d8dab4ffc731d0">HeaderMap</a> headers;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  std::istream input(&amp;buffer);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  std::string line;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordflow">while</span> (std::getline(input, line) &amp;&amp; !line.empty() &amp;&amp; line != <span class="stringliteral">&quot;\r&quot;</span>) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">auto</span> colon_pos = line.find(<span class="charliteral">&#39;:&#39;</span>);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordflow">if</span> (colon_pos != std::string::npos) {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      std::string header_key = <a class="code hl_function" href="namespacejsonrpc_1_1utils.html#af7bc95c38b3f575dfe5fc73eb9450581">utils::Trim</a>(line.substr(0, colon_pos));</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>      std::string header_value = <a class="code hl_function" href="namespacejsonrpc_1_1utils.html#af7bc95c38b3f575dfe5fc73eb9450581">utils::Trim</a>(line.substr(colon_pos + 1));</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      headers[header_key] = header_value;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">if</span> (headers.empty()) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to read headers&quot;</span>);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">return</span> headers;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
 </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a75262feffde63204ce4288b28716dd70">   38</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a75262feffde63204ce4288b28716dd70">FramedTransport::ReadContentLengthFromStream</a>(std::istream &amp;input) -&gt; <span class="keywordtype">int</span> {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">auto</span> headers = ReadHeadersFromStream(input);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#acbbf784d33fece18c6de906adc4cca67">   39</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#acbbf784d33fece18c6de906adc4cca67">FramedTransport::ReadContentLength</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a708210b36150124897d8dab4ffc731d0">HeaderMap</a>&amp; headers) -&gt; <span class="keywordtype">int</span> {</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">auto</span> it = headers.find(<span class="stringliteral">&quot;Content-Length&quot;</span>);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (it == headers.end()) {</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Content-Length header missing&quot;</span>);</div>
@@ -168,41 +168,38 @@ $(function(){initNavTree('framed__transport_8cpp_source.html',''); initResizable
 </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a9d2e5fd7f07f6d45a900a4f3766419e6">   47</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a9d2e5fd7f07f6d45a900a4f3766419e6">FramedTransport::ReadContent</a>(</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    std::istream &amp;input, std::size_t content_length) -&gt; std::string {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  std::string content(content_length, <span class="charliteral">&#39;\0&#39;</span>);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  input.read(content.data(), <span class="keyword">static_cast&lt;</span>std::streamsize<span class="keyword">&gt;</span>(content_length));</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">if</span> (input.gcount() != <span class="keyword">static_cast&lt;</span>std::streamsize<span class="keyword">&gt;</span>(content_length)) {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to read the expected content length&quot;</span>);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> content;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#abc7fffb2f5735b745acfa614ea1def21">   47</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#abc7fffb2f5735b745acfa614ea1def21">FramedTransport::ReadContent</a>(</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    asio::streambuf&amp; buffer, std::size_t content_length) -&gt; std::string {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  std::istream input(&amp;buffer);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  std::string content(content_length, <span class="charliteral">&#39;\0&#39;</span>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  input.read(content.data(), <span class="keyword">static_cast&lt;</span>std::streamsize<span class="keyword">&gt;</span>(content_length));</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">if</span> (input.gcount() != <span class="keyword">static_cast&lt;</span>std::streamsize<span class="keyword">&gt;</span>(content_length)) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to read the expected content length&quot;</span>);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">return</span> content;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
 </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a851f26072486db46285fd5526f308633">   57</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#a851f26072486db46285fd5526f308633">FramedTransport::ReceiveFramedMessage</a>(std::istream &amp;input) -&gt; std::string {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">int</span> content_length = ReadContentLengthFromStream(input);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">return</span> ReadContent(input, content_length);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedTransport.html#aca6149c1cd1b2a8544956be2bcf3b9a9">   58</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedTransport.html#aca6149c1cd1b2a8544956be2bcf3b9a9">FramedTransport::ParseContentLength</a>(<span class="keyword">const</span> std::string&amp; header_value)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    -&gt; <span class="keywordtype">int</span> {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> std::stoi(header_value);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::invalid_argument&amp;) {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid Content-Length value&quot;</span>);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::out_of_range&amp;) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Content-Length value out of range&quot;</span>);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
 </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">auto</span> FramedTransport::ParseContentLength(<span class="keyword">const</span> std::string &amp;header_value)</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    -&gt; <span class="keywordtype">int</span> {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">return</span> std::stoi(header_value);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::invalid_argument &amp;) {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid Content-Length value&quot;</span>);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::out_of_range &amp;) {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Content-Length value out of range&quot;</span>);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}  <span class="comment">// namespace jsonrpc::transport</span></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_a75262feffde63204ce4288b28716dd70"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#a75262feffde63204ce4288b28716dd70">jsonrpc::transport::FramedTransport::ReadContentLengthFromStream</a></div><div class="ttdeci">static auto ReadContentLengthFromStream(std::istream &amp;input) -&gt; int</div><div class="ttdef"><b>Definition</b> <a href="#l00038">framed_transport.cpp:38</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_a851f26072486db46285fd5526f308633"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#a851f26072486db46285fd5526f308633">jsonrpc::transport::FramedTransport::ReceiveFramedMessage</a></div><div class="ttdeci">static auto ReceiveFramedMessage(std::istream &amp;input) -&gt; std::string</div><div class="ttdoc">Receives a framed message.</div><div class="ttdef"><b>Definition</b> <a href="#l00057">framed_transport.cpp:57</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_a9d2e5fd7f07f6d45a900a4f3766419e6"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#a9d2e5fd7f07f6d45a900a4f3766419e6">jsonrpc::transport::FramedTransport::ReadContent</a></div><div class="ttdeci">static auto ReadContent(std::istream &amp;input, std::size_t content_length) -&gt; std::string</div><div class="ttdoc">Reads content from the input stream based on the content length.</div><div class="ttdef"><b>Definition</b> <a href="#l00047">framed_transport.cpp:47</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_acff87f9e3a92ba801e4c08785ed3c699"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#acff87f9e3a92ba801e4c08785ed3c699">jsonrpc::transport::FramedTransport::ReadHeadersFromStream</a></div><div class="ttdeci">static auto ReadHeadersFromStream(std::istream &amp;input) -&gt; HeaderMap</div><div class="ttdef"><b>Definition</b> <a href="#l00017">framed_transport.cpp:17</a></div></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}  <span class="comment">// namespace jsonrpc::transport</span></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_a708210b36150124897d8dab4ffc731d0"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#a708210b36150124897d8dab4ffc731d0">jsonrpc::transport::FramedTransport::HeaderMap</a></div><div class="ttdeci">std::unordered_map&lt; std::string, std::string &gt; HeaderMap</div><div class="ttdoc">A map of headers to their values.</div><div class="ttdef"><b>Definition</b> <a href="framed__transport_8hpp_source.html#l00022">framed_transport.hpp:22</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_abc7fffb2f5735b745acfa614ea1def21"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#abc7fffb2f5735b745acfa614ea1def21">jsonrpc::transport::FramedTransport::ReadContent</a></div><div class="ttdeci">static auto ReadContent(asio::streambuf &amp;buffer, std::size_t content_length) -&gt; std::string</div><div class="ttdoc">Reads content from a buffer.</div><div class="ttdef"><b>Definition</b> <a href="#l00047">framed_transport.cpp:47</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_aca6149c1cd1b2a8544956be2bcf3b9a9"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#aca6149c1cd1b2a8544956be2bcf3b9a9">jsonrpc::transport::FramedTransport::ParseContentLength</a></div><div class="ttdeci">static auto ParseContentLength(const std::string &amp;header_value) -&gt; int</div><div class="ttdoc">Parses a Content-Length header value to an integer.</div><div class="ttdef"><b>Definition</b> <a href="#l00058">framed_transport.cpp:58</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_acbbf784d33fece18c6de906adc4cca67"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#acbbf784d33fece18c6de906adc4cca67">jsonrpc::transport::FramedTransport::ReadContentLength</a></div><div class="ttdeci">static auto ReadContentLength(const HeaderMap &amp;headers) -&gt; int</div><div class="ttdoc">Reads content length from headers.</div><div class="ttdef"><b>Definition</b> <a href="#l00039">framed_transport.cpp:39</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_ae5317dd37dd2638b8e7c013854719dec"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#ae5317dd37dd2638b8e7c013854719dec">jsonrpc::transport::FramedTransport::FrameMessage</a></div><div class="ttdeci">static void FrameMessage(std::ostream &amp;output, const std::string &amp;message)</div><div class="ttdoc">Constructs a framed message.</div><div class="ttdef"><b>Definition</b> <a href="#l00009">framed_transport.cpp:9</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedTransport_html_ae79806aa8c8382fc56a78f714d706d11"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedTransport.html#ae79806aa8c8382fc56a78f714d706d11">jsonrpc::transport::FramedTransport::ReadHeadersFromBuffer</a></div><div class="ttdeci">static auto ReadHeadersFromBuffer(asio::streambuf &amp;buffer) -&gt; HeaderMap</div><div class="ttdoc">Reads headers from a buffer.</div><div class="ttdef"><b>Definition</b> <a href="#l00017">framed_transport.cpp:17</a></div></div>
 <div class="ttc" id="aframed__transport_8hpp_html"><div class="ttname"><a href="framed__transport_8hpp.html">framed_transport.hpp</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1transport_html"><div class="ttname"><a href="namespacejsonrpc_1_1transport.html">jsonrpc::transport</a></div><div class="ttdef"><b>Definition</b> <a href="framed__pipe__transport_8hpp_source.html#l00010">framed_pipe_transport.hpp:10</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1utils_html_af7bc95c38b3f575dfe5fc73eb9450581"><div class="ttname"><a href="namespacejsonrpc_1_1utils.html#af7bc95c38b3f575dfe5fc73eb9450581">jsonrpc::utils::Trim</a></div><div class="ttdeci">auto Trim(std::string_view in) -&gt; std::string</div><div class="ttdef"><b>Definition</b> <a href="string__utils_8hpp_source.html#l00010">string_utils.hpp:10</a></div></div>

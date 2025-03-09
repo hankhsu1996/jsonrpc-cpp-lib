@@ -1,0 +1,7 @@
+<map id="jsonrpc::transport::FramedPipeTransport::~FramedPipeTransport" name="jsonrpc::transport::FramedPipeTransport::~FramedPipeTransport">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,184,60"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#aa0cbceea19eecfe55973d35a9b15b7c4" title="Close the transport synchronously." alt="" coords="232,5,399,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,30,219,30,219,35,184,35"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#af36e8c630d21cbd56133464d6e79b10a" title="Close the transport synchronously." alt="" coords="447,13,637,53"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="399,30,433,30,433,35,399,35"/>
+</map>

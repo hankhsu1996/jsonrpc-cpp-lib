@@ -1,5 +1,5 @@
 <map id="jsonrpc::utils::Trim" name="jsonrpc::utils::Trim">
 <area shape="rect" id="Node000001" title=" " alt="" coords="288,20,429,45"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedTransport.html#acff87f9e3a92ba801e4c08785ed3c699" title=" " alt="" coords="5,5,240,60"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedTransport.html#ae79806aa8c8382fc56a78f714d706d11" title="Reads headers from a buffer." alt="" coords="5,5,240,60"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="274,35,240,35,240,30,274,30"/>
 </map>

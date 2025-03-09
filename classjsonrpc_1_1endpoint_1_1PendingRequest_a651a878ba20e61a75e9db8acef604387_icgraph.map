@@ -1,0 +1,5 @@
+<map id="jsonrpc::endpoint::PendingRequest::SetResult" name="jsonrpc::endpoint::PendingRequest::SetResult">
+<area shape="rect" id="Node000001" title="Sets the result of the request." alt="" coords="232,5,429,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1PendingRequest.html#ae223156dcb1865a158e6e76c80fa49f2" title="Cancels the request with an error." alt="" coords="5,5,184,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,28,184,28,184,23,218,23"/>
+</map>

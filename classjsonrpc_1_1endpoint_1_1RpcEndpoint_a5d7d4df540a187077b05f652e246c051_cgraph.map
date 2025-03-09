@@ -1,0 +1,5 @@
+<map id="jsonrpc::endpoint::RpcEndpoint::RegisterNotification" name="jsonrpc::endpoint::RpcEndpoint::RegisterNotification">
+<area shape="rect" id="Node000001" title="Register a notification handler." alt="" coords="5,5,245,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957" title="Register a notification handler." alt="" coords="293,5,523,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,23,280,23,280,28,245,28"/>
+</map>

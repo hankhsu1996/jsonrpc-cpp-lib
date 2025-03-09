@@ -1,5 +1,0 @@
-<map id="jsonrpc::transport::SocketTransport::GetSocket" name="jsonrpc::transport::SocketTransport::GetSocket">
-<area shape="rect" id="Node000001" title=" " alt="" coords="236,13,443,53"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedSocketTransport.html#ac7ba899a7161670a536c7aae727723e6" title="Sends a message in string to the transport layer." alt="" coords="5,5,188,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,35,188,35,188,30,222,30"/>
-</map>

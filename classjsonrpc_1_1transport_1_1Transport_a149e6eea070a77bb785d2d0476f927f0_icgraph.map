@@ -1,0 +1,5 @@
+<map id="jsonrpc::transport::Transport::GetIoContext" name="jsonrpc::transport::Transport::GetIoContext">
+<area shape="rect" id="Node000001" title="Get the IO context directly." alt="" coords="268,5,452,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#acb4601573b2aa5d824f7d5cc1af699fd" title="Constructs a new Pipe Transport object." alt="" coords="5,5,220,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,28,220,28,220,23,254,23"/>
+</map>
