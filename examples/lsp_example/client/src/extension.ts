@@ -8,6 +8,14 @@ import {
 } from "vscode-languageclient/node";
 import * as vscode from "vscode";
 
+/**
+ * LSP Client Example for VS Code Extension
+ *
+ * This is a simple demonstration of a Language Server Protocol (LSP) client
+ * implementation for VS Code. It connects to our C++ LSP server using pipe
+ * transport and demonstrates basic language server capabilities.
+ */
+
 let client: LanguageClient;
 let outputChannel: OutputChannel;
 

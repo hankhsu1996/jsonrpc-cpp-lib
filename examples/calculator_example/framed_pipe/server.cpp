@@ -19,6 +19,48 @@ using Json = nlohmann::json;
  * boilerplate.
  */
 
+// Main server logic encapsulated in a function
+auto RunServer(asio::io_context& io_context, const std::string& socket_path)
+    -> asio::awaitable<void> {
+  // Step 1: Create transport
+  auto transport =
+      std::make_unique<FramedPipeTransport>(io_context, socket_path, true);
+
+  // Step 2: Create RPC endpoint
+  RpcEndpoint server(io_context, std::move(transport));
+
+  // Step 3: Register RPC methods
+  server.RegisterMethodCall("add", Calculator::Add);
+  server.RegisterMethodCall("divide", Calculator::Divide);
+
+  // Step 4: Register stop notification
+  server.RegisterNotification(
+      "stop", [&server](const std::optional<Json>&) -> asio::awaitable<void> {
+        co_await server.Shutdown();
+        co_return;
+      });
+
+  // Step 5: Start server
+  co_await server.Start();
+
+  // Step 6: Wait for server shutdown
+  co_await server.WaitForShutdown();
+
+  spdlog::info("Server shutdown complete");
+  co_return;
+}
+
+// Helper function for error handling
+auto HandleError(std::exception_ptr eptr) -> void {
+  try {
+    if (eptr) {
+      std::rethrow_exception(eptr);
+    }
+  } catch (const std::exception& e) {
+    spdlog::error("Server error: {}", e.what());
+  }
+}
+
 auto main() -> int {
   // Setup logging
   auto logger = spdlog::basic_logger_mt("server", "logs/server.log", true);
@@ -26,49 +68,18 @@ auto main() -> int {
   spdlog::set_level(spdlog::level::debug);
   spdlog::flush_on(spdlog::level::debug);
 
+  // Step 1: Set socket path and initialize
   const std::string socket_path = "/tmp/calculator_framed_pipe";
   spdlog::info("Starting server on socket: {}", socket_path);
 
-  try {
-    // Create an io_context for asio operations
-    asio::io_context io_context;
+  // Step 2: Create an io_context for asio operations
+  asio::io_context io_context;
 
-    // Create the transport and RPC endpoint
-    auto transport =
-        std::make_unique<FramedPipeTransport>(io_context, socket_path, true);
-    RpcEndpoint server(io_context, std::move(transport));
+  // Step 3: Launch the server with error handling
+  asio::co_spawn(io_context, RunServer(io_context, socket_path), HandleError);
 
-    // Register RPC methods
-    server.RegisterMethodCall("add", Calculator::Add);
-    server.RegisterMethodCall("divide", Calculator::Divide);
+  // Step 4: Run the io_context
+  io_context.run();
 
-    // Register stop notification
-    server.RegisterNotification(
-        "stop", [&server](const std::optional<Json>&) -> asio::awaitable<void> {
-          co_await server.Shutdown();
-          co_return;
-        });
-
-    // Start server asynchronously
-    asio::co_spawn(io_context, server.Start(), asio::detached);
-
-    // Wait for server shutdown
-    asio::co_spawn(
-        io_context,
-        [&server]() -> asio::awaitable<void> {
-          co_await server.WaitForShutdown();
-          co_return;
-        }(),
-        asio::detached);
-
-    // Run the io_context
-    io_context.run();
-
-    spdlog::info("Server shutdown complete");
-    return 0;
-
-  } catch (const std::exception& e) {
-    spdlog::error("Error: {}", e.what());
-    return 1;
-  }
+  return 0;
 }

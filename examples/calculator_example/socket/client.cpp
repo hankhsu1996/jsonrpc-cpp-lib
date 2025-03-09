@@ -7,25 +7,20 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
+/**
+ * @brief Calculator Client Example using Socket Transport
+ *
+ * This is a simple demonstration of a JSON-RPC client using socket transport.
+ * The example shows how to connect to a server, make method calls,
+ * send notifications, and handle results and errors in a clean, structured way.
+ */
+
 using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::SocketTransport;
 using Json = nlohmann::json;
 
-// Simple error handler function - keeps the main code clean
-void HandleRpcError(std::exception_ptr e) {
-  if (!e) {
-    return;
-  }
-
-  try {
-    std::rethrow_exception(e);
-  } catch (const std::exception& ex) {
-    spdlog::error("RPC error: {}", ex.what());
-  }
-}
-
 // All RPC operations in a separate coroutine function
-auto RunCalculatorDemo(asio::io_context& io_context) -> asio::awaitable<void> {
+auto RunClient(asio::io_context& io_context) -> asio::awaitable<void> {
   // Step 1: Initialize transport and create RPC client
   const std::string host = "127.0.0.1";
   const uint16_t port = 12345;
@@ -33,7 +28,6 @@ auto RunCalculatorDemo(asio::io_context& io_context) -> asio::awaitable<void> {
 
   auto transport =
       std::make_unique<SocketTransport>(io_context, host, port, false);
-
   auto client =
       co_await RpcEndpoint::CreateClient(io_context, std::move(transport));
 
@@ -61,6 +55,19 @@ auto RunCalculatorDemo(asio::io_context& io_context) -> asio::awaitable<void> {
   co_await client->Shutdown();
 }
 
+// Simple error handler function - keeps the main code clean
+void HandleError(std::exception_ptr e) {
+  if (!e) {
+    return;
+  }
+
+  try {
+    std::rethrow_exception(e);
+  } catch (const std::exception& ex) {
+    spdlog::error("RPC error: {}", ex.what());
+  }
+}
+
 auto main() -> int {
   // Setup logging
   auto logger = spdlog::basic_logger_mt("client", "logs/client.log", true);
@@ -73,7 +80,7 @@ auto main() -> int {
   asio::io_context io_context;
 
   // Launch the RPC operations with our simple error handler
-  asio::co_spawn(io_context, RunCalculatorDemo(io_context), HandleRpcError);
+  asio::co_spawn(io_context, RunClient(io_context), HandleError);
 
   // Run the ASIO event loop
   spdlog::info("Running io_context");
