@@ -37,7 +37,7 @@ http_archive(
   name = "jsonrpc",
   urls = ["https://github.com/hankhsu1996/jsonrpc-cpp-lib/archive/refs/tags/v2.0.0.tar.gz"],
   strip_prefix = "jsonrpc-cpp-lib-2.0.0",
-  sha256 = "a381dc02ab95c31902077793e926adbb0d8f67eadbc386b03451e952d50f0615",
+  sha256 = "12ce2e8d539e01f0f226ba4be409115aff88e48dbe4c6d7178fdcbdd7fb54244",
 )
 ```
 
