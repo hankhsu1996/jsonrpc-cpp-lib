@@ -11,76 +11,74 @@ using jsonrpc::endpoint::RpcEndpoint;
 using jsonrpc::transport::SocketTransport;
 using Json = nlohmann::json;
 
-// Separate function to handle RPC calls using coroutines
-auto RunRpcCalls(RpcEndpoint* client) -> asio::awaitable<void> {
+// Simple error handler function - keeps the main code clean
+void HandleRpcError(std::exception_ptr e) {
+  if (!e) {
+    return;
+  }
+
   try {
-    const int add_op1 = 10;
-    const int add_op2 = 5;
-    Json add_resp = co_await client->CallMethod(
-        "add", Json({{"a", add_op1}, {"b", add_op2}}));
-    spdlog::info("Add result: {}", add_resp.dump());
-
-    const int div_op1 = 10;
-    const int div_op2 = 2;
-    Json div_resp = co_await client->CallMethod(
-        "divide", Json({{"a", div_op1}, {"b", div_op2}}));
-    spdlog::info("Divide result: {}", div_resp.dump());
-
-    // Tell server to stop
-    co_await client->SendNotification("stop");
-
-    // Clean shutdown of client
-    co_await client->Shutdown();
-  } catch (const std::exception& e) {
-    spdlog::error("RPC error: {}", e.what());
-    throw;
+    std::rethrow_exception(e);
+  } catch (const std::exception& ex) {
+    spdlog::error("RPC error: {}", ex.what());
   }
 }
 
+// All RPC operations in a separate coroutine function
+auto RunCalculatorDemo(asio::io_context& io_context) -> asio::awaitable<void> {
+  // Step 1: Initialize transport and create RPC client
+  const std::string host = "127.0.0.1";
+  const uint16_t port = 12345;
+  spdlog::info("Connecting to server at {}:{}", host, port);
+
+  auto transport =
+      std::make_unique<SocketTransport>(io_context, host, port, false);
+
+  auto client =
+      co_await RpcEndpoint::CreateClient(io_context, std::move(transport));
+
+  // Step 2: Make RPC method calls
+  // Example 1: Call "add" method
+  const int add_op1 = 10;
+  const int add_op2 = 5;
+  Json add_params = {{"a", add_op1}, {"b", add_op2}};
+  Json add_result = co_await client->CallMethod("add", add_params);
+  spdlog::info("Add result: {} + {} = {}", add_op1, add_op2, add_result.dump());
+
+  // Example 2: Call "divide" method
+  const int div_op1 = 10;
+  const int div_op2 = 2;
+  Json div_params = {{"a", div_op1}, {"b", div_op2}};
+  Json div_result = co_await client->CallMethod("divide", div_params);
+  spdlog::info("Div result: {} / {} = {}", div_op1, div_op2, div_result.dump());
+
+  // Step 3: Send notifications
+  spdlog::info("Sending 'stop' notification to server");
+  co_await client->SendNotification("stop");
+
+  // Step 4: Clean shutdown
+  spdlog::info("Shutting down client");
+  co_await client->Shutdown();
+}
+
 auto main() -> int {
+  // Setup logging
   auto logger = spdlog::basic_logger_mt("client", "logs/client.log", true);
   spdlog::set_default_logger(logger);
   spdlog::set_level(spdlog::level::debug);
   spdlog::flush_on(spdlog::level::debug);
+  spdlog::info("Starting JSON-RPC calculator client example");
 
-  try {
-    asio::io_context io_context;
+  // Create ASIO io_context
+  asio::io_context io_context;
 
-    // Run the client logic, properly awaiting client creation first
-    asio::co_spawn(
-        io_context,
-        [&io_context]() -> asio::awaitable<void> {
-          try {
-            const std::string host = "127.0.0.1";
-            const uint16_t port = 12345;
+  // Launch the RPC operations with our simple error handler
+  asio::co_spawn(io_context, RunCalculatorDemo(io_context), HandleRpcError);
 
-            // Create and fully initialize the client
-            auto client = co_await RpcEndpoint::CreateClient(
-                io_context, std::make_unique<SocketTransport>(
-                                io_context, host, port, false));
+  // Run the ASIO event loop
+  spdlog::info("Running io_context");
+  io_context.run();
 
-            // Now that client is fully initialized, run RPC calls
-            co_await RunRpcCalls(client.get());
-          } catch (const std::exception& e) {
-            spdlog::error("Error in client coroutine: {}", e.what());
-          }
-        },
-        [](std::exception_ptr e) {
-          if (e) {
-            try {
-              std::rethrow_exception(e);
-            } catch (const std::exception& ex) {
-              spdlog::error("Client error: {}", ex.what());
-            }
-          }
-        });
-
-    // Run the io_context
-    io_context.run();
-    return 0;
-
-  } catch (const std::exception& e) {
-    spdlog::error("Error: {}", e.what());
-    return 1;
-  }
+  spdlog::info("Client shutdown complete");
+  return 0;
 }
