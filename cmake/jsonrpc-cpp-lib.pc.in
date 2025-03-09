@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+
+Name: jsonrpc-cpp-lib
+Description: Modern C++ JSON-RPC 2.0 Library
+Version: @PROJECT_VERSION@
+Requires: nlohmann_json spdlog
+Cflags: -I${includedir}
+Libs: -L${libdir} -ljsonrpc-cpp-lib

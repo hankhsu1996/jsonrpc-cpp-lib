@@ -25,7 +25,10 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_library(jsonrpc-cpp-lib ${SOURCES})
 
 # Include directories for the library
-target_include_directories(jsonrpc-cpp-lib PUBLIC include)
+target_include_directories(jsonrpc-cpp-lib PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 # Check for Conan usage
 if(USE_CONAN)
@@ -126,3 +129,81 @@ if(BUILD_TESTS AND EXISTS "${CMAKE_SOURCE_DIR}/tests")
 
     add_subdirectory(tests)
 endif()
+
+# ----------------------------------------------------------------
+# Installation and export configuration
+# ----------------------------------------------------------------
+
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+# Make the library installable
+install(
+    TARGETS jsonrpc-cpp-lib
+    EXPORT jsonrpc-cpp-lib-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install header files
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Create a simple config file that includes the targets file
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-libConfig.cmake" "
+# jsonrpc-cpp-lib CMake configuration file
+include(CMakeFindDependencyMacro)
+
+# Find dependencies
+find_dependency(nlohmann_json REQUIRED)
+find_dependency(spdlog REQUIRED)
+
+# Include targets file
+include(\"\${CMAKE_CURRENT_LIST_DIR}/jsonrpc-cpp-lib-targets.cmake\")
+")
+
+# Generate the version file
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-libConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+# Install CMake config files
+install(
+    FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-libConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-libConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/jsonrpc-cpp-lib
+)
+
+# Export targets
+install(
+    EXPORT jsonrpc-cpp-lib-targets
+    FILE jsonrpc-cpp-lib-targets.cmake
+    NAMESPACE jsonrpc::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/jsonrpc-cpp-lib
+)
+
+# Generate export targets for build tree
+export(
+    EXPORT jsonrpc-cpp-lib-targets
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-lib-targets.cmake"
+    NAMESPACE jsonrpc::
+)
+
+# Configure and install pkg-config file
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/jsonrpc-cpp-lib.pc.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-lib.pc"
+    @ONLY
+)
+
+install(
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-lib.pc"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
+)
