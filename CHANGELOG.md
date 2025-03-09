@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-03-09
+
+### Changed
+
+- **BREAKING**: Complete migration from blocking calls to Asio coroutines with awaitable interfaces
+- **BREAKING**: Method signatures now return `asio::awaitable<>` instead of direct values
+- **BREAKING**: Client code must use `co_await` with coroutine functions
+- **BREAKING**: Method handlers must be implemented as coroutines
+- Refactored transport layer to use asynchronous operations throughout
+- Redesigned RPC endpoint to leverage coroutines for all operations
+- Transitioned from thread pools to IO context-based execution
+- Removed manual thread management in favor of asio's task model
+- Improved error handling with exception propagation in coroutines
+
+### Added
+
+- Support for proper cancellation and timeouts via Asio facilities
+- New static factory method `CreateClient` for client initialization
+- Better documentation and examples for the coroutine-based approach
+- LSP client example using TypeScript
+- CMake export configuration for easier integration
+
+### Removed
+
+- Synchronous blocking API methods
+- Thread pool-based execution model
+- Stdio transport (poor fit for asynchronous model)
+
 ## [1.0.0] - 2024-08-16
 
 ### Added

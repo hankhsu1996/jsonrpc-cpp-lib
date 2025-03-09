@@ -35,8 +35,8 @@ Bazel provides a streamlined dependency management experience. To include this l
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
   name = "jsonrpc",
-  urls = ["https://github.com/hankhsu1996/jsonrpc-cpp-lib/archive/refs/tags/v1.0.0.tar.gz"],
-  strip_prefix = "jsonrpc-cpp-lib-1.0.0",
+  urls = ["https://github.com/hankhsu1996/jsonrpc-cpp-lib/archive/refs/tags/v2.0.0.tar.gz"],
+  strip_prefix = "jsonrpc-cpp-lib-2.0.0",
   sha256 = "a381dc02ab95c31902077793e926adbb0d8f67eadbc386b03451e952d50f0615",
 )
 ```
@@ -54,7 +54,7 @@ include(FetchContent)
 FetchContent_Declare(
   jsonrpc-cpp-lib
   GIT_REPOSITORY https://github.com/hankhsu1996/jsonrpc-cpp-lib.git
-  GIT_TAG v1.0.0
+  GIT_TAG v2.0.0
 )
 FetchContent_MakeAvailable(jsonrpc-cpp-lib)
 
@@ -100,7 +100,7 @@ For projects using Conan for dependency management, create a `conanfile.txt` in 
 
 ```ini
 [requires]
-jsonrpc-cpp-lib/1.0.0
+jsonrpc-cpp-lib/2.0.0
 
 [generators]
 CMakeDeps
