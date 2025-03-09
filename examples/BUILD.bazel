@@ -52,7 +52,7 @@ cc_binary(
 cc_binary(
     name = "pipe_lsp_server",
     srcs = [
-        "lsp_example/pipe/lsp_server.cpp",
+        "lsp_example/server/lsp_server.cpp",
         "lsp_example/utils.hpp",
     ],
     deps = ["//src:jsonrpc_lib"],
