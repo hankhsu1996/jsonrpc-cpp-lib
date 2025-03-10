@@ -31,37 +31,17 @@ There are several ways to include this library in your project:
 
 Bazel provides a streamlined dependency management experience. To include this library in your project with Bazel, ensure you are using Bazel 7.0 or later, as Bzlmod is enabled by default.
 
-##### A. Modern Approach: Using Bzlmod with Git Override (Recommended)
-
-This is the modern, recommended approach that automatically handles all dependencies:
-
 ```bazel
 # In your MODULE.bazel file
 bazel_dep(name = "jsonrpc_cpp_lib", version = "0.0.0")
 git_override(
     module_name = "jsonrpc_cpp_lib",
     remote = "https://github.com/hankhsu1996/jsonrpc-cpp-lib.git",
-    tag = "v2.0.0"
+    tag = "v2.0.1"
 )
 ```
 
 With this approach, all of this library's dependencies (nlohmann_json, spdlog, asio, etc.) will be automatically pulled in and version-managed by Bazel.
-
-##### B. Traditional Approach: Using HTTP Archive
-
-If you prefer the traditional approach, add the following to your `MODULE.bazel` or `WORKSPACE.bazel` file:
-
-```bazel
-http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-http_archive(
-  name = "jsonrpc",
-  urls = ["https://github.com/hankhsu1996/jsonrpc-cpp-lib/archive/refs/tags/v2.0.0.tar.gz"],
-  strip_prefix = "jsonrpc-cpp-lib-2.0.0",
-  sha256 = "12ce2e8d539e01f0f226ba4be409115aff88e48dbe4c6d7178fdcbdd7fb54244",
-)
-```
-
-Note: With this approach, you'll need to manually add all dependencies (nlohmann_json, spdlog, asio, etc.) to your build files.
 
 #### Option 2: Using CMake
 
@@ -76,7 +56,7 @@ include(FetchContent)
 FetchContent_Declare(
   jsonrpc-cpp-lib
   GIT_REPOSITORY https://github.com/hankhsu1996/jsonrpc-cpp-lib.git
-  GIT_TAG v2.0.0
+  GIT_TAG v2.0.1
 )
 FetchContent_MakeAvailable(jsonrpc-cpp-lib)
 
@@ -122,7 +102,7 @@ For projects using Conan for dependency management, create a `conanfile.txt` in 
 
 ```ini
 [requires]
-jsonrpc-cpp-lib/2.0.0
+jsonrpc-cpp-lib/2.0.1
 
 [generators]
 CMakeDeps

@@ -5,7 +5,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 class JsonRpcRecipe(ConanFile):
     """ Conan recipe for jsonrpc-cpp-lib """
     name = "jsonrpc-cpp-lib"
-    version = "2.0.0"
+    version = "2.0.1"
     license = "MIT"
     author = "Shou-Li Hsu <hank850503@gmail.com>"
     url = "https://github.com/hankhsu1996/jsonrpc-cpp-lib"
