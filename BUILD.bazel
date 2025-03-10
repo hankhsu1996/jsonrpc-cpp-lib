@@ -1,5 +1,13 @@
-filegroup(
-    name = "clang_tidy_config",
-    srcs = [".clang-tidy"],
+cc_library(
+    name = "jsonrpc_lib",
+    srcs = glob(["src/**/*.cpp"]),
+    hdrs = glob(["include/jsonrpc/**/*.hpp"]),
+    includes = ["include"],
+    linkopts = ["-pthread"],
     visibility = ["//visibility:public"],
+    deps = [
+        "@asio",
+        "@nlohmann_json//:json",
+        "@spdlog",
+    ],
 )

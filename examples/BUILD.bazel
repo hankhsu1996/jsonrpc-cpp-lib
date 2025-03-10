@@ -4,7 +4,7 @@
 cc_binary(
     name = "pipe_client",
     srcs = ["calculator_example/pipe/client.cpp"],
-    deps = ["//src:jsonrpc_lib"],
+    deps = ["//:jsonrpc_lib"],
 )
 
 cc_binary(
@@ -13,14 +13,14 @@ cc_binary(
         "calculator_example/calculator.hpp",
         "calculator_example/pipe/server.cpp",
     ],
-    deps = ["//src:jsonrpc_lib"],
+    deps = ["//:jsonrpc_lib"],
 )
 
 # Calculator example using Framed Unix domain socket transport
 cc_binary(
     name = "framed_pipe_client",
     srcs = ["calculator_example/framed_pipe/client.cpp"],
-    deps = ["//src:jsonrpc_lib"],
+    deps = ["//:jsonrpc_lib"],
 )
 
 cc_binary(
@@ -29,14 +29,14 @@ cc_binary(
         "calculator_example/calculator.hpp",
         "calculator_example/framed_pipe/server.cpp",
     ],
-    deps = ["//src:jsonrpc_lib"],
+    deps = ["//:jsonrpc_lib"],
 )
 
 # Calculator example using ASIO socket transport
 cc_binary(
     name = "socket_client",
     srcs = ["calculator_example/socket/client.cpp"],
-    deps = ["//src:jsonrpc_lib"],
+    deps = ["//:jsonrpc_lib"],
 )
 
 cc_binary(
@@ -45,7 +45,7 @@ cc_binary(
         "calculator_example/calculator.hpp",
         "calculator_example/socket/server.cpp",
     ],
-    deps = ["//src:jsonrpc_lib"],
+    deps = ["//:jsonrpc_lib"],
 )
 
 # LSP example using Unix domain socket (pipe) transport
@@ -54,5 +54,5 @@ cc_binary(
     srcs = [
         "lsp_example/server/lsp_server.cpp",
     ],
-    deps = ["//src:jsonrpc_lib"],
+    deps = ["//:jsonrpc_lib"],
 )

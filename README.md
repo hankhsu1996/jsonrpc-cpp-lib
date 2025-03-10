@@ -29,7 +29,27 @@ There are several ways to include this library in your project:
 
 #### Option 1: Using Bazel (Recommended)
 
-Bazel provides a streamlined dependency management experience. To include this library in your project with Bazel, ensure you are using Bazel 7.0 or later, as Bzlmod is enabled by default. Add the following to your `MODULE.bazel` file:
+Bazel provides a streamlined dependency management experience. To include this library in your project with Bazel, ensure you are using Bazel 7.0 or later, as Bzlmod is enabled by default.
+
+##### A. Modern Approach: Using Bzlmod with Git Override (Recommended)
+
+This is the modern, recommended approach that automatically handles all dependencies:
+
+```bazel
+# In your MODULE.bazel file
+bazel_dep(name = "jsonrpc_cpp_lib", version = "0.0.0")
+git_override(
+    module_name = "jsonrpc_cpp_lib",
+    remote = "https://github.com/hankhsu1996/jsonrpc-cpp-lib.git",
+    tag = "v2.0.0"
+)
+```
+
+With this approach, all of this library's dependencies (nlohmann_json, spdlog, asio, etc.) will be automatically pulled in and version-managed by Bazel.
+
+##### B. Traditional Approach: Using HTTP Archive
+
+If you prefer the traditional approach, add the following to your `MODULE.bazel` or `WORKSPACE.bazel` file:
 
 ```bazel
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
@@ -40,6 +60,8 @@ http_archive(
   sha256 = "12ce2e8d539e01f0f226ba4be409115aff88e48dbe4c6d7178fdcbdd7fb54244",
 )
 ```
+
+Note: With this approach, you'll need to manually add all dependencies (nlohmann_json, spdlog, asio, etc.) to your build files.
 
 #### Option 2: Using CMake
 
