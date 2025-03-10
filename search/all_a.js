@@ -12,6 +12,5 @@ var searchData=
   ['getsocket_9',['GetSocket',['../classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765',1,'jsonrpc::transport::PipeTransport::GetSocket()'],['../classjsonrpc_1_1transport_1_1SocketTransport.html#a336ccd597046e343c7f4026359c7887c',1,'jsonrpc::transport::SocketTransport::GetSocket()']]],
   ['getstrand_10',['GetStrand',['../classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472',1,'jsonrpc::transport::Transport']]],
   ['getting_20started_11',['Getting Started',['../index.html#autotoc_md2',1,'']]],
-  ['git_20override_20recommended_12',['A. Modern Approach: Using Bzlmod with Git Override (Recommended)',['../index.html#autotoc_md6',1,'']]],
-  ['guide_13',['Developer Guide',['../index.html#autotoc_md14',1,'']]]
+  ['guide_12',['Developer Guide',['../index.html#autotoc_md12',1,'']]]
 ];

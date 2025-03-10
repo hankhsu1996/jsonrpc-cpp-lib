@@ -142,45 +142,31 @@ Adding to Your Project</h2>
 <h3><a class="anchor" id="autotoc_md5"></a>
 Option 1: Using Bazel (Recommended)</h3>
 <p>Bazel provides a streamlined dependency management experience. To include this library in your project with Bazel, ensure you are using Bazel 7.0 or later, as Bzlmod is enabled by default.</p>
-<h4><a class="anchor" id="autotoc_md6"></a>
-A. Modern Approach: Using Bzlmod with Git Override (Recommended)</h4>
-<p>This is the modern, recommended approach that automatically handles all dependencies:</p>
 <div class="fragment"><div class="line"># In your MODULE.bazel file</div>
 <div class="line">bazel_dep(name = &quot;jsonrpc_cpp_lib&quot;, version = &quot;0.0.0&quot;)</div>
 <div class="line">git_override(</div>
 <div class="line">    module_name = &quot;jsonrpc_cpp_lib&quot;,</div>
 <div class="line">    remote = &quot;https://github.com/hankhsu1996/jsonrpc-cpp-lib.git&quot;,</div>
-<div class="line">    tag = &quot;v2.0.0&quot;</div>
+<div class="line">    tag = &quot;v2.0.1&quot;</div>
 <div class="line">)</div>
 </div><!-- fragment --><p>With this approach, all of this library's dependencies (nlohmann_json, spdlog, asio, etc.) will be automatically pulled in and version-managed by Bazel.</p>
-<h4><a class="anchor" id="autotoc_md7"></a>
-B. Traditional Approach: Using HTTP Archive</h4>
-<p>If you prefer the traditional approach, add the following to your <code>MODULE.bazel</code> or <code>WORKSPACE.bazel</code> file:</p>
-<div class="fragment"><div class="line">http_archive = use_repo_rule(&quot;@bazel_tools//tools/build_defs/repo:http.bzl&quot;, &quot;http_archive&quot;)</div>
-<div class="line">http_archive(</div>
-<div class="line">  name = &quot;jsonrpc&quot;,</div>
-<div class="line">  urls = [&quot;https://github.com/hankhsu1996/jsonrpc-cpp-lib/archive/refs/tags/v2.0.0.tar.gz&quot;],</div>
-<div class="line">  strip_prefix = &quot;jsonrpc-cpp-lib-2.0.0&quot;,</div>
-<div class="line">  sha256 = &quot;12ce2e8d539e01f0f226ba4be409115aff88e48dbe4c6d7178fdcbdd7fb54244&quot;,</div>
-<div class="line">)</div>
-</div><!-- fragment --><p>Note: With this approach, you'll need to manually add all dependencies (nlohmann_json, spdlog, asio, etc.) to your build files.</p>
-<h3><a class="anchor" id="autotoc_md8"></a>
+<h3><a class="anchor" id="autotoc_md6"></a>
 Option 2: Using CMake</h3>
 <p>CMake offers two main approaches for including this library:</p>
-<h4><a class="anchor" id="autotoc_md9"></a>
+<h4><a class="anchor" id="autotoc_md7"></a>
 A. As a Build-Time Dependency (FetchContent)</h4>
 <p>This approach downloads and builds the library as part of your project. It's ideal for development workflows where you want everything self-contained:</p>
 <div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line">FetchContent_Declare(</div>
 <div class="line">  jsonrpc-cpp-lib</div>
 <div class="line">  GIT_REPOSITORY https://github.com/hankhsu1996/jsonrpc-cpp-lib.git</div>
-<div class="line">  GIT_TAG v2.0.0</div>
+<div class="line">  GIT_TAG v2.0.1</div>
 <div class="line">)</div>
 <div class="line">FetchContent_MakeAvailable(jsonrpc-cpp-lib)</div>
 <div class="line"> </div>
 <div class="line"># Link your target with the library</div>
 <div class="line">target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc-cpp-lib)</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md8"></a>
 B. As a System-Wide Installation (find_package)</h4>
 <p>This approach uses a pre-installed version of the library. It's better for production environments and system-wide installations:</p>
 <ol type="1">
@@ -206,11 +192,11 @@ B. As a System-Wide Installation (find_package)</h4>
 <div class="line">target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc-cpp-lib)</div>
 </div><!-- fragment --></li>
 </ol>
-<h3><a class="anchor" id="autotoc_md11"></a>
+<h3><a class="anchor" id="autotoc_md9"></a>
 Option 3: Using Conan with CMake</h3>
 <p>For projects using Conan for dependency management, create a <code>conanfile.txt</code> in your project directory:</p>
 <div class="fragment"><div class="line">[requires]</div>
-<div class="line">jsonrpc-cpp-lib/2.0.0</div>
+<div class="line">jsonrpc-cpp-lib/2.0.1</div>
 <div class="line"> </div>
 <div class="line">[generators]</div>
 <div class="line">CMakeDeps</div>
@@ -219,9 +205,9 @@ Option 3: Using Conan with CMake</h3>
 <div class="fragment"><div class="line">conan install . --build=missing</div>
 <div class="line">cmake -DUSE_CONAN=ON -B build .</div>
 <div class="line">cmake --build build</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
 Usage and Examples</h1>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 Creating a JSON-RPC Client and Server</h2>
 <p>Here's a simplified example of how to create a client and server using the library:</p>
 <p><b>Server Example</b></p>
@@ -335,16 +321,16 @@ Creating a JSON-RPC Client and Server</h2>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>For more examples including different transport types and complete applications, please refer to the <a href="./examples/">examples folder</a>.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 Developer Guide</h1>
 <p>Follow these steps to build, test, and set up your development environment. Bazel is the preferred method.</p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Option 1: Using Bazel (Preferred)</h2>
 <p><b>Step 1: Build the Project</b></p>
 <div class="fragment"><div class="line">bazel build //...</div>
 </div><!-- fragment --><p><b>Step 2: Run Tests</b></p>
 <div class="fragment"><div class="line">bazel test //...</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md14"></a>
 Option 2: Using CMake and Conan</h2>
 <p><b>Step 1: Install Dependencies</b></p>
 <div class="fragment"><div class="line">conan profile detect --force</div>
@@ -355,19 +341,19 @@ Option 2: Using CMake and Conan</h2>
 <div class="line">cmake --build --preset release</div>
 </div><!-- fragment --><p><b>Step 3: Run Tests</b></p>
 <div class="fragment"><div class="line">ctest --preset release</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md17"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
 Optional: Debug Configuration</h2>
 <p>For Debug configuration:</p>
 <div class="fragment"><div class="line">cmake --preset debug</div>
 <div class="line">cmake --build --preset debug</div>
 <div class="line">ctest --preset debug</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
 Optional: CMake without Conan</h2>
 <p>If you prefer not to use Conan, you can build the project with CMake directly:</p>
 <div class="fragment"><div class="line">cmake -S . -B build</div>
 <div class="line">cmake --build build</div>
 <div class="line">ctest --test-dir build</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md19"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md17"></a>
 Compilation Database</h2>
 <p>Generate the <code>compile_commands.json</code> file for tools like <code>clang-tidy</code> and <code>clangd</code>:</p>
 <ul>
@@ -375,10 +361,10 @@ Compilation Database</h2>
 <li><b>CMake</b>: Simply build the project. The database will be generated automatically.</li>
 </ul>
 <p>In both cases, the <code>compile_commands.json</code> file will be placed in the root directory.</p>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Contributing</h1>
 <p>We welcome contributions! If you have suggestions or find any issues, feel free to open an issue or pull request.</p>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 License</h1>
 <p>This project is licensed under the MIT License. See the <a href="./LICENSE">LICENSE</a> file for more details. </p>
 </div></div><!-- PageDoc -->

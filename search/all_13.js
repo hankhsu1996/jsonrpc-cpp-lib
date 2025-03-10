@@ -7,7 +7,7 @@ var searchData=
   ['pipe_5ftransport_2ecpp_4',['pipe_transport.cpp',['../pipe__transport_8cpp.html',1,'']]],
   ['pipe_5ftransport_2ehpp_5',['pipe_transport.hpp',['../pipe__transport_8hpp.html',1,'']]],
   ['pipetransport_6',['PipeTransport',['../classjsonrpc_1_1transport_1_1PipeTransport.html',1,'jsonrpc::transport::PipeTransport'],['../classjsonrpc_1_1transport_1_1PipeTransport.html#acb4601573b2aa5d824f7d5cc1af699fd',1,'jsonrpc::transport::PipeTransport::PipeTransport(asio::io_context &amp;io_context, std::string socket_path, bool is_server=false)'],['../classjsonrpc_1_1transport_1_1PipeTransport.html#aed96020229bd04761f00f9b582aeaa40',1,'jsonrpc::transport::PipeTransport::PipeTransport(const PipeTransport &amp;)=delete'],['../classjsonrpc_1_1transport_1_1PipeTransport.html#a3ba6fe2c71f0dd90e4de4c0719857fa5',1,'jsonrpc::transport::PipeTransport::PipeTransport(PipeTransport &amp;&amp;)=delete']]],
-  ['preferred_7',['Option 1: Using Bazel (Preferred)',['../index.html#autotoc_md15',1,'']]],
+  ['preferred_7',['Option 1: Using Bazel (Preferred)',['../index.html#autotoc_md13',1,'']]],
   ['prerequisites_8',['Prerequisites',['../index.html#autotoc_md3',1,'']]],
   ['project_9',['Adding to Your Project',['../index.html#autotoc_md4',1,'']]]
 ];
