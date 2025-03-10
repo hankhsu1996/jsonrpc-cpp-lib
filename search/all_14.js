@@ -5,7 +5,7 @@ var searchData=
   ['readheadersfrombuffer_2',['ReadHeadersFromBuffer',['../classjsonrpc_1_1transport_1_1FramedTransport.html#ae79806aa8c8382fc56a78f714d706d11',1,'jsonrpc::transport::FramedTransport']]],
   ['readme_2emd_3',['README.md',['../README_8md.html',1,'']]],
   ['receivemessage_4',['ReceiveMessage',['../classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a34c6a47bae346443e6a798fc2d4d248d',1,'jsonrpc::transport::FramedPipeTransport::ReceiveMessage()'],['../classjsonrpc_1_1transport_1_1PipeTransport.html#a4c09feceef8396690ab911e6b2f768a9',1,'jsonrpc::transport::PipeTransport::ReceiveMessage()'],['../classjsonrpc_1_1transport_1_1SocketTransport.html#ae189909322dfce4794a1b6d1864e95c7',1,'jsonrpc::transport::SocketTransport::ReceiveMessage()'],['../classjsonrpc_1_1transport_1_1Transport.html#accf8ffb72dcfd866faf38ddaa2e26817',1,'jsonrpc::transport::Transport::ReceiveMessage()']]],
-  ['recommended_5',['Option 1: Using Bazel (Recommended)',['../index.html#autotoc_md5',1,'']]],
+  ['recommended_5',['Recommended',['../index.html#autotoc_md6',1,'A. Modern Approach: Using Bzlmod with Git Override (Recommended)'],['../index.html#autotoc_md5',1,'Option 1: Using Bazel (Recommended)']]],
   ['registermethodcall_6',['RegisterMethodCall',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a91858af35b7e497e6e422eaafca49d9f',1,'jsonrpc::endpoint::Dispatcher::RegisterMethodCall()'],['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#af040165a60c9f2936e657cc3a8460c40',1,'jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall()']]],
   ['registernotification_7',['RegisterNotification',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957',1,'jsonrpc::endpoint::Dispatcher::RegisterNotification()'],['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5d7d4df540a187077b05f652e246c051',1,'jsonrpc::endpoint::RpcEndpoint::RegisterNotification()']]],
   ['removeexistingsocketfile_8',['RemoveExistingSocketFile',['../classjsonrpc_1_1transport_1_1PipeTransport.html#a1fd629d50b714c30a78d6ead502444a5',1,'jsonrpc::transport::PipeTransport']]],
@@ -19,7 +19,7 @@ var searchData=
   ['response_2ecpp_16',['response.cpp',['../response_8cpp.html',1,'']]],
   ['response_2ehpp_17',['response.hpp',['../response_8hpp.html',1,'']]],
   ['rpc_202_200_20modern_20c_20library_18',['JSON-RPC 2.0 Modern C++ Library',['../index.html',1,'']]],
-  ['rpc_20client_20and_20server_19',['Creating a JSON-RPC Client and Server',['../index.html#autotoc_md11',1,'']]],
+  ['rpc_20client_20and_20server_19',['Creating a JSON-RPC Client and Server',['../index.html#autotoc_md13',1,'']]],
   ['rpcendpoint_20',['RpcEndpoint',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html',1,'jsonrpc::endpoint::RpcEndpoint'],['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a24d6c86a7264e87c58a0dd0881d6a6fb',1,'jsonrpc::endpoint::RpcEndpoint::RpcEndpoint(asio::io_context &amp;io_ctx, std::unique_ptr&lt; transport::Transport &gt; transport)'],['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a87e00ed72fe74f85e192c3971367018c',1,'jsonrpc::endpoint::RpcEndpoint::RpcEndpoint(const RpcEndpoint &amp;)=delete'],['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab25e43f6a488a5dd4fb93671a1696c7e',1,'jsonrpc::endpoint::RpcEndpoint::RpcEndpoint(RpcEndpoint &amp;&amp;)=delete']]],
   ['rpcerror_21',['RpcError',['../classjsonrpc_1_1endpoint_1_1RpcError.html',1,'jsonrpc::endpoint::RpcError'],['../classjsonrpc_1_1endpoint_1_1RpcError.html#a42fb6f2a0d9195d860adf1c58d835770',1,'jsonrpc::endpoint::RpcError::RpcError()']]]
 ];

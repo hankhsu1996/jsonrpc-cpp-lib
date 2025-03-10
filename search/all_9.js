@@ -1,8 +1,8 @@
 var searchData=
 [
   ['features_0',['Features',['../index.html#autotoc_md1',1,'']]],
-  ['fetchcontent_1',['A. As a Build-Time Dependency (FetchContent)',['../index.html#autotoc_md7',1,'']]],
-  ['find_5fpackage_2',['B. As a System-Wide Installation (find_package)',['../index.html#autotoc_md8',1,'']]],
+  ['fetchcontent_1',['A. As a Build-Time Dependency (FetchContent)',['../index.html#autotoc_md9',1,'']]],
+  ['find_5fpackage_2',['B. As a System-Wide Installation (find_package)',['../index.html#autotoc_md10',1,'']]],
   ['framed_5fpipe_5ftransport_2ecpp_3',['framed_pipe_transport.cpp',['../framed__pipe__transport_8cpp.html',1,'']]],
   ['framed_5fpipe_5ftransport_2ehpp_4',['framed_pipe_transport.hpp',['../framed__pipe__transport_8hpp.html',1,'']]],
   ['framed_5ftransport_2ecpp_5',['framed_transport.cpp',['../framed__transport_8cpp.html',1,'']]],
