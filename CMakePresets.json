@@ -4,27 +4,35 @@
   "configurePresets": [
     {
       "name": "release",
-      "displayName": "Release Config",
-      "description": "Release configuration preset inheriting from conan-release.",
-      "inherits": "conan-release"
+      "displayName": "Release Config with Clang",
+      "description": "Release configuration preset with Clang compiler.",
+      "inherits": "conan-release",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
     },
     {
       "name": "debug",
-      "displayName": "Debug Config",
-      "description": "Debug configuration preset inheriting from conan-debug.",
-      "inherits": "conan-debug"
+      "displayName": "Debug Config with Clang",
+      "description": "Debug configuration preset with Clang compiler.",
+      "inherits": "conan-debug",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
     }
   ],
   "buildPresets": [
     {
       "name": "release",
       "configurePreset": "release",
-      "description": "Build the project using the Release configuration."
+      "description": "Build the project using the Release configuration with Clang compiler."
     },
     {
       "name": "debug",
       "configurePreset": "debug",
-      "description": "Build the project using the Debug configuration."
+      "description": "Build the project using the Debug configuration with Clang compiler."
     }
   ],
   "testPresets": [

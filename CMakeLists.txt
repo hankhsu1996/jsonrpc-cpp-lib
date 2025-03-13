@@ -57,14 +57,14 @@ else()
     FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog.git
-        GIT_TAG v1.14.1
+        GIT_TAG v1.15.1
     )
     FetchContent_MakeAvailable(spdlog)
 
     FetchContent_Declare(
         asio
         GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-        GIT_TAG asio-1-28-2
+        GIT_TAG asio-1-32-0
     )
     FetchContent_MakeAvailable(asio)
 

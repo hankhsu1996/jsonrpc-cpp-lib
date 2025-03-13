@@ -24,8 +24,8 @@ class JsonRpcRecipe(ConanFile):
     # Declare package dependencies
     requires = [
         "nlohmann_json/3.11.3",
-        "spdlog/1.14.1",
-        "asio/1.28.2"
+        "spdlog/1.15.1",
+        "asio/1.32.0"
     ]
 
     tool_requires = [
@@ -34,7 +34,7 @@ class JsonRpcRecipe(ConanFile):
     ]
 
     test_requires = [
-        "catch2/3.6.0"
+        "catch2/3.8.0"
     ]
 
     # Define options for building examples and tests

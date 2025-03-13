@@ -8,11 +8,12 @@ module(
 )
 
 # Dependencies from the Bazel Central Registry
-bazel_dep(name = "rules_cc", version = "0.0.17")
+bazel_dep(name = "rules_cc", version = "0.1.1")
 bazel_dep(name = "nlohmann_json", version = "3.11.3")
-bazel_dep(name = "spdlog", version = "1.14.1")
-bazel_dep(name = "asio", version = "1.28.2")
-bazel_dep(name = "catch2", version = "3.6.0")
+bazel_dep(name = "spdlog", version = "1.15.1")
+bazel_dep(name = "asio", version = "1.32.0")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "catch2", version = "3.8.0")
 
 # Dependency using traditional HTTP archive
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")

@@ -13,6 +13,7 @@ build --cxxopt='-Wall'
 build --cxxopt='-Wextra'
 build --cxxopt='-Wpedantic'
 build --cxxopt='-Werror'
+build --cxxopt='-Wno-unused-parameter'
 
 # Build configurations
 build:debug --compilation_mode=dbg
