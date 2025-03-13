@@ -53,6 +53,9 @@ jobs:
           conan install . --build=missing
           conan install . -s build_type=Debug --build=missing
 
+      - name: Verify Clang is available
+        run: clang --version
+
       - name: Configure CMake and build project
         run: |
           cmake --preset release
@@ -76,6 +79,9 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
+      - name: Verify Clang is available
+        run: clang --version
+
       - name: Build with Bazel
         run: |
           # Build release configuration
@@ -86,9 +92,9 @@ jobs:
       - name: Test with Bazel
         run: |
           # Test release configuration
-          bazel test //...
+          bazel test //... --test_output=all --test_timeout=5
           # Test debug configuration
-          bazel test //... --config=debug
+          bazel test //... --config=debug --test_output=all --test_timeout=5
 
   docs:
     name: Generate Documentation
