@@ -4,7 +4,8 @@ MODULE.bazel file for the jsonrpc module
 
 module(
     name = "jsonrpc_cpp_lib",
-    version = "2.0.1",
+    version = "2.0.2",
+    compatibility_level = 1,
 )
 
 # Dependencies from the Bazel Central Registry

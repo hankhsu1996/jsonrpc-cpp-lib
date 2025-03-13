@@ -37,7 +37,7 @@ bazel_dep(name = "jsonrpc_cpp_lib", version = "0.0.0")
 git_override(
     module_name = "jsonrpc_cpp_lib",
     remote = "https://github.com/hankhsu1996/jsonrpc-cpp-lib.git",
-    tag = "v2.0.1"
+    tag = "v2.0.2"
 )
 ```
 
@@ -56,7 +56,7 @@ include(FetchContent)
 FetchContent_Declare(
   jsonrpc-cpp-lib
   GIT_REPOSITORY https://github.com/hankhsu1996/jsonrpc-cpp-lib.git
-  GIT_TAG v2.0.1
+  GIT_TAG v2.0.2
 )
 FetchContent_MakeAvailable(jsonrpc-cpp-lib)
 
@@ -102,7 +102,7 @@ For projects using Conan for dependency management, create a `conanfile.txt` in 
 
 ```ini
 [requires]
-jsonrpc-cpp-lib/2.0.1
+jsonrpc-cpp-lib/2.0.2
 
 [generators]
 CMakeDeps

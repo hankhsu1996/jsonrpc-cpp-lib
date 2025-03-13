@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2] - 2025-03-13
+
+### Changed
+
+- Update Catch2 from 3.6.0 to 3.8.0
+- Update spdlog from 1.14.1 to 1.15.1
+- Update asio from 1.28.2 to 1.32.0
+- Update bazel_skylib from 1.5.0 to 1.7.1
+- Modify CMakePresets.json to use Clang compiler by default, resolving batch processing memory allocation issues experienced with GCC
+
 ## [2.0.1] - 2025-03-09
 
 ### Changed
