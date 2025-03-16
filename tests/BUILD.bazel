@@ -5,7 +5,7 @@ cc_library(
     name = "mock_transport",
     hdrs = ["common/mock_transport.hpp"],
     deps = [
-        "//:jsonrpc_lib",
+        "//:jsonrpc",
     ],
 )
 
@@ -18,7 +18,7 @@ cc_test(
         "endpoint/test_endpoint.cpp",
     ],
     deps = [
-        "//:jsonrpc_lib",
+        "//:jsonrpc",
         "//tests:mock_transport",
         "@catch2//:catch2_main",
     ],
@@ -29,7 +29,7 @@ cc_test(
     size = "small",
     srcs = ["endpoint/test_dispatcher.cpp"],
     deps = [
-        "//:jsonrpc_lib",
+        "//:jsonrpc",
         "@catch2//:catch2_main",
     ],
 )
@@ -39,7 +39,7 @@ cc_test(
     size = "small",
     srcs = ["endpoint/test_request.cpp"],
     deps = [
-        "//:jsonrpc_lib",
+        "//:jsonrpc",
         "@catch2//:catch2_main",
     ],
 )
@@ -49,7 +49,7 @@ cc_test(
     size = "small",
     srcs = ["endpoint/test_response.cpp"],
     deps = [
-        "//:jsonrpc_lib",
+        "//:jsonrpc",
         "@catch2//:catch2_main",
     ],
 )
@@ -60,7 +60,7 @@ cc_test(
     size = "small",
     srcs = ["transports/test_framed_transport.cpp"],
     deps = [
-        "//:jsonrpc_lib",
+        "//:jsonrpc",
         "@catch2//:catch2_main",
     ],
 )
@@ -70,7 +70,7 @@ cc_test(
     size = "small",
     srcs = ["transports/test_pipe_transport.cpp"],
     deps = [
-        "//:jsonrpc_lib",
+        "//:jsonrpc",
         "@catch2//:catch2_main",
     ],
 )

@@ -3,8 +3,8 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
 
 class JsonRpcRecipe(ConanFile):
-    """ Conan recipe for jsonrpc-cpp-lib """
-    name = "jsonrpc-cpp-lib"
+    """ Conan recipe for jsonrpc """
+    name = "jsonrpc"
     version = "2.0.2"
     license = "MIT"
     author = "Shou-Li Hsu <hank850503@gmail.com>"
@@ -78,4 +78,7 @@ class JsonRpcRecipe(ConanFile):
 
     def package_info(self):
         """ Define package information for consumers """
-        self.cpp_info.libs = ["jsonrpc-cpp-lib"]
+        self.cpp_info.libs = ["jsonrpc"]
+
+        # Set the package as installable with pkgconfig
+        self.cpp_info.set_property("pkg_config_name", "jsonrpc")

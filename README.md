@@ -33,9 +33,9 @@ Bazel provides a streamlined dependency management experience. To include this l
 
 ```bazel
 # In your MODULE.bazel file
-bazel_dep(name = "jsonrpc_cpp_lib", version = "0.0.0")
+bazel_dep(name = "jsonrpc", version = "0.0.0")
 git_override(
-    module_name = "jsonrpc_cpp_lib",
+    module_name = "jsonrpc",
     remote = "https://github.com/hankhsu1996/jsonrpc-cpp-lib.git",
     tag = "v2.0.2"
 )
@@ -54,14 +54,14 @@ This approach downloads and builds the library as part of your project. It's ide
 ```cmake
 include(FetchContent)
 FetchContent_Declare(
-  jsonrpc-cpp-lib
+  jsonrpc
   GIT_REPOSITORY https://github.com/hankhsu1996/jsonrpc-cpp-lib.git
   GIT_TAG v2.0.2
 )
-FetchContent_MakeAvailable(jsonrpc-cpp-lib)
+FetchContent_MakeAvailable(jsonrpc)
 
 # Link your target with the library
-target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc-cpp-lib)
+target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc)
 ```
 
 ##### B. As a System-Wide Installation (find_package)
@@ -87,13 +87,13 @@ This approach uses a pre-installed version of the library. It's better for produ
 
    ```cmake
    # Find the package
-   find_package(jsonrpc-cpp-lib REQUIRED)
+   find_package(jsonrpc REQUIRED)
 
    # Create your executable
    add_executable(your_app main.cpp)
 
    # Link against the library
-   target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc-cpp-lib)
+   target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc)
    ```
 
 #### Option 3: Using Conan with CMake
@@ -102,7 +102,7 @@ For projects using Conan for dependency management, create a `conanfile.txt` in 
 
 ```ini
 [requires]
-jsonrpc-cpp-lib/2.0.2
+jsonrpc/2.0.2
 
 [generators]
 CMakeDeps

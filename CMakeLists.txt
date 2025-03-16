@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
-project(jsonrpc-cpp-lib VERSION 2.0.2 LANGUAGES CXX)
+project(jsonrpc VERSION 2.0.2 LANGUAGES CXX)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -22,10 +22,10 @@ endif()
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 # Add the library target before linking
-add_library(jsonrpc-cpp-lib ${SOURCES})
+add_library(jsonrpc ${SOURCES})
 
 # Include directories for the library
-target_include_directories(jsonrpc-cpp-lib PUBLIC
+target_include_directories(jsonrpc PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
@@ -38,7 +38,7 @@ if(USE_CONAN)
     find_package(asio REQUIRED)
 
     # Link dependencies
-    target_link_libraries(jsonrpc-cpp-lib PUBLIC
+    target_link_libraries(jsonrpc PUBLIC
         nlohmann_json::nlohmann_json
         spdlog::spdlog
         asio::asio
@@ -75,7 +75,7 @@ else()
     )
 
     # Link dependencies
-    target_link_libraries(jsonrpc-cpp-lib PUBLIC
+    target_link_libraries(jsonrpc PUBLIC
         nlohmann_json::nlohmann_json
         spdlog::spdlog
         asio
@@ -91,7 +91,7 @@ endif()
 # Conditionally copy compile_commands.json if it exists
 if(EXISTS ${CMAKE_BINARY_DIR}/compile_commands.json)
     add_custom_command(
-        TARGET jsonrpc-cpp-lib PRE_BUILD
+        TARGET jsonrpc PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_BINARY_DIR}/compile_commands.json
             ${CMAKE_SOURCE_DIR}/compile_commands.json
@@ -135,17 +135,6 @@ endif()
 # ----------------------------------------------------------------
 
 include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
-
-# Make the library installable
-install(
-    TARGETS jsonrpc-cpp-lib
-    EXPORT jsonrpc-cpp-lib-targets
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
 
 # Install header files
 install(
@@ -153,57 +142,22 @@ install(
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-# Create a simple config file that includes the targets file
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-libConfig.cmake" "
-# jsonrpc-cpp-lib CMake configuration file
-include(CMakeFindDependencyMacro)
-
-# Find dependencies
-find_dependency(nlohmann_json REQUIRED)
-find_dependency(spdlog REQUIRED)
-
-# Include targets file
-include(\"\${CMAKE_CURRENT_LIST_DIR}/jsonrpc-cpp-lib-targets.cmake\")
-")
-
-# Generate the version file
-write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-libConfigVersion.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
-)
-
-# Install CMake config files
+# Install the library
 install(
-    FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-libConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-libConfigVersion.cmake"
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/jsonrpc-cpp-lib
-)
-
-# Export targets
-install(
-    EXPORT jsonrpc-cpp-lib-targets
-    FILE jsonrpc-cpp-lib-targets.cmake
-    NAMESPACE jsonrpc::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/jsonrpc-cpp-lib
-)
-
-# Generate export targets for build tree
-export(
-    EXPORT jsonrpc-cpp-lib-targets
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-lib-targets.cmake"
-    NAMESPACE jsonrpc::
+    TARGETS jsonrpc
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 # Configure and install pkg-config file
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/jsonrpc-cpp-lib.pc.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-lib.pc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/jsonrpc.pc.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc.pc"
     @ONLY
 )
 
 install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc-cpp-lib.pc"
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/jsonrpc.pc"
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
 )

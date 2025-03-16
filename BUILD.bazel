@@ -1,5 +1,5 @@
 cc_library(
-    name = "jsonrpc_lib",
+    name = "jsonrpc",
     srcs = glob(["src/**/*.cpp"]),
     hdrs = glob(["include/jsonrpc/**/*.hpp"]),
     copts = ["-Wno-unused-parameter"],

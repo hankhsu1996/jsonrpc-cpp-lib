@@ -5,7 +5,7 @@ file(GLOB_RECURSE TEST_SOURCES "*.cpp")
 add_executable(tests ${TEST_SOURCES})
 
 # Link with the main project and Catch2
-target_link_libraries(tests PRIVATE jsonrpc-cpp-lib Catch2::Catch2WithMain)
+target_link_libraries(tests PRIVATE jsonrpc Catch2::Catch2WithMain)
 
 # Register the tests
 include(Catch)
