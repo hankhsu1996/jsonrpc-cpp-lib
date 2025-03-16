@@ -143,9 +143,9 @@ Adding to Your Project</h2>
 Option 1: Using Bazel (Recommended)</h3>
 <p>Bazel provides a streamlined dependency management experience. To include this library in your project with Bazel, ensure you are using Bazel 7.0 or later, as Bzlmod is enabled by default.</p>
 <div class="fragment"><div class="line"># In your MODULE.bazel file</div>
-<div class="line">bazel_dep(name = &quot;jsonrpc_cpp_lib&quot;, version = &quot;0.0.0&quot;)</div>
+<div class="line">bazel_dep(name = &quot;jsonrpc&quot;, version = &quot;0.0.0&quot;)</div>
 <div class="line">git_override(</div>
-<div class="line">    module_name = &quot;jsonrpc_cpp_lib&quot;,</div>
+<div class="line">    module_name = &quot;jsonrpc&quot;,</div>
 <div class="line">    remote = &quot;https://github.com/hankhsu1996/jsonrpc-cpp-lib.git&quot;,</div>
 <div class="line">    tag = &quot;v2.0.2&quot;</div>
 <div class="line">)</div>
@@ -158,14 +158,14 @@ A. As a Build-Time Dependency (FetchContent)</h4>
 <p>This approach downloads and builds the library as part of your project. It's ideal for development workflows where you want everything self-contained:</p>
 <div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line">FetchContent_Declare(</div>
-<div class="line">  jsonrpc-cpp-lib</div>
+<div class="line">  jsonrpc</div>
 <div class="line">  GIT_REPOSITORY https://github.com/hankhsu1996/jsonrpc-cpp-lib.git</div>
 <div class="line">  GIT_TAG v2.0.2</div>
 <div class="line">)</div>
-<div class="line">FetchContent_MakeAvailable(jsonrpc-cpp-lib)</div>
+<div class="line">FetchContent_MakeAvailable(jsonrpc)</div>
 <div class="line"> </div>
 <div class="line"># Link your target with the library</div>
-<div class="line">target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc-cpp-lib)</div>
+<div class="line">target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc)</div>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md8"></a>
 B. As a System-Wide Installation (find_package)</h4>
 <p>This approach uses a pre-installed version of the library. It's better for production environments and system-wide installations:</p>
@@ -183,20 +183,20 @@ B. As a System-Wide Installation (find_package)</h4>
 </li>
 <li><p class="startli">Then use it in your project:</p>
 <div class="fragment"><div class="line"># Find the package</div>
-<div class="line">find_package(jsonrpc-cpp-lib REQUIRED)</div>
+<div class="line">find_package(jsonrpc REQUIRED)</div>
 <div class="line"> </div>
 <div class="line"># Create your executable</div>
 <div class="line">add_executable(your_app main.cpp)</div>
 <div class="line"> </div>
 <div class="line"># Link against the library</div>
-<div class="line">target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc-cpp-lib)</div>
+<div class="line">target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc)</div>
 </div><!-- fragment --></li>
 </ol>
 <h3><a class="anchor" id="autotoc_md9"></a>
 Option 3: Using Conan with CMake</h3>
 <p>For projects using Conan for dependency management, create a <code>conanfile.txt</code> in your project directory:</p>
 <div class="fragment"><div class="line">[requires]</div>
-<div class="line">jsonrpc-cpp-lib/2.0.2</div>
+<div class="line">jsonrpc/2.0.2</div>
 <div class="line"> </div>
 <div class="line">[generators]</div>
 <div class="line">CMakeDeps</div>
