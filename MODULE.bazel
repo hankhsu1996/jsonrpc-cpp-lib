@@ -4,7 +4,7 @@ MODULE.bazel file for the jsonrpc module
 
 module(
     name = "jsonrpc",
-    version = "2.0.2",
+    version = "2.1.0",
     compatibility_level = 1,
 )
 
