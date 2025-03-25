@@ -53,9 +53,7 @@ auto Dispatcher::DispatchSingleRequest(const nlohmann::json& request_json)
   Request request = Request::FromJson(request_json);
   auto method = request.GetMethod();
 
-  spdlog::info("Dispatching request: {}", request_json.dump());
   if (request.IsNotification()) {
-    spdlog::info("Dispatching notification: {}", method);
     auto it = notification_handlers_.find(method);
     if (it != notification_handlers_.end()) {
       executor_->ExecuteDetached(
