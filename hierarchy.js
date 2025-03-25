@@ -1,9 +1,8 @@
 var hierarchy =
 [
+    [ "jsonrpc::transport::MessageFramer::DeframeResult", "structjsonrpc_1_1transport_1_1MessageFramer_1_1DeframeResult.html", null ],
     [ "jsonrpc::endpoint::Dispatcher", "classjsonrpc_1_1endpoint_1_1Dispatcher.html", null ],
-    [ "jsonrpc::transport::FramedTransport", "classjsonrpc_1_1transport_1_1FramedTransport.html", [
-      [ "jsonrpc::transport::FramedPipeTransport", "classjsonrpc_1_1transport_1_1FramedPipeTransport.html", null ]
-    ] ],
+    [ "jsonrpc::transport::MessageFramer", "classjsonrpc_1_1transport_1_1MessageFramer.html", null ],
     [ "jsonrpc::endpoint::PendingRequest", "classjsonrpc_1_1endpoint_1_1PendingRequest.html", null ],
     [ "jsonrpc::endpoint::Request", "classjsonrpc_1_1endpoint_1_1Request.html", null ],
     [ "jsonrpc::endpoint::Response", "classjsonrpc_1_1endpoint_1_1Response.html", null ],

@@ -1,5 +1,0 @@
-<map id="jsonrpc::transport::FramedPipeTransport::Start" name="jsonrpc::transport::FramedPipeTransport::Start">
-<area shape="rect" id="Node000001" title="Start the transport." alt="" coords="5,5,172,60"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#a5ca7aaf862b618fffa434c7471ec028d" title="Start the transport." alt="" coords="220,13,377,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,30,206,30,206,35,173,35"/>
-</map>

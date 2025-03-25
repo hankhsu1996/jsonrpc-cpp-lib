@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['sockettransport_0',['SocketTransport',['../classjsonrpc_1_1transport_1_1SocketTransport.html',1,'jsonrpc::transport']]]
+  ['request_0',['Request',['../classjsonrpc_1_1endpoint_1_1Request.html',1,'jsonrpc::endpoint']]],
+  ['response_1',['Response',['../classjsonrpc_1_1endpoint_1_1Response.html',1,'jsonrpc::endpoint']]],
+  ['rpcendpoint_2',['RpcEndpoint',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html',1,'jsonrpc::endpoint']]],
+  ['rpcerror_3',['RpcError',['../classjsonrpc_1_1endpoint_1_1RpcError.html',1,'jsonrpc::endpoint']]]
 ];

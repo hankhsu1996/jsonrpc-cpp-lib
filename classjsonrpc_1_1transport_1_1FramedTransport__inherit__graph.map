@@ -1,5 +1,0 @@
-<map id="jsonrpc::transport::FramedTransport" name="jsonrpc::transport::FramedTransport">
-<area shape="rect" id="Node000001" title="Base class for framed transport mechanisms." alt="" coords="5,5,203,165"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html" title="Transport layer using Asio Unix domain sockets for JSON&#45;RPC communication with framing." alt="" coords="11,213,197,493"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,179,107,213,101,213,101,179"/>
-</map>

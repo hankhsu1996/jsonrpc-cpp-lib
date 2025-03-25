@@ -9,5 +9,6 @@ var searchData=
   ['transport_6',['Transport',['../classjsonrpc_1_1transport_1_1Transport.html',1,'jsonrpc::transport::Transport'],['../classjsonrpc_1_1transport_1_1Transport.html#a49cc017de20720650e8252cfb6bd534c',1,'jsonrpc::transport::Transport::Transport(asio::io_context &amp;io_context)'],['../classjsonrpc_1_1transport_1_1Transport.html#a92e283464e36b663c8acebdb831c3e02',1,'jsonrpc::transport::Transport::Transport(const Transport &amp;)=delete'],['../classjsonrpc_1_1transport_1_1Transport.html#a9abc84d6799e166a165e6493dc50a31c',1,'jsonrpc::transport::Transport::Transport(Transport &amp;&amp;)=delete']]],
   ['transport_2ehpp_7',['transport.hpp',['../transport_8hpp.html',1,'']]],
   ['trim_8',['Trim',['../namespacejsonrpc_1_1utils.html#af7bc95c38b3f575dfe5fc73eb9450581',1,'jsonrpc::utils']]],
-  ['types_2ehpp_9',['types.hpp',['../types_8hpp.html',1,'']]]
+  ['trydeframe_9',['TryDeframe',['../classjsonrpc_1_1transport_1_1MessageFramer.html#ab9cb4d342fca8e0410e0dffa14334837',1,'jsonrpc::transport::MessageFramer']]],
+  ['types_2ehpp_10',['types.hpp',['../types_8hpp.html',1,'']]]
 ];

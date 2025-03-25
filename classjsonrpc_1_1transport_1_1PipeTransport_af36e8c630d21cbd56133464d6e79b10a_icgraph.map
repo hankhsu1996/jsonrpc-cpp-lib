@@ -1,9 +1,5 @@
 <map id="jsonrpc::transport::PipeTransport::CloseNow" name="jsonrpc::transport::PipeTransport::CloseNow">
-<area shape="rect" id="Node000001" title="Close the transport synchronously." alt="" coords="505,49,696,89"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#aa0cbceea19eecfe55973d35a9b15b7c4" title="Close the transport synchronously." alt="" coords="261,5,428,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="491,56,428,47,429,42,492,51"/>
-<area shape="rect" id="Node000004" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#ad64f2634a0b5bf9865b9ba8818531ef3" title="Destroys the Pipe Transport object." alt="" coords="232,85,457,125"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="492,87,458,91,457,86,491,81"/>
-<area shape="rect" id="Node000003" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a348d40bd6ea8bba75f38365e3f6612c0" title=" " alt="" coords="5,5,184,60"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="248,35,184,35,184,30,248,30"/>
+<area shape="rect" id="Node000001" title="Close the transport synchronously." alt="" coords="279,5,469,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#ad64f2634a0b5bf9865b9ba8818531ef3" title="Destroys the Pipe Transport object." alt="" coords="5,5,231,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,28,231,28,231,23,265,23"/>
 </map>

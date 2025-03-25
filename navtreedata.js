@@ -44,8 +44,7 @@ var NAVTREE =
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ],
-        [ "Related Symbols", "functions_rela.html", null ]
+        [ "Typedefs", "functions_type.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -57,7 +56,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classjsonrpc_1_1transport_1_1Transport.html"
+"classjsonrpc_1_1transport_1_1Transport.html#a9abc84d6799e166a165e6493dc50a31c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
