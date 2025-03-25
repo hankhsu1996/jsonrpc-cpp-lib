@@ -441,3 +441,47 @@ TEST_CASE(
     co_await framed_receiver->Close();
   });
 }
+
+TEST_CASE(
+    "FramedPipeTransport handles missing Content-Length header",
+    "[FramedPipeTransport]") {
+  RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+    const std::string socket_path = "/tmp/test_framed_transport_missing_header";
+    auto raw_sender =
+        std::make_unique<PipeTransport>(io_ctx, socket_path, true);
+    auto framed_receiver =
+        std::make_unique<FramedPipeTransport>(io_ctx, socket_path, false);
+
+    // Start both in parallel
+    co_await asio::experimental::make_parallel_group(
+        asio::co_spawn(
+            io_ctx,
+            [&raw_sender]() -> asio::awaitable<void> {
+              co_await raw_sender->Start();
+            },
+            asio::deferred),
+        asio::co_spawn(
+            io_ctx,
+            [&framed_receiver]() -> asio::awaitable<void> {
+              co_await framed_receiver->Start();
+            },
+            asio::deferred))
+        .async_wait(asio::experimental::wait_for_all(), asio::use_awaitable);
+
+    // Send a message without Content-Length header
+    std::string missing_header = "\r\n\r\n{\"method\":\"test\"}";
+
+    asio::co_spawn(
+        io_ctx,
+        [&raw_sender, missing_header]() -> asio::awaitable<void> {
+          co_await raw_sender->SendMessage(missing_header);
+        },
+        asio::detached);
+
+    // Should throw or return error when trying to parse message without header
+    REQUIRE_THROWS(co_await framed_receiver->ReceiveMessage());
+
+    co_await raw_sender->Close();
+    co_await framed_receiver->Close();
+  });
+}
