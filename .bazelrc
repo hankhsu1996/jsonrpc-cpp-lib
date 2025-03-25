@@ -15,6 +15,9 @@ build --cxxopt='-Wpedantic'
 build --cxxopt='-Werror'
 build --cxxopt='-Wno-unused-parameter'
 
+# Test settings
+test --test_timeout=5
+
 # Build configurations
 build:debug --compilation_mode=dbg
 build:debug --cxxopt='-g'

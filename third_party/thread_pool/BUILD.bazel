@@ -1,9 +1,0 @@
-cc_library(
-    name = "thread_pool",
-    hdrs = glob(
-        ["include/*.hpp"],
-        allow_empty = True,
-    ),
-    includes = ["include"],
-    visibility = ["//visibility:public"],
-)

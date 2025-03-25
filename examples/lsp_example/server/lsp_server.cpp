@@ -24,7 +24,7 @@ using jsonrpc::transport::FramedPipeTransport;
 
 auto ParsePipeArguments(const std::vector<std::string>& args) -> std::string {
   const std::string pipe_prefix = "--pipe=";
-  if (args.size() < 2 || args[1].rfind(pipe_prefix, 0) != 0) {
+  if (args.size() < 2 || !args[1].starts_with(pipe_prefix)) {
     throw std::invalid_argument("Usage: <executable> --pipe=<pipe name>");
   }
   return args[1].substr(pipe_prefix.length());
