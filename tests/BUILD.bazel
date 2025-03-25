@@ -56,9 +56,9 @@ cc_test(
 
 # Transport
 cc_test(
-    name = "test_framed_transport",
+    name = "test_message_framer",
     size = "small",
-    srcs = ["transports/test_framed_transport.cpp"],
+    srcs = ["transports/test_message_framer.cpp"],
     deps = [
         "//:jsonrpc",
         "@catch2//:catch2_main",
@@ -69,6 +69,16 @@ cc_test(
     name = "test_pipe_transport",
     size = "small",
     srcs = ["transports/test_pipe_transport.cpp"],
+    deps = [
+        "//:jsonrpc",
+        "@catch2//:catch2_main",
+    ],
+)
+
+cc_test(
+    name = "test_framed_pipe_transport",
+    size = "small",
+    srcs = ["transports/test_framed_pipe_transport.cpp"],
     deps = [
         "//:jsonrpc",
         "@catch2//:catch2_main",
