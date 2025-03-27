@@ -21,21 +21,29 @@ void Dispatcher::RegisterNotification(
 
 auto Dispatcher::DispatchRequest(std::string request)
     -> asio::awaitable<std::optional<std::string>> {
-  auto request_json = Request::ParseAndValidateJson(request);
-  if (!request_json) {
+  nlohmann::json request_json;
+  try {
+    request_json = nlohmann::json::parse(request);
+  } catch (const nlohmann::json::parse_error& e) {
     co_return Response::CreateLibError(ErrorCode::kParseError).ToStr();
   }
 
-  // Handle empty batch requests
-  if (request_json->is_array() && request_json->empty()) {
+  // Now validate the request
+  if (request_json.is_object() && !Request::ValidateJson(request_json)) {
+    // This is an invalid request error
     co_return Response::CreateLibError(ErrorCode::kInvalidRequest).ToStr();
   }
 
-  if (request_json->is_array()) {
-    co_return co_await DispatchBatchRequest(*request_json);
+  // Handle empty batch requests
+  if (request_json.is_array() && request_json.empty()) {
+    co_return Response::CreateLibError(ErrorCode::kInvalidRequest).ToStr();
   }
 
-  auto response_json = co_await DispatchSingleRequest(*request_json);
+  if (request_json.is_array()) {
+    co_return co_await DispatchBatchRequest(request_json);
+  }
+
+  auto response_json = co_await DispatchSingleRequest(request_json);
   if (!response_json) {
     co_return std::nullopt;
   }
@@ -125,9 +133,6 @@ auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
 
 auto Dispatcher::ValidateRequest(const nlohmann::json& request_json)
     -> std::optional<Response> {
-  // We've already validated basic structure in ParseAndValidateJson
-  // Here we validate method existence and other semantics
-
   if (!request_json.contains("method")) {
     return Response::CreateLibError(
         ErrorCode::kInvalidRequest, "Method is required");

@@ -90,39 +90,6 @@ auto Request::Dump() const -> std::string {
   return ToJson().dump();
 }
 
-auto Request::ParseAndValidateJson(const std::string& request_str)
-    -> std::optional<nlohmann::json> {
-  try {
-    // Parse the JSON
-    auto json_obj = nlohmann::json::parse(request_str);
-
-    // For single request objects
-    if (json_obj.is_object()) {
-      if (!ValidateJson(json_obj)) {
-        return std::nullopt;
-      }
-      return json_obj;
-    }
-
-    // For batch requests
-    if (json_obj.is_array()) {
-      if (json_obj.empty()) {
-        return json_obj;  // Empty array is handled by the dispatcher
-      }
-
-      // With batch requests, we validate but don't reject the entire batch
-      // The dispatcher needs to handle individual invalid items
-      return json_obj;
-    }
-
-    // Neither an object nor an array
-    return std::nullopt;
-  } catch (const nlohmann::json::parse_error& e) {
-    // JSON parsing failed
-    return std::nullopt;
-  }
-}
-
 auto Request::ToJson() const -> nlohmann::json {
   nlohmann::json json_obj;
   json_obj["jsonrpc"] = "2.0";
