@@ -37,7 +37,7 @@ auto HandleShutdown(std::weak_ptr<RpcEndpoint> weak) -> asio::awaitable<void> {
   co_return;
 }
 
-void RegisterLSPHandlers(jsonrpc::endpoint::RpcEndpoint& server) {
+void RegisterLSPHandlers(RpcEndpoint& server) {
   server.RegisterMethodCall(
       "initialize", [](std::optional<Json> params) -> asio::awaitable<Json> {
         spdlog::info("LSP Server initialized");
