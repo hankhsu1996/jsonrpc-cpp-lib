@@ -38,16 +38,16 @@ class Dispatcher {
       const std::string& method, const NotificationHandler& handler);
 
   /// @brief Dispatch a request
-  auto DispatchRequest(const std::string& request)
+  auto DispatchRequest(std::string request)
       -> asio::awaitable<std::optional<std::string>>;
 
  private:
   /// @brief Dispatch a single request
-  auto DispatchSingleRequest(const nlohmann::json& request_json)
+  auto DispatchSingleRequest(nlohmann::json request_json)
       -> asio::awaitable<std::optional<nlohmann::json>>;
 
   /// @brief Dispatch a batch request
-  auto DispatchBatchRequest(const nlohmann::json& request_json)
+  auto DispatchBatchRequest(nlohmann::json request_json)
       -> asio::awaitable<std::optional<std::string>>;
 
   /// @brief Validate a request

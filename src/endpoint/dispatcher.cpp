@@ -19,7 +19,7 @@ void Dispatcher::RegisterNotification(
   notification_handlers_[method] = handler;
 }
 
-auto Dispatcher::DispatchRequest(const std::string& request)
+auto Dispatcher::DispatchRequest(std::string request)
     -> asio::awaitable<std::optional<std::string>> {
   auto request_json = Request::ParseAndValidateJson(request);
   if (!request_json) {
@@ -43,7 +43,7 @@ auto Dispatcher::DispatchRequest(const std::string& request)
   co_return response_json->dump();
 }
 
-auto Dispatcher::DispatchSingleRequest(const nlohmann::json& request_json)
+auto Dispatcher::DispatchSingleRequest(nlohmann::json request_json)
     -> asio::awaitable<std::optional<nlohmann::json>> {
   auto validation_result = ValidateRequest(request_json);
   if (validation_result) {
@@ -81,7 +81,7 @@ auto Dispatcher::DispatchSingleRequest(const nlohmann::json& request_json)
       .ToJson();
 }
 
-auto Dispatcher::DispatchBatchRequest(const nlohmann::json& request_json)
+auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
     -> asio::awaitable<std::optional<std::string>> {
   if (request_json.empty()) {
     co_return Response::CreateLibError(ErrorCode::kInvalidRequest).ToStr();
