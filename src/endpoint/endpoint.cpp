@@ -95,9 +95,9 @@ auto RpcEndpoint::Shutdown() -> asio::awaitable<void> {
   co_return;
 }
 
-auto RpcEndpoint::CallMethod(
-    const std::string &method,
-    std::optional<nlohmann::json> params) -> asio::awaitable<nlohmann::json> {
+auto RpcEndpoint::SendMethodCall(
+    const std::string &method, std::optional<nlohmann::json> params)
+    -> asio::awaitable<nlohmann::json> {
   if (!is_running_) {
     throw std::runtime_error("RPC endpoint is not running");
   }
@@ -141,8 +141,8 @@ auto RpcEndpoint::CallMethod(
 }
 
 auto RpcEndpoint::SendNotification(
-    const std::string &method,
-    std::optional<nlohmann::json> params) -> asio::awaitable<void> {
+    const std::string &method, std::optional<nlohmann::json> params)
+    -> asio::awaitable<void> {
   if (!is_running_) {
     throw std::runtime_error("RPC endpoint is not running");
   }

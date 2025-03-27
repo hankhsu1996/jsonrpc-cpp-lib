@@ -25,6 +25,23 @@ namespace jsonrpc::endpoint {
 using ErrorHandler = std::function<void(ErrorCode, const std::string &)>;
 
 /**
+ * @brief Exception class for RPC errors
+ */
+class RpcError : public std::runtime_error {
+ public:
+  RpcError(ErrorCode code, const std::string &message)
+      : std::runtime_error(message), code_(code) {
+  }
+
+  [[nodiscard]] auto GetCode() const -> ErrorCode {
+    return code_;
+  }
+
+ private:
+  ErrorCode code_;
+};
+
+/**
  * @brief RPC endpoint for sending and receiving JSON-RPC messages
  *
  * This class provides a JSON-RPC endpoint that can be used to call methods
@@ -112,7 +129,7 @@ class RpcEndpoint {
    * @param params The method parameters (optional)
    * @return asio::awaitable<nlohmann::json> The result
    */
-  auto CallMethod(
+  auto SendMethodCall(
       const std::string &method,
       std::optional<nlohmann::json> params = std::nullopt)
       -> asio::awaitable<nlohmann::json>;
@@ -125,8 +142,9 @@ class RpcEndpoint {
    * @return asio::awaitable<void>
    */
   auto SendNotification(
-      const std::string &method, std::optional<nlohmann::json> params =
-                                     std::nullopt) -> asio::awaitable<void>;
+      const std::string &method,
+      std::optional<nlohmann::json> params = std::nullopt)
+      -> asio::awaitable<void>;
 
   /**
    * @brief Register a method call handler
@@ -149,6 +167,31 @@ class RpcEndpoint {
       typename Dispatcher::NotificationHandler handler);
 
   /**
+   * @brief Register a typed method call handler
+   *
+   * @tparam ParamsType The type of the parameters
+   * @tparam ResultType The type of the result
+   * @param method The method name
+   * @param handler The handler
+   */
+  template <typename ParamsType, typename ResultType>
+  void RegisterTypedMethodCall(
+      const std::string &method,
+      std::function<asio::awaitable<ResultType>(const ParamsType &)> handler);
+
+  /**
+   * @brief Register a typed notification handler
+   *
+   * @tparam ParamsType The type of the parameters
+   * @param method The method name
+   * @param handler The handler
+   */
+  template <typename ParamsType>
+  void RegisterTypedNotification(
+      const std::string &method,
+      std::function<asio::awaitable<void>(const ParamsType &)> handler);
+
+  /**
    * @brief Check if there are pending requests
    *
    * @return bool True if there are pending requests, false otherwise
@@ -169,6 +212,32 @@ class RpcEndpoint {
    * @param message The error message
    */
   void ReportError(ErrorCode code, const std::string &message);
+
+  /**
+   * @brief Call a method on the remote endpoint with typed params and result
+   *
+   * @tparam ParamsType The type of the parameters
+   * @tparam ResultType The type of the result
+   * @param method The method name
+   * @param params The method parameters
+   * @return asio::awaitable<ResultType> The typed result
+   */
+  template <typename ParamsType, typename ResultType>
+  auto SendMethodCall(const std::string &method, const ParamsType &params)
+      -> asio::awaitable<ResultType>;
+
+  /**
+   * @brief Send a notification to the remote endpoint with typed params
+   *
+   * @tparam ParamsType The type of the parameters
+   * @param method The method name
+   * @param params The method parameters
+   * @return asio::awaitable<void>
+   */
+  template <typename ParamsType>
+  auto SendTypedNotification(
+      const std::string &method, const ParamsType &params)
+      -> asio::awaitable<void>;
 
  private:
   /**
@@ -240,21 +309,109 @@ class RpcEndpoint {
   std::atomic<int64_t> next_request_id_{0};
 };
 
-/**
- * @brief Exception class for RPC errors
- */
-class RpcError : public std::runtime_error {
- public:
-  RpcError(ErrorCode code, const std::string &message)
-      : std::runtime_error(message), code_(code) {
-  }
+template <typename ParamsType, typename ResultType>
+auto RpcEndpoint::SendMethodCall(
+    const std::string &method, const ParamsType &params)
+    -> asio::awaitable<ResultType> {
+  try {
+    // Convert typed params to JSON
+    nlohmann::json json_params = params;
 
-  [[nodiscard]] auto GetCode() const -> ErrorCode {
-    return code_;
-  }
+    // Call the method
+    nlohmann::json result = co_await SendMethodCall(method, json_params);
 
- private:
-  ErrorCode code_;
-};
+    // Convert result to typed result
+    ResultType typed_result = result.get<ResultType>();
+
+    co_return typed_result;
+  } catch (const nlohmann::json::exception &ex) {
+    // Handle JSON conversion errors
+    throw RpcError(
+        ErrorCode::kInvalidParams,
+        std::string("Result conversion error: ") + ex.what());
+  }
+}
+
+template <typename ParamsType>
+auto RpcEndpoint::SendTypedNotification(
+    const std::string &method, const ParamsType &params)
+    -> asio::awaitable<void> {
+  // Convert typed params to JSON and send
+  nlohmann::json json_params = params;
+  co_await SendNotification(method, json_params);
+}
+
+template <typename ParamsType, typename ResultType>
+void RpcEndpoint::RegisterTypedMethodCall(
+    const std::string &method,
+    std::function<asio::awaitable<ResultType>(const ParamsType &)> handler) {
+  // Create a typed wrapper that converts between JSON and typed objects
+  auto wrapper = [handler](const std::optional<nlohmann::json> &params)
+      -> asio::awaitable<nlohmann::json> {
+    try {
+      // Convert JSON params to typed params
+      ParamsType typed_params;
+      if (params.has_value()) {
+        typed_params = params.value().get<ParamsType>();
+      } else {
+        // Initialize with default constructor if no params provided
+        typed_params = ParamsType{};
+      }
+
+      // Call the typed handler
+      ResultType result = co_await handler(typed_params);
+
+      // Convert result back to JSON
+      co_return nlohmann::json(result);
+    } catch (const nlohmann::json::exception &ex) {
+      // Handle JSON conversion errors
+      throw RpcError(
+          ErrorCode::kInvalidParams,
+          std::string("Parameter conversion error: ") + ex.what());
+    } catch (const std::exception &ex) {
+      // Handle other exceptions
+      throw RpcError(
+          ErrorCode::kInternalError,
+          std::string("Handler error: ") + ex.what());
+    }
+  };
+
+  RegisterMethodCall(method, wrapper);
+}
+
+template <typename ParamsType>
+void RpcEndpoint::RegisterTypedNotification(
+    const std::string &method,
+    std::function<asio::awaitable<void>(const ParamsType &)> handler) {
+  // Create a typed wrapper that converts between JSON and typed objects
+  auto wrapper = [handler](const std::optional<nlohmann::json> &params)
+      -> asio::awaitable<void> {
+    try {
+      // Convert JSON params to typed params
+      ParamsType typed_params;
+      if (params.has_value()) {
+        typed_params = params.value().get<ParamsType>();
+      } else {
+        // Initialize with default constructor if no params provided
+        typed_params = ParamsType{};
+      }
+
+      // Call the typed handler
+      co_await handler(typed_params);
+    } catch (const nlohmann::json::exception &ex) {
+      // JSON conversion errors will be logged by the dispatcher
+      throw RpcError(
+          ErrorCode::kInvalidParams,
+          std::string("Parameter conversion error: ") + ex.what());
+    } catch (const std::exception &ex) {
+      // Other exceptions will be logged by the dispatcher
+      throw RpcError(
+          ErrorCode::kInternalError,
+          std::string("Handler error: ") + ex.what());
+    }
+  };
+
+  RegisterNotification(method, wrapper);
+}
 
 }  // namespace jsonrpc::endpoint

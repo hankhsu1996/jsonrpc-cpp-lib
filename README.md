@@ -207,7 +207,7 @@ auto RunClient(asio::io_context& io_context) -> asio::awaitable<void> {
 
   // Call "add" method
   Json params = {{"a", 10}, {"b", 5}};
-  Json result = co_await client->CallMethod("add", params);
+  Json result = co_await client->SendMethodCall("add", params);
   std::cout << "Result: " << result.dump() << std::endl;
 
   // Send shutdown notification
