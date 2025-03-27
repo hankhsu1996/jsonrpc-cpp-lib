@@ -174,7 +174,7 @@ class RpcEndpoint {
   template <typename ParamsType, typename ResultType>
   void RegisterTypedMethodCall(
       std::string method,
-      std::function<asio::awaitable<ResultType>(const ParamsType &)> handler);
+      std::function<asio::awaitable<ResultType>(ParamsType)> handler);
 
   /**
    * @brief Register a typed notification handler
@@ -186,7 +186,7 @@ class RpcEndpoint {
   template <typename ParamsType>
   void RegisterTypedNotification(
       std::string method,
-      std::function<asio::awaitable<void>(const ParamsType &)> handler);
+      std::function<asio::awaitable<void>(ParamsType)> handler);
 
   /**
    * @brief Check if there are pending requests
@@ -220,7 +220,7 @@ class RpcEndpoint {
    * @return asio::awaitable<ResultType> The typed result
    */
   template <typename ParamsType, typename ResultType>
-  auto SendMethodCall(std::string method, const ParamsType &params)
+  auto SendMethodCall(std::string method, ParamsType params)
       -> asio::awaitable<ResultType>;
 
   /**
@@ -232,7 +232,7 @@ class RpcEndpoint {
    * @return asio::awaitable<void>
    */
   template <typename ParamsType>
-  auto SendTypedNotification(std::string method, const ParamsType &params)
+  auto SendTypedNotification(std::string method, ParamsType params)
       -> asio::awaitable<void>;
 
  private:
@@ -306,7 +306,7 @@ class RpcEndpoint {
 };
 
 template <typename ParamsType, typename ResultType>
-auto RpcEndpoint::SendMethodCall(std::string method, const ParamsType &params)
+auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
     -> asio::awaitable<ResultType> {
   try {
     // Convert typed params to JSON
@@ -328,84 +328,87 @@ auto RpcEndpoint::SendMethodCall(std::string method, const ParamsType &params)
 }
 
 template <typename ParamsType>
-auto RpcEndpoint::SendTypedNotification(
-    std::string method, const ParamsType &params) -> asio::awaitable<void> {
+auto RpcEndpoint::SendTypedNotification(std::string method, ParamsType params)
+    -> asio::awaitable<void> {
   // Convert typed params to JSON and send
   nlohmann::json json_params = params;
   co_await SendNotification(method, json_params);
 }
 
+// Create a standalone coroutine function outside the RegisterTypedMethodCall
+template <typename ParamsType, typename ResultType>
+auto TypedHandlerWrapper(
+    std::function<asio::awaitable<ResultType>(ParamsType)> handler,
+    std::optional<nlohmann::json> params) -> asio::awaitable<nlohmann::json> {
+  try {
+    // Convert JSON params to typed params
+    ParamsType typed_params;
+    if (params.has_value()) {
+      typed_params = params.value().get<ParamsType>();
+    } else {
+      // Initialize with default constructor if no params provided
+      typed_params = ParamsType{};
+    }
+
+    // Call the typed handler
+    ResultType result = co_await handler(typed_params);
+
+    // Convert result back to JSON
+    co_return nlohmann::json(result);
+  } catch (const nlohmann::json::exception &ex) {
+    // Handle JSON conversion errors
+    throw RpcError(
+        ErrorCode::kInvalidParams,
+        std::string("Parameter conversion error: ") + ex.what());
+  } catch (const std::exception &ex) {
+    // Handle other exceptions
+    throw RpcError(
+        ErrorCode::kInternalError, std::string("Handler error: ") + ex.what());
+  }
+}
+
+// Create a standalone coroutine function outside the RegisterTypedNotification
+template <typename ParamsType>
+auto TypedNotificationWrapper(
+    std::function<asio::awaitable<void>(ParamsType)> handler,
+    std::optional<nlohmann::json> params) -> asio::awaitable<void> {
+  try {
+    // Convert JSON params to typed params
+    ParamsType typed_params;
+    if (params.has_value()) {
+      typed_params = params.value().get<ParamsType>();
+    } else {
+      // Initialize with default constructor if no params provided
+      typed_params = ParamsType{};
+    }
+
+    // Call the typed handler
+    co_await handler(typed_params);
+  } catch (const nlohmann::json::exception &ex) {
+    // JSON conversion errors will be logged by the dispatcher
+    throw RpcError(
+        ErrorCode::kInvalidParams,
+        std::string("Parameter conversion error: ") + ex.what());
+  } catch (const std::exception &ex) {
+    // Other exceptions will be logged by the dispatcher
+    throw RpcError(
+        ErrorCode::kInternalError, std::string("Handler error: ") + ex.what());
+  }
+}
+
 template <typename ParamsType, typename ResultType>
 void RpcEndpoint::RegisterTypedMethodCall(
     std::string method,
-    std::function<asio::awaitable<ResultType>(const ParamsType &)> handler) {
-  // Create a typed wrapper that converts between JSON and typed objects
-  auto wrapper = [handler](const std::optional<nlohmann::json> &params)
-      -> asio::awaitable<nlohmann::json> {
-    try {
-      // Convert JSON params to typed params
-      ParamsType typed_params;
-      if (params.has_value()) {
-        typed_params = params.value().get<ParamsType>();
-      } else {
-        // Initialize with default constructor if no params provided
-        typed_params = ParamsType{};
-      }
-
-      // Call the typed handler
-      ResultType result = co_await handler(typed_params);
-
-      // Convert result back to JSON
-      co_return nlohmann::json(result);
-    } catch (const nlohmann::json::exception &ex) {
-      // Handle JSON conversion errors
-      throw RpcError(
-          ErrorCode::kInvalidParams,
-          std::string("Parameter conversion error: ") + ex.what());
-    } catch (const std::exception &ex) {
-      // Handle other exceptions
-      throw RpcError(
-          ErrorCode::kInternalError,
-          std::string("Handler error: ") + ex.what());
-    }
-  };
-
-  RegisterMethodCall(method, wrapper);
+    std::function<asio::awaitable<ResultType>(ParamsType)> handler) {
+  RegisterMethodCall(
+      method, TypedHandlerWrapper<ParamsType, ResultType>(handler));
 }
 
 template <typename ParamsType>
 void RpcEndpoint::RegisterTypedNotification(
     std::string method,
-    std::function<asio::awaitable<void>(const ParamsType &)> handler) {
-  // Create a typed wrapper that converts between JSON and typed objects
-  auto wrapper = [handler](const std::optional<nlohmann::json> &params)
-      -> asio::awaitable<void> {
-    try {
-      // Convert JSON params to typed params
-      ParamsType typed_params;
-      if (params.has_value()) {
-        typed_params = params.value().get<ParamsType>();
-      } else {
-        // Initialize with default constructor if no params provided
-        typed_params = ParamsType{};
-      }
-
-      // Call the typed handler
-      co_await handler(typed_params);
-    } catch (const nlohmann::json::exception &ex) {
-      // JSON conversion errors will be logged by the dispatcher
-      throw RpcError(
-          ErrorCode::kInvalidParams,
-          std::string("Parameter conversion error: ") + ex.what());
-    } catch (const std::exception &ex) {
-      // Other exceptions will be logged by the dispatcher
-      throw RpcError(
-          ErrorCode::kInternalError,
-          std::string("Handler error: ") + ex.what());
-    }
-  };
-
-  RegisterNotification(method, wrapper);
+    std::function<asio::awaitable<void>(ParamsType)> handler) {
+  RegisterNotification(method, TypedNotificationWrapper<ParamsType>(handler));
 }
 
 }  // namespace jsonrpc::endpoint
