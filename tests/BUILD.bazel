@@ -11,11 +11,11 @@ cc_library(
 
 # Endpoint tests
 cc_test(
-    name = "test_endpoint",
+    name = "endpoint_test",
     size = "small",
     srcs = [
         "common/mock_transport.hpp",
-        "endpoint/test_endpoint.cpp",
+        "endpoint/endpoint_test.cpp",
     ],
     deps = [
         "//:jsonrpc",
@@ -25,9 +25,9 @@ cc_test(
 )
 
 cc_test(
-    name = "test_dispatcher",
+    name = "dispatcher_test",
     size = "small",
-    srcs = ["endpoint/test_dispatcher.cpp"],
+    srcs = ["endpoint/dispatcher_test.cpp"],
     deps = [
         "//:jsonrpc",
         "@catch2//:catch2_main",
@@ -35,9 +35,9 @@ cc_test(
 )
 
 cc_test(
-    name = "test_request",
+    name = "request_test",
     size = "small",
-    srcs = ["endpoint/test_request.cpp"],
+    srcs = ["endpoint/request_test.cpp"],
     deps = [
         "//:jsonrpc",
         "@catch2//:catch2_main",
@@ -45,9 +45,9 @@ cc_test(
 )
 
 cc_test(
-    name = "test_response",
+    name = "response_test",
     size = "small",
-    srcs = ["endpoint/test_response.cpp"],
+    srcs = ["endpoint/response_test.cpp"],
     deps = [
         "//:jsonrpc",
         "@catch2//:catch2_main",
@@ -56,9 +56,9 @@ cc_test(
 
 # Transport
 cc_test(
-    name = "test_message_framer",
+    name = "message_framer_test",
     size = "small",
-    srcs = ["transports/test_message_framer.cpp"],
+    srcs = ["transports/message_framer_test.cpp"],
     deps = [
         "//:jsonrpc",
         "@catch2//:catch2_main",
@@ -66,9 +66,9 @@ cc_test(
 )
 
 cc_test(
-    name = "test_pipe_transport",
+    name = "pipe_transport_test",
     size = "small",
-    srcs = ["transports/test_pipe_transport.cpp"],
+    srcs = ["transports/pipe_transport_test.cpp"],
     deps = [
         "//:jsonrpc",
         "@catch2//:catch2_main",
@@ -76,9 +76,9 @@ cc_test(
 )
 
 cc_test(
-    name = "test_framed_pipe_transport",
+    name = "framed_pipe_transport_test",
     size = "small",
-    srcs = ["transports/test_framed_pipe_transport.cpp"],
+    srcs = ["transports/framed_pipe_transport_test.cpp"],
     deps = [
         "//:jsonrpc",
         "@catch2//:catch2_main",
