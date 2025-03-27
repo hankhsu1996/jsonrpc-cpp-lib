@@ -1,7 +1,6 @@
 #pragma once
 
 #include <functional>
-#include <memory>
 #include <optional>
 #include <string>
 #include <unordered_map>
@@ -10,7 +9,6 @@
 #include <nlohmann/json.hpp>
 
 #include "jsonrpc/endpoint/response.hpp"
-#include "jsonrpc/endpoint/task_executor.hpp"
 
 namespace jsonrpc::endpoint {
 
@@ -21,7 +19,7 @@ class Dispatcher {
   using NotificationHandler = std::function<asio::awaitable<void>(
       const std::optional<nlohmann::json>&)>;
 
-  explicit Dispatcher(std::shared_ptr<TaskExecutor> executor);
+  explicit Dispatcher(asio::any_io_executor executor);
 
   Dispatcher(const Dispatcher&) = delete;
   Dispatcher(Dispatcher&&) = delete;
@@ -60,8 +58,8 @@ class Dispatcher {
   /// @brief Notification handlers
   std::unordered_map<std::string, NotificationHandler> notification_handlers_;
 
-  /// @brief Task execution manager
-  std::shared_ptr<TaskExecutor> executor_;
+  /// @brief Executor
+  asio::any_io_executor executor_;
 };
 
 }  // namespace jsonrpc::endpoint

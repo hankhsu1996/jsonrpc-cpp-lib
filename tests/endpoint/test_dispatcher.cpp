@@ -5,17 +5,14 @@
 #include <spdlog/spdlog.h>
 
 #include "jsonrpc/endpoint/dispatcher.hpp"
-#include "jsonrpc/endpoint/task_executor.hpp"
 #include "jsonrpc/endpoint/types.hpp"
 
 using jsonrpc::endpoint::Dispatcher;
 using jsonrpc::endpoint::ErrorCode;
-using jsonrpc::endpoint::TaskExecutor;
 
 TEST_CASE("Dispatcher initialization", "[Dispatcher]") {
   asio::io_context io_ctx;
-  auto executor =
-      std::make_shared<TaskExecutor>(1);  // Use real TaskExecutor with 1 thread
+  auto executor = io_ctx.get_executor();
   Dispatcher dispatcher(executor);
 
   bool test_passed = false;
@@ -39,8 +36,7 @@ TEST_CASE("Dispatcher initialization", "[Dispatcher]") {
 
 TEST_CASE("Method registration and handling", "[Dispatcher]") {
   asio::io_context io_ctx;
-  auto executor =
-      std::make_shared<TaskExecutor>(1);  // Use real TaskExecutor with 1 thread
+  auto executor = io_ctx.get_executor();
   Dispatcher dispatcher(executor);
 
   SECTION("Register and call method") {
@@ -85,7 +81,7 @@ TEST_CASE("Method registration and handling", "[Dispatcher]") {
 
 TEST_CASE("Batch request handling", "[Dispatcher]") {
   asio::io_context io_ctx;
-  auto executor = std::make_shared<TaskExecutor>(1);  // Use real TaskExecutor
+  auto executor = io_ctx.get_executor();
   Dispatcher dispatcher(executor);
 
   SECTION("Valid batch request") {
@@ -187,7 +183,8 @@ TEST_CASE("Batch request handling", "[Dispatcher]") {
 
 TEST_CASE("Error handling", "[Dispatcher]") {
   asio::io_context io_ctx;
-  Dispatcher dispatcher(std::make_shared<TaskExecutor>(1));
+  auto executor = io_ctx.get_executor();
+  Dispatcher dispatcher(executor);
   SECTION("Method not found") {
     asio::co_spawn(
         io_ctx,

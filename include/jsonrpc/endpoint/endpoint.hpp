@@ -16,7 +16,6 @@
 #include "jsonrpc/endpoint/dispatcher.hpp"
 #include "jsonrpc/endpoint/pending_request.hpp"
 #include "jsonrpc/endpoint/response.hpp"
-#include "jsonrpc/endpoint/task_executor.hpp"
 #include "jsonrpc/endpoint/types.hpp"
 #include "jsonrpc/transport/transport.hpp"
 
@@ -281,9 +280,6 @@ class RpcEndpoint {
 
   /// Transport layer
   std::unique_ptr<transport::Transport> transport_;
-
-  /// Task executor for async processing
-  std::shared_ptr<TaskExecutor> task_executor_;
 
   /// Dispatcher for handling requests
   Dispatcher dispatcher_;

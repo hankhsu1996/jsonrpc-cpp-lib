@@ -5,7 +5,7 @@
 
 namespace jsonrpc::endpoint {
 
-Dispatcher::Dispatcher(std::shared_ptr<TaskExecutor> executor)
+Dispatcher::Dispatcher(asio::any_io_executor executor)
     : executor_(std::move(executor)) {
 }
 
@@ -56,23 +56,22 @@ auto Dispatcher::DispatchSingleRequest(nlohmann::json request_json)
   if (request.IsNotification()) {
     auto it = notification_handlers_.find(method);
     if (it != notification_handlers_.end()) {
-      executor_->ExecuteDetached(
-          [handler = it->second,
-           params = request.GetParams()]() -> asio::awaitable<void> {
-            return handler(params);
-          });
+      co_spawn(
+          executor_,
+          [handler = it->second, params = request.GetParams()]()
+              -> asio::awaitable<void> { return handler(params); },
+          asio::detached);
     }
     co_return std::nullopt;
   }
 
   auto it = method_handlers_.find(method);
   if (it != method_handlers_.end()) {
-    auto result = co_await executor_->Execute(
-        [handler = it->second,
-         params = request.GetParams()]() -> asio::awaitable<nlohmann::json> {
-          return handler(params);
-        });
-
+    auto result = co_await asio::co_spawn(
+        executor_,
+        [handler = it->second, params = request.GetParams()]()
+            -> asio::awaitable<nlohmann::json> { return handler(params); },
+        asio::use_awaitable);
     co_return Response::CreateResult(result, request.GetId()).ToJson();
   }
 

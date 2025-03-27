@@ -15,9 +15,7 @@ RpcEndpoint::RpcEndpoint(
     std::unique_ptr<transport::Transport> transport)
     : executor_(std::move(executor)),
       transport_(std::move(transport)),
-      task_executor_(
-          std::make_shared<TaskExecutor>(4)),  // Use 4 threads by default
-      dispatcher_(task_executor_),
+      dispatcher_(executor_),
       endpoint_strand_(asio::make_strand(executor_)) {
 }
 
