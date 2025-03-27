@@ -20,16 +20,16 @@ using jsonrpc::transport::SocketTransport;
 using Json = nlohmann::json;
 
 // All RPC operations in a separate coroutine function
-auto RunClient(asio::io_context& io_context) -> asio::awaitable<void> {
+auto RunClient(asio::any_io_executor executor) -> asio::awaitable<void> {
   // Step 1: Initialize transport and create RPC client
   const std::string host = "127.0.0.1";
   const uint16_t port = 12345;
   spdlog::info("Connecting to server at {}:{}", host, port);
 
   auto transport =
-      std::make_unique<SocketTransport>(io_context, host, port, false);
+      std::make_unique<SocketTransport>(executor, host, port, false);
   auto client =
-      co_await RpcEndpoint::CreateClient(io_context, std::move(transport));
+      co_await RpcEndpoint::CreateClient(executor, std::move(transport));
 
   // Step 2: Make RPC method calls
   // Example 1: Call "add" method
@@ -78,9 +78,10 @@ auto main() -> int {
 
   // Create ASIO io_context
   asio::io_context io_context;
+  auto executor = io_context.get_executor();
 
   // Launch the RPC operations with our simple error handler
-  asio::co_spawn(io_context, RunClient(io_context), HandleError);
+  asio::co_spawn(executor, RunClient(executor), HandleError);
 
   // Run the ASIO event loop
   spdlog::info("Running io_context");

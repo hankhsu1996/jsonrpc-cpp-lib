@@ -11,9 +11,9 @@
 namespace jsonrpc::transport {
 
 PipeTransport::PipeTransport(
-    asio::io_context &io_context, std::string socket_path, bool is_server)
-    : Transport(io_context),
-      socket_(io_context),
+    asio::any_io_executor executor, std::string socket_path, bool is_server)
+    : Transport(std::move(executor)),
+      socket_(GetExecutor()),
       socket_path_(std::move(socket_path)),
       is_server_(is_server),
       read_buffer_() {
@@ -23,8 +23,8 @@ PipeTransport::PipeTransport(
 
   // Create acceptor in constructor if this is a server, but don't bind yet
   if (is_server_) {
-    acceptor_ = std::make_shared<asio::local::stream_protocol::acceptor>(
-        GetIoContext());
+    acceptor_ =
+        std::make_shared<asio::local::stream_protocol::acceptor>(GetExecutor());
   }
   // Connections will be established in the Start() method
 }
@@ -136,8 +136,7 @@ void PipeTransport::RemoveExistingSocketFile() {
   }
 }
 
-auto PipeTransport::SendMessage(const std::string &message)
-    -> asio::awaitable<void> {
+auto PipeTransport::SendMessage(std::string message) -> asio::awaitable<void> {
   try {
     co_await asio::post(GetStrand(), asio::use_awaitable);
 
@@ -299,7 +298,7 @@ auto PipeTransport::Connect() -> asio::awaitable<void> {
 
     // Create a new socket if needed
     if (!socket_.is_open()) {
-      socket_ = asio::local::stream_protocol::socket(GetIoContext());
+      socket_ = asio::local::stream_protocol::socket(GetExecutor());
     }
 
     // Create the endpoint and connect

@@ -20,14 +20,14 @@ class SocketTransport : public Transport {
  public:
   /**
    * @brief Constructs a SocketTransport.
-   * @param io_context The io_context to use for async operations.
+   * @param executor The executor to use for async operations.
    * @param address The host address (IP or domain name).
    * @param port The port number.
    * @param is_server True if the transport acts as a server; false if it acts
    * as a client.
    */
   SocketTransport(
-      asio::io_context& io_context, std::string address, uint16_t port,
+      asio::any_io_executor executor, std::string address, uint16_t port,
       bool is_server);
 
   /**
@@ -52,8 +52,7 @@ class SocketTransport : public Transport {
   auto Start() -> asio::awaitable<void> override;
 
   // Implement pure virtual functions from Transport
-  auto SendMessage(const std::string& message)
-      -> asio::awaitable<void> override;
+  auto SendMessage(std::string message) -> asio::awaitable<void> override;
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override;
 

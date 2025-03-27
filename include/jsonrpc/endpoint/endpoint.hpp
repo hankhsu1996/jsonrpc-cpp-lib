@@ -53,11 +53,11 @@ class RpcEndpoint {
   /**
    * @brief Construct a new RPC endpoint
    *
-   * @param io_ctx The IO context to use
+   * @param executor The executor to use
    * @param transport The transport layer to use
    */
   explicit RpcEndpoint(
-      asio::io_context &io_ctx,
+      asio::any_io_executor executor,
       std::unique_ptr<transport::Transport> transport);
 
   /**
@@ -66,13 +66,14 @@ class RpcEndpoint {
    * Creates and initializes a client endpoint. The returned awaitable resolves
    * when the endpoint is fully initialized and ready to use.
    *
-   * @param io_ctx The IO context to use
+   * @param executor The executor to use
    * @param transport The transport layer to use
    * @return asio::awaitable<std::unique_ptr<RpcEndpoint>> Awaitable that
    * resolves to the initialized client
    */
   static auto CreateClient(
-      asio::io_context &io_ctx, std::unique_ptr<transport::Transport> transport)
+      asio::any_io_executor executor,
+      std::unique_ptr<transport::Transport> transport)
       -> asio::awaitable<std::unique_ptr<RpcEndpoint>>;
 
   // Delete copy and move constructors/assignments
@@ -130,8 +131,7 @@ class RpcEndpoint {
    * @return asio::awaitable<nlohmann::json> The result
    */
   auto SendMethodCall(
-      const std::string &method,
-      std::optional<nlohmann::json> params = std::nullopt)
+      std::string method, std::optional<nlohmann::json> params = std::nullopt)
       -> asio::awaitable<nlohmann::json>;
 
   /**
@@ -142,8 +142,7 @@ class RpcEndpoint {
    * @return asio::awaitable<void>
    */
   auto SendNotification(
-      const std::string &method,
-      std::optional<nlohmann::json> params = std::nullopt)
+      std::string method, std::optional<nlohmann::json> params = std::nullopt)
       -> asio::awaitable<void>;
 
   /**
@@ -153,8 +152,7 @@ class RpcEndpoint {
    * @param handler The handler
    */
   void RegisterMethodCall(
-      const std::string &method,
-      typename Dispatcher::MethodCallHandler handler);
+      std::string method, typename Dispatcher::MethodCallHandler handler);
 
   /**
    * @brief Register a notification handler
@@ -163,8 +161,7 @@ class RpcEndpoint {
    * @param handler The handler
    */
   void RegisterNotification(
-      const std::string &method,
-      typename Dispatcher::NotificationHandler handler);
+      std::string method, typename Dispatcher::NotificationHandler handler);
 
   /**
    * @brief Register a typed method call handler
@@ -176,7 +173,7 @@ class RpcEndpoint {
    */
   template <typename ParamsType, typename ResultType>
   void RegisterTypedMethodCall(
-      const std::string &method,
+      std::string method,
       std::function<asio::awaitable<ResultType>(const ParamsType &)> handler);
 
   /**
@@ -188,7 +185,7 @@ class RpcEndpoint {
    */
   template <typename ParamsType>
   void RegisterTypedNotification(
-      const std::string &method,
+      std::string method,
       std::function<asio::awaitable<void>(const ParamsType &)> handler);
 
   /**
@@ -223,7 +220,7 @@ class RpcEndpoint {
    * @return asio::awaitable<ResultType> The typed result
    */
   template <typename ParamsType, typename ResultType>
-  auto SendMethodCall(const std::string &method, const ParamsType &params)
+  auto SendMethodCall(std::string method, const ParamsType &params)
       -> asio::awaitable<ResultType>;
 
   /**
@@ -235,8 +232,7 @@ class RpcEndpoint {
    * @return asio::awaitable<void>
    */
   template <typename ParamsType>
-  auto SendTypedNotification(
-      const std::string &method, const ParamsType &params)
+  auto SendTypedNotification(std::string method, const ParamsType &params)
       -> asio::awaitable<void>;
 
  private:
@@ -257,14 +253,14 @@ class RpcEndpoint {
    *
    * @param message The message
    */
-  auto HandleMessage(const std::string &message) -> asio::awaitable<void>;
+  auto HandleMessage(std::string message) -> asio::awaitable<void>;
 
   /**
    * @brief Handle a response
    *
    * @param response The response
    */
-  auto HandleResponse(const Response &response) -> asio::awaitable<void>;
+  auto HandleResponse(Response response) -> asio::awaitable<void>;
 
   /**
    * @brief Get the next request ID
@@ -280,8 +276,8 @@ class RpcEndpoint {
    */
   void ScheduleRetryProcessing();
 
-  /// Reference to the IO context
-  asio::io_context &io_ctx_;
+  /// The executor to use for operations
+  asio::any_io_executor executor_;
 
   /// Transport layer
   std::unique_ptr<transport::Transport> transport_;
@@ -310,8 +306,7 @@ class RpcEndpoint {
 };
 
 template <typename ParamsType, typename ResultType>
-auto RpcEndpoint::SendMethodCall(
-    const std::string &method, const ParamsType &params)
+auto RpcEndpoint::SendMethodCall(std::string method, const ParamsType &params)
     -> asio::awaitable<ResultType> {
   try {
     // Convert typed params to JSON
@@ -334,8 +329,7 @@ auto RpcEndpoint::SendMethodCall(
 
 template <typename ParamsType>
 auto RpcEndpoint::SendTypedNotification(
-    const std::string &method, const ParamsType &params)
-    -> asio::awaitable<void> {
+    std::string method, const ParamsType &params) -> asio::awaitable<void> {
   // Convert typed params to JSON and send
   nlohmann::json json_params = params;
   co_await SendNotification(method, json_params);
@@ -343,7 +337,7 @@ auto RpcEndpoint::SendTypedNotification(
 
 template <typename ParamsType, typename ResultType>
 void RpcEndpoint::RegisterTypedMethodCall(
-    const std::string &method,
+    std::string method,
     std::function<asio::awaitable<ResultType>(const ParamsType &)> handler) {
   // Create a typed wrapper that converts between JSON and typed objects
   auto wrapper = [handler](const std::optional<nlohmann::json> &params)
@@ -381,7 +375,7 @@ void RpcEndpoint::RegisterTypedMethodCall(
 
 template <typename ParamsType>
 void RpcEndpoint::RegisterTypedNotification(
-    const std::string &method,
+    std::string method,
     std::function<asio::awaitable<void>(const ParamsType &)> handler) {
   // Create a typed wrapper that converts between JSON and typed objects
   auto wrapper = [handler](const std::optional<nlohmann::json> &params)

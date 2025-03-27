@@ -19,14 +19,14 @@ using Json = nlohmann::json;
  */
 
 // Main server logic encapsulated in a function
-auto RunServer(asio::io_context& io_context, const std::string& host, int port)
+auto RunServer(asio::any_io_executor executor, std::string host, int port)
     -> asio::awaitable<void> {
   // Step 1: Create transport
   auto transport =
-      std::make_unique<SocketTransport>(io_context, host, port, true);
+      std::make_unique<SocketTransport>(executor, host, port, true);
 
   // Step 2: Create RPC endpoint
-  RpcEndpoint server(io_context, std::move(transport));
+  RpcEndpoint server(executor, std::move(transport));
 
   // Step 3: Register RPC methods
   server.RegisterMethodCall("add", Calculator::Add);
@@ -34,7 +34,7 @@ auto RunServer(asio::io_context& io_context, const std::string& host, int port)
 
   // Step 4: Register stop notification
   server.RegisterNotification(
-      "stop", [&server](const std::optional<Json>&) -> asio::awaitable<void> {
+      "stop", [&server](std::optional<Json> params) -> asio::awaitable<void> {
         co_await server.Shutdown();
         co_return;
       });
@@ -74,9 +74,10 @@ auto main() -> int {
 
   // Step 2: Create an io_context for asio operations
   asio::io_context io_context;
+  auto executor = io_context.get_executor();
 
   // Step 3: Launch the server with error handling
-  asio::co_spawn(io_context, RunServer(io_context, host, port), HandleError);
+  asio::co_spawn(executor, RunServer(executor, host, port), HandleError);
 
   // Step 4: Run the io_context
   io_context.run();

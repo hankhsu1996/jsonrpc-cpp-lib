@@ -25,9 +25,9 @@ void RunTest(F&& test_fn) {
   spdlog::set_default_logger(logger);
   spdlog::set_level(spdlog::level::debug);
   asio::io_context io_ctx;
-
+  auto executor = io_ctx.get_executor();
   asio::co_spawn(
-      io_ctx, [&]() -> asio::awaitable<void> { co_await test_fn(io_ctx); },
+      executor, [&]() -> asio::awaitable<void> { co_await test_fn(executor); },
       asio::detached);
   io_ctx.run();
 }
@@ -37,11 +37,11 @@ void RunTest(F&& test_fn) {
 // Basic Lifecycle Tests
 TEST_CASE("RpcEndpoint - Basic lifecycle", "[endpoint]") {
   SECTION("Start and shutdown") {
-    RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+    RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
       // Create transport and endpoint
-      auto transport = std::make_unique<MockTransport>(io_ctx);
+      auto transport = std::make_unique<MockTransport>(executor);
       auto endpoint =
-          std::make_unique<RpcEndpoint>(io_ctx, std::move(transport));
+          std::make_unique<RpcEndpoint>(executor, std::move(transport));
 
       // Start and shutdown
       co_await endpoint->Start();
@@ -50,11 +50,11 @@ TEST_CASE("RpcEndpoint - Basic lifecycle", "[endpoint]") {
   }
 
   SECTION("Double Start prevention") {
-    RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+    RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
       // Create transport and endpoint
-      auto transport = std::make_unique<MockTransport>(io_ctx);
+      auto transport = std::make_unique<MockTransport>(executor);
       auto endpoint =
-          std::make_unique<RpcEndpoint>(io_ctx, std::move(transport));
+          std::make_unique<RpcEndpoint>(executor, std::move(transport));
 
       // First start should succeed
       co_await endpoint->Start();

@@ -18,17 +18,16 @@ class FramedPipeTransport : public PipeTransport {
   /**
    * @brief Constructs a FramedPipeTransport.
    *
-   * @param io_context The io_context to use for async operations.
+   * @param executor The executor to use for async operations.
    * @param socket_path The path to the Unix domain socket.
    * @param is_server True if the transport acts as a server; false if it acts
    * as a client.
    */
   FramedPipeTransport(
-      asio::io_context& io_context, const std::string& socket_path,
+      asio::any_io_executor executor, const std::string& socket_path,
       bool is_server);
 
-  auto SendMessage(const std::string& message)
-      -> asio::awaitable<void> override;
+  auto SendMessage(std::string message) -> asio::awaitable<void> override;
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override;
 

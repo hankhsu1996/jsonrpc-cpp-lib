@@ -8,10 +8,10 @@
 namespace jsonrpc::transport {
 
 SocketTransport::SocketTransport(
-    asio::io_context &io_context, std::string address, uint16_t port,
+    asio::any_io_executor executor, std::string address, uint16_t port,
     bool is_server)
-    : Transport(io_context),
-      socket_(io_context),
+    : Transport(std::move(executor)),
+      socket_(GetExecutor()),
       address_(std::move(address)),
       port_(port),
       is_server_(is_server),
@@ -95,7 +95,7 @@ auto SocketTransport::GetSocket() -> asio::ip::tcp::socket & {
   return socket_;
 }
 
-auto SocketTransport::SendMessage(const std::string &message)
+auto SocketTransport::SendMessage(std::string message)
     -> asio::awaitable<void> {
   try {
     co_await asio::post(GetStrand(), asio::use_awaitable);
@@ -234,11 +234,11 @@ auto SocketTransport::Connect() -> asio::awaitable<void> {
 
     // Create a new socket if needed
     if (!socket_.is_open()) {
-      socket_ = asio::ip::tcp::socket(GetIoContext());
+      socket_ = asio::ip::tcp::socket(GetExecutor());
     }
 
     // Resolve the endpoint
-    asio::ip::tcp::resolver resolver(GetIoContext());
+    asio::ip::tcp::resolver resolver(GetExecutor());
     auto endpoints = co_await resolver.async_resolve(
         address_, std::to_string(port_), asio::use_awaitable);
 
@@ -274,14 +274,14 @@ auto SocketTransport::BindAndListen() -> asio::awaitable<void> {
 
     // For specific address binding
     if (address_ != "0.0.0.0" && address_ != "::") {
-      asio::ip::tcp::resolver resolver(GetIoContext());
+      asio::ip::tcp::resolver resolver(GetExecutor());
       auto results = co_await resolver.async_resolve(
           address_, std::to_string(port_), asio::use_awaitable);
       endpoint = *results.begin();
     }
 
     // Create an acceptor
-    asio::ip::tcp::acceptor acceptor(GetIoContext(), endpoint);
+    asio::ip::tcp::acceptor acceptor(GetExecutor(), endpoint);
     acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
 
     spdlog::debug("Listening on {}:{}", address_, port_);

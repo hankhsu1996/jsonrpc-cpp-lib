@@ -17,7 +17,8 @@ void RunTest(F&& test_fn) {
   spdlog::set_level(spdlog::level::debug);
   spdlog::flush_on(spdlog::level::debug);
   asio::io_context io_ctx;
-  asio::co_spawn(io_ctx, std::forward<F>(test_fn)(io_ctx), asio::detached);
+  asio::co_spawn(
+      io_ctx, std::forward<F>(test_fn)(io_ctx.get_executor()), asio::detached);
   io_ctx.run();
 }
 
@@ -28,7 +29,7 @@ TEST_CASE("PipeTransport basic creation test", "[PipeTransport]") {
   asio::io_context io_context;
 
   jsonrpc::transport::PipeTransport server_transport(
-      io_context, "/tmp/test_socket_basic", true);
+      io_context.get_executor(), "/tmp/test_socket_basic", true);
 
   asio::co_spawn(io_context, server_transport.Close(), asio::detached);
 
@@ -37,13 +38,13 @@ TEST_CASE("PipeTransport basic creation test", "[PipeTransport]") {
 
 // Test proper closing of transport
 TEST_CASE("PipeTransport can be properly closed", "[PipeTransport]") {
-  RunTest([](asio::io_context& io_context) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     std::string socket_path = "/tmp/test_socket_close_test";
 
     // Create a server transport
     spdlog::info("Creating server transport");
     jsonrpc::transport::PipeTransport server_transport(
-        io_context, socket_path, true);
+        executor, socket_path, true);
     spdlog::info("Server transport created");
 
     // Close it properly
@@ -53,21 +54,21 @@ TEST_CASE("PipeTransport can be properly closed", "[PipeTransport]") {
 
 // Test basic client-server connection
 TEST_CASE("PipeTransport basic client-server connection", "[PipeTransport]") {
-  RunTest([](asio::io_context& io_context) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     std::string socket_path = "/tmp/test_socket_connection";
 
     // Create a server transport
     spdlog::info("Creating server transport");
     jsonrpc::transport::PipeTransport server_transport(
-        io_context, socket_path, true);
+        executor, socket_path, true);
     spdlog::info("Server transport created");
     // Create a client transport that connects to the server
     spdlog::info("Creating client transport");
     jsonrpc::transport::PipeTransport client_transport(
-        io_context, socket_path, false);
+        executor, socket_path, false);
 
     // Just wait a bit to ensure connection is established
-    co_await asio::steady_timer(io_context, std::chrono::milliseconds(100))
+    co_await asio::steady_timer(executor, std::chrono::milliseconds(100))
         .async_wait(asio::use_awaitable);
 
     // Close both transports
@@ -78,13 +79,13 @@ TEST_CASE("PipeTransport basic client-server connection", "[PipeTransport]") {
 
 TEST_CASE(
     "PipeTransport starts server and client communication", "[PipeTransport]") {
-  RunTest([](asio::io_context& io_context) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     std::string socket_path = "/tmp/test_socket";
 
     // Create a server transport
-    auto strand = asio::make_strand(io_context);
+    auto strand = asio::make_strand(executor);
     jsonrpc::transport::PipeTransport server_transport(
-        io_context, socket_path, true);
+        executor, socket_path, true);
 
     // Start server message handling in a separate coroutine
     asio::co_spawn(
@@ -103,7 +104,7 @@ TEST_CASE(
 
     // Start the client and connect to the server
     jsonrpc::transport::PipeTransport client_transport(
-        io_context, socket_path, false);
+        executor, socket_path, false);
 
     // Make sure `SendMessage()` runs in a separate coroutine
     asio::co_spawn(
@@ -127,10 +128,10 @@ TEST_CASE(
 }
 
 TEST_CASE("PipeTransport throws on invalid socket path", "[PipeTransport]") {
-  RunTest([](asio::io_context& io_context) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     try {
       jsonrpc::transport::PipeTransport transport(
-          io_context, "/tmp/non_existent_socket", false);
+          executor, "/tmp/non_existent_socket", false);
       co_await transport.Close();
     } catch (const std::exception& e) {
       REQUIRE(std::string(e.what()) == "Error during connect");
@@ -139,13 +140,13 @@ TEST_CASE("PipeTransport throws on invalid socket path", "[PipeTransport]") {
 }
 
 TEST_CASE("PipeTransport handles multiple messages", "[PipeTransport]") {
-  RunTest([](asio::io_context& io_context) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     std::string socket_path = "/tmp/test_socket_multi";
 
     // Create a server transport
-    auto strand = asio::make_strand(io_context);
+    auto strand = asio::make_strand(executor);
     jsonrpc::transport::PipeTransport server_transport(
-        io_context, socket_path, true);
+        executor, socket_path, true);
 
     // Start server message handling in a separate coroutine
     asio::co_spawn(
@@ -166,7 +167,7 @@ TEST_CASE("PipeTransport handles multiple messages", "[PipeTransport]") {
 
     // Start the client and connect to the server
     jsonrpc::transport::PipeTransport client_transport(
-        io_context, socket_path, false);
+        executor, socket_path, false);
 
     // Make sure `SendMessage()` runs in a separate coroutine
     asio::co_spawn(

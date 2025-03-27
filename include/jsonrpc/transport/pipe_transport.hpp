@@ -21,13 +21,13 @@ class PipeTransport : public Transport {
   /**
    * @brief Constructs a new Pipe Transport object.
    *
-   * @param io_context The IO context to use.
+   * @param executor The executor to use.
    * @param socket_path The path to the socket file.
    * @param is_server Whether this endpoint is a server (true) or client
    * (false).
    */
   explicit PipeTransport(
-      asio::io_context& io_context, std::string socket_path,
+      asio::any_io_executor executor, std::string socket_path,
       bool is_server = false);
 
   /**
@@ -59,8 +59,7 @@ class PipeTransport : public Transport {
    */
   auto Start() -> asio::awaitable<void> override;
 
-  auto SendMessage(const std::string& message)
-      -> asio::awaitable<void> override;
+  auto SendMessage(std::string message) -> asio::awaitable<void> override;
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override;
 

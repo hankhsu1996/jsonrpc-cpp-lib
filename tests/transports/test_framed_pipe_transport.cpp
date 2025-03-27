@@ -1,3 +1,4 @@
+#include <memory>
 #include <string>
 
 #include <asio.hpp>
@@ -27,10 +28,11 @@ void RunTest(Func&& test_func) {
   spdlog::flush_on(spdlog::level::debug);
 
   asio::io_context io_ctx;
+  auto executor = io_ctx.get_executor();
   asio::co_spawn(
-      io_ctx,
-      [f = std::forward<Func>(test_func), &io_ctx]() -> asio::awaitable<void> {
-        co_return co_await f(io_ctx);
+      executor,
+      [test_func = std::forward<Func>(test_func), executor]() {
+        return test_func(executor);
       },
       asio::detached);
   io_ctx.run();
@@ -45,28 +47,33 @@ auto FrameMessage(const std::string& message) -> std::string {
 
 }  // namespace
 
+auto StartSender(
+    asio::any_io_executor executor, std::shared_ptr<PipeTransport> raw_sender)
+    -> asio::awaitable<void> {
+  co_await raw_sender->Start();
+}
+
+auto StartReceiver(
+    asio::any_io_executor executor,
+    std::shared_ptr<FramedPipeTransport> framed_receiver)
+    -> asio::awaitable<void> {
+  co_await framed_receiver->Start();
+}
+
 TEST_CASE("FramedPipeTransport basic communication", "[FramedPipeTransport]") {
-  RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     const std::string socket_path = "/tmp/test_framed_transport";
     auto raw_sender =
-        std::make_unique<PipeTransport>(io_ctx, socket_path, true);
+        std::make_shared<PipeTransport>(executor, socket_path, true);
     auto framed_receiver =
-        std::make_unique<FramedPipeTransport>(io_ctx, socket_path, false);
+        std::make_shared<FramedPipeTransport>(executor, socket_path, false);
 
     // Start both in parallel and wait for connection
     co_await asio::experimental::make_parallel_group(
         asio::co_spawn(
-            io_ctx,
-            [&raw_sender]() -> asio::awaitable<void> {
-              co_await raw_sender->Start();
-            },
-            asio::deferred),
+            executor, StartSender(executor, raw_sender), asio::deferred),
         asio::co_spawn(
-            io_ctx,
-            [&framed_receiver]() -> asio::awaitable<void> {
-              co_await framed_receiver->Start();
-            },
-            asio::deferred))
+            executor, StartReceiver(executor, framed_receiver), asio::deferred))
         .async_wait(asio::experimental::wait_for_all(), asio::use_awaitable);
 
     // After connection, sender and receiver operate independently
@@ -75,7 +82,7 @@ TEST_CASE("FramedPipeTransport basic communication", "[FramedPipeTransport]") {
 
     // Start sender in separate coroutine
     asio::co_spawn(
-        io_ctx,
+        executor,
         [&raw_sender, msg1 = FrameMessage(msg1),
          msg2 = FrameMessage(msg2)]() -> asio::awaitable<void> {
           co_await raw_sender->SendMessage(msg1);
@@ -96,23 +103,23 @@ TEST_CASE("FramedPipeTransport basic communication", "[FramedPipeTransport]") {
 
 TEST_CASE(
     "FramedPipeTransport handles split messages", "[FramedPipeTransport]") {
-  RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     const std::string socket_path = "/tmp/test_framed_transport_split";
     auto raw_sender =
-        std::make_unique<PipeTransport>(io_ctx, socket_path, true);
+        std::make_unique<PipeTransport>(executor, socket_path, true);
     auto framed_receiver =
-        std::make_unique<FramedPipeTransport>(io_ctx, socket_path, false);
+        std::make_unique<FramedPipeTransport>(executor, socket_path, false);
 
     // Start both in parallel
     co_await asio::experimental::make_parallel_group(
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&raw_sender]() -> asio::awaitable<void> {
               co_await raw_sender->Start();
             },
             asio::deferred),
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&framed_receiver]() -> asio::awaitable<void> {
               co_await framed_receiver->Start();
             },
@@ -129,7 +136,7 @@ TEST_CASE(
       std::string part2 = framed.substr(8);     // "Length: ..." + rest
 
       asio::co_spawn(
-          io_ctx,
+          executor,
           [&raw_sender, part1, part2]() -> asio::awaitable<void> {
             co_await raw_sender->SendMessage(part1);
             co_await raw_sender->SendMessage(part2);
@@ -155,7 +162,7 @@ TEST_CASE(
       std::string part3 = framed.substr(header_end);  // "\r\n\r\n" + content
 
       asio::co_spawn(
-          io_ctx,
+          executor,
           [&raw_sender, part1, part2, part3]() -> asio::awaitable<void> {
             co_await raw_sender->SendMessage(part1);
             co_await raw_sender->SendMessage(part2);
@@ -179,7 +186,7 @@ TEST_CASE(
       std::string part3 = framed.substr(header_end + 4);  // content
 
       asio::co_spawn(
-          io_ctx,
+          executor,
           [&raw_sender, part1, part2, part3]() -> asio::awaitable<void> {
             co_await raw_sender->SendMessage(part1);
             co_await raw_sender->SendMessage(part2);
@@ -204,7 +211,7 @@ TEST_CASE(
       std::string part3 = framed.substr(delimiter_start + 4);     // content
 
       asio::co_spawn(
-          io_ctx,
+          executor,
           [&raw_sender, part1, part2, part3]() -> asio::awaitable<void> {
             co_await raw_sender->SendMessage(
                 part1);  // "Content-Length: 32\r\n"
@@ -223,7 +230,7 @@ TEST_CASE(
 
       // Send the message one byte at a time
       asio::co_spawn(
-          io_ctx,
+          executor,
           [&raw_sender, framed]() -> asio::awaitable<void> {
             for (size_t i = 0; i < framed.length(); ++i) {
               co_await raw_sender->SendMessage(framed.substr(i, 1));
@@ -242,23 +249,23 @@ TEST_CASE(
 
 TEST_CASE(
     "FramedPipeTransport handles multiple messages", "[FramedPipeTransport]") {
-  RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     const std::string socket_path = "/tmp/test_framed_transport_multi";
     auto raw_sender =
-        std::make_unique<PipeTransport>(io_ctx, socket_path, true);
+        std::make_unique<PipeTransport>(executor, socket_path, true);
     auto framed_receiver =
-        std::make_unique<FramedPipeTransport>(io_ctx, socket_path, false);
+        std::make_unique<FramedPipeTransport>(executor, socket_path, false);
 
     // Start both in parallel
     co_await asio::experimental::make_parallel_group(
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&raw_sender]() -> asio::awaitable<void> {
               co_await raw_sender->Start();
             },
             asio::deferred),
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&framed_receiver]() -> asio::awaitable<void> {
               co_await framed_receiver->Start();
             },
@@ -273,7 +280,7 @@ TEST_CASE(
 
     // Send all messages in one coroutine
     asio::co_spawn(
-        io_ctx,
+        executor,
         [&raw_sender, messages]() -> asio::awaitable<void> {
           for (const auto& msg : messages) {
             co_await raw_sender->SendMessage(FrameMessage(msg));
@@ -295,23 +302,23 @@ TEST_CASE(
 TEST_CASE(
     "FramedPipeTransport handles back-to-back partial messages",
     "[FramedPipeTransport]") {
-  RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     const std::string socket_path = "/tmp/test_framed_transport_backtoback";
     auto raw_sender =
-        std::make_unique<PipeTransport>(io_ctx, socket_path, true);
+        std::make_unique<PipeTransport>(executor, socket_path, true);
     auto framed_receiver =
-        std::make_unique<FramedPipeTransport>(io_ctx, socket_path, false);
+        std::make_unique<FramedPipeTransport>(executor, socket_path, false);
 
     // Start both in parallel
     co_await asio::experimental::make_parallel_group(
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&raw_sender]() -> asio::awaitable<void> {
               co_await raw_sender->Start();
             },
             asio::deferred),
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&framed_receiver]() -> asio::awaitable<void> {
               co_await framed_receiver->Start();
             },
@@ -329,7 +336,7 @@ TEST_CASE(
 
       // Send both messages in small chunks
       asio::co_spawn(
-          io_ctx,
+          executor,
           [&raw_sender, framed1, framed2]() -> asio::awaitable<void> {
             const size_t chunk_size = 5;
             // Send first message in chunks
@@ -371,7 +378,7 @@ TEST_CASE(
 
       // Send messages with slight overlap but maintaining header-content order
       asio::co_spawn(
-          io_ctx,
+          executor,
           [&raw_sender, msg1_header, msg1_content, msg2_header,
            msg2_content]() -> asio::awaitable<void> {
             // Send first message header
@@ -400,23 +407,23 @@ TEST_CASE(
 TEST_CASE(
     "FramedPipeTransport handles invalid Content-Length",
     "[FramedPipeTransport]") {
-  RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     const std::string socket_path = "/tmp/test_framed_transport_errors";
     auto raw_sender =
-        std::make_unique<PipeTransport>(io_ctx, socket_path, true);
+        std::make_unique<PipeTransport>(executor, socket_path, true);
     auto framed_receiver =
-        std::make_unique<FramedPipeTransport>(io_ctx, socket_path, false);
+        std::make_unique<FramedPipeTransport>(executor, socket_path, false);
 
     // Start both in parallel
     co_await asio::experimental::make_parallel_group(
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&raw_sender]() -> asio::awaitable<void> {
               co_await raw_sender->Start();
             },
             asio::deferred),
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&framed_receiver]() -> asio::awaitable<void> {
               co_await framed_receiver->Start();
             },
@@ -428,7 +435,7 @@ TEST_CASE(
         "Content-Length: abc\r\n\r\n{\"method\":\"test\"}";
 
     asio::co_spawn(
-        io_ctx,
+        executor,
         [&raw_sender, invalid_header]() -> asio::awaitable<void> {
           co_await raw_sender->SendMessage(invalid_header);
         },
@@ -445,23 +452,23 @@ TEST_CASE(
 TEST_CASE(
     "FramedPipeTransport handles missing Content-Length header",
     "[FramedPipeTransport]") {
-  RunTest([](asio::io_context& io_ctx) -> asio::awaitable<void> {
+  RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     const std::string socket_path = "/tmp/test_framed_transport_missing_header";
     auto raw_sender =
-        std::make_unique<PipeTransport>(io_ctx, socket_path, true);
+        std::make_unique<PipeTransport>(executor, socket_path, true);
     auto framed_receiver =
-        std::make_unique<FramedPipeTransport>(io_ctx, socket_path, false);
+        std::make_unique<FramedPipeTransport>(executor, socket_path, false);
 
     // Start both in parallel
     co_await asio::experimental::make_parallel_group(
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&raw_sender]() -> asio::awaitable<void> {
               co_await raw_sender->Start();
             },
             asio::deferred),
         asio::co_spawn(
-            io_ctx,
+            executor,
             [&framed_receiver]() -> asio::awaitable<void> {
               co_await framed_receiver->Start();
             },
@@ -472,7 +479,7 @@ TEST_CASE(
     std::string missing_header = "\r\n\r\n{\"method\":\"test\"}";
 
     asio::co_spawn(
-        io_ctx,
+        executor,
         [&raw_sender, missing_header]() -> asio::awaitable<void> {
           co_await raw_sender->SendMessage(missing_header);
         },

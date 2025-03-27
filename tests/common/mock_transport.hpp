@@ -17,10 +17,10 @@ namespace jsonrpc::test {
  */
 class MockTransport : public jsonrpc::transport::Transport {
  public:
-  explicit MockTransport(asio::io_context& io_context)
-      : Transport(io_context),
-        strand_(asio::make_strand(io_context)),
-        receive_timer_(io_context) {
+  explicit MockTransport(asio::any_io_executor executor)
+      : Transport(executor),
+        strand_(asio::make_strand(executor)),
+        receive_timer_(executor) {
     spdlog::debug("Created mock transport");
   }
 
@@ -74,8 +74,7 @@ class MockTransport : public jsonrpc::transport::Transport {
     co_return;
   }
 
-  auto SendMessage(const std::string& message)
-      -> asio::awaitable<void> override {
+  auto SendMessage(std::string message) -> asio::awaitable<void> override {
     co_await asio::post(strand_, asio::use_awaitable);
 
     if (is_closed_) {

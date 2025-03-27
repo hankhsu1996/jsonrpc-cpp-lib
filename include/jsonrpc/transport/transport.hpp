@@ -12,12 +12,12 @@ namespace jsonrpc::transport {
 class Transport {
  public:
   /**
-   * @brief Constructs a Transport with the given io_context.
+   * @brief Constructs a Transport with the given executor.
    *
-   * @param io_context The io_context to use for asynchronous operations.
+   * @param executor The executor to use for asynchronous operations.
    */
-  explicit Transport(asio::io_context &io_context)
-      : io_context_(io_context), strand_(asio::make_strand(io_context)) {
+  explicit Transport(asio::any_io_executor executor)
+      : executor_(std::move(executor)), strand_(asio::make_strand(executor_)) {
   }
 
   Transport(const Transport &) = delete;
@@ -40,8 +40,7 @@ class Transport {
   virtual auto Start() -> asio::awaitable<void> = 0;
 
   /// @brief Sends a message over the transport.
-  virtual auto SendMessage(const std::string &message)
-      -> asio::awaitable<void> = 0;
+  virtual auto SendMessage(std::string message) -> asio::awaitable<void> = 0;
 
   /// @brief Receives a message over the transport.
   virtual auto ReceiveMessage() -> asio::awaitable<std::string> = 0;
@@ -64,31 +63,22 @@ class Transport {
    */
   virtual void CloseNow() = 0;
 
-  /// @brief Gets the executor from the io_context.
+  /// @brief Gets the executor for this transport.
   [[nodiscard]] auto GetExecutor() const -> asio::any_io_executor {
-    return io_context_.get_executor();
-  }
-
-  /**
-   * @brief Get the IO context directly.
-   * @return Reference to the io_context
-   */
-  [[nodiscard]] auto GetIoContext() -> asio::io_context & {
-    return io_context_;
+    return executor_;
   }
 
   /**
    * @brief Get the strand used for synchronization.
    * @return Reference to the strand
    */
-  [[nodiscard]] auto GetStrand()
-      -> asio::strand<asio::io_context::executor_type> & {
+  [[nodiscard]] auto GetStrand() -> asio::strand<asio::any_io_executor> & {
     return strand_;
   }
 
  private:
-  asio::io_context &io_context_;
-  asio::strand<asio::io_context::executor_type> strand_;
+  asio::any_io_executor executor_;
+  asio::strand<asio::any_io_executor> strand_;
 };
 
 }  // namespace jsonrpc::transport

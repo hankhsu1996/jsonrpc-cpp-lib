@@ -7,12 +7,12 @@
 namespace jsonrpc::transport {
 
 FramedPipeTransport::FramedPipeTransport(
-    asio::io_context& io_context, const std::string& socket_path,
+    asio::any_io_executor executor, const std::string& socket_path,
     bool is_server)
-    : PipeTransport(io_context, socket_path, is_server) {
+    : PipeTransport(std::move(executor), socket_path, is_server) {
 }
 
-auto FramedPipeTransport::SendMessage(const std::string& message)
+auto FramedPipeTransport::SendMessage(std::string message)
     -> asio::awaitable<void> {
   auto framed_message = MessageFramer::Frame(message);
   co_await asio::async_write(
