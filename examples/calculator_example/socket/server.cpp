@@ -18,6 +18,13 @@ using Json = nlohmann::json;
  * applications might benefit from helper functions to reduce boilerplate.
  */
 
+auto HandleStop(std::weak_ptr<RpcEndpoint> weak) -> asio::awaitable<void> {
+  if (auto locked = weak.lock()) {
+    co_await locked->Shutdown();
+  }
+  co_return;
+}
+
 // Main server logic encapsulated in a function
 auto RunServer(asio::any_io_executor executor, std::string host, int port)
     -> asio::awaitable<void> {
@@ -34,9 +41,8 @@ auto RunServer(asio::any_io_executor executor, std::string host, int port)
 
   // Step 4: Register stop notification
   server.RegisterNotification(
-      "stop", [&server](std::optional<Json> params) -> asio::awaitable<void> {
-        co_await server.Shutdown();
-        co_return;
+      "stop", [weak = server.weak_from_this()](std::optional<Json>) {
+        return HandleStop(weak);
       });
 
   // Step 5: Start server

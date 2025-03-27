@@ -7,7 +7,7 @@ static constexpr int kDivideByZeroErrorCode = -32000;
 
 class Calculator {
  public:
-  static auto Add(const std::optional<nlohmann::json>& params)
+  static auto Add(std::optional<nlohmann::json> params)
       -> asio::awaitable<nlohmann::json> {
     const auto& p = params.value_or(nlohmann::json::object());
     double a_double = p["a"];
@@ -16,7 +16,7 @@ class Calculator {
     co_return nlohmann::json{{"result", a_double + b_double}};
   }
 
-  static auto Divide(const std::optional<nlohmann::json>& params)
+  static auto Divide(std::optional<nlohmann::json> params)
       -> asio::awaitable<nlohmann::json> {
     const auto& p = params.value_or(nlohmann::json::object());
     double a_double = p["a"];

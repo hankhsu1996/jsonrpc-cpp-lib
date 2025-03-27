@@ -30,6 +30,13 @@ auto ParsePipeArguments(const std::vector<std::string>& args) -> std::string {
   return args[1].substr(pipe_prefix.length());
 }
 
+auto HandleShutdown(std::weak_ptr<RpcEndpoint> weak) -> asio::awaitable<void> {
+  if (auto locked = weak.lock()) {
+    co_await locked->Shutdown();
+  }
+  co_return;
+}
+
 void RegisterLSPHandlers(jsonrpc::endpoint::RpcEndpoint& server) {
   server.RegisterMethodCall(
       "initialize", [](std::optional<Json> params) -> asio::awaitable<Json> {
@@ -75,9 +82,8 @@ void RegisterLSPHandlers(jsonrpc::endpoint::RpcEndpoint& server) {
       });
 
   server.RegisterNotification(
-      "exit", [&server](std::optional<Json> params) -> asio::awaitable<void> {
-        spdlog::info("Server exiting");
-        co_await server.Shutdown();
+      "exit", [weak = server.weak_from_this()](std::optional<Json>) {
+        return HandleShutdown(weak);
       });
 }
 

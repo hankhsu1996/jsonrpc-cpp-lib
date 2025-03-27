@@ -47,7 +47,7 @@ class RpcError : public std::runtime_error {
  * on a remote endpoint and register method handlers for handling incoming
  * requests.
  */
-class RpcEndpoint {
+class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
  public:
   /**
    * @brief Construct a new RPC endpoint
