@@ -3,11 +3,7 @@
 #include <condition_variable>
 #include <mutex>
 
-#include <asio/awaitable.hpp>
-#include <asio/post.hpp>
-#include <asio/steady_timer.hpp>
-#include <asio/strand.hpp>
-#include <asio/use_awaitable.hpp>
+#include <asio.hpp>
 #include <nlohmann/json.hpp>
 
 namespace jsonrpc::endpoint {

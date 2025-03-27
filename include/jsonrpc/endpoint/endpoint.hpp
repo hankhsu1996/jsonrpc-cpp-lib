@@ -7,10 +7,7 @@
 #include <string>
 #include <unordered_map>
 
-#include <asio/awaitable.hpp>
-#include <asio/io_context.hpp>
-#include <asio/steady_timer.hpp>
-#include <asio/strand.hpp>
+#include <asio.hpp>
 #include <nlohmann/json.hpp>
 
 #include "jsonrpc/endpoint/dispatcher.hpp"
