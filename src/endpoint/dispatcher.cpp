@@ -66,8 +66,9 @@ auto Dispatcher::DispatchSingleRequest(nlohmann::json request_json)
     if (it != notification_handlers_.end()) {
       co_spawn(
           executor_,
-          [handler = it->second, params = request.GetParams()]()
-              -> asio::awaitable<void> { return handler(params); },
+          [handler = it->second, params = request.GetParams()] {
+            return handler(params);
+          },
           asio::detached);
     }
     co_return std::nullopt;
@@ -77,8 +78,9 @@ auto Dispatcher::DispatchSingleRequest(nlohmann::json request_json)
   if (it != method_handlers_.end()) {
     auto result = co_await asio::co_spawn(
         executor_,
-        [handler = it->second, params = request.GetParams()]()
-            -> asio::awaitable<nlohmann::json> { return handler(params); },
+        [handler = it->second, params = request.GetParams()] {
+          return handler(params);
+        },
         asio::use_awaitable);
     co_return Response::CreateResult(result, request.GetId()).ToJson();
   }
