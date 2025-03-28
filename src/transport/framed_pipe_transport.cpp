@@ -1,5 +1,7 @@
 #include "jsonrpc/transport/framed_pipe_transport.hpp"
 
+#include <array>
+#include <string_view>
 #include <unistd.h>
 
 #include <spdlog/spdlog.h>
@@ -35,15 +37,15 @@ auto FramedPipeTransport::ReceiveMessage() -> asio::awaitable<std::string> {
     }
 
     // Need more data
-    char buf[4096];
+    std::array<char, 4096> buffer{};
     size_t n = co_await GetSocket().async_read_some(
-        asio::buffer(buf), asio::use_awaitable);
+        asio::buffer(buffer.data(), buffer.size()), asio::use_awaitable);
 
     if (n == 0) {
       throw std::runtime_error("Connection closed by peer");
     }
 
-    read_buffer_.append(buf, n);
+    read_buffer_.append(std::string_view(buffer.data(), n));
   }
 }
 
