@@ -186,33 +186,36 @@ void RpcEndpoint::ReportError(ErrorCode code, const std::string &message) {
 void RpcEndpoint::StartMessageProcessing() {
   asio::co_spawn(
       endpoint_strand_,
-      [this]() -> asio::awaitable<void> { co_await ProcessNextMessage(); },
+      [self = shared_from_this()] { return self->ProcessMessagesLoop(); },
       asio::detached);
 }
 
-auto RpcEndpoint::ProcessNextMessage() -> asio::awaitable<void> {
-  if (!is_running_) {
-    co_return;
-  }
+auto RpcEndpoint::ProcessMessagesLoop() -> asio::awaitable<void> {
+  while (is_running_) {
+    try {
+      // Wait for the next message
+      std::string message = co_await transport_->ReceiveMessage();
 
-  try {
-    // Wait for the next message
-    std::string message = co_await transport_->ReceiveMessage();
+      // Process the message
+      co_await HandleMessage(message);
+    } catch (const std::exception &e) {
+      spdlog::error("Error processing message: {}", e.what());
 
-    // Process the message
-    co_await HandleMessage(message);
+      if (!is_running_) {
+        break;  // Exit loop if we're shutting down
+      }
 
-    // Continue processing
-    asio::co_spawn(
-        endpoint_strand_,
-        [this]() -> asio::awaitable<void> { co_await ProcessNextMessage(); },
-        asio::detached);
-  } catch (const std::exception &e) {
-    spdlog::error("Error processing message: {}", e.what());
+      // We can't use co_await in a catch block, so we need to continue the loop
+      // and do the pause in the next iteration
+      asio::steady_timer retry_timer(executor_, std::chrono::milliseconds(100));
 
-    if (is_running_) {
-      // Retry after a short delay if we're still running
-      ScheduleRetryProcessing();
+      // Use a non-coroutine wait to prevent co_await in catch handler
+      asio::error_code ec;
+      retry_timer.wait(ec);
+
+      if (ec) {
+        spdlog::warn("Error waiting for retry timer: {}", ec.message());
+      }
     }
   }
 }
@@ -285,23 +288,6 @@ auto RpcEndpoint::HandleResponse(Response response) -> asio::awaitable<void> {
   request->SetResult(response.GetJson());
 
   co_return;
-}
-
-void RpcEndpoint::ScheduleRetryProcessing() {
-  spdlog::debug("Scheduling retry for message processing");
-
-  auto executor = asio::get_associated_executor(endpoint_strand_);
-  asio::steady_timer retry_timer(executor);
-  retry_timer.expires_after(std::chrono::milliseconds(100));
-
-  retry_timer.async_wait([this](const asio::error_code &ec) {
-    if (!ec && is_running_) {
-      asio::co_spawn(
-          endpoint_strand_,
-          [this]() -> asio::awaitable<void> { co_await ProcessNextMessage(); },
-          asio::detached);
-    }
-  });
 }
 
 }  // namespace jsonrpc::endpoint

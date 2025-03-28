@@ -238,11 +238,11 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
   void StartMessageProcessing();
 
   /**
-   * @brief Process the next message
+   * @brief Process messages in a continuous loop
    *
    * @return asio::awaitable<void>
    */
-  auto ProcessNextMessage() -> asio::awaitable<void>;
+  auto ProcessMessagesLoop() -> asio::awaitable<void>;
 
   /**
    * @brief Handle a message
@@ -266,11 +266,6 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
   auto GetNextRequestId() -> int64_t {
     return next_request_id_++;
   }
-
-  /**
-   * @brief Schedule a retry for message processing
-   */
-  void ScheduleRetryProcessing();
 
   /// The executor to use for operations
   asio::any_io_executor executor_;
