@@ -9,6 +9,7 @@
 
 #include <asio.hpp>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 
 #include "jsonrpc/endpoint/dispatcher.hpp"
 #include "jsonrpc/endpoint/pending_request.hpp"
@@ -131,6 +132,19 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
       -> asio::awaitable<nlohmann::json>;
 
   /**
+   * @brief Call a method on the remote endpoint with typed params and result
+   *
+   * @tparam ParamsType The type of the parameters
+   * @tparam ResultType The type of the result
+   * @param method The method name
+   * @param params The method parameters
+   * @return asio::awaitable<ResultType> The typed result
+   */
+  template <typename ParamsType, typename ResultType>
+  auto SendMethodCall(std::string method, ParamsType params)
+      -> asio::awaitable<ResultType>;
+
+  /**
    * @brief Send a notification to the remote endpoint
    *
    * @param method The method name
@@ -139,6 +153,18 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
    */
   auto SendNotification(
       std::string method, std::optional<nlohmann::json> params = std::nullopt)
+      -> asio::awaitable<void>;
+
+  /**
+   * @brief Send a notification to the remote endpoint with typed params
+   *
+   * @tparam ParamsType The type of the parameters
+   * @param method The method name
+   * @param params The method parameters
+   * @return asio::awaitable<void>
+   */
+  template <typename ParamsType>
+  auto SendNotification(std::string method, ParamsType params)
       -> asio::awaitable<void>;
 
   /**
@@ -168,7 +194,7 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
    * @param handler The handler
    */
   template <typename ParamsType, typename ResultType>
-  void RegisterTypedMethodCall(
+  void RegisterMethodCall(
       std::string method,
       std::function<asio::awaitable<ResultType>(ParamsType)> handler);
 
@@ -180,7 +206,7 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
    * @param handler The handler
    */
   template <typename ParamsType>
-  void RegisterTypedNotification(
+  void RegisterNotification(
       std::string method,
       std::function<asio::awaitable<void>(ParamsType)> handler);
 
@@ -205,31 +231,6 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
    * @param message The error message
    */
   void ReportError(ErrorCode code, const std::string &message);
-
-  /**
-   * @brief Call a method on the remote endpoint with typed params and result
-   *
-   * @tparam ParamsType The type of the parameters
-   * @tparam ResultType The type of the result
-   * @param method The method name
-   * @param params The method parameters
-   * @return asio::awaitable<ResultType> The typed result
-   */
-  template <typename ParamsType, typename ResultType>
-  auto SendMethodCall(std::string method, ParamsType params)
-      -> asio::awaitable<ResultType>;
-
-  /**
-   * @brief Send a notification to the remote endpoint with typed params
-   *
-   * @tparam ParamsType The type of the parameters
-   * @param method The method name
-   * @param params The method parameters
-   * @return asio::awaitable<void>
-   */
-  template <typename ParamsType>
-  auto SendTypedNotification(std::string method, ParamsType params)
-      -> asio::awaitable<void>;
 
  private:
   /**
@@ -316,11 +317,23 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
 }
 
 template <typename ParamsType>
-auto RpcEndpoint::SendTypedNotification(std::string method, ParamsType params)
+auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
     -> asio::awaitable<void> {
-  // Convert typed params to JSON and send
-  nlohmann::json json_params = params;
-  co_await SendNotification(method, json_params);
+  try {
+    // Convert typed params to JSON and send
+    nlohmann::json json_params = params;
+    co_await SendNotification(method, json_params);
+  } catch (const nlohmann::json::exception &ex) {
+    // Log the error but don't propagate it (notifications are
+    // fire-and-forget)
+    spdlog::error(
+        "Failed to convert parameters for notification method '{}': {}", method,
+        ex.what());
+  } catch (const std::exception &ex) {
+    // Log any other errors that might occur
+    spdlog::error(
+        "Unexpected error in notification method '{}': {}", method, ex.what());
+  }
 }
 
 // Create a standalone coroutine function outside the RegisterTypedMethodCall
@@ -385,7 +398,7 @@ auto TypedNotificationWrapper(
 }
 
 template <typename ParamsType, typename ResultType>
-void RpcEndpoint::RegisterTypedMethodCall(
+void RpcEndpoint::RegisterMethodCall(
     std::string method,
     std::function<asio::awaitable<ResultType>(ParamsType)> handler) {
   RegisterMethodCall(
@@ -393,7 +406,7 @@ void RpcEndpoint::RegisterTypedMethodCall(
 }
 
 template <typename ParamsType>
-void RpcEndpoint::RegisterTypedNotification(
+void RpcEndpoint::RegisterNotification(
     std::string method,
     std::function<asio::awaitable<void>(ParamsType)> handler) {
   RegisterNotification(method, TypedNotificationWrapper<ParamsType>(handler));
