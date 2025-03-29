@@ -136,50 +136,52 @@ using jsonrpc::transport::PipeTransport;
 using Json = nlohmann::json;
 
 // Calculator functions
-auto Add(const std::optional<Json>& params) -> asio::awaitable<Json> {
-  const auto& p = params.value_or(Json::object());
-  double a = p["a"];
-  double b = p["b"];
+auto Add(std::optional<Json> params) -> asio::awaitable<Json> {
+  double a = params.value()["a"];
+  double b = params.value()["b"];
   co_return Json{{"result", a + b}};
 }
 
-// Main server function
-auto RunServer(asio::io_context& io_context, const std::string& socket_path)
+auto RunServer(asio::any_io_executor executor, std::string socket_path)
     -> asio::awaitable<void> {
-  // Create transport and RPC endpoint
-  auto transport = std::make_unique<PipeTransport>(io_context, socket_path, true);
-  RpcEndpoint server(io_context, std::move(transport));
+  // Create transport and endpoint
+  auto transport = std::make_unique<PipeTransport>(executor, socket_path, true);
+  auto server = std::make_shared<RpcEndpoint>(executor, std::move(transport));
 
   // Register methods
-  server.RegisterMethodCall("add", Add);
+  server->RegisterMethodCall("add", Add);
 
   // Register shutdown notification
-  server.RegisterNotification(
-    "stop", [&server](const std::optional<Json>&) -> asio::awaitable<void> {
-      co_await server.Shutdown();
-      co_return;
-    });
+  server->RegisterNotification(
+      "stop",
+      [server](std::optional<Json>) -> asio::awaitable<void> {
+        co_await server->Shutdown();
+        co_return;
+      });
 
   // Start server and wait for shutdown
-  co_await server.Start();
-  co_await server.WaitForShutdown();
+  co_await server->Start();
+  co_await server->WaitForShutdown();
   co_return;
 }
 
 int main() {
   asio::io_context io_context;
+  auto executor = io_context.get_executor();
   const std::string socket_path = "/tmp/calculator_pipe";
 
-  // Run server
-  asio::co_spawn(io_context, RunServer(io_context, socket_path),
-    [](std::exception_ptr e) {
-      if (e) {
-        try { std::rethrow_exception(e); }
-        catch (const std::exception& ex) {
-          std::cerr << "Error: " << ex.what() << std::endl;
+  // Run server with error handling
+  asio::co_spawn(
+      executor,
+      RunServer(executor, socket_path),
+      [](std::exception_ptr e) {
+        if (e) {
+          try { std::rethrow_exception(e); }
+          catch (const std::exception& ex) {
+            std::cerr << "Error: " << ex.what() << std::endl;
+          }
         }
-      }
-    });
+      });
 
   io_context.run();
   return 0;
@@ -199,11 +201,13 @@ using jsonrpc::transport::PipeTransport;
 using Json = nlohmann::json;
 
 // Main client function
-auto RunClient(asio::io_context& io_context) -> asio::awaitable<void> {
+auto RunClient(asio::any_io_executor executor) -> asio::awaitable<void> {
   // Create transport and RPC client
   const std::string socket_path = "/tmp/calculator_pipe";
-  auto transport = std::make_unique<PipeTransport>(io_context, socket_path);
-  auto client = co_await RpcEndpoint::CreateClient(io_context, std::move(transport));
+  auto transport = std::make_unique<PipeTransport>(executor, socket_path);
+
+  // Create and initialize client
+  auto client = co_await RpcEndpoint::CreateClient(executor, std::move(transport));
 
   // Call "add" method
   Json params = {{"a", 10}, {"b", 5}};
@@ -220,17 +224,20 @@ auto RunClient(asio::io_context& io_context) -> asio::awaitable<void> {
 
 int main() {
   asio::io_context io_context;
+  auto executor = io_context.get_executor();
 
-  // Run client
-  asio::co_spawn(io_context, RunClient(io_context),
-    [](std::exception_ptr e) {
-      if (e) {
-        try { std::rethrow_exception(e); }
-        catch (const std::exception& ex) {
-          std::cerr << "Error: " << ex.what() << std::endl;
+  // Run client with error handling
+  asio::co_spawn(
+      executor,
+      RunClient(executor),
+      [](std::exception_ptr e) {
+        if (e) {
+          try { std::rethrow_exception(e); }
+          catch (const std::exception& ex) {
+            std::cerr << "Error: " << ex.what() << std::endl;
+          }
         }
-      }
-    });
+      });
 
   io_context.run();
   return 0;
