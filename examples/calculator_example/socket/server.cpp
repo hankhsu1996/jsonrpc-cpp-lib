@@ -40,9 +40,8 @@ auto RunServer(asio::any_io_executor executor, std::string host, int port)
   server->RegisterMethodCall("divide", Calculator::Divide);
 
   // Step 4: Register stop notification
-  server->RegisterNotification("stop", [server](std::optional<Json>) {
-    return HandleStop(server);
-  });
+  server->RegisterNotification(
+      "stop", [server](std::optional<Json>) { return HandleStop(server); });
 
   // Step 5: Start server
   co_await server->Start();

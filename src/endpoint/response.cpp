@@ -18,8 +18,8 @@ auto Response::FromJson(const nlohmann::json& json) -> Response {
 }
 
 auto Response::CreateResult(
-    const nlohmann::json& result,
-    const std::optional<RequestId>& id) -> Response {
+    const nlohmann::json& result, const std::optional<RequestId>& id)
+    -> Response {
   nlohmann::json response = {{"jsonrpc", "2.0"}, {"result", result}};
   if (id) {
     std::visit([&response](const auto& v) { response["id"] = v; }, *id);
@@ -61,8 +61,8 @@ auto Response::CreateLibError(
 }
 
 auto Response::CreateUserError(
-    const nlohmann::json& error,
-    const std::optional<RequestId>& id) -> Response {
+    const nlohmann::json& error, const std::optional<RequestId>& id)
+    -> Response {
   nlohmann::json response = {{"jsonrpc", "2.0"}, {"error", error}};
   if (id) {
     std::visit([&response](const auto& v) { response["id"] = v; }, *id);
@@ -109,8 +109,8 @@ auto Response::ToStr() const -> std::string {
 }
 
 auto Response::CreateErrorResponse(
-    const std::string& message, int code,
-    const std::optional<RequestId>& id) -> nlohmann::json {
+    const std::string& message, int code, const std::optional<RequestId>& id)
+    -> nlohmann::json {
   nlohmann::json error = {{"code", code}, {"message", message}};
   nlohmann::json response = {{"jsonrpc", "2.0"}, {"error", error}};
   if (id) {

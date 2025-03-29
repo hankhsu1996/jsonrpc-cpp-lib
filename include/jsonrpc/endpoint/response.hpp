@@ -55,8 +55,8 @@ class Response {
    * @return A Response object indicating success.
    */
   static auto CreateResult(
-      const nlohmann::json& result,
-      const std::optional<RequestId>& id) -> Response;
+      const nlohmann::json& result, const std::optional<RequestId>& id)
+      -> Response;
 
   /**
    * @brief Creates a Response object for a library error.
@@ -65,8 +65,8 @@ class Response {
    * @return A Response object indicating a library error.
    */
   static auto CreateLibError(
-      ErrorCode error_code,
-      const std::optional<RequestId>& id = std::nullopt) -> Response;
+      ErrorCode error_code, const std::optional<RequestId>& id = std::nullopt)
+      -> Response;
 
   /**
    * @brief Creates a Response object for a user error.
@@ -75,8 +75,8 @@ class Response {
    * @return A Response object indicating a user error.
    */
   static auto CreateUserError(
-      const nlohmann::json& error,
-      const std::optional<RequestId>& id) -> Response;
+      const nlohmann::json& error, const std::optional<RequestId>& id)
+      -> Response;
 
   /// @brief Checks if the response indicates success.
   [[nodiscard]] auto IsSuccess() const -> bool;
@@ -122,8 +122,8 @@ class Response {
    * @return The JSON representation of the error response.
    */
   static auto CreateErrorResponse(
-      const std::string& message, int code,
-      const std::optional<RequestId>& id) -> nlohmann::json;
+      const std::string& message, int code, const std::optional<RequestId>& id)
+      -> nlohmann::json;
 
   /// @brief The JSON object representing the response.
   nlohmann::json response_;

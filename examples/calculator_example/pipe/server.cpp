@@ -18,7 +18,8 @@ using Json = nlohmann::json;
  * applications might benefit from helper functions to reduce boilerplate.
  */
 
-auto HandleStop(std::shared_ptr<RpcEndpoint> endpoint) -> asio::awaitable<void> {
+auto HandleStop(std::shared_ptr<RpcEndpoint> endpoint)
+    -> asio::awaitable<void> {
   if (endpoint) {
     co_await endpoint->Shutdown();
   }
