@@ -8,7 +8,8 @@ var annotated_dup =
         [ "Response", "classjsonrpc_1_1endpoint_1_1Response.html", "classjsonrpc_1_1endpoint_1_1Response" ],
         [ "RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html", "classjsonrpc_1_1endpoint_1_1RpcEndpoint" ],
         [ "RpcError", "classjsonrpc_1_1endpoint_1_1RpcError.html", "classjsonrpc_1_1endpoint_1_1RpcError" ],
-        [ "TaskExecutor", "classjsonrpc_1_1endpoint_1_1TaskExecutor.html", "classjsonrpc_1_1endpoint_1_1TaskExecutor" ]
+        [ "TypedMethodHandler", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler" ],
+        [ "TypedNotificationHandler", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler" ]
       ] ],
       [ "transport", "namespacejsonrpc_1_1transport.html", [
         [ "FramedPipeTransport", "classjsonrpc_1_1transport_1_1FramedPipeTransport.html", "classjsonrpc_1_1transport_1_1FramedPipeTransport" ],

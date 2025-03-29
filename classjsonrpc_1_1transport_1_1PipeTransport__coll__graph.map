@@ -1,5 +1,5 @@
 <map id="jsonrpc::transport::PipeTransport" name="jsonrpc::transport::PipeTransport">
-<area shape="rect" id="Node000001" title="Unix domain socket transport implementation." alt="" coords="5,393,216,753"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations." alt="" coords="36,5,185,345"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,359,113,393,108,393,108,359"/>
+<area shape="rect" id="Node000001" title="Unix domain socket transport implementation." alt="" coords="5,373,216,733"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations." alt="" coords="36,5,185,325"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,339,113,373,108,373,108,339"/>
 </map>

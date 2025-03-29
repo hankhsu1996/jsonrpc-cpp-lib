@@ -132,7 +132,7 @@ Getting Started</h1>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Prerequisites</h2>
 <ul>
-<li><b>Compiler</b>: Any compiler with C++20 support.</li>
+<li><b>Compiler</b>: Any compiler with C++23 support.</li>
 <li><b>Build System</b>: Either Bazel 7.0+ (preferred) or CMake 3.19+ (alternative).</li>
 <li><b>Optional</b>: Conan 2.0+ for dependency management with CMake.</li>
 </ul>
@@ -221,55 +221,57 @@ Creating a JSON-RPC Client and Server</h2>
 <div class="line"><span class="keyword">using </span>Json = nlohmann::json;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Calculator functions</span></div>
-<div class="line"><span class="keyword">auto</span> Add(<span class="keyword">const</span> std::optional&lt;Json&gt;&amp; params) -&gt; asio::awaitable&lt;Json&gt; {</div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; p = params.value_or(Json::object());</div>
-<div class="line">  <span class="keywordtype">double</span> a = p[<span class="stringliteral">&quot;a&quot;</span>];</div>
-<div class="line">  <span class="keywordtype">double</span> b = p[<span class="stringliteral">&quot;b&quot;</span>];</div>
+<div class="line"><span class="keyword">auto</span> Add(std::optional&lt;Json&gt; params) -&gt; asio::awaitable&lt;Json&gt; {</div>
+<div class="line">  <span class="keywordtype">double</span> a = params.value()[<span class="stringliteral">&quot;a&quot;</span>];</div>
+<div class="line">  <span class="keywordtype">double</span> b = params.value()[<span class="stringliteral">&quot;b&quot;</span>];</div>
 <div class="line">  <span class="keyword">co_return</span> Json{{<span class="stringliteral">&quot;result&quot;</span>, a + b}};</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Main server function</span></div>
-<div class="line"><span class="keyword">auto</span> RunServer(asio::io_context&amp; io_context, <span class="keyword">const</span> std::string&amp; socket_path)</div>
+<div class="line"><span class="keyword">auto</span> RunServer(asio::any_io_executor executor, std::string socket_path)</div>
 <div class="line">    -&gt; asio::awaitable&lt;void&gt; {</div>
-<div class="line">  <span class="comment">// Create transport and RPC endpoint</span></div>
-<div class="line">  <span class="keyword">auto</span> transport = std::make_unique&lt;PipeTransport&gt;(io_context, socket_path, <span class="keyword">true</span>);</div>
-<div class="line">  RpcEndpoint server(io_context, std::move(transport));</div>
+<div class="line">  <span class="comment">// Create transport and endpoint</span></div>
+<div class="line">  <span class="keyword">auto</span> transport = std::make_unique&lt;PipeTransport&gt;(executor, socket_path, <span class="keyword">true</span>);</div>
+<div class="line">  <span class="keyword">auto</span> server = std::make_shared&lt;RpcEndpoint&gt;(executor, std::move(transport));</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Register methods</span></div>
-<div class="line">  server.RegisterMethodCall(<span class="stringliteral">&quot;add&quot;</span>, Add);</div>
+<div class="line">  server-&gt;RegisterMethodCall(<span class="stringliteral">&quot;add&quot;</span>, Add);</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Register shutdown notification</span></div>
-<div class="line">  server.RegisterNotification(</div>
-<div class="line">    <span class="stringliteral">&quot;stop&quot;</span>, [&amp;server](<span class="keyword">const</span> std::optional&lt;Json&gt;&amp;) -&gt; asio::awaitable&lt;void&gt; {</div>
-<div class="line">      <span class="keyword">co_await</span> server.Shutdown();</div>
-<div class="line">      <span class="keyword">co_return</span>;</div>
-<div class="line">    });</div>
+<div class="line">  server-&gt;RegisterNotification(</div>
+<div class="line">      <span class="stringliteral">&quot;stop&quot;</span>,</div>
+<div class="line">      [server](std::optional&lt;Json&gt;) -&gt; asio::awaitable&lt;void&gt; {</div>
+<div class="line">        <span class="keyword">co_await</span> server-&gt;Shutdown();</div>
+<div class="line">        <span class="keyword">co_return</span>;</div>
+<div class="line">      });</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Start server and wait for shutdown</span></div>
-<div class="line">  <span class="keyword">co_await</span> server.Start();</div>
-<div class="line">  <span class="keyword">co_await</span> server.WaitForShutdown();</div>
+<div class="line">  <span class="keyword">co_await</span> server-&gt;Start();</div>
+<div class="line">  <span class="keyword">co_await</span> server-&gt;WaitForShutdown();</div>
 <div class="line">  <span class="keyword">co_return</span>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
 <div class="line">  asio::io_context io_context;</div>
+<div class="line">  <span class="keyword">auto</span> executor = io_context.get_executor();</div>
 <div class="line">  <span class="keyword">const</span> std::string socket_path = <span class="stringliteral">&quot;/tmp/calculator_pipe&quot;</span>;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Run server</span></div>
-<div class="line">  asio::co_spawn(io_context, RunServer(io_context, socket_path),</div>
-<div class="line">    [](std::exception_ptr e) {</div>
-<div class="line">      <span class="keywordflow">if</span> (e) {</div>
-<div class="line">        <span class="keywordflow">try</span> { std::rethrow_exception(e); }</div>
-<div class="line">        <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex) {</div>
-<div class="line">          std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: &quot;</span> &lt;&lt; ex.what() &lt;&lt; std::endl;</div>
+<div class="line">  <span class="comment">// Run server with error handling</span></div>
+<div class="line">  asio::co_spawn(</div>
+<div class="line">      executor,</div>
+<div class="line">      RunServer(executor, socket_path),</div>
+<div class="line">      [](std::exception_ptr e) {</div>
+<div class="line">        <span class="keywordflow">if</span> (e) {</div>
+<div class="line">          <span class="keywordflow">try</span> { std::rethrow_exception(e); }</div>
+<div class="line">          <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex) {</div>
+<div class="line">            std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: &quot;</span> &lt;&lt; ex.what() &lt;&lt; std::endl;</div>
+<div class="line">          }</div>
 <div class="line">        }</div>
-<div class="line">      }</div>
-<div class="line">    });</div>
+<div class="line">      });</div>
 <div class="line"> </div>
 <div class="line">  io_context.run();</div>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">jsonrpc::endpoint::RpcEndpoint</a></div><div class="ttdoc">RPC endpoint for sending and receiving JSON-RPC messages.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8hpp_source.html#l00034">endpoint.hpp:34</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">jsonrpc::endpoint::RpcEndpoint</a></div><div class="ttdoc">RPC endpoint for sending and receiving JSON-RPC messages.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8hpp_source.html#l00032">endpoint.hpp:32</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1PipeTransport_html"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1PipeTransport.html">jsonrpc::transport::PipeTransport</a></div><div class="ttdoc">Unix domain socket transport implementation.</div><div class="ttdef"><b>Definition</b> <a href="pipe__transport_8hpp_source.html#l00019">pipe_transport.hpp:19</a></div></div>
 <div class="ttc" id="aendpoint_8hpp_html"><div class="ttname"><a href="endpoint_8hpp.html">endpoint.hpp</a></div></div>
 <div class="ttc" id="apipe__transport_8hpp_html"><div class="ttname"><a href="pipe__transport_8hpp.html">pipe_transport.hpp</a></div></div>
@@ -284,15 +286,17 @@ Creating a JSON-RPC Client and Server</h2>
 <div class="line"><span class="keyword">using </span>Json = nlohmann::json;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Main client function</span></div>
-<div class="line"><span class="keyword">auto</span> RunClient(asio::io_context&amp; io_context) -&gt; asio::awaitable&lt;void&gt; {</div>
+<div class="line"><span class="keyword">auto</span> RunClient(asio::any_io_executor executor) -&gt; asio::awaitable&lt;void&gt; {</div>
 <div class="line">  <span class="comment">// Create transport and RPC client</span></div>
 <div class="line">  <span class="keyword">const</span> std::string socket_path = <span class="stringliteral">&quot;/tmp/calculator_pipe&quot;</span>;</div>
-<div class="line">  <span class="keyword">auto</span> transport = std::make_unique&lt;PipeTransport&gt;(io_context, socket_path);</div>
-<div class="line">  <span class="keyword">auto</span> client = <span class="keyword">co_await</span> RpcEndpoint::CreateClient(io_context, std::move(transport));</div>
+<div class="line">  <span class="keyword">auto</span> transport = std::make_unique&lt;PipeTransport&gt;(executor, socket_path);</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Create and initialize client</span></div>
+<div class="line">  <span class="keyword">auto</span> client = <span class="keyword">co_await</span> RpcEndpoint::CreateClient(executor, std::move(transport));</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Call &quot;add&quot; method</span></div>
 <div class="line">  Json params = {{<span class="stringliteral">&quot;a&quot;</span>, 10}, {<span class="stringliteral">&quot;b&quot;</span>, 5}};</div>
-<div class="line">  Json result = <span class="keyword">co_await</span> client-&gt;CallMethod(<span class="stringliteral">&quot;add&quot;</span>, params);</div>
+<div class="line">  Json result = <span class="keyword">co_await</span> client-&gt;SendMethodCall(<span class="stringliteral">&quot;add&quot;</span>, params);</div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Result: &quot;</span> &lt;&lt; result.dump() &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Send shutdown notification</span></div>
@@ -305,17 +309,20 @@ Creating a JSON-RPC Client and Server</h2>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
 <div class="line">  asio::io_context io_context;</div>
+<div class="line">  <span class="keyword">auto</span> executor = io_context.get_executor();</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Run client</span></div>
-<div class="line">  asio::co_spawn(io_context, RunClient(io_context),</div>
-<div class="line">    [](std::exception_ptr e) {</div>
-<div class="line">      <span class="keywordflow">if</span> (e) {</div>
-<div class="line">        <span class="keywordflow">try</span> { std::rethrow_exception(e); }</div>
-<div class="line">        <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex) {</div>
-<div class="line">          std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: &quot;</span> &lt;&lt; ex.what() &lt;&lt; std::endl;</div>
+<div class="line">  <span class="comment">// Run client with error handling</span></div>
+<div class="line">  asio::co_spawn(</div>
+<div class="line">      executor,</div>
+<div class="line">      RunClient(executor),</div>
+<div class="line">      [](std::exception_ptr e) {</div>
+<div class="line">        <span class="keywordflow">if</span> (e) {</div>
+<div class="line">          <span class="keywordflow">try</span> { std::rethrow_exception(e); }</div>
+<div class="line">          <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex) {</div>
+<div class="line">            std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: &quot;</span> &lt;&lt; ex.what() &lt;&lt; std::endl;</div>
+<div class="line">          }</div>
 <div class="line">        }</div>
-<div class="line">      }</div>
-<div class="line">    });</div>
+<div class="line">      });</div>
 <div class="line"> </div>
 <div class="line">  io_context.run();</div>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>

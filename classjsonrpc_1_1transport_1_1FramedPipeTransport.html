@@ -126,29 +126,29 @@ $(function(){initNavTree('classjsonrpc_1_1transport_1_1FramedPipeTransport.html'
 <div class="dynheader">
 Inheritance diagram for jsonrpc::transport::FramedPipeTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1FramedPipeTransport__inherit__graph.svg" width="222" height="927"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1FramedPipeTransport__inherit__graph.svg" width="222" height="907"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for jsonrpc::transport::FramedPipeTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1FramedPipeTransport__coll__graph.svg" width="222" height="927"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1FramedPipeTransport__coll__graph.svg" width="222" height="907"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a82b55ba871a8da2af1af6b4154af7dc9" id="r_a82b55ba871a8da2af1af6b4154af7dc9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82b55ba871a8da2af1af6b4154af7dc9">FramedPipeTransport</a> (asio::io_context &amp;io_context, const std::string &amp;socket_path, bool is_server)</td></tr>
-<tr class="memdesc:a82b55ba871a8da2af1af6b4154af7dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html" title="Transport layer using Asio Unix domain sockets for JSON-RPC communication with framing.">FramedPipeTransport</a>.  <br /></td></tr>
-<tr class="separator:a82b55ba871a8da2af1af6b4154af7dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ed894042c0fd33553cb8e5bfdea94f7" id="r_a6ed894042c0fd33553cb8e5bfdea94f7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ed894042c0fd33553cb8e5bfdea94f7">SendMessage</a> (const std::string &amp;message) -&gt; asio::awaitable&lt; void &gt; override</td></tr>
-<tr class="memdesc:a6ed894042c0fd33553cb8e5bfdea94f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message over the transport.  <br /></td></tr>
-<tr class="separator:a6ed894042c0fd33553cb8e5bfdea94f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf3b76d5f89755f1c879e0f892d0edc4" id="r_abf3b76d5f89755f1c879e0f892d0edc4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf3b76d5f89755f1c879e0f892d0edc4">FramedPipeTransport</a> (asio::any_io_executor executor, const std::string &amp;socket_path, bool is_server)</td></tr>
+<tr class="memdesc:abf3b76d5f89755f1c879e0f892d0edc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html" title="Transport layer using Asio Unix domain sockets for JSON-RPC communication with framing.">FramedPipeTransport</a>.  <br /></td></tr>
+<tr class="separator:abf3b76d5f89755f1c879e0f892d0edc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a773d5b4aff1f58442d3d3560ba526878" id="r_a773d5b4aff1f58442d3d3560ba526878"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a773d5b4aff1f58442d3d3560ba526878">SendMessage</a> (std::string message) -&gt; asio::awaitable&lt; void &gt; override</td></tr>
+<tr class="memdesc:a773d5b4aff1f58442d3d3560ba526878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message over the transport.  <br /></td></tr>
+<tr class="separator:a773d5b4aff1f58442d3d3560ba526878"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34c6a47bae346443e6a798fc2d4d248d" id="r_a34c6a47bae346443e6a798fc2d4d248d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34c6a47bae346443e6a798fc2d4d248d">ReceiveMessage</a> () -&gt; asio::awaitable&lt; std::string &gt; override</td></tr>
 <tr class="memdesc:a34c6a47bae346443e6a798fc2d4d248d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives a message over the transport.  <br /></td></tr>
 <tr class="separator:a34c6a47bae346443e6a798fc2d4d248d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classjsonrpc_1_1transport_1_1PipeTransport')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html">jsonrpc::transport::PipeTransport</a></td></tr>
-<tr class="memitem:acb4601573b2aa5d824f7d5cc1af699fd inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport" id="r_acb4601573b2aa5d824f7d5cc1af699fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#acb4601573b2aa5d824f7d5cc1af699fd">PipeTransport</a> (asio::io_context &amp;io_context, std::string socket_path, bool is_server=false)</td></tr>
-<tr class="memdesc:acb4601573b2aa5d824f7d5cc1af699fd inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new Pipe <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> object.  <br /></td></tr>
-<tr class="separator:acb4601573b2aa5d824f7d5cc1af699fd inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6a9a96b2b4c3e9dbee6f49cbf752235 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport" id="r_ae6a9a96b2b4c3e9dbee6f49cbf752235"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#ae6a9a96b2b4c3e9dbee6f49cbf752235">PipeTransport</a> (asio::any_io_executor executor, std::string socket_path, bool is_server=false)</td></tr>
+<tr class="memdesc:ae6a9a96b2b4c3e9dbee6f49cbf752235 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new Pipe <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> object.  <br /></td></tr>
+<tr class="separator:ae6a9a96b2b4c3e9dbee6f49cbf752235 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad64f2634a0b5bf9865b9ba8818531ef3 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport" id="r_ad64f2634a0b5bf9865b9ba8818531ef3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#ad64f2634a0b5bf9865b9ba8818531ef3">~PipeTransport</a> () override</td></tr>
 <tr class="memdesc:ad64f2634a0b5bf9865b9ba8818531ef3 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the Pipe <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> object.  <br /></td></tr>
 <tr class="separator:ad64f2634a0b5bf9865b9ba8818531ef3 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,9 +166,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ca7aaf862b618fffa434c7471ec028d inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport" id="r_a5ca7aaf862b618fffa434c7471ec028d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a5ca7aaf862b618fffa434c7471ec028d">Start</a> () -&gt; asio::awaitable&lt; void &gt; override</td></tr>
 <tr class="memdesc:a5ca7aaf862b618fffa434c7471ec028d inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the transport.  <br /></td></tr>
 <tr class="separator:a5ca7aaf862b618fffa434c7471ec028d inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d0d6aac5effe199fd14dba63d68f924 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport" id="r_a6d0d6aac5effe199fd14dba63d68f924"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a6d0d6aac5effe199fd14dba63d68f924">SendMessage</a> (const std::string &amp;message) -&gt; asio::awaitable&lt; void &gt; override</td></tr>
-<tr class="memdesc:a6d0d6aac5effe199fd14dba63d68f924 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message over the transport.  <br /></td></tr>
-<tr class="separator:a6d0d6aac5effe199fd14dba63d68f924 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ea326f739f407b8ae726740663906a inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport" id="r_a66ea326f739f407b8ae726740663906a"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a66ea326f739f407b8ae726740663906a">SendMessage</a> (std::string message) -&gt; asio::awaitable&lt; void &gt; override</td></tr>
+<tr class="memdesc:a66ea326f739f407b8ae726740663906a inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message over the transport.  <br /></td></tr>
+<tr class="separator:a66ea326f739f407b8ae726740663906a inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c09feceef8396690ab911e6b2f768a9 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport" id="r_a4c09feceef8396690ab911e6b2f768a9"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a4c09feceef8396690ab911e6b2f768a9">ReceiveMessage</a> () -&gt; asio::awaitable&lt; std::string &gt; override</td></tr>
 <tr class="memdesc:a4c09feceef8396690ab911e6b2f768a9 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives a message over the transport.  <br /></td></tr>
 <tr class="separator:a4c09feceef8396690ab911e6b2f768a9 inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,9 +179,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af36e8c630d21cbd56133464d6e79b10a inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the transport synchronously.  <br /></td></tr>
 <tr class="separator:af36e8c630d21cbd56133464d6e79b10a inherit pub_methods_classjsonrpc_1_1transport_1_1PipeTransport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classjsonrpc_1_1transport_1_1Transport"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classjsonrpc_1_1transport_1_1Transport')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">jsonrpc::transport::Transport</a></td></tr>
-<tr class="memitem:a49cc017de20720650e8252cfb6bd534c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a49cc017de20720650e8252cfb6bd534c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a49cc017de20720650e8252cfb6bd534c">Transport</a> (asio::io_context &amp;io_context)</td></tr>
-<tr class="memdesc:a49cc017de20720650e8252cfb6bd534c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> with the given io_context.  <br /></td></tr>
-<tr class="separator:a49cc017de20720650e8252cfb6bd534c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abda99f896775ef93e40e81bc55e74923 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_abda99f896775ef93e40e81bc55e74923"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#abda99f896775ef93e40e81bc55e74923">Transport</a> (asio::any_io_executor executor)</td></tr>
+<tr class="memdesc:abda99f896775ef93e40e81bc55e74923 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html" title="Abstract base class for all transport implementations.">Transport</a> with the given executor.  <br /></td></tr>
+<tr class="separator:abda99f896775ef93e40e81bc55e74923 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92e283464e36b663c8acebdb831c3e02 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a92e283464e36b663c8acebdb831c3e02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a92e283464e36b663c8acebdb831c3e02">Transport</a> (const <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;)=delete</td></tr>
 <tr class="separator:a92e283464e36b663c8acebdb831c3e02 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9abc84d6799e166a165e6493dc50a31c inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a9abc84d6799e166a165e6493dc50a31c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a9abc84d6799e166a165e6493dc50a31c">Transport</a> (<a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;&amp;)=delete</td></tr>
@@ -193,14 +193,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a41ecc943dcac4073f965983859f48f2a inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a41ecc943dcac4073f965983859f48f2a"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a41ecc943dcac4073f965983859f48f2a">~Transport</a> ()=default</td></tr>
 <tr class="separator:a41ecc943dcac4073f965983859f48f2a inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa05650e34376a1750716f0865b0c3bd2 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_aa05650e34376a1750716f0865b0c3bd2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#aa05650e34376a1750716f0865b0c3bd2">GetExecutor</a> () const -&gt; asio::any_io_executor</td></tr>
-<tr class="memdesc:aa05650e34376a1750716f0865b0c3bd2 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the executor from the io_context.  <br /></td></tr>
+<tr class="memdesc:aa05650e34376a1750716f0865b0c3bd2 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the executor for this transport.  <br /></td></tr>
 <tr class="separator:aa05650e34376a1750716f0865b0c3bd2 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a149e6eea070a77bb785d2d0476f927f0 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a149e6eea070a77bb785d2d0476f927f0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a149e6eea070a77bb785d2d0476f927f0">GetIoContext</a> () -&gt; asio::io_context &amp;</td></tr>
-<tr class="memdesc:a149e6eea070a77bb785d2d0476f927f0 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the IO context directly.  <br /></td></tr>
-<tr class="separator:a149e6eea070a77bb785d2d0476f927f0 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a741f42264ef5595a1fab8d9a0f00c472 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_a741f42264ef5595a1fab8d9a0f00c472"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a741f42264ef5595a1fab8d9a0f00c472">GetStrand</a> () -&gt; asio::strand&lt; asio::io_context::executor_type &gt; &amp;</td></tr>
-<tr class="memdesc:a741f42264ef5595a1fab8d9a0f00c472 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the strand used for synchronization.  <br /></td></tr>
-<tr class="separator:a741f42264ef5595a1fab8d9a0f00c472 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecdcca9a3679d5b5b6be318beeeae100 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport" id="r_aecdcca9a3679d5b5b6be318beeeae100"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#aecdcca9a3679d5b5b6be318beeeae100">GetStrand</a> () -&gt; asio::strand&lt; asio::any_io_executor &gt; &amp;</td></tr>
+<tr class="memdesc:aecdcca9a3679d5b5b6be318beeeae100 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the strand used for synchronization.  <br /></td></tr>
+<tr class="separator:aecdcca9a3679d5b5b6be318beeeae100 inherit pub_methods_classjsonrpc_1_1transport_1_1Transport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -220,8 +217,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="framed__pipe__transport_8hpp_source.html#l00016">16</a> of file <a class="el" href="framed__pipe__transport_8hpp_source.html">framed_pipe_transport.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a82b55ba871a8da2af1af6b4154af7dc9" name="a82b55ba871a8da2af1af6b4154af7dc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82b55ba871a8da2af1af6b4154af7dc9">&#9670;&#160;</a></span>FramedPipeTransport()</h2>
+<a id="abf3b76d5f89755f1c879e0f892d0edc4" name="abf3b76d5f89755f1c879e0f892d0edc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf3b76d5f89755f1c879e0f892d0edc4">&#9670;&#160;</a></span>FramedPipeTransport()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,7 +226,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">jsonrpc::transport::FramedPipeTransport::FramedPipeTransport </td>
           <td>(</td>
-          <td class="paramtype">asio::io_context &amp;</td>          <td class="paramname"><span class="paramname"><em>io_context</em></span>, </td>
+          <td class="paramtype">asio::any_io_executor</td>          <td class="paramname"><span class="paramname"><em>executor</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -247,17 +244,17 @@ Additional Inherited Members</h2></td></tr>
 <p>Constructs a <a class="el" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html" title="Transport layer using Asio Unix domain sockets for JSON-RPC communication with framing.">FramedPipeTransport</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">io_context</td><td>The io_context to use for async operations. </td></tr>
+    <tr><td class="paramname">executor</td><td>The executor to use for async operations. </td></tr>
     <tr><td class="paramname">socket_path</td><td>The path to the Unix domain socket. </td></tr>
     <tr><td class="paramname">is_server</td><td>True if the transport acts as a server; false if it acts as a client. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="framed__pipe__transport_8cpp_source.html#l00009">9</a> of file <a class="el" href="framed__pipe__transport_8cpp_source.html">framed_pipe_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   12</span>    : <a class="code hl_function" href="classjsonrpc_1_1transport_1_1PipeTransport.html#acb4601573b2aa5d824f7d5cc1af699fd">PipeTransport</a>(io_context, socket_path, is_server) {</div>
-<div class="line"><span class="lineno">   13</span>}</div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1PipeTransport_html_acb4601573b2aa5d824f7d5cc1af699fd"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1PipeTransport.html#acb4601573b2aa5d824f7d5cc1af699fd">jsonrpc::transport::PipeTransport::PipeTransport</a></div><div class="ttdeci">PipeTransport(asio::io_context &amp;io_context, std::string socket_path, bool is_server=false)</div><div class="ttdoc">Constructs a new Pipe Transport object.</div><div class="ttdef"><b>Definition</b> <a href="pipe__transport_8cpp_source.html#l00013">pipe_transport.cpp:13</a></div></div>
+<p class="definition">Definition at line <a class="el" href="framed__pipe__transport_8cpp_source.html#l00011">11</a> of file <a class="el" href="framed__pipe__transport_8cpp_source.html">framed_pipe_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   14</span>    : <a class="code hl_function" href="classjsonrpc_1_1transport_1_1PipeTransport.html#ae6a9a96b2b4c3e9dbee6f49cbf752235">PipeTransport</a>(std::move(executor), socket_path, is_server) {</div>
+<div class="line"><span class="lineno">   15</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1PipeTransport_html_ae6a9a96b2b4c3e9dbee6f49cbf752235"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1PipeTransport.html#ae6a9a96b2b4c3e9dbee6f49cbf752235">jsonrpc::transport::PipeTransport::PipeTransport</a></div><div class="ttdeci">PipeTransport(asio::any_io_executor executor, std::string socket_path, bool is_server=false)</div><div class="ttdoc">Constructs a new Pipe Transport object.</div><div class="ttdef"><b>Definition</b> <a href="pipe__transport_8cpp_source.html#l00013">pipe_transport.cpp:13</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -289,41 +286,41 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#accf8ffb72dcfd866faf38ddaa2e26817">jsonrpc::transport::Transport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="framed__pipe__transport_8cpp_source.html#l00022">22</a> of file <a class="el" href="framed__pipe__transport_8cpp_source.html">framed_pipe_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   22</span>                                                                     {</div>
-<div class="line"><span class="lineno">   23</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><span class="lineno">   24</span>    <span class="comment">// Try to deframe from existing buffer</span></div>
-<div class="line"><span class="lineno">   25</span>    <span class="keyword">auto</span> result = framer_.<a class="code hl_function" href="classjsonrpc_1_1transport_1_1MessageFramer.html#ab9cb4d342fca8e0410e0dffa14334837">TryDeframe</a>(read_buffer_);</div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">if</span> (result.complete) {</div>
-<div class="line"><span class="lineno">   28</span>      read_buffer_.erase(0, result.consumed_bytes);</div>
-<div class="line"><span class="lineno">   29</span>      <span class="keyword">co_return</span> result.message;</div>
-<div class="line"><span class="lineno">   30</span>    }</div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">if</span> (!result.error.empty()) {</div>
-<div class="line"><span class="lineno">   33</span>      spdlog::error(<span class="stringliteral">&quot;Framing error: {}&quot;</span>, result.error);</div>
-<div class="line"><span class="lineno">   34</span>      <span class="keywordflow">throw</span> std::runtime_error(result.error);</div>
-<div class="line"><span class="lineno">   35</span>    }</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>    <span class="comment">// Need more data</span></div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordtype">char</span> buf[4096];</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordtype">size_t</span> n = <span class="keyword">co_await</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765">GetSocket</a>().async_read_some(</div>
-<div class="line"><span class="lineno">   40</span>        asio::buffer(buf), asio::use_awaitable);</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><span class="lineno">   43</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Connection closed by peer&quot;</span>);</div>
-<div class="line"><span class="lineno">   44</span>    }</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>    read_buffer_.append(buf, n);</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="framed__pipe__transport_8cpp_source.html#l00024">24</a> of file <a class="el" href="framed__pipe__transport_8cpp_source.html">framed_pipe_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>                                                                     {</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><span class="lineno">   26</span>    <span class="comment">// Try to deframe from existing buffer</span></div>
+<div class="line"><span class="lineno">   27</span>    <span class="keyword">auto</span> result = framer_.<a class="code hl_function" href="classjsonrpc_1_1transport_1_1MessageFramer.html#ab9cb4d342fca8e0410e0dffa14334837">TryDeframe</a>(read_buffer_);</div>
+<div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">if</span> (result.complete) {</div>
+<div class="line"><span class="lineno">   30</span>      read_buffer_.erase(0, result.consumed_bytes);</div>
+<div class="line"><span class="lineno">   31</span>      <span class="keyword">co_return</span> result.message;</div>
+<div class="line"><span class="lineno">   32</span>    }</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">if</span> (!result.error.empty()) {</div>
+<div class="line"><span class="lineno">   35</span>      spdlog::error(<span class="stringliteral">&quot;Framing error: {}&quot;</span>, result.error);</div>
+<div class="line"><span class="lineno">   36</span>      <span class="keywordflow">throw</span> std::runtime_error(result.error);</div>
+<div class="line"><span class="lineno">   37</span>    }</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>    <span class="comment">// Need more data</span></div>
+<div class="line"><span class="lineno">   40</span>    std::array&lt;char, 4096&gt; buffer{};</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordtype">size_t</span> n = <span class="keyword">co_await</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765">GetSocket</a>().async_read_some(</div>
+<div class="line"><span class="lineno">   42</span>        asio::buffer(buffer.data(), buffer.size()), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><span class="lineno">   45</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Connection closed by peer&quot;</span>);</div>
+<div class="line"><span class="lineno">   46</span>    }</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>    read_buffer_.append(std::string_view(buffer.data(), n));</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1MessageFramer_html_ab9cb4d342fca8e0410e0dffa14334837"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1MessageFramer.html#ab9cb4d342fca8e0410e0dffa14334837">jsonrpc::transport::MessageFramer::TryDeframe</a></div><div class="ttdeci">auto TryDeframe(const std::string &amp;buffer) -&gt; DeframeResult</div><div class="ttdef"><b>Definition</b> <a href="message__framer_8hpp_source.html#l00029">message_framer.hpp:29</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1PipeTransport_html_a4bede5a046b267abd6c86e7afe22b765"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765">jsonrpc::transport::PipeTransport::GetSocket</a></div><div class="ttdeci">auto GetSocket() -&gt; asio::local::stream_protocol::socket &amp;</div><div class="ttdoc">Gets the underlying socket.</div><div class="ttdef"><b>Definition</b> <a href="pipe__transport_8cpp_source.html#l00122">pipe_transport.cpp:122</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a6ed894042c0fd33553cb8e5bfdea94f7" name="a6ed894042c0fd33553cb8e5bfdea94f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ed894042c0fd33553cb8e5bfdea94f7">&#9670;&#160;</a></span>SendMessage()</h2>
+<a id="a773d5b4aff1f58442d3d3560ba526878" name="a773d5b4aff1f58442d3d3560ba526878"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a773d5b4aff1f58442d3d3560ba526878">&#9670;&#160;</a></span>SendMessage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -334,7 +331,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">auto jsonrpc::transport::FramedPipeTransport::SendMessage </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
           <td> -&gt;  asio::awaitable&lt; void &gt;</td>
         </tr>
       </table>
@@ -347,21 +344,21 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Sends a message over the transport. </p>
 
-<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a3fa9dc4d334da2d4232a29f0984db208">jsonrpc::transport::Transport</a>.</p>
+<p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a29af0ae641f4a87c5d71785df855cfbb">jsonrpc::transport::Transport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="framed__pipe__transport_8cpp_source.html#l00015">15</a> of file <a class="el" href="framed__pipe__transport_8cpp_source.html">framed_pipe_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   16</span>                           {</div>
-<div class="line"><span class="lineno">   17</span>  <span class="keyword">auto</span> framed_message = <a class="code hl_function" href="classjsonrpc_1_1transport_1_1MessageFramer.html#a77428a3ab8f933a7767895f21e4ce210">MessageFramer::Frame</a>(message);</div>
-<div class="line"><span class="lineno">   18</span>  <span class="keyword">co_await</span> asio::async_write(</div>
-<div class="line"><span class="lineno">   19</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765">GetSocket</a>(), asio::buffer(framed_message), asio::use_awaitable);</div>
-<div class="line"><span class="lineno">   20</span>}</div>
+<p class="definition">Definition at line <a class="el" href="framed__pipe__transport_8cpp_source.html#l00017">17</a> of file <a class="el" href="framed__pipe__transport_8cpp_source.html">framed_pipe_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span>                           {</div>
+<div class="line"><span class="lineno">   19</span>  <span class="keyword">auto</span> framed_message = <a class="code hl_function" href="classjsonrpc_1_1transport_1_1MessageFramer.html#a77428a3ab8f933a7767895f21e4ce210">MessageFramer::Frame</a>(message);</div>
+<div class="line"><span class="lineno">   20</span>  <span class="keyword">co_await</span> asio::async_write(</div>
+<div class="line"><span class="lineno">   21</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765">GetSocket</a>(), asio::buffer(framed_message), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">   22</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1MessageFramer_html_a77428a3ab8f933a7767895f21e4ce210"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1MessageFramer.html#a77428a3ab8f933a7767895f21e4ce210">jsonrpc::transport::MessageFramer::Frame</a></div><div class="ttdeci">static auto Frame(const std::string &amp;message, const std::string &amp;content_type=&quot;application/vscode-jsonrpc; charset=utf-8&quot;) -&gt; std::string</div><div class="ttdef"><b>Definition</b> <a href="message__framer_8hpp_source.html#l00017">message_framer.hpp:17</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="message__framer_8hpp_source.html#l00017">jsonrpc::transport::MessageFramer::Frame()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1FramedPipeTransport_a6ed894042c0fd33553cb8e5bfdea94f7_cgraph.svg" width="408" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1FramedPipeTransport_a773d5b4aff1f58442d3d3560ba526878_cgraph.svg" width="408" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

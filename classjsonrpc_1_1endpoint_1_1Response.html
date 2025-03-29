@@ -460,7 +460,7 @@ Here is the caller graph for this function:</div>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html" title="Represents a JSON-RPC response.">Response</a> object indicating success. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="response_8cpp_source.html#l00020">20</a> of file <a class="el" href="response_8cpp_source.html">response.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   22</span>                                                  {</div>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>                {</div>
 <div class="line"><span class="lineno">   23</span>  nlohmann::json response = {{<span class="stringliteral">&quot;jsonrpc&quot;</span>, <span class="stringliteral">&quot;2.0&quot;</span>}, {<span class="stringliteral">&quot;result&quot;</span>, result}};</div>
 <div class="line"><span class="lineno">   24</span>  <span class="keywordflow">if</span> (<span class="keywordtype">id</span>) {</div>
 <div class="line"><span class="lineno">   25</span>    std::visit([&amp;response](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v) { response[<span class="stringliteral">&quot;id&quot;</span>] = v; }, *id);</div>
@@ -508,7 +508,7 @@ Here is the caller graph for this function:</div>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html" title="Represents a JSON-RPC response.">Response</a> object indicating a user error. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="response_8cpp_source.html#l00063">63</a> of file <a class="el" href="response_8cpp_source.html">response.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span>                                                  {</div>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>                {</div>
 <div class="line"><span class="lineno">   66</span>  nlohmann::json response = {{<span class="stringliteral">&quot;jsonrpc&quot;</span>, <span class="stringliteral">&quot;2.0&quot;</span>}, {<span class="stringliteral">&quot;error&quot;</span>, error}};</div>
 <div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (<span class="keywordtype">id</span>) {</div>
 <div class="line"><span class="lineno">   68</span>    std::visit([&amp;response](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v) { response[<span class="stringliteral">&quot;id&quot;</span>] = v; }, *id);</div>

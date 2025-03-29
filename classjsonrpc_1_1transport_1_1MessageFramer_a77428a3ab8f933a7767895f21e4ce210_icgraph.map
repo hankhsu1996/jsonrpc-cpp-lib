@@ -1,5 +1,5 @@
 <map id="jsonrpc::transport::MessageFramer::Frame" name="jsonrpc::transport::MessageFramer::Frame">
 <area shape="rect" id="Node000001" title=" " alt="" coords="220,13,403,53"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a6ed894042c0fd33553cb8e5bfdea94f7" title="Sends a message over the transport." alt="" coords="5,5,172,60"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a773d5b4aff1f58442d3d3560ba526878" title="Sends a message over the transport." alt="" coords="5,5,172,60"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,35,172,35,172,30,206,30"/>
 </map>

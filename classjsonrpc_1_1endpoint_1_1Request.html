@@ -127,7 +127,7 @@ $(function(){initNavTree('classjsonrpc_1_1endpoint_1_1Request.html',''); initRes
 <div class="dynheader">
 Collaboration diagram for jsonrpc::endpoint::Request:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1Request__coll__graph.svg" width="190" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1Request__coll__graph.svg" width="170" height="311"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -168,9 +168,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a2101279416a9f9fad5fd7abdd4df5d32" id="r_a2101279416a9f9fad5fd7abdd4df5d32"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2101279416a9f9fad5fd7abdd4df5d32">FromJson</a> (const nlohmann::json &amp;json_obj) -&gt; <a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html">Request</a></td></tr>
 <tr class="memdesc:a2101279416a9f9fad5fd7abdd4df5d32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html" title="Represents a JSON-RPC request.">Request</a> object from a JSON object for server-side use.  <br /></td></tr>
 <tr class="separator:a2101279416a9f9fad5fd7abdd4df5d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab517683fdeee4e9a5390fde0f6314ab6" id="r_ab517683fdeee4e9a5390fde0f6314ab6"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab517683fdeee4e9a5390fde0f6314ab6">ParseAndValidateJson</a> (const std::string &amp;request_str) -&gt; std::optional&lt; nlohmann::json &gt;</td></tr>
-<tr class="memdesc:ab517683fdeee4e9a5390fde0f6314ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses and validates a JSON string as a JSON-RPC request.  <br /></td></tr>
-<tr class="separator:ab517683fdeee4e9a5390fde0f6314ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7400f37a5ac389581a120d935be82a5" id="r_aa7400f37a5ac389581a120d935be82a5"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7400f37a5ac389581a120d935be82a5">ValidateJson</a> (const nlohmann::json &amp;json_obj) -&gt; bool</td></tr>
 <tr class="memdesc:aa7400f37a5ac389581a120d935be82a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates a JSON object as a request.  <br /></td></tr>
 <tr class="separator:aa7400f37a5ac389581a120d935be82a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -341,11 +338,11 @@ Static Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   89</span>                                      {</div>
 <div class="line"><span class="lineno">   90</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="#a82cd14ec1dd3f15d068e5737e409663d">ToJson</a>().dump();</div>
 <div class="line"><span class="lineno">   91</span>}</div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Request_html_a82cd14ec1dd3f15d068e5737e409663d"><div class="ttname"><a href="#a82cd14ec1dd3f15d068e5737e409663d">jsonrpc::endpoint::Request::ToJson</a></div><div class="ttdeci">auto ToJson() const -&gt; nlohmann::json</div><div class="ttdoc">Converts the request to a JSON object.</div><div class="ttdef"><b>Definition</b> <a href="request_8cpp_source.html#l00126">request.cpp:126</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Request_html_a82cd14ec1dd3f15d068e5737e409663d"><div class="ttname"><a href="#a82cd14ec1dd3f15d068e5737e409663d">jsonrpc::endpoint::Request::ToJson</a></div><div class="ttdeci">auto ToJson() const -&gt; nlohmann::json</div><div class="ttdoc">Converts the request to a JSON object.</div><div class="ttdef"><b>Definition</b> <a href="request_8cpp_source.html#l00093">request.cpp:93</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="request_8cpp_source.html#l00126">ToJson()</a>.</p>
+<p class="reference">References <a class="el" href="request_8cpp_source.html#l00093">ToJson()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00098">jsonrpc::endpoint::RpcEndpoint::CallMethod()</a>, and <a class="el" href="endpoint_8cpp_source.html#l00143">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00098">jsonrpc::endpoint::RpcEndpoint::SendMethodCall()</a>, and <a class="el" href="endpoint_8cpp_source.html#l00143">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -485,10 +482,10 @@ Here is the caller graph for this function:</div>
 
 <p>Gets the method name. </p>
 
-<p class="definition">Definition at line <a class="el" href="request_8hpp_source.html#l00080">80</a> of file <a class="el" href="request_8hpp_source.html">request.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>                                                           {</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> method_;</div>
-<div class="line"><span class="lineno">   82</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="request_8hpp_source.html#l00070">70</a> of file <a class="el" href="request_8hpp_source.html">request.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>                                                           {</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> method_;</div>
+<div class="line"><span class="lineno">   72</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -517,10 +514,10 @@ Here is the caller graph for this function:</div>
 
 <p>Gets the parameters. </p>
 
-<p class="definition">Definition at line <a class="el" href="request_8hpp_source.html#l00085">85</a> of file <a class="el" href="request_8hpp_source.html">request.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>                                                                           {</div>
-<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">return</span> params_;</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="request_8hpp_source.html#l00075">75</a> of file <a class="el" href="request_8hpp_source.html">request.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>                                                                           {</div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> params_;</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -549,85 +546,11 @@ Here is the caller graph for this function:</div>
 
 <p>Checks if the request is a notification (no response expected). </p>
 
-<p class="definition">Definition at line <a class="el" href="request_8hpp_source.html#l00090">90</a> of file <a class="el" href="request_8hpp_source.html">request.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   90</span>                                                    {</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> is_notification_;</div>
-<div class="line"><span class="lineno">   92</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="request_8hpp_source.html#l00080">80</a> of file <a class="el" href="request_8hpp_source.html">request.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>                                                    {</div>
+<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> is_notification_;</div>
+<div class="line"><span class="lineno">   82</span>  }</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="ab517683fdeee4e9a5390fde0f6314ab6" name="ab517683fdeee4e9a5390fde0f6314ab6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab517683fdeee4e9a5390fde0f6314ab6">&#9670;&#160;</a></span>ParseAndValidateJson()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto jsonrpc::endpoint::Request::ParseAndValidateJson </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>request_str</em></span></td><td>)</td>
-          <td> -&gt; std::optional&lt;nlohmann::json&gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Parses and validates a JSON string as a JSON-RPC request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">request_str</td><td>The JSON string to parse and validate. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An optional containing the parsed JSON object if valid, or nullopt if invalid. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="request_8cpp_source.html#l00093">93</a> of file <a class="el" href="request_8cpp_source.html">request.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>                                 {</div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">   96</span>    <span class="comment">// Parse the JSON</span></div>
-<div class="line"><span class="lineno">   97</span>    <span class="keyword">auto</span> json_obj = nlohmann::json::parse(request_str);</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    <span class="comment">// For single request objects</span></div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> (json_obj.is_object()) {</div>
-<div class="line"><span class="lineno">  101</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="#aa7400f37a5ac389581a120d935be82a5">ValidateJson</a>(json_obj)) {</div>
-<div class="line"><span class="lineno">  102</span>        <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><span class="lineno">  103</span>      }</div>
-<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">return</span> json_obj;</div>
-<div class="line"><span class="lineno">  105</span>    }</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>    <span class="comment">// For batch requests</span></div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">if</span> (json_obj.is_array()) {</div>
-<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">if</span> (json_obj.empty()) {</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">return</span> json_obj;  <span class="comment">// Empty array is handled by the dispatcher</span></div>
-<div class="line"><span class="lineno">  111</span>      }</div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>      <span class="comment">// With batch requests, we validate but don&#39;t reject the entire batch</span></div>
-<div class="line"><span class="lineno">  114</span>      <span class="comment">// The dispatcher needs to handle individual invalid items</span></div>
-<div class="line"><span class="lineno">  115</span>      <span class="keywordflow">return</span> json_obj;</div>
-<div class="line"><span class="lineno">  116</span>    }</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>    <span class="comment">// Neither an object nor an array</span></div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><span class="lineno">  120</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::parse_error&amp; e) {</div>
-<div class="line"><span class="lineno">  121</span>    <span class="comment">// JSON parsing failed</span></div>
-<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><span class="lineno">  123</span>  }</div>
-<div class="line"><span class="lineno">  124</span>}</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="dispatcher_8cpp_source.html#l00022">jsonrpc::endpoint::Dispatcher::DispatchRequest()</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1Request_ab517683fdeee4e9a5390fde0f6314ab6_icgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
 </div>
 </div>
 <a id="a7e10c91fcfd2a58dac4c4f675d983482" name="a7e10c91fcfd2a58dac4c4f675d983482"></a>
@@ -687,26 +610,26 @@ Here is the caller graph for this function:</div>
 
 <p>Converts the request to a JSON object. </p>
 
-<p class="definition">Definition at line <a class="el" href="request_8cpp_source.html#l00126">126</a> of file <a class="el" href="request_8cpp_source.html">request.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  126</span>                                           {</div>
-<div class="line"><span class="lineno">  127</span>  nlohmann::json json_obj;</div>
-<div class="line"><span class="lineno">  128</span>  json_obj[<span class="stringliteral">&quot;jsonrpc&quot;</span>] = <span class="stringliteral">&quot;2.0&quot;</span>;</div>
-<div class="line"><span class="lineno">  129</span>  json_obj[<span class="stringliteral">&quot;method&quot;</span>] = method_;</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span>  <span class="keywordflow">if</span> (params_.has_value()) {</div>
-<div class="line"><span class="lineno">  132</span>    json_obj[<span class="stringliteral">&quot;params&quot;</span>] = params_.value();</div>
-<div class="line"><span class="lineno">  133</span>  }</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">if</span> (!is_notification_) {</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">if</span> (std::holds_alternative&lt;int64_t&gt;(id_)) {</div>
-<div class="line"><span class="lineno">  137</span>      json_obj[<span class="stringliteral">&quot;id&quot;</span>] = std::get&lt;int64_t&gt;(id_);</div>
-<div class="line"><span class="lineno">  138</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  139</span>      json_obj[<span class="stringliteral">&quot;id&quot;</span>] = std::get&lt;std::string&gt;(id_);</div>
-<div class="line"><span class="lineno">  140</span>    }</div>
-<div class="line"><span class="lineno">  141</span>  }</div>
-<div class="line"><span class="lineno">  142</span> </div>
-<div class="line"><span class="lineno">  143</span>  <span class="keywordflow">return</span> json_obj;</div>
-<div class="line"><span class="lineno">  144</span>}</div>
+<p class="definition">Definition at line <a class="el" href="request_8cpp_source.html#l00093">93</a> of file <a class="el" href="request_8cpp_source.html">request.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>                                           {</div>
+<div class="line"><span class="lineno">   94</span>  nlohmann::json json_obj;</div>
+<div class="line"><span class="lineno">   95</span>  json_obj[<span class="stringliteral">&quot;jsonrpc&quot;</span>] = <span class="stringliteral">&quot;2.0&quot;</span>;</div>
+<div class="line"><span class="lineno">   96</span>  json_obj[<span class="stringliteral">&quot;method&quot;</span>] = method_;</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">if</span> (params_.has_value()) {</div>
+<div class="line"><span class="lineno">   99</span>    json_obj[<span class="stringliteral">&quot;params&quot;</span>] = params_.value();</div>
+<div class="line"><span class="lineno">  100</span>  }</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">if</span> (!is_notification_) {</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (std::holds_alternative&lt;int64_t&gt;(id_)) {</div>
+<div class="line"><span class="lineno">  104</span>      json_obj[<span class="stringliteral">&quot;id&quot;</span>] = std::get&lt;int64_t&gt;(id_);</div>
+<div class="line"><span class="lineno">  105</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  106</span>      json_obj[<span class="stringliteral">&quot;id&quot;</span>] = std::get&lt;std::string&gt;(id_);</div>
+<div class="line"><span class="lineno">  107</span>    }</div>
+<div class="line"><span class="lineno">  108</span>  }</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">return</span> json_obj;</div>
+<div class="line"><span class="lineno">  111</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="request_8cpp_source.html#l00089">Dump()</a>.</p>
 <div class="dynheader">
@@ -778,6 +701,13 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">   78</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   79</span>}</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="dispatcher_8cpp_source.html#l00022">jsonrpc::endpoint::Dispatcher::DispatchRequest()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1Request_aa7400f37a5ac389581a120d935be82a5_icgraph.svg" width="432" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

@@ -21,10 +21,10 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a11eda408849ab4ed64cd0b09b69abec0" target="_top" xlink:title="Call a method on the remote endpoint.">
-<polygon fill="white" stroke="#666666" points="151.5,-78 12.5,-78 12.5,-48 151.5,-48 151.5,-78"/>
-<text text-anchor="start" x="20.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::endpoint::</text>
-<text text-anchor="middle" x="82" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">RpcEndpoint::CallMethod</text>
+<g id="a_Node000002"><a xlink:href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6053eaa8e69ea06e11a7c70a371e4562" target="_top" xlink:title="Call a method on the remote endpoint.">
+<polygon fill="white" stroke="#666666" points="163.5,-78 0.5,-78 0.5,-48 163.5,-48 163.5,-78"/>
+<text text-anchor="start" x="8.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::endpoint::</text>
+<text text-anchor="middle" x="82" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">RpcEndpoint::SendMethodCall</text>
 </a>
 </g>
 </g>
@@ -32,7 +32,7 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M189.58,-47.91C177.19,-49.66 164.14,-51.51 151.58,-53.29"/>
+<path fill="none" stroke="#63b8ff" d="M189.65,-47.9C181.18,-49.1 172.4,-50.34 163.67,-51.58"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="190.39,-51.33 199.8,-46.46 189.41,-44.4 190.39,-51.33"/>
 </a>
 </g>
@@ -40,7 +40,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a533acb07cd896a41240c40587d652000" target="_top" xlink:title="Send a notification to the remote endpoint.">
+<g id="a_Node000003"><a xlink:href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a113ad564ae93fa71ccc9d9521196f1f7" target="_top" xlink:title="Send a notification to the remote endpoint.">
 <polygon fill="white" stroke="#666666" points="164,-30 0,-30 0,0 164,0 164,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::endpoint::</text>
 <text text-anchor="middle" x="82" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RpcEndpoint::SendNotification</text>

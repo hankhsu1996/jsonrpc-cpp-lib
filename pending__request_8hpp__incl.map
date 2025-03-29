@@ -1,19 +1,11 @@
 <map id="include/jsonrpc/endpoint/pending_request.hpp" name="include/jsonrpc/endpoint/pending_request.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="477,5,658,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="161,5,342,45"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,93,148,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="477,44,162,94,161,88,476,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,48,116,90,114,85,208,43"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="173,93,237,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="477,47,251,96,250,90,476,42"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="261,93,407,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="512,48,382,91,380,86,511,43"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="431,93,541,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="549,47,510,85,506,82,546,44"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="565,93,732,119"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="589,44,628,82,625,85,585,47"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="757,93,879,119"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="628,43,769,87,768,92,627,48"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="904,93,1079,119"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="659,41,916,88,915,93,658,46"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="1103,93,1250,119"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="659,35,1090,90,1089,96,658,41"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,47,221,83,216,80,238,44"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="261,93,338,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="265,44,287,80,283,83,261,47"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="362,93,509,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="296,43,397,85,395,90,294,48"/>
 </map>

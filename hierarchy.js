@@ -10,11 +10,12 @@ var hierarchy =
     [ "std::runtime_error", null, [
       [ "jsonrpc::endpoint::RpcError", "classjsonrpc_1_1endpoint_1_1RpcError.html", null ]
     ] ],
-    [ "jsonrpc::endpoint::TaskExecutor", "classjsonrpc_1_1endpoint_1_1TaskExecutor.html", null ],
     [ "jsonrpc::transport::Transport", "classjsonrpc_1_1transport_1_1Transport.html", [
       [ "jsonrpc::transport::PipeTransport", "classjsonrpc_1_1transport_1_1PipeTransport.html", [
         [ "jsonrpc::transport::FramedPipeTransport", "classjsonrpc_1_1transport_1_1FramedPipeTransport.html", null ]
       ] ],
       [ "jsonrpc::transport::SocketTransport", "classjsonrpc_1_1transport_1_1SocketTransport.html", null ]
-    ] ]
+    ] ],
+    [ "jsonrpc::endpoint::TypedMethodHandler< ParamsType, ResultType >", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html", null ],
+    [ "jsonrpc::endpoint::TypedNotificationHandler< ParamsType >", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html", null ]
 ];

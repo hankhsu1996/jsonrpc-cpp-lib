@@ -128,23 +128,23 @@ $(function(){initNavTree('endpoint_8cpp_source.html',''); initResizable(true); }
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacejsonrpc_1_1endpoint.html">jsonrpc::endpoint</a> {</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a24d6c86a7264e87c58a0dd0881d6a6fb">   13</a></span><a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a24d6c86a7264e87c58a0dd0881d6a6fb">RpcEndpoint::RpcEndpoint</a>(</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    asio::io_context &amp;io_ctx, std::unique_ptr&lt;transport::Transport&gt; transport)</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    : io_ctx_(io_ctx),</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      transport_(std::move(transport)),</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      task_executor_(</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>          std::make_shared&lt;<a class="code hl_class" href="classjsonrpc_1_1endpoint_1_1TaskExecutor.html">TaskExecutor</a>&gt;(4)),  <span class="comment">// Use 4 threads by default</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      dispatcher_(task_executor_),</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      endpoint_strand_(asio::make_strand(io_ctx.get_executor())) {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a4acd1cc8a4f08518b01df7a1bd5947e2">   13</a></span><a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a4acd1cc8a4f08518b01df7a1bd5947e2">RpcEndpoint::RpcEndpoint</a>(</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    asio::any_io_executor executor,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    std::unique_ptr&lt;transport::Transport&gt; transport)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    : executor_(std::move(executor)),</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      transport_(std::move(transport)),</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      dispatcher_(executor_),</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      endpoint_strand_(asio::make_strand(executor_)) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
 </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#add9af2dd89f056069bf83904d3b0ba35">   23</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#add9af2dd89f056069bf83904d3b0ba35">RpcEndpoint::CreateClient</a>(</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    asio::io_context &amp;io_ctx, std::unique_ptr&lt;transport::Transport&gt; transport)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aebcfc0b69d7d7683dba1e4c79fbecb7b">   22</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aebcfc0b69d7d7683dba1e4c79fbecb7b">RpcEndpoint::CreateClient</a>(</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    asio::any_io_executor executor,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    std::unique_ptr&lt;transport::Transport&gt; transport)</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    -&gt; asio::awaitable&lt;std::unique_ptr&lt;RpcEndpoint&gt;&gt; {</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// Create the endpoint</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">auto</span> endpoint = std::make_unique&lt;RpcEndpoint&gt;(io_ctx, std::move(transport));</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">auto</span> endpoint = std::make_unique&lt;RpcEndpoint&gt;(executor, std::move(transport));</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="comment">// Start the endpoint and wait for it to be ready</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordflow">try</span> {</div>
@@ -223,9 +223,9 @@ $(function(){initNavTree('endpoint_8cpp_source.html',''); initResizable(true); }
 </div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a11eda408849ab4ed64cd0b09b69abec0">   98</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a11eda408849ab4ed64cd0b09b69abec0">RpcEndpoint::CallMethod</a>(</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keyword">const</span> std::string &amp;method,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    std::optional&lt;nlohmann::json&gt; params) -&gt; asio::awaitable&lt;nlohmann::json&gt; {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6053eaa8e69ea06e11a7c70a371e4562">   98</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6053eaa8e69ea06e11a7c70a371e4562">RpcEndpoint::SendMethodCall</a>(</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    std::string method, std::optional&lt;nlohmann::json&gt; params)</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    -&gt; asio::awaitable&lt;nlohmann::json&gt; {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">if</span> (!is_running_) {</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RPC endpoint is not running&quot;</span>);</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  }</div>
@@ -270,9 +270,9 @@ $(function(){initNavTree('endpoint_8cpp_source.html',''); initResizable(true); }
 </div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
 <div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a533acb07cd896a41240c40587d652000">  143</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a533acb07cd896a41240c40587d652000">RpcEndpoint::SendNotification</a>(</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keyword">const</span> std::string &amp;method,</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    std::optional&lt;nlohmann::json&gt; params) -&gt; asio::awaitable&lt;void&gt; {</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a113ad564ae93fa71ccc9d9521196f1f7">  143</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a113ad564ae93fa71ccc9d9521196f1f7">RpcEndpoint::SendNotification</a>(</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    std::string method, std::optional&lt;nlohmann::json&gt; params)</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    -&gt; asio::awaitable&lt;void&gt; {</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="keywordflow">if</span> (!is_running_) {</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RPC endpoint is not running&quot;</span>);</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  }</div>
@@ -288,79 +288,79 @@ $(function(){initNavTree('endpoint_8cpp_source.html',''); initResizable(true); }
 </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
 <div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#af040165a60c9f2936e657cc3a8460c40">  159</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#af040165a60c9f2936e657cc3a8460c40">RpcEndpoint::RegisterMethodCall</a>(</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keyword">const</span> std::string &amp;method, <span class="keyword">typename</span> <a class="code hl_typedef" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3a3802aa9defd66e5fca9f8236d72a19">Dispatcher::MethodCallHandler</a> handler) {</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a9220c74ca4539ec5b98d620555c30691">  159</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a9220c74ca4539ec5b98d620555c30691">RpcEndpoint::RegisterMethodCall</a>(</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    std::string method, <span class="keyword">typename</span> <a class="code hl_typedef" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3a3802aa9defd66e5fca9f8236d72a19">Dispatcher::MethodCallHandler</a> handler) {</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  dispatcher_.<a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a91858af35b7e497e6e422eaafca49d9f">RegisterMethodCall</a>(method, handler);</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>}</div>
 </div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
 <div class="foldopen" id="foldopen00164" data-start="{" data-end="}">
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5d7d4df540a187077b05f652e246c051">  164</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5d7d4df540a187077b05f652e246c051">RpcEndpoint::RegisterNotification</a>(</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="keyword">const</span> std::string &amp;method,</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keyword">typename</span> <a class="code hl_typedef" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59ec448d0eeb1c0515ada640b55ed273">Dispatcher::NotificationHandler</a> handler) {</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  dispatcher_.<a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957">RegisterNotification</a>(method, handler);</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>}</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6abb39be0165c3d20d79974dc00accc7">  164</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6abb39be0165c3d20d79974dc00accc7">RpcEndpoint::RegisterNotification</a>(</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    std::string method, <span class="keyword">typename</span> <a class="code hl_typedef" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59ec448d0eeb1c0515ada640b55ed273">Dispatcher::NotificationHandler</a> handler) {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  dispatcher_.<a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957">RegisterNotification</a>(method, handler);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>}</div>
 </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64">  170</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64">RpcEndpoint::HasPendingRequests</a>() const -&gt; <span class="keywordtype">bool</span> {</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="comment">// This is safe to call without a strand because we&#39;re just checking if empty</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <span class="keywordflow">return</span> !pending_requests_.empty();</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>}</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="foldopen" id="foldopen00169" data-start="{" data-end="}">
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64">  169</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64">RpcEndpoint::HasPendingRequests</a>() const -&gt; <span class="keywordtype">bool</span> {</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// This is safe to call without a strand because we&#39;re just checking if empty</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="keywordflow">return</span> !pending_requests_.empty();</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>}</div>
 </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="foldopen" id="foldopen00175" data-start="{" data-end="}">
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a93b27978503f54019e62443ec359fbc3">  175</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a93b27978503f54019e62443ec359fbc3">RpcEndpoint::SetErrorHandler</a>(<a class="code hl_typedef" href="namespacejsonrpc_1_1endpoint.html#ad5f4eeee8d842f6f0fb8ec293aa0069d">ErrorHandler</a> handler) {</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  error_handler_ = std::move(handler);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>}</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a93b27978503f54019e62443ec359fbc3">  174</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a93b27978503f54019e62443ec359fbc3">RpcEndpoint::SetErrorHandler</a>(<a class="code hl_typedef" href="namespacejsonrpc_1_1endpoint.html#ad5f4eeee8d842f6f0fb8ec293aa0069d">ErrorHandler</a> handler) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  error_handler_ = std::move(handler);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>}</div>
 </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="foldopen" id="foldopen00179" data-start="{" data-end="}">
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acc5650d94fd4500aa62fca8c3877f675">  179</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acc5650d94fd4500aa62fca8c3877f675">RpcEndpoint::ReportError</a>(<a class="code hl_enumeration" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a> code, <span class="keyword">const</span> std::string &amp;message) {</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="keywordflow">if</span> (error_handler_) {</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    error_handler_(code, message);</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  }</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  spdlog::error(<span class="stringliteral">&quot;JSON-RPC error ({}): {}&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(code), message);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>}</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="foldopen" id="foldopen00178" data-start="{" data-end="}">
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acc5650d94fd4500aa62fca8c3877f675">  178</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acc5650d94fd4500aa62fca8c3877f675">RpcEndpoint::ReportError</a>(<a class="code hl_enumeration" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a> code, <span class="keyword">const</span> std::string &amp;message) {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="keywordflow">if</span> (error_handler_) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    error_handler_(code, message);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  }</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  spdlog::error(<span class="stringliteral">&quot;JSON-RPC error ({}): {}&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(code), message);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>}</div>
 </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="keywordtype">void</span> RpcEndpoint::StartMessageProcessing() {</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  asio::co_spawn(</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>      endpoint_strand_,</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>      [<span class="keyword">this</span>]() -&gt; asio::awaitable&lt;void&gt; { <span class="keyword">co_await</span> ProcessNextMessage(); },</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>      asio::detached);</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>}</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="keyword">auto</span> RpcEndpoint::ProcessNextMessage() -&gt; asio::awaitable&lt;void&gt; {</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keywordflow">if</span> (!is_running_) {</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keyword">co_return</span>;</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  }</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="comment">// Wait for the next message</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    std::string message = <span class="keyword">co_await</span> transport_-&gt;ReceiveMessage();</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keywordtype">void</span> RpcEndpoint::StartMessageProcessing() {</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  asio::co_spawn(</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>      endpoint_strand_, [<span class="keyword">this</span>] { <span class="keywordflow">return</span> this-&gt;ProcessMessagesLoop(); },</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>      asio::detached);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="keyword">auto</span> RpcEndpoint::ProcessMessagesLoop() -&gt; asio::awaitable&lt;void&gt; {</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="keywordflow">while</span> (is_running_) {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      <span class="comment">// Wait for the next message</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      std::string message = <span class="keyword">co_await</span> transport_-&gt;ReceiveMessage();</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>      <span class="comment">// Process the message</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      <span class="keyword">co_await</span> HandleMessage(message);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>      spdlog::error(<span class="stringliteral">&quot;Error processing message: {}&quot;</span>, e.what());</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="comment">// Process the message</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="keyword">co_await</span> HandleMessage(message);</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="comment">// Continue processing</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    asio::co_spawn(</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        endpoint_strand_,</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        [<span class="keyword">this</span>]() -&gt; asio::awaitable&lt;void&gt; { <span class="keyword">co_await</span> ProcessNextMessage(); },</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        asio::detached);</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    spdlog::error(<span class="stringliteral">&quot;Error processing message: {}&quot;</span>, e.what());</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="keywordflow">if</span> (is_running_) {</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>      <span class="comment">// Retry after a short delay if we&#39;re still running</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>      ScheduleRetryProcessing();</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    }</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  }</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>}</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="keyword">auto</span> RpcEndpoint::HandleMessage(<span class="keyword">const</span> std::string &amp;message)</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    -&gt; asio::awaitable&lt;void&gt; {</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>      <span class="keywordflow">if</span> (!is_running_) {</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        <span class="keywordflow">break</span>;  <span class="comment">// Exit loop if we&#39;re shutting down</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      <span class="comment">// We can&#39;t use co_await in a catch block, so we need to continue the loop</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>      <span class="comment">// and do the pause in the next iteration</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>      asio::steady_timer retry_timer(executor_, std::chrono::milliseconds(100));</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>      <span class="comment">// Use a non-coroutine wait to prevent co_await in catch handler</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      asio::error_code ec;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      retry_timer.wait(ec);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>      <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        spdlog::warn(<span class="stringliteral">&quot;Error waiting for retry timer: {}&quot;</span>, ec.message());</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>      }</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    }</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  }</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="keyword">auto</span> RpcEndpoint::HandleMessage(std::string message) -&gt; asio::awaitable&lt;void&gt; {</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  <span class="keywordflow">try</span> {</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="comment">// Try to parse as a JSON object</span></div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keyword">auto</span> json_message = nlohmann::json::parse(message);</div>
@@ -369,7 +369,7 @@ $(function(){initNavTree('endpoint_8cpp_source.html',''); initResizable(true); }
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="keywordflow">if</span> (json_message.contains(<span class="stringliteral">&quot;id&quot;</span>) &amp;&amp;</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        (json_message.contains(<span class="stringliteral">&quot;result&quot;</span>) || json_message.contains(<span class="stringliteral">&quot;error&quot;</span>))) {</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>      Response response(json_message);</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>      <span class="keyword">co_await</span> HandleResponse(response);</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>      <span class="keyword">co_await</span> HandleResponse(std::move(response));</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>      <span class="keyword">co_return</span>;</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    }</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
@@ -384,96 +384,77 @@ $(function(){initNavTree('endpoint_8cpp_source.html',''); initResizable(true); }
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  }</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>}</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="keyword">auto</span> RpcEndpoint::HandleResponse(<span class="keyword">const</span> Response &amp;response)</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    -&gt; asio::awaitable&lt;void&gt; {</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="comment">// Get the request ID</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keyword">auto</span> id_variant = response.GetId();</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="keywordflow">if</span> (!id_variant.has_value()) {</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    ReportError(<a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">ErrorCode::kInvalidRequest</a>, <span class="stringliteral">&quot;Response missing ID&quot;</span>);</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keyword">co_return</span>;</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  }</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="comment">// Extract the integer ID - we only support integer IDs in our implementation</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordflow">if</span> (!std::holds_alternative&lt;int64_t&gt;(*id_variant)) {</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    ReportError(<a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">ErrorCode::kInvalidRequest</a>, <span class="stringliteral">&quot;Response ID must be an integer&quot;</span>);</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keyword">co_return</span>;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  }</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="keyword">auto</span> <span class="keywordtype">id</span> = std::get&lt;int64_t&gt;(*id_variant);</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="comment">// Use a local variable to capture the pending request when found</span></div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  std::shared_ptr&lt;PendingRequest&gt; request;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="keywordtype">bool</span> found = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="comment">// Find the request in a strand-protected way</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  asio::post(endpoint_strand_, [<span class="keyword">this</span>, <span class="keywordtype">id</span>, &amp;request, &amp;found]() {</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keyword">auto</span> it = pending_requests_.find(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keywordflow">if</span> (it != pending_requests_.end()) {</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      request = it-&gt;second;</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      pending_requests_.erase(it);</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>      found = true;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    }</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  });</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="comment">// Wait for the post to complete</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="keyword">co_await</span> asio::post(<span class="keyword">co_await</span> asio::this_coro::executor, asio::use_awaitable);</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="keywordflow">if</span> (!found || !request) {</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    ReportError(</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        <a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">ErrorCode::kInvalidRequest</a>,</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        <span class="stringliteral">&quot;Received response for unknown request ID: &quot;</span> + std::to_string(<span class="keywordtype">id</span>));</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="keyword">co_return</span>;</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  }</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  <span class="comment">// Set the result</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  request-&gt;SetResult(response.GetJson());</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="keyword">co_return</span>;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>}</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="keywordtype">void</span> RpcEndpoint::ScheduleRetryProcessing() {</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  spdlog::debug(<span class="stringliteral">&quot;Scheduling retry for message processing&quot;</span>);</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="keyword">auto</span> executor = asio::get_associated_executor(endpoint_strand_);</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  asio::steady_timer retry_timer(executor);</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  retry_timer.expires_after(std::chrono::milliseconds(100));</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  retry_timer.async_wait([<span class="keyword">this</span>](<span class="keyword">const</span> asio::error_code &amp;ec) {</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">if</span> (!ec &amp;&amp; is_running_) {</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>      asio::co_spawn(</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>          endpoint_strand_,</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>          [<span class="keyword">this</span>]() -&gt; asio::awaitable&lt;void&gt; { <span class="keyword">co_await</span> ProcessNextMessage(); },</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>          asio::detached);</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    }</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  });</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>}</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>}  <span class="comment">// namespace jsonrpc::endpoint</span></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Dispatcher_html_a3a3802aa9defd66e5fca9f8236d72a19"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3a3802aa9defd66e5fca9f8236d72a19">jsonrpc::endpoint::Dispatcher::MethodCallHandler</a></div><div class="ttdeci">std::function&lt; asio::awaitable&lt; nlohmann::json &gt;( const std::optional&lt; nlohmann::json &gt; &amp;)&gt; MethodCallHandler</div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8hpp_source.html#l00019">dispatcher.hpp:19</a></div></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="keyword">auto</span> RpcEndpoint::HandleResponse(Response response) -&gt; asio::awaitable&lt;void&gt; {</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="comment">// Get the request ID</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="keyword">auto</span> id_variant = response.GetId();</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keywordflow">if</span> (!id_variant.has_value()) {</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    ReportError(<a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">ErrorCode::kInvalidRequest</a>, <span class="stringliteral">&quot;Response missing ID&quot;</span>);</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keyword">co_return</span>;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  }</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="comment">// Extract the integer ID - we only support integer IDs in our implementation</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="keywordflow">if</span> (!std::holds_alternative&lt;int64_t&gt;(*id_variant)) {</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    ReportError(<a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">ErrorCode::kInvalidRequest</a>, <span class="stringliteral">&quot;Response ID must be an integer&quot;</span>);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keyword">co_return</span>;</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  }</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="keyword">auto</span> <span class="keywordtype">id</span> = std::get&lt;int64_t&gt;(*id_variant);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="comment">// Use a local variable to capture the pending request when found</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  std::shared_ptr&lt;PendingRequest&gt; request;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keywordtype">bool</span> found = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <span class="comment">// Find the request in a strand-protected way</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  asio::post(endpoint_strand_, [<span class="keyword">this</span>, <span class="keywordtype">id</span>, &amp;request, &amp;found]() {</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    <span class="keyword">auto</span> it = pending_requests_.find(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keywordflow">if</span> (it != pending_requests_.end()) {</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>      request = it-&gt;second;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      pending_requests_.erase(it);</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      found = true;</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    }</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  });</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="comment">// Wait for the post to complete</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="keyword">co_await</span> asio::post(<span class="keyword">co_await</span> asio::this_coro::executor, asio::use_awaitable);</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="keywordflow">if</span> (!found || !request) {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    ReportError(</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        <a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">ErrorCode::kInvalidRequest</a>,</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        <span class="stringliteral">&quot;Received response for unknown request ID: &quot;</span> + std::to_string(<span class="keywordtype">id</span>));</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="keyword">co_return</span>;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <span class="comment">// Set the result</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  request-&gt;SetResult(response.GetJson());</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  <span class="keyword">co_return</span>;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>}</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>}  <span class="comment">// namespace jsonrpc::endpoint</span></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Dispatcher_html_a3a3802aa9defd66e5fca9f8236d72a19"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3a3802aa9defd66e5fca9f8236d72a19">jsonrpc::endpoint::Dispatcher::MethodCallHandler</a></div><div class="ttdeci">std::function&lt; asio::awaitable&lt; nlohmann::json &gt;( const std::optional&lt; nlohmann::json &gt; &amp;)&gt; MethodCallHandler</div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8hpp_source.html#l00017">dispatcher.hpp:17</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Dispatcher_html_a3b90ccbbe2b0715fcb9d03865cd5c957"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957">jsonrpc::endpoint::Dispatcher::RegisterNotification</a></div><div class="ttdeci">void RegisterNotification(const std::string &amp;method, const NotificationHandler &amp;handler)</div><div class="ttdoc">Register a notification handler.</div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8cpp_source.html#l00017">dispatcher.cpp:17</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Dispatcher_html_a59ec448d0eeb1c0515ada640b55ed273"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59ec448d0eeb1c0515ada640b55ed273">jsonrpc::endpoint::Dispatcher::NotificationHandler</a></div><div class="ttdeci">std::function&lt; asio::awaitable&lt; void &gt;( const std::optional&lt; nlohmann::json &gt; &amp;)&gt; NotificationHandler</div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8hpp_source.html#l00021">dispatcher.hpp:21</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Dispatcher_html_a59ec448d0eeb1c0515ada640b55ed273"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59ec448d0eeb1c0515ada640b55ed273">jsonrpc::endpoint::Dispatcher::NotificationHandler</a></div><div class="ttdeci">std::function&lt; asio::awaitable&lt; void &gt;( const std::optional&lt; nlohmann::json &gt; &amp;)&gt; NotificationHandler</div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8hpp_source.html#l00019">dispatcher.hpp:19</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Dispatcher_html_a91858af35b7e497e6e422eaafca49d9f"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a91858af35b7e497e6e422eaafca49d9f">jsonrpc::endpoint::Dispatcher::RegisterMethodCall</a></div><div class="ttdeci">void RegisterMethodCall(const std::string &amp;method, const MethodCallHandler &amp;handler)</div><div class="ttdoc">Register a method call handler.</div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8cpp_source.html#l00012">dispatcher.cpp:12</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Request_html"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Request.html">jsonrpc::endpoint::Request</a></div><div class="ttdoc">Represents a JSON-RPC request.</div><div class="ttdef"><b>Definition</b> <a href="request_8hpp_source.html#l00020">request.hpp:20</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Request_html_ab06a29b8ccbf8d947e8640c776f9031c"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Request.html#ab06a29b8ccbf8d947e8640c776f9031c">jsonrpc::endpoint::Request::Dump</a></div><div class="ttdeci">auto Dump() const -&gt; std::string</div><div class="ttdoc">Serializes the request to a JSON string.</div><div class="ttdef"><b>Definition</b> <a href="request_8cpp_source.html#l00089">request.cpp:89</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a11eda408849ab4ed64cd0b09b69abec0"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a11eda408849ab4ed64cd0b09b69abec0">jsonrpc::endpoint::RpcEndpoint::CallMethod</a></div><div class="ttdeci">auto CallMethod(const std::string &amp;method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; nlohmann::json &gt;</div><div class="ttdoc">Call a method on the remote endpoint.</div><div class="ttdef"><b>Definition</b> <a href="#l00098">endpoint.cpp:98</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a24d6c86a7264e87c58a0dd0881d6a6fb"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a24d6c86a7264e87c58a0dd0881d6a6fb">jsonrpc::endpoint::RpcEndpoint::RpcEndpoint</a></div><div class="ttdeci">RpcEndpoint(asio::io_context &amp;io_ctx, std::unique_ptr&lt; transport::Transport &gt; transport)</div><div class="ttdoc">Construct a new RPC endpoint.</div><div class="ttdef"><b>Definition</b> <a href="#l00013">endpoint.cpp:13</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a113ad564ae93fa71ccc9d9521196f1f7"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a113ad564ae93fa71ccc9d9521196f1f7">jsonrpc::endpoint::RpcEndpoint::SendNotification</a></div><div class="ttdeci">auto SendNotification(std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; void &gt;</div><div class="ttdoc">Send a notification to the remote endpoint.</div><div class="ttdef"><b>Definition</b> <a href="#l00143">endpoint.cpp:143</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a3de3f9bf52bd1714c5fcd9399134e8bf"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a3de3f9bf52bd1714c5fcd9399134e8bf">jsonrpc::endpoint::RpcEndpoint::Start</a></div><div class="ttdeci">auto Start() -&gt; asio::awaitable&lt; void &gt;</div><div class="ttdoc">Start the endpoint.</div><div class="ttdef"><b>Definition</b> <a href="#l00042">endpoint.cpp:42</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a41c2da77c0083d740c17679628a35e64"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64">jsonrpc::endpoint::RpcEndpoint::HasPendingRequests</a></div><div class="ttdeci">auto HasPendingRequests() const -&gt; bool</div><div class="ttdoc">Check if there are pending requests.</div><div class="ttdef"><b>Definition</b> <a href="#l00170">endpoint.cpp:170</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a533acb07cd896a41240c40587d652000"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a533acb07cd896a41240c40587d652000">jsonrpc::endpoint::RpcEndpoint::SendNotification</a></div><div class="ttdeci">auto SendNotification(const std::string &amp;method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; void &gt;</div><div class="ttdoc">Send a notification to the remote endpoint.</div><div class="ttdef"><b>Definition</b> <a href="#l00143">endpoint.cpp:143</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a5d7d4df540a187077b05f652e246c051"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5d7d4df540a187077b05f652e246c051">jsonrpc::endpoint::RpcEndpoint::RegisterNotification</a></div><div class="ttdeci">void RegisterNotification(const std::string &amp;method, typename Dispatcher::NotificationHandler handler)</div><div class="ttdoc">Register a notification handler.</div><div class="ttdef"><b>Definition</b> <a href="#l00164">endpoint.cpp:164</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a93b27978503f54019e62443ec359fbc3"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a93b27978503f54019e62443ec359fbc3">jsonrpc::endpoint::RpcEndpoint::SetErrorHandler</a></div><div class="ttdeci">void SetErrorHandler(ErrorHandler handler)</div><div class="ttdoc">Set the error handler.</div><div class="ttdef"><b>Definition</b> <a href="#l00175">endpoint.cpp:175</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_acc5650d94fd4500aa62fca8c3877f675"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acc5650d94fd4500aa62fca8c3877f675">jsonrpc::endpoint::RpcEndpoint::ReportError</a></div><div class="ttdeci">void ReportError(ErrorCode code, const std::string &amp;message)</div><div class="ttdoc">Report an error.</div><div class="ttdef"><b>Definition</b> <a href="#l00179">endpoint.cpp:179</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a41c2da77c0083d740c17679628a35e64"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64">jsonrpc::endpoint::RpcEndpoint::HasPendingRequests</a></div><div class="ttdeci">auto HasPendingRequests() const -&gt; bool</div><div class="ttdoc">Check if there are pending requests.</div><div class="ttdef"><b>Definition</b> <a href="#l00169">endpoint.cpp:169</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a4acd1cc8a4f08518b01df7a1bd5947e2"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a4acd1cc8a4f08518b01df7a1bd5947e2">jsonrpc::endpoint::RpcEndpoint::RpcEndpoint</a></div><div class="ttdeci">RpcEndpoint(asio::any_io_executor executor, std::unique_ptr&lt; transport::Transport &gt; transport)</div><div class="ttdoc">Construct a new RPC endpoint.</div><div class="ttdef"><b>Definition</b> <a href="#l00013">endpoint.cpp:13</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a6053eaa8e69ea06e11a7c70a371e4562"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6053eaa8e69ea06e11a7c70a371e4562">jsonrpc::endpoint::RpcEndpoint::SendMethodCall</a></div><div class="ttdeci">auto SendMethodCall(std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; nlohmann::json &gt;</div><div class="ttdoc">Call a method on the remote endpoint.</div><div class="ttdef"><b>Definition</b> <a href="#l00098">endpoint.cpp:98</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a6abb39be0165c3d20d79974dc00accc7"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6abb39be0165c3d20d79974dc00accc7">jsonrpc::endpoint::RpcEndpoint::RegisterNotification</a></div><div class="ttdeci">void RegisterNotification(std::string method, typename Dispatcher::NotificationHandler handler)</div><div class="ttdoc">Register a notification handler.</div><div class="ttdef"><b>Definition</b> <a href="#l00164">endpoint.cpp:164</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a9220c74ca4539ec5b98d620555c30691"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a9220c74ca4539ec5b98d620555c30691">jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall</a></div><div class="ttdeci">void RegisterMethodCall(std::string method, typename Dispatcher::MethodCallHandler handler)</div><div class="ttdoc">Register a method call handler.</div><div class="ttdef"><b>Definition</b> <a href="#l00159">endpoint.cpp:159</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a93b27978503f54019e62443ec359fbc3"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a93b27978503f54019e62443ec359fbc3">jsonrpc::endpoint::RpcEndpoint::SetErrorHandler</a></div><div class="ttdeci">void SetErrorHandler(ErrorHandler handler)</div><div class="ttdoc">Set the error handler.</div><div class="ttdef"><b>Definition</b> <a href="#l00174">endpoint.cpp:174</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_acc5650d94fd4500aa62fca8c3877f675"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acc5650d94fd4500aa62fca8c3877f675">jsonrpc::endpoint::RpcEndpoint::ReportError</a></div><div class="ttdeci">void ReportError(ErrorCode code, const std::string &amp;message)</div><div class="ttdoc">Report an error.</div><div class="ttdef"><b>Definition</b> <a href="#l00178">endpoint.cpp:178</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_acf93495d095343f6fa16aff4d26ab17b"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acf93495d095343f6fa16aff4d26ab17b">jsonrpc::endpoint::RpcEndpoint::Shutdown</a></div><div class="ttdeci">auto Shutdown() -&gt; asio::awaitable&lt; void &gt;</div><div class="ttdoc">Shut down the endpoint.</div><div class="ttdef"><b>Definition</b> <a href="#l00077">endpoint.cpp:77</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_add9af2dd89f056069bf83904d3b0ba35"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#add9af2dd89f056069bf83904d3b0ba35">jsonrpc::endpoint::RpcEndpoint::CreateClient</a></div><div class="ttdeci">static auto CreateClient(asio::io_context &amp;io_ctx, std::unique_ptr&lt; transport::Transport &gt; transport) -&gt; asio::awaitable&lt; std::unique_ptr&lt; RpcEndpoint &gt; &gt;</div><div class="ttdoc">Create a client endpoint asynchronously.</div><div class="ttdef"><b>Definition</b> <a href="#l00023">endpoint.cpp:23</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_aebcfc0b69d7d7683dba1e4c79fbecb7b"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aebcfc0b69d7d7683dba1e4c79fbecb7b">jsonrpc::endpoint::RpcEndpoint::CreateClient</a></div><div class="ttdeci">static auto CreateClient(asio::any_io_executor executor, std::unique_ptr&lt; transport::Transport &gt; transport) -&gt; asio::awaitable&lt; std::unique_ptr&lt; RpcEndpoint &gt; &gt;</div><div class="ttdoc">Create a client endpoint asynchronously.</div><div class="ttdef"><b>Definition</b> <a href="#l00022">endpoint.cpp:22</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_aec53ed6d17aad23f0f8ea5c705a339f5"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aec53ed6d17aad23f0f8ea5c705a339f5">jsonrpc::endpoint::RpcEndpoint::WaitForShutdown</a></div><div class="ttdeci">auto WaitForShutdown() -&gt; asio::awaitable&lt; void &gt;</div><div class="ttdoc">Wait for the endpoint to shut down.</div><div class="ttdef"><b>Definition</b> <a href="#l00060">endpoint.cpp:60</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_af040165a60c9f2936e657cc3a8460c40"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#af040165a60c9f2936e657cc3a8460c40">jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall</a></div><div class="ttdeci">void RegisterMethodCall(const std::string &amp;method, typename Dispatcher::MethodCallHandler handler)</div><div class="ttdoc">Register a method call handler.</div><div class="ttdef"><b>Definition</b> <a href="#l00159">endpoint.cpp:159</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcError_html"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcError.html">jsonrpc::endpoint::RpcError</a></div><div class="ttdoc">Exception class for RPC errors.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8hpp_source.html#l00246">endpoint.hpp:246</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1TaskExecutor_html"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1TaskExecutor.html">jsonrpc::endpoint::TaskExecutor</a></div><div class="ttdoc">Handles scheduling of async JSON-RPC tasks.</div><div class="ttdef"><b>Definition</b> <a href="task__executor_8hpp_source.html#l00013">task_executor.hpp:13</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcError_html"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1RpcError.html">jsonrpc::endpoint::RpcError</a></div><div class="ttdoc">Exception class for RPC errors.</div><div class="ttdef"><b>Definition</b> <a href="types_8hpp_source.html#l00054">types.hpp:54</a></div></div>
 <div class="ttc" id="aendpoint_8hpp_html"><div class="ttname"><a href="endpoint_8hpp.html">endpoint.hpp</a></div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html">jsonrpc::endpoint</a></div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8hpp_source.html#l00015">dispatcher.hpp:15</a></div></div>
+<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html">jsonrpc::endpoint</a></div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8hpp_source.html#l00013">dispatcher.hpp:13</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cd"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">jsonrpc::endpoint::ErrorCode</a></div><div class="ttdeci">ErrorCode</div><div class="ttdoc">Standard JSON-RPC 2.0 error codes.</div><div class="ttdef"><b>Definition</b> <a href="types_8hpp_source.html#l00017">types.hpp:17</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">jsonrpc::endpoint::ErrorCode::kInvalidRequest</a></div><div class="ttdeci">@ kInvalidRequest</div><div class="ttdoc">The JSON sent is not a valid Request object.</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_ad5f4eeee8d842f6f0fb8ec293aa0069d"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#ad5f4eeee8d842f6f0fb8ec293aa0069d">jsonrpc::endpoint::ErrorHandler</a></div><div class="ttdeci">std::function&lt; void(ErrorCode, const std::string &amp;)&gt; ErrorHandler</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8hpp_source.html#l00025">endpoint.hpp:25</a></div></div>
+<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_ad5f4eeee8d842f6f0fb8ec293aa0069d"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#ad5f4eeee8d842f6f0fb8ec293aa0069d">jsonrpc::endpoint::ErrorHandler</a></div><div class="ttdeci">std::function&lt; void(ErrorCode, const std::string &amp;)&gt; ErrorHandler</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8hpp_source.html#l00023">endpoint.hpp:23</a></div></div>
 <div class="ttc" id="arequest_8hpp_html"><div class="ttname"><a href="request_8hpp.html">request.hpp</a></div></div>
 <div class="ttc" id="aresponse_8hpp_html"><div class="ttname"><a href="response_8hpp.html">response.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -1,9 +1,0 @@
-<map id="include/jsonrpc/endpoint/task_executor.hpp" name="include/jsonrpc/endpoint/task_executor.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="70,5,251,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,97,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,48,80,87,77,83,133,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="122,93,199,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="163,46,163,79,158,79,158,46"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="223,93,370,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="195,43,266,84,263,89,192,48"/>
-</map>

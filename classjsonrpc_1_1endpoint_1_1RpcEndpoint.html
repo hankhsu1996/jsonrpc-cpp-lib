@@ -132,9 +132,9 @@ Collaboration diagram for jsonrpc::endpoint::RpcEndpoint:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a24d6c86a7264e87c58a0dd0881d6a6fb" id="r_a24d6c86a7264e87c58a0dd0881d6a6fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24d6c86a7264e87c58a0dd0881d6a6fb">RpcEndpoint</a> (asio::io_context &amp;io_ctx, std::unique_ptr&lt; <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">transport::Transport</a> &gt; transport)</td></tr>
-<tr class="memdesc:a24d6c86a7264e87c58a0dd0881d6a6fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new RPC endpoint.  <br /></td></tr>
-<tr class="separator:a24d6c86a7264e87c58a0dd0881d6a6fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4acd1cc8a4f08518b01df7a1bd5947e2" id="r_a4acd1cc8a4f08518b01df7a1bd5947e2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4acd1cc8a4f08518b01df7a1bd5947e2">RpcEndpoint</a> (asio::any_io_executor executor, std::unique_ptr&lt; <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">transport::Transport</a> &gt; transport)</td></tr>
+<tr class="memdesc:a4acd1cc8a4f08518b01df7a1bd5947e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new RPC endpoint.  <br /></td></tr>
+<tr class="separator:a4acd1cc8a4f08518b01df7a1bd5947e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87e00ed72fe74f85e192c3971367018c" id="r_a87e00ed72fe74f85e192c3971367018c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87e00ed72fe74f85e192c3971367018c">RpcEndpoint</a> (const <a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">RpcEndpoint</a> &amp;)=delete</td></tr>
 <tr class="separator:a87e00ed72fe74f85e192c3971367018c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ba351ea31bda43fc5ef1e62718dd523" id="r_a2ba351ea31bda43fc5ef1e62718dd523"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ba351ea31bda43fc5ef1e62718dd523">operator=</a> (const <a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">RpcEndpoint</a> &amp;) -&gt; <a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">RpcEndpoint</a> &amp;=delete</td></tr>
@@ -158,18 +158,34 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae3ce7f968e4da001e1c2c18c03e8a69" id="r_aae3ce7f968e4da001e1c2c18c03e8a69"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae3ce7f968e4da001e1c2c18c03e8a69">IsRunning</a> () const -&gt; bool</td></tr>
 <tr class="memdesc:aae3ce7f968e4da001e1c2c18c03e8a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the endpoint is running.  <br /></td></tr>
 <tr class="separator:aae3ce7f968e4da001e1c2c18c03e8a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11eda408849ab4ed64cd0b09b69abec0" id="r_a11eda408849ab4ed64cd0b09b69abec0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11eda408849ab4ed64cd0b09b69abec0">CallMethod</a> (const std::string &amp;method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; nlohmann::json &gt;</td></tr>
-<tr class="memdesc:a11eda408849ab4ed64cd0b09b69abec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a method on the remote endpoint.  <br /></td></tr>
-<tr class="separator:a11eda408849ab4ed64cd0b09b69abec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a533acb07cd896a41240c40587d652000" id="r_a533acb07cd896a41240c40587d652000"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a533acb07cd896a41240c40587d652000">SendNotification</a> (const std::string &amp;method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; void &gt;</td></tr>
-<tr class="memdesc:a533acb07cd896a41240c40587d652000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a notification to the remote endpoint.  <br /></td></tr>
-<tr class="separator:a533acb07cd896a41240c40587d652000"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af040165a60c9f2936e657cc3a8460c40" id="r_af040165a60c9f2936e657cc3a8460c40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af040165a60c9f2936e657cc3a8460c40">RegisterMethodCall</a> (const std::string &amp;method, typename <a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3a3802aa9defd66e5fca9f8236d72a19">Dispatcher::MethodCallHandler</a> handler)</td></tr>
-<tr class="memdesc:af040165a60c9f2936e657cc3a8460c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a method call handler.  <br /></td></tr>
-<tr class="separator:af040165a60c9f2936e657cc3a8460c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d7d4df540a187077b05f652e246c051" id="r_a5d7d4df540a187077b05f652e246c051"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d7d4df540a187077b05f652e246c051">RegisterNotification</a> (const std::string &amp;method, typename <a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59ec448d0eeb1c0515ada640b55ed273">Dispatcher::NotificationHandler</a> handler)</td></tr>
-<tr class="memdesc:a5d7d4df540a187077b05f652e246c051"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a notification handler.  <br /></td></tr>
-<tr class="separator:a5d7d4df540a187077b05f652e246c051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6053eaa8e69ea06e11a7c70a371e4562" id="r_a6053eaa8e69ea06e11a7c70a371e4562"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6053eaa8e69ea06e11a7c70a371e4562">SendMethodCall</a> (std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; nlohmann::json &gt;</td></tr>
+<tr class="memdesc:a6053eaa8e69ea06e11a7c70a371e4562"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a method on the remote endpoint.  <br /></td></tr>
+<tr class="separator:a6053eaa8e69ea06e11a7c70a371e4562"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09c709db772bdeabd666319f3f56e825" id="r_a09c709db772bdeabd666319f3f56e825"><td class="memTemplParams" colspan="2">template&lt;typename ParamsType , typename ResultType &gt; </td></tr>
+<tr class="memitem:a09c709db772bdeabd666319f3f56e825"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a09c709db772bdeabd666319f3f56e825">SendMethodCall</a> (std::string method, ParamsType params) -&gt; asio::awaitable&lt; ResultType &gt;</td></tr>
+<tr class="memdesc:a09c709db772bdeabd666319f3f56e825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a method on the remote endpoint with typed params and result.  <br /></td></tr>
+<tr class="separator:a09c709db772bdeabd666319f3f56e825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a113ad564ae93fa71ccc9d9521196f1f7" id="r_a113ad564ae93fa71ccc9d9521196f1f7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a113ad564ae93fa71ccc9d9521196f1f7">SendNotification</a> (std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; void &gt;</td></tr>
+<tr class="memdesc:a113ad564ae93fa71ccc9d9521196f1f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a notification to the remote endpoint.  <br /></td></tr>
+<tr class="separator:a113ad564ae93fa71ccc9d9521196f1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e68952edb51803464a37f547e931188" id="r_a9e68952edb51803464a37f547e931188"><td class="memTemplParams" colspan="2">template&lt;typename ParamsType &gt; </td></tr>
+<tr class="memitem:a9e68952edb51803464a37f547e931188"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9e68952edb51803464a37f547e931188">SendNotification</a> (std::string method, ParamsType params) -&gt; asio::awaitable&lt; void &gt;</td></tr>
+<tr class="memdesc:a9e68952edb51803464a37f547e931188"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a notification to the remote endpoint with typed params.  <br /></td></tr>
+<tr class="separator:a9e68952edb51803464a37f547e931188"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9220c74ca4539ec5b98d620555c30691" id="r_a9220c74ca4539ec5b98d620555c30691"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9220c74ca4539ec5b98d620555c30691">RegisterMethodCall</a> (std::string method, typename <a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3a3802aa9defd66e5fca9f8236d72a19">Dispatcher::MethodCallHandler</a> handler)</td></tr>
+<tr class="memdesc:a9220c74ca4539ec5b98d620555c30691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a method call handler.  <br /></td></tr>
+<tr class="separator:a9220c74ca4539ec5b98d620555c30691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63f75f11bad8818680eb671da4f0d987" id="r_a63f75f11bad8818680eb671da4f0d987"><td class="memTemplParams" colspan="2">template&lt;typename ParamsType , typename ResultType &gt; </td></tr>
+<tr class="memitem:a63f75f11bad8818680eb671da4f0d987"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a63f75f11bad8818680eb671da4f0d987">RegisterMethodCall</a> (std::string method, std::function&lt; asio::awaitable&lt; ResultType &gt;(ParamsType)&gt; handler)</td></tr>
+<tr class="memdesc:a63f75f11bad8818680eb671da4f0d987"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a typed method call handler.  <br /></td></tr>
+<tr class="separator:a63f75f11bad8818680eb671da4f0d987"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6abb39be0165c3d20d79974dc00accc7" id="r_a6abb39be0165c3d20d79974dc00accc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6abb39be0165c3d20d79974dc00accc7">RegisterNotification</a> (std::string method, typename <a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59ec448d0eeb1c0515ada640b55ed273">Dispatcher::NotificationHandler</a> handler)</td></tr>
+<tr class="memdesc:a6abb39be0165c3d20d79974dc00accc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a notification handler.  <br /></td></tr>
+<tr class="separator:a6abb39be0165c3d20d79974dc00accc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a839b5fdea0e29d2d199132b7075065d9" id="r_a839b5fdea0e29d2d199132b7075065d9"><td class="memTemplParams" colspan="2">template&lt;typename ParamsType &gt; </td></tr>
+<tr class="memitem:a839b5fdea0e29d2d199132b7075065d9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a839b5fdea0e29d2d199132b7075065d9">RegisterNotification</a> (std::string method, std::function&lt; asio::awaitable&lt; void &gt;(ParamsType)&gt; handler)</td></tr>
+<tr class="memdesc:a839b5fdea0e29d2d199132b7075065d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a typed notification handler.  <br /></td></tr>
+<tr class="separator:a839b5fdea0e29d2d199132b7075065d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41c2da77c0083d740c17679628a35e64" id="r_a41c2da77c0083d740c17679628a35e64"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41c2da77c0083d740c17679628a35e64">HasPendingRequests</a> () const -&gt; bool</td></tr>
 <tr class="memdesc:a41c2da77c0083d740c17679628a35e64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if there are pending requests.  <br /></td></tr>
 <tr class="separator:a41c2da77c0083d740c17679628a35e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,18 +198,18 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:add9af2dd89f056069bf83904d3b0ba35" id="r_add9af2dd89f056069bf83904d3b0ba35"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add9af2dd89f056069bf83904d3b0ba35">CreateClient</a> (asio::io_context &amp;io_ctx, std::unique_ptr&lt; <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">transport::Transport</a> &gt; transport) -&gt; asio::awaitable&lt; std::unique_ptr&lt; <a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">RpcEndpoint</a> &gt; &gt;</td></tr>
-<tr class="memdesc:add9af2dd89f056069bf83904d3b0ba35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a client endpoint asynchronously.  <br /></td></tr>
-<tr class="separator:add9af2dd89f056069bf83904d3b0ba35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebcfc0b69d7d7683dba1e4c79fbecb7b" id="r_aebcfc0b69d7d7683dba1e4c79fbecb7b"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebcfc0b69d7d7683dba1e4c79fbecb7b">CreateClient</a> (asio::any_io_executor executor, std::unique_ptr&lt; <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">transport::Transport</a> &gt; transport) -&gt; asio::awaitable&lt; std::unique_ptr&lt; <a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">RpcEndpoint</a> &gt; &gt;</td></tr>
+<tr class="memdesc:aebcfc0b69d7d7683dba1e4c79fbecb7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a client endpoint asynchronously.  <br /></td></tr>
+<tr class="separator:aebcfc0b69d7d7683dba1e4c79fbecb7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>RPC endpoint for sending and receiving JSON-RPC messages. </p>
 <p>This class provides a JSON-RPC endpoint that can be used to call methods on a remote endpoint and register method handlers for handling incoming requests. </p>
 
-<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00034">34</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00032">32</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a24d6c86a7264e87c58a0dd0881d6a6fb" name="a24d6c86a7264e87c58a0dd0881d6a6fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24d6c86a7264e87c58a0dd0881d6a6fb">&#9670;&#160;</a></span>RpcEndpoint() <span class="overload">[1/3]</span></h2>
+<a id="a4acd1cc8a4f08518b01df7a1bd5947e2" name="a4acd1cc8a4f08518b01df7a1bd5947e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4acd1cc8a4f08518b01df7a1bd5947e2">&#9670;&#160;</a></span>RpcEndpoint() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,7 +220,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">jsonrpc::endpoint::RpcEndpoint::RpcEndpoint </td>
           <td>(</td>
-          <td class="paramtype">asio::io_context &amp;</td>          <td class="paramname"><span class="paramname"><em>io_ctx</em></span>, </td>
+          <td class="paramtype">asio::any_io_executor</td>          <td class="paramname"><span class="paramname"><em>executor</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -222,20 +238,18 @@ Static Public Member Functions</h2></td></tr>
 <p>Construct a new RPC endpoint. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">io_ctx</td><td>The IO context to use </td></tr>
+    <tr><td class="paramname">executor</td><td>The executor to use </td></tr>
     <tr><td class="paramname">transport</td><td>The transport layer to use </td></tr>
   </table>
   </dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00013">13</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   15</span>    : io_ctx_(io_ctx),</div>
-<div class="line"><span class="lineno">   16</span>      transport_(std::move(transport)),</div>
-<div class="line"><span class="lineno">   17</span>      task_executor_(</div>
-<div class="line"><span class="lineno">   18</span>          std::make_shared&lt;TaskExecutor&gt;(4)),  <span class="comment">// Use 4 threads by default</span></div>
-<div class="line"><span class="lineno">   19</span>      dispatcher_(task_executor_),</div>
-<div class="line"><span class="lineno">   20</span>      endpoint_strand_(asio::make_strand(io_ctx.get_executor())) {</div>
-<div class="line"><span class="lineno">   21</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>    : executor_(std::move(executor)),</div>
+<div class="line"><span class="lineno">   17</span>      transport_(std::move(transport)),</div>
+<div class="line"><span class="lineno">   18</span>      dispatcher_(executor_),</div>
+<div class="line"><span class="lineno">   19</span>      endpoint_strand_(asio::make_strand(executor_)) {</div>
+<div class="line"><span class="lineno">   20</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -317,92 +331,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a11eda408849ab4ed64cd0b09b69abec0" name="a11eda408849ab4ed64cd0b09b69abec0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11eda408849ab4ed64cd0b09b69abec0">&#9670;&#160;</a></span>CallMethod()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto jsonrpc::endpoint::RpcEndpoint::CallMethod </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::optional&lt; nlohmann::json &gt;</td>          <td class="paramname"><span class="paramname"><em>params</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::nullopt</span>&#160;) -&gt; asio::awaitable&lt;nlohmann::json&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Call a method on the remote endpoint. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">method</td><td>The method name </td></tr>
-    <tr><td class="paramname">params</td><td>The method parameters (optional) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>asio::awaitable&lt;nlohmann::json&gt; The result </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00098">98</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  100</span>                                                                     {</div>
-<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (!is_running_) {</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RPC endpoint is not running&quot;</span>);</div>
-<div class="line"><span class="lineno">  103</span>  }</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  <span class="comment">// Get request ID from the executor context (thread-safe)</span></div>
-<div class="line"><span class="lineno">  106</span>  <span class="keyword">auto</span> request_id = GetNextRequestId();</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>  <span class="comment">// Create the request message</span></div>
-<div class="line"><span class="lineno">  109</span>  Request request(method, std::move(params), request_id);</div>
-<div class="line"><span class="lineno">  110</span>  std::string message = request.Dump();</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>  <span class="comment">// Create a pending request</span></div>
-<div class="line"><span class="lineno">  113</span>  <span class="keyword">auto</span> pending_request = std::make_shared&lt;PendingRequest&gt;(endpoint_strand_);</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>  <span class="comment">// Store the pending request under strand protection</span></div>
-<div class="line"><span class="lineno">  116</span>  asio::post(</div>
-<div class="line"><span class="lineno">  117</span>      endpoint_strand_, [<span class="keyword">this</span>, <span class="keywordtype">id</span> = request_id, req = pending_request]() {</div>
-<div class="line"><span class="lineno">  118</span>        pending_requests_[id] = req;</div>
-<div class="line"><span class="lineno">  119</span>      });</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>  <span class="comment">// Send the request</span></div>
-<div class="line"><span class="lineno">  122</span>  <span class="keyword">co_await</span> transport_-&gt;SendMessage(message);</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>  <span class="comment">// Await the result</span></div>
-<div class="line"><span class="lineno">  125</span>  <span class="keyword">auto</span> result = <span class="keyword">co_await</span> pending_request-&gt;GetResult();</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>  <span class="comment">// Check if the result contains an error</span></div>
-<div class="line"><span class="lineno">  128</span>  <span class="keywordflow">if</span> (result.contains(<span class="stringliteral">&quot;error&quot;</span>)) {</div>
-<div class="line"><span class="lineno">  129</span>    <span class="comment">// Extract error details</span></div>
-<div class="line"><span class="lineno">  130</span>    <span class="keyword">auto</span> error = result[<span class="stringliteral">&quot;error&quot;</span>];</div>
-<div class="line"><span class="lineno">  131</span>    <span class="keywordtype">int</span> code = error[<span class="stringliteral">&quot;code&quot;</span>].get&lt;<span class="keywordtype">int</span>&gt;();</div>
-<div class="line"><span class="lineno">  132</span>    std::string msg = error[<span class="stringliteral">&quot;message&quot;</span>].get&lt;std::string&gt;();</div>
-<div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span>    <span class="comment">// Report and throw</span></div>
-<div class="line"><span class="lineno">  135</span>    <a class="code hl_function" href="#acc5650d94fd4500aa62fca8c3877f675">ReportError</a>(<span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a><span class="keyword">&gt;</span>(code), msg);</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">throw</span> RpcError(<span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a><span class="keyword">&gt;</span>(code), msg);</div>
-<div class="line"><span class="lineno">  137</span>  }</div>
-<div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>  <span class="comment">// Return the result</span></div>
-<div class="line"><span class="lineno">  140</span>  <span class="keyword">co_return</span> result[<span class="stringliteral">&quot;result&quot;</span>];</div>
-<div class="line"><span class="lineno">  141</span>}</div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_acc5650d94fd4500aa62fca8c3877f675"><div class="ttname"><a href="#acc5650d94fd4500aa62fca8c3877f675">jsonrpc::endpoint::RpcEndpoint::ReportError</a></div><div class="ttdeci">void ReportError(ErrorCode code, const std::string &amp;message)</div><div class="ttdoc">Report an error.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8cpp_source.html#l00179">endpoint.cpp:179</a></div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cd"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">jsonrpc::endpoint::ErrorCode</a></div><div class="ttdeci">ErrorCode</div><div class="ttdoc">Standard JSON-RPC 2.0 error codes.</div><div class="ttdef"><b>Definition</b> <a href="types_8hpp_source.html#l00017">types.hpp:17</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="request_8cpp_source.html#l00089">jsonrpc::endpoint::Request::Dump()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a11eda408849ab4ed64cd0b09b69abec0_cgraph.svg" width="578" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="add9af2dd89f056069bf83904d3b0ba35" name="add9af2dd89f056069bf83904d3b0ba35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add9af2dd89f056069bf83904d3b0ba35">&#9670;&#160;</a></span>CreateClient()</h2>
+<a id="aebcfc0b69d7d7683dba1e4c79fbecb7b" name="aebcfc0b69d7d7683dba1e4c79fbecb7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebcfc0b69d7d7683dba1e4c79fbecb7b">&#9670;&#160;</a></span>CreateClient()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -413,7 +343,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">auto jsonrpc::endpoint::RpcEndpoint::CreateClient </td>
           <td>(</td>
-          <td class="paramtype">asio::io_context &amp;</td>          <td class="paramname"><span class="paramname"><em>io_ctx</em></span>, </td>
+          <td class="paramtype">asio::any_io_executor</td>          <td class="paramname"><span class="paramname"><em>executor</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -432,17 +362,17 @@ Here is the call graph for this function:</div>
 <p>Creates and initializes a client endpoint. The returned awaitable resolves when the endpoint is fully initialized and ready to use.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">io_ctx</td><td>The IO context to use </td></tr>
+    <tr><td class="paramname">executor</td><td>The executor to use </td></tr>
     <tr><td class="paramname">transport</td><td>The transport layer to use </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>asio::awaitable&lt;std::unique_ptr&lt;RpcEndpoint&gt;&gt; Awaitable that resolves to the initialized client </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00023">23</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00022">22</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   25</span>                                                 {</div>
 <div class="line"><span class="lineno">   26</span>  <span class="comment">// Create the endpoint</span></div>
-<div class="line"><span class="lineno">   27</span>  <span class="keyword">auto</span> endpoint = std::make_unique&lt;RpcEndpoint&gt;(io_ctx, std::move(transport));</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keyword">auto</span> endpoint = std::make_unique&lt;RpcEndpoint&gt;(executor, std::move(transport));</div>
 <div class="line"><span class="lineno">   28</span> </div>
 <div class="line"><span class="lineno">   29</span>  <span class="comment">// Start the endpoint and wait for it to be ready</span></div>
 <div class="line"><span class="lineno">   30</span>  <span class="keywordflow">try</span> {</div>
@@ -485,11 +415,11 @@ Here is the call graph for this function:</div>
 <p>Check if there are pending requests. </p>
 <dl class="section return"><dt>Returns</dt><dd>bool True if there are pending requests, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00170">170</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  170</span>                                                   {</div>
-<div class="line"><span class="lineno">  171</span>  <span class="comment">// This is safe to call without a strand because we&#39;re just checking if empty</span></div>
-<div class="line"><span class="lineno">  172</span>  <span class="keywordflow">return</span> !pending_requests_.empty();</div>
-<div class="line"><span class="lineno">  173</span>}</div>
+<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00169">169</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  169</span>                                                   {</div>
+<div class="line"><span class="lineno">  170</span>  <span class="comment">// This is safe to call without a strand because we&#39;re just checking if empty</span></div>
+<div class="line"><span class="lineno">  171</span>  <span class="keywordflow">return</span> !pending_requests_.empty();</div>
+<div class="line"><span class="lineno">  172</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -519,10 +449,10 @@ Here is the call graph for this function:</div>
 <p>Check if the endpoint is running. </p>
 <dl class="section return"><dt>Returns</dt><dd>bool True if running, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00104">104</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>                                               {</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">return</span> is_running_.load();</div>
-<div class="line"><span class="lineno">  106</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00103">103</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span>                                               {</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> is_running_.load();</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -576,8 +506,73 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="af040165a60c9f2936e657cc3a8460c40" name="af040165a60c9f2936e657cc3a8460c40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af040165a60c9f2936e657cc3a8460c40">&#9670;&#160;</a></span>RegisterMethodCall()</h2>
+<a id="a63f75f11bad8818680eb671da4f0d987" name="a63f75f11bad8818680eb671da4f0d987"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63f75f11bad8818680eb671da4f0d987">&#9670;&#160;</a></span>RegisterMethodCall() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ParamsType , typename ResultType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall </td>
+          <td>(</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; asio::awaitable&lt; ResultType &gt;(ParamsType)&gt;</td>          <td class="paramname"><span class="paramname"><em>handler</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register a typed method call handler. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ParamsType</td><td>The type of the parameters </td></tr>
+    <tr><td class="paramname">ResultType</td><td>The type of the result </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">method</td><td>The method name </td></tr>
+    <tr><td class="paramname">handler</td><td>The handler </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00328">328</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  330</span>                                                                {</div>
+<div class="line"><span class="lineno">  331</span>  <span class="comment">// Create a handler object and store its function object</span></div>
+<div class="line"><span class="lineno">  332</span>  <span class="comment">// NOTE: We use a shared_ptr to ensure the handler object stays alive</span></div>
+<div class="line"><span class="lineno">  333</span>  <span class="comment">// throughout the entire lifetime of any coroutine that might use it. This</span></div>
+<div class="line"><span class="lineno">  334</span>  <span class="comment">// prevents the use-after-free issues that can occur with lambda captures in</span></div>
+<div class="line"><span class="lineno">  335</span>  <span class="comment">// coroutines.</span></div>
+<div class="line"><span class="lineno">  336</span>  <span class="keyword">auto</span> typed_handler =</div>
+<div class="line"><span class="lineno">  337</span>      std::make_shared&lt;TypedMethodHandler&lt;ParamsType, ResultType&gt;&gt;(</div>
+<div class="line"><span class="lineno">  338</span>          std::move(handler));</div>
+<div class="line"><span class="lineno">  339</span> </div>
+<div class="line"><span class="lineno">  340</span>  <span class="comment">// Register a lambda that calls the handler object</span></div>
+<div class="line"><span class="lineno">  341</span>  <a class="code hl_function" href="#a9220c74ca4539ec5b98d620555c30691">RegisterMethodCall</a>(</div>
+<div class="line"><span class="lineno">  342</span>      method,</div>
+<div class="line"><span class="lineno">  343</span>      [handler = std::move(typed_handler)](</div>
+<div class="line"><span class="lineno">  344</span>          std::optional&lt;nlohmann::json&gt; params) { <span class="keywordflow">return</span> (*handler)(params); });</div>
+<div class="line"><span class="lineno">  345</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a9220c74ca4539ec5b98d620555c30691"><div class="ttname"><a href="#a9220c74ca4539ec5b98d620555c30691">jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall</a></div><div class="ttdeci">void RegisterMethodCall(std::string method, typename Dispatcher::MethodCallHandler handler)</div><div class="ttdoc">Register a method call handler.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8cpp_source.html#l00159">endpoint.cpp:159</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="endpoint_8cpp_source.html#l00159">RegisterMethodCall()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a63f75f11bad8818680eb671da4f0d987_cgraph.svg" width="812" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9220c74ca4539ec5b98d620555c30691" name="a9220c74ca4539ec5b98d620555c30691"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9220c74ca4539ec5b98d620555c30691">&#9670;&#160;</a></span>RegisterMethodCall() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -585,7 +580,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">void jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -605,22 +600,91 @@ Here is the call graph for this function:</div>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00159">159</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  160</span>                                                                           {</div>
+<div class="fragment"><div class="line"><span class="lineno">  160</span>                                                                    {</div>
 <div class="line"><span class="lineno">  161</span>  dispatcher_.<a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a91858af35b7e497e6e422eaafca49d9f">RegisterMethodCall</a>(method, handler);</div>
 <div class="line"><span class="lineno">  162</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Dispatcher_html_a91858af35b7e497e6e422eaafca49d9f"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a91858af35b7e497e6e422eaafca49d9f">jsonrpc::endpoint::Dispatcher::RegisterMethodCall</a></div><div class="ttdeci">void RegisterMethodCall(const std::string &amp;method, const MethodCallHandler &amp;handler)</div><div class="ttdoc">Register a method call handler.</div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8cpp_source.html#l00012">dispatcher.cpp:12</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="dispatcher_8cpp_source.html#l00012">jsonrpc::endpoint::Dispatcher::RegisterMethodCall()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="endpoint_8hpp_source.html#l00328">RegisterMethodCall()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_af040165a60c9f2936e657cc3a8460c40_cgraph.svg" width="526" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a9220c74ca4539ec5b98d620555c30691_cgraph.svg" width="526" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a9220c74ca4539ec5b98d620555c30691_icgraph.svg" width="536" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a5d7d4df540a187077b05f652e246c051" name="a5d7d4df540a187077b05f652e246c051"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d7d4df540a187077b05f652e246c051">&#9670;&#160;</a></span>RegisterNotification()</h2>
+<a id="a839b5fdea0e29d2d199132b7075065d9" name="a839b5fdea0e29d2d199132b7075065d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a839b5fdea0e29d2d199132b7075065d9">&#9670;&#160;</a></span>RegisterNotification() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ParamsType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void jsonrpc::endpoint::RpcEndpoint::RegisterNotification </td>
+          <td>(</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; asio::awaitable&lt; void &gt;(ParamsType)&gt;</td>          <td class="paramname"><span class="paramname"><em>handler</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register a typed notification handler. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ParamsType</td><td>The type of the parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">method</td><td>The method name </td></tr>
+    <tr><td class="paramname">handler</td><td>The handler </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00348">348</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  350</span>                                                          {</div>
+<div class="line"><span class="lineno">  351</span>  <span class="comment">// Create a handler object and store its function object</span></div>
+<div class="line"><span class="lineno">  352</span>  <span class="comment">// NOTE: Using a class-based approach with shared_ptr ownership guarantees</span></div>
+<div class="line"><span class="lineno">  353</span>  <span class="comment">// the handler remains valid even when coroutines are suspended and resumed,</span></div>
+<div class="line"><span class="lineno">  354</span>  <span class="comment">// which is safer than direct lambda captures that may go out of scope.</span></div>
+<div class="line"><span class="lineno">  355</span>  <span class="keyword">auto</span> typed_handler = std::make_shared&lt;TypedNotificationHandler&lt;ParamsType&gt;&gt;(</div>
+<div class="line"><span class="lineno">  356</span>      std::move(handler));</div>
+<div class="line"><span class="lineno">  357</span> </div>
+<div class="line"><span class="lineno">  358</span>  <span class="comment">// Register a lambda that calls the handler object</span></div>
+<div class="line"><span class="lineno">  359</span>  <a class="code hl_function" href="#a6abb39be0165c3d20d79974dc00accc7">RegisterNotification</a>(</div>
+<div class="line"><span class="lineno">  360</span>      method,</div>
+<div class="line"><span class="lineno">  361</span>      [handler = std::move(typed_handler)](</div>
+<div class="line"><span class="lineno">  362</span>          std::optional&lt;nlohmann::json&gt; params) { <span class="keywordflow">return</span> (*handler)(params); });</div>
+<div class="line"><span class="lineno">  363</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a6abb39be0165c3d20d79974dc00accc7"><div class="ttname"><a href="#a6abb39be0165c3d20d79974dc00accc7">jsonrpc::endpoint::RpcEndpoint::RegisterNotification</a></div><div class="ttdeci">void RegisterNotification(std::string method, typename Dispatcher::NotificationHandler handler)</div><div class="ttdoc">Register a notification handler.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8cpp_source.html#l00164">endpoint.cpp:164</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="endpoint_8cpp_source.html#l00164">RegisterNotification()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a839b5fdea0e29d2d199132b7075065d9_cgraph.svg" width="816" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6abb39be0165c3d20d79974dc00accc7" name="a6abb39be0165c3d20d79974dc00accc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6abb39be0165c3d20d79974dc00accc7">&#9670;&#160;</a></span>RegisterNotification() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -628,7 +692,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">void jsonrpc::endpoint::RpcEndpoint::RegisterNotification </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -648,16 +712,23 @@ Here is the call graph for this function:</div>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00164">164</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  166</span>                                                    {</div>
-<div class="line"><span class="lineno">  167</span>  dispatcher_.<a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957">RegisterNotification</a>(method, handler);</div>
-<div class="line"><span class="lineno">  168</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  165</span>                                                                      {</div>
+<div class="line"><span class="lineno">  166</span>  dispatcher_.<a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957">RegisterNotification</a>(method, handler);</div>
+<div class="line"><span class="lineno">  167</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Dispatcher_html_a3b90ccbbe2b0715fcb9d03865cd5c957"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3b90ccbbe2b0715fcb9d03865cd5c957">jsonrpc::endpoint::Dispatcher::RegisterNotification</a></div><div class="ttdeci">void RegisterNotification(const std::string &amp;method, const NotificationHandler &amp;handler)</div><div class="ttdoc">Register a notification handler.</div><div class="ttdef"><b>Definition</b> <a href="dispatcher_8cpp_source.html#l00017">dispatcher.cpp:17</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="dispatcher_8cpp_source.html#l00017">jsonrpc::endpoint::Dispatcher::RegisterNotification()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="endpoint_8hpp_source.html#l00348">RegisterNotification()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a5d7d4df540a187077b05f652e246c051_cgraph.svg" width="528" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a6abb39be0165c3d20d79974dc00accc7_cgraph.svg" width="528" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a6abb39be0165c3d20d79974dc00accc7_icgraph.svg" width="539" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -690,19 +761,227 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00179">179</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  179</span>                                                                      {</div>
-<div class="line"><span class="lineno">  180</span>  <span class="keywordflow">if</span> (error_handler_) {</div>
-<div class="line"><span class="lineno">  181</span>    error_handler_(code, message);</div>
-<div class="line"><span class="lineno">  182</span>  }</div>
-<div class="line"><span class="lineno">  183</span> </div>
-<div class="line"><span class="lineno">  184</span>  spdlog::error(<span class="stringliteral">&quot;JSON-RPC error ({}): {}&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(code), message);</div>
-<div class="line"><span class="lineno">  185</span>}</div>
+<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00178">178</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  178</span>                                                                      {</div>
+<div class="line"><span class="lineno">  179</span>  <span class="keywordflow">if</span> (error_handler_) {</div>
+<div class="line"><span class="lineno">  180</span>    error_handler_(code, message);</div>
+<div class="line"><span class="lineno">  181</span>  }</div>
+<div class="line"><span class="lineno">  182</span> </div>
+<div class="line"><span class="lineno">  183</span>  spdlog::error(<span class="stringliteral">&quot;JSON-RPC error ({}): {}&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(code), message);</div>
+<div class="line"><span class="lineno">  184</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a533acb07cd896a41240c40587d652000" name="a533acb07cd896a41240c40587d652000"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a533acb07cd896a41240c40587d652000">&#9670;&#160;</a></span>SendNotification()</h2>
+<a id="a09c709db772bdeabd666319f3f56e825" name="a09c709db772bdeabd666319f3f56e825"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09c709db772bdeabd666319f3f56e825">&#9670;&#160;</a></span>SendMethodCall() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ParamsType , typename ResultType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto jsonrpc::endpoint::RpcEndpoint::SendMethodCall </td>
+          <td>(</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ParamsType</td>          <td class="paramname"><span class="paramname"><em>params</em></span>&#160;) -&gt; asio::awaitable&lt;ResultType&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Call a method on the remote endpoint with typed params and result. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ParamsType</td><td>The type of the parameters </td></tr>
+    <tr><td class="paramname">ResultType</td><td>The type of the result </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">method</td><td>The method name </td></tr>
+    <tr><td class="paramname">params</td><td>The method parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>asio::awaitable&lt;ResultType&gt; The typed result </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00284">284</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  285</span>                                 {</div>
+<div class="line"><span class="lineno">  286</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  287</span>    <span class="comment">// Convert typed params to JSON</span></div>
+<div class="line"><span class="lineno">  288</span>    nlohmann::json json_params = params;</div>
+<div class="line"><span class="lineno">  289</span> </div>
+<div class="line"><span class="lineno">  290</span>    <span class="comment">// Call the method</span></div>
+<div class="line"><span class="lineno">  291</span>    nlohmann::json result = <span class="keyword">co_await</span> <a class="code hl_function" href="#a6053eaa8e69ea06e11a7c70a371e4562">SendMethodCall</a>(method, json_params);</div>
+<div class="line"><span class="lineno">  292</span> </div>
+<div class="line"><span class="lineno">  293</span>    <span class="comment">// Convert result to typed result</span></div>
+<div class="line"><span class="lineno">  294</span>    ResultType typed_result = result.get&lt;ResultType&gt;();</div>
+<div class="line"><span class="lineno">  295</span> </div>
+<div class="line"><span class="lineno">  296</span>    <span class="keyword">co_return</span> typed_result;</div>
+<div class="line"><span class="lineno">  297</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
+<div class="line"><span class="lineno">  298</span>    <span class="comment">// Handle JSON conversion errors</span></div>
+<div class="line"><span class="lineno">  299</span>    <span class="keywordflow">throw</span> RpcError(</div>
+<div class="line"><span class="lineno">  300</span>        <a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">ErrorCode::kInvalidParams</a>,</div>
+<div class="line"><span class="lineno">  301</span>        std::string(<span class="stringliteral">&quot;Result conversion error: &quot;</span>) + ex.what());</div>
+<div class="line"><span class="lineno">  302</span>  }</div>
+<div class="line"><span class="lineno">  303</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a6053eaa8e69ea06e11a7c70a371e4562"><div class="ttname"><a href="#a6053eaa8e69ea06e11a7c70a371e4562">jsonrpc::endpoint::RpcEndpoint::SendMethodCall</a></div><div class="ttdeci">auto SendMethodCall(std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; nlohmann::json &gt;</div><div class="ttdoc">Call a method on the remote endpoint.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8cpp_source.html#l00098">endpoint.cpp:98</a></div></div>
+<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::endpoint::ErrorCode::kInvalidParams</a></div><div class="ttdeci">@ kInvalidParams</div><div class="ttdoc">Invalid method parameter(s)</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::endpoint::kInvalidParams</a>.</p>
+
+</div>
+</div>
+<a id="a6053eaa8e69ea06e11a7c70a371e4562" name="a6053eaa8e69ea06e11a7c70a371e4562"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6053eaa8e69ea06e11a7c70a371e4562">&#9670;&#160;</a></span>SendMethodCall() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto jsonrpc::endpoint::RpcEndpoint::SendMethodCall </td>
+          <td>(</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; nlohmann::json &gt;</td>          <td class="paramname"><span class="paramname"><em>params</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::nullopt</span>&#160;) -&gt; asio::awaitable&lt;nlohmann::json&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Call a method on the remote endpoint. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">method</td><td>The method name </td></tr>
+    <tr><td class="paramname">params</td><td>The method parameters (optional) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>asio::awaitable&lt;nlohmann::json&gt; The result </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00098">98</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>                                   {</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (!is_running_) {</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RPC endpoint is not running&quot;</span>);</div>
+<div class="line"><span class="lineno">  103</span>  }</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>  <span class="comment">// Get request ID from the executor context (thread-safe)</span></div>
+<div class="line"><span class="lineno">  106</span>  <span class="keyword">auto</span> request_id = GetNextRequestId();</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>  <span class="comment">// Create the request message</span></div>
+<div class="line"><span class="lineno">  109</span>  Request request(method, std::move(params), request_id);</div>
+<div class="line"><span class="lineno">  110</span>  std::string message = request.Dump();</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>  <span class="comment">// Create a pending request</span></div>
+<div class="line"><span class="lineno">  113</span>  <span class="keyword">auto</span> pending_request = std::make_shared&lt;PendingRequest&gt;(endpoint_strand_);</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>  <span class="comment">// Store the pending request under strand protection</span></div>
+<div class="line"><span class="lineno">  116</span>  asio::post(</div>
+<div class="line"><span class="lineno">  117</span>      endpoint_strand_, [<span class="keyword">this</span>, <span class="keywordtype">id</span> = request_id, req = pending_request]() {</div>
+<div class="line"><span class="lineno">  118</span>        pending_requests_[id] = req;</div>
+<div class="line"><span class="lineno">  119</span>      });</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>  <span class="comment">// Send the request</span></div>
+<div class="line"><span class="lineno">  122</span>  <span class="keyword">co_await</span> transport_-&gt;SendMessage(message);</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>  <span class="comment">// Await the result</span></div>
+<div class="line"><span class="lineno">  125</span>  <span class="keyword">auto</span> result = <span class="keyword">co_await</span> pending_request-&gt;GetResult();</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span>  <span class="comment">// Check if the result contains an error</span></div>
+<div class="line"><span class="lineno">  128</span>  <span class="keywordflow">if</span> (result.contains(<span class="stringliteral">&quot;error&quot;</span>)) {</div>
+<div class="line"><span class="lineno">  129</span>    <span class="comment">// Extract error details</span></div>
+<div class="line"><span class="lineno">  130</span>    <span class="keyword">auto</span> error = result[<span class="stringliteral">&quot;error&quot;</span>];</div>
+<div class="line"><span class="lineno">  131</span>    <span class="keywordtype">int</span> code = error[<span class="stringliteral">&quot;code&quot;</span>].get&lt;<span class="keywordtype">int</span>&gt;();</div>
+<div class="line"><span class="lineno">  132</span>    std::string msg = error[<span class="stringliteral">&quot;message&quot;</span>].get&lt;std::string&gt;();</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span>    <span class="comment">// Report and throw</span></div>
+<div class="line"><span class="lineno">  135</span>    <a class="code hl_function" href="#acc5650d94fd4500aa62fca8c3877f675">ReportError</a>(<span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a><span class="keyword">&gt;</span>(code), msg);</div>
+<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">throw</span> RpcError(<span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a><span class="keyword">&gt;</span>(code), msg);</div>
+<div class="line"><span class="lineno">  137</span>  }</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>  <span class="comment">// Return the result</span></div>
+<div class="line"><span class="lineno">  140</span>  <span class="keyword">co_return</span> result[<span class="stringliteral">&quot;result&quot;</span>];</div>
+<div class="line"><span class="lineno">  141</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_acc5650d94fd4500aa62fca8c3877f675"><div class="ttname"><a href="#acc5650d94fd4500aa62fca8c3877f675">jsonrpc::endpoint::RpcEndpoint::ReportError</a></div><div class="ttdeci">void ReportError(ErrorCode code, const std::string &amp;message)</div><div class="ttdoc">Report an error.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8cpp_source.html#l00178">endpoint.cpp:178</a></div></div>
+<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cd"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">jsonrpc::endpoint::ErrorCode</a></div><div class="ttdeci">ErrorCode</div><div class="ttdoc">Standard JSON-RPC 2.0 error codes.</div><div class="ttdef"><b>Definition</b> <a href="types_8hpp_source.html#l00017">types.hpp:17</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="request_8cpp_source.html#l00089">jsonrpc::endpoint::Request::Dump()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a6053eaa8e69ea06e11a7c70a371e4562_cgraph.svg" width="610" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9e68952edb51803464a37f547e931188" name="a9e68952edb51803464a37f547e931188"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e68952edb51803464a37f547e931188">&#9670;&#160;</a></span>SendNotification() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ParamsType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto jsonrpc::endpoint::RpcEndpoint::SendNotification </td>
+          <td>(</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ParamsType</td>          <td class="paramname"><span class="paramname"><em>params</em></span>&#160;) -&gt; asio::awaitable&lt;void&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send a notification to the remote endpoint with typed params. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ParamsType</td><td>The type of the parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">method</td><td>The method name </td></tr>
+    <tr><td class="paramname">params</td><td>The method parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>asio::awaitable&lt;void&gt; </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00306">306</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  307</span>                           {</div>
+<div class="line"><span class="lineno">  308</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  309</span>    <span class="comment">// Convert typed params to JSON and send</span></div>
+<div class="line"><span class="lineno">  310</span>    nlohmann::json json_params = params;</div>
+<div class="line"><span class="lineno">  311</span>    <span class="keyword">co_await</span> <a class="code hl_function" href="#a113ad564ae93fa71ccc9d9521196f1f7">SendNotification</a>(method, json_params);</div>
+<div class="line"><span class="lineno">  312</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
+<div class="line"><span class="lineno">  313</span>    <span class="comment">// Log the error but don&#39;t propagate it (notifications are</span></div>
+<div class="line"><span class="lineno">  314</span>    <span class="comment">// fire-and-forget)</span></div>
+<div class="line"><span class="lineno">  315</span>    spdlog::error(</div>
+<div class="line"><span class="lineno">  316</span>        <span class="stringliteral">&quot;Failed to convert parameters for notification method &#39;{}&#39;: {}&quot;</span>, method,</div>
+<div class="line"><span class="lineno">  317</span>        ex.what());</div>
+<div class="line"><span class="lineno">  318</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;ex) {</div>
+<div class="line"><span class="lineno">  319</span>    <span class="comment">// Log any other errors that might occur</span></div>
+<div class="line"><span class="lineno">  320</span>    spdlog::error(</div>
+<div class="line"><span class="lineno">  321</span>        <span class="stringliteral">&quot;Unexpected error in notification method &#39;{}&#39;: {}&quot;</span>, method, ex.what());</div>
+<div class="line"><span class="lineno">  322</span>  }</div>
+<div class="line"><span class="lineno">  323</span>}</div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a113ad564ae93fa71ccc9d9521196f1f7"><div class="ttname"><a href="#a113ad564ae93fa71ccc9d9521196f1f7">jsonrpc::endpoint::RpcEndpoint::SendNotification</a></div><div class="ttdeci">auto SendNotification(std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; void &gt;</div><div class="ttdoc">Send a notification to the remote endpoint.</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8cpp_source.html#l00143">endpoint.cpp:143</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a113ad564ae93fa71ccc9d9521196f1f7" name="a113ad564ae93fa71ccc9d9521196f1f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a113ad564ae93fa71ccc9d9521196f1f7">&#9670;&#160;</a></span>SendNotification() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -710,7 +989,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">auto jsonrpc::endpoint::RpcEndpoint::SendNotification </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>method</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -731,7 +1010,7 @@ Here is the call graph for this function:</div>
 <dl class="section return"><dt>Returns</dt><dd>asio::awaitable&lt;void&gt; </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00143">143</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  145</span>                                                             {</div>
+<div class="fragment"><div class="line"><span class="lineno">  145</span>                           {</div>
 <div class="line"><span class="lineno">  146</span>  <span class="keywordflow">if</span> (!is_running_) {</div>
 <div class="line"><span class="lineno">  147</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RPC endpoint is not running&quot;</span>);</div>
 <div class="line"><span class="lineno">  148</span>  }</div>
@@ -749,7 +1028,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a533acb07cd896a41240c40587d652000_cgraph.svg" width="611" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a113ad564ae93fa71ccc9d9521196f1f7_cgraph.svg" width="611" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -777,10 +1056,10 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00175">175</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  175</span>                                                      {</div>
-<div class="line"><span class="lineno">  176</span>  error_handler_ = std::move(handler);</div>
-<div class="line"><span class="lineno">  177</span>}</div>
+<p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00174">174</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  174</span>                                                      {</div>
+<div class="line"><span class="lineno">  175</span>  error_handler_ = std::move(handler);</div>
+<div class="line"><span class="lineno">  176</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

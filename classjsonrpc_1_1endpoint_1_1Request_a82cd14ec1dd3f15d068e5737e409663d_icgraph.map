@@ -2,8 +2,8 @@
 <area shape="rect" id="Node000001" title="Converts the request to a JSON object." alt="" coords="463,37,605,77"/>
 <area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Request.html#ab06a29b8ccbf8d947e8640c776f9031c" title="Serializes the request to a JSON string." alt="" coords="272,37,415,77"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="449,60,415,60,415,55,449,55"/>
-<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a11eda408849ab4ed64cd0b09b69abec0" title="Call a method on the remote endpoint." alt="" coords="22,5,207,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="258,48,207,41,208,36,258,43"/>
-<area shape="rect" id="Node000004" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a533acb07cd896a41240c40587d652000" title="Send a notification to the remote endpoint." alt="" coords="5,69,224,109"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6053eaa8e69ea06e11a7c70a371e4562" title="Call a method on the remote endpoint." alt="" coords="6,5,223,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="258,48,223,43,224,38,259,43"/>
+<area shape="rect" id="Node000004" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a113ad564ae93fa71ccc9d9521196f1f7" title="Send a notification to the remote endpoint." alt="" coords="5,69,224,109"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="259,72,225,77,224,71,258,67"/>
 </map>

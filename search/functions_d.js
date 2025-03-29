@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['validatejson_0',['ValidateJson',['../classjsonrpc_1_1endpoint_1_1Request.html#aa7400f37a5ac389581a120d935be82a5',1,'jsonrpc::endpoint::Request']]]
+  ['waitforshutdown_0',['WaitForShutdown',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aec53ed6d17aad23f0f8ea5c705a339f5',1,'jsonrpc::endpoint::RpcEndpoint']]]
 ];

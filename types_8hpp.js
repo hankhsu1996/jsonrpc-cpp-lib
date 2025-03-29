@@ -1,5 +1,6 @@
 var types_8hpp =
 [
+    [ "jsonrpc::endpoint::RpcError", "classjsonrpc_1_1endpoint_1_1RpcError.html", "classjsonrpc_1_1endpoint_1_1RpcError" ],
     [ "Handler", "types_8hpp.html#abe1afdee88ee6cd87b6a0e88fdf950dc", null ],
     [ "MethodCallHandler", "types_8hpp.html#a72855eb2a9497623864731bfeecf4e43", null ],
     [ "NotificationHandler", "types_8hpp.html#a0e1ed6cc8bdd42d59dbd41ae9d20a5a7", null ],

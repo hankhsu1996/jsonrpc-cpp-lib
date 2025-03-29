@@ -117,63 +117,65 @@ $(function(){initNavTree('framed__pipe__transport_8cpp_source.html',''); initRes
 <div class="contents">
 <a href="framed__pipe__transport_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="framed__pipe__transport_8hpp.html">jsonrpc/transport/framed_pipe_transport.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;spdlog/spdlog.h&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string_view&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacejsonrpc_1_1transport.html">jsonrpc::transport</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;spdlog/spdlog.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="foldopen" id="foldopen00009" data-start="{" data-end="}">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a82b55ba871a8da2af1af6b4154af7dc9">    9</a></span><a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a82b55ba871a8da2af1af6b4154af7dc9">FramedPipeTransport::FramedPipeTransport</a>(</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    asio::io_context&amp; io_context, <span class="keyword">const</span> std::string&amp; socket_path,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordtype">bool</span> is_server)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    : <a class="code hl_class" href="classjsonrpc_1_1transport_1_1PipeTransport.html">PipeTransport</a>(io_context, socket_path, is_server) {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacejsonrpc_1_1transport.html">jsonrpc::transport</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#abf3b76d5f89755f1c879e0f892d0edc4">   11</a></span><a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#abf3b76d5f89755f1c879e0f892d0edc4">FramedPipeTransport::FramedPipeTransport</a>(</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    asio::any_io_executor executor, <span class="keyword">const</span> std::string&amp; socket_path,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordtype">bool</span> is_server)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    : <a class="code hl_class" href="classjsonrpc_1_1transport_1_1PipeTransport.html">PipeTransport</a>(std::move(executor), socket_path, is_server) {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>}</div>
 </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a6ed894042c0fd33553cb8e5bfdea94f7">   15</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a6ed894042c0fd33553cb8e5bfdea94f7">FramedPipeTransport::SendMessage</a>(<span class="keyword">const</span> std::string&amp; message)</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    -&gt; asio::awaitable&lt;void&gt; {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">auto</span> framed_message = <a class="code hl_function" href="classjsonrpc_1_1transport_1_1MessageFramer.html#a77428a3ab8f933a7767895f21e4ce210">MessageFramer::Frame</a>(message);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">co_await</span> asio::async_write(</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      GetSocket(), asio::buffer(framed_message), asio::use_awaitable);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a773d5b4aff1f58442d3d3560ba526878">   17</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a773d5b4aff1f58442d3d3560ba526878">FramedPipeTransport::SendMessage</a>(std::string message)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    -&gt; asio::awaitable&lt;void&gt; {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">auto</span> framed_message = <a class="code hl_function" href="classjsonrpc_1_1transport_1_1MessageFramer.html#a77428a3ab8f933a7767895f21e4ce210">MessageFramer::Frame</a>(message);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">co_await</span> asio::async_write(</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      GetSocket(), asio::buffer(framed_message), asio::use_awaitable);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>}</div>
 </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a34c6a47bae346443e6a798fc2d4d248d">   22</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a34c6a47bae346443e6a798fc2d4d248d">FramedPipeTransport::ReceiveMessage</a>() -&gt; asio::awaitable&lt;std::string&gt; {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="comment">// Try to deframe from existing buffer</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">auto</span> result = framer_.TryDeframe(read_buffer_);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">if</span> (result.complete) {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      read_buffer_.erase(0, result.consumed_bytes);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <span class="keyword">co_return</span> result.message;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    }</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">if</span> (!result.error.empty()) {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      spdlog::error(<span class="stringliteral">&quot;Framing error: {}&quot;</span>, result.error);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="keywordflow">throw</span> std::runtime_error(result.error);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="comment">// Need more data</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">char</span> buf[4096];</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">size_t</span> n = <span class="keyword">co_await</span> GetSocket().async_read_some(</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        asio::buffer(buf), asio::use_awaitable);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Connection closed by peer&quot;</span>);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    read_buffer_.append(buf, n);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a34c6a47bae346443e6a798fc2d4d248d">   24</a></span><span class="keyword">auto</span> <a class="code hl_function" href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a34c6a47bae346443e6a798fc2d4d248d">FramedPipeTransport::ReceiveMessage</a>() -&gt; asio::awaitable&lt;std::string&gt; {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="comment">// Try to deframe from existing buffer</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">auto</span> result = framer_.TryDeframe(read_buffer_);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">if</span> (result.complete) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      read_buffer_.erase(0, result.consumed_bytes);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <span class="keyword">co_return</span> result.message;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    }</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">if</span> (!result.error.empty()) {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      spdlog::error(<span class="stringliteral">&quot;Framing error: {}&quot;</span>, result.error);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <span class="keywordflow">throw</span> std::runtime_error(result.error);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="comment">// Need more data</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    std::array&lt;char, 4096&gt; buffer{};</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">size_t</span> n = <span class="keyword">co_await</span> GetSocket().async_read_some(</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        asio::buffer(buffer.data(), buffer.size()), asio::use_awaitable);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Connection closed by peer&quot;</span>);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    read_buffer_.append(std::string_view(buffer.data(), n));</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
 </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}  <span class="comment">// namespace jsonrpc::transport</span></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedPipeTransport_html_a34c6a47bae346443e6a798fc2d4d248d"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a34c6a47bae346443e6a798fc2d4d248d">jsonrpc::transport::FramedPipeTransport::ReceiveMessage</a></div><div class="ttdeci">auto ReceiveMessage() -&gt; asio::awaitable&lt; std::string &gt; override</div><div class="ttdoc">Receives a message over the transport.</div><div class="ttdef"><b>Definition</b> <a href="#l00022">framed_pipe_transport.cpp:22</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedPipeTransport_html_a6ed894042c0fd33553cb8e5bfdea94f7"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a6ed894042c0fd33553cb8e5bfdea94f7">jsonrpc::transport::FramedPipeTransport::SendMessage</a></div><div class="ttdeci">auto SendMessage(const std::string &amp;message) -&gt; asio::awaitable&lt; void &gt; override</div><div class="ttdoc">Sends a message over the transport.</div><div class="ttdef"><b>Definition</b> <a href="#l00015">framed_pipe_transport.cpp:15</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedPipeTransport_html_a82b55ba871a8da2af1af6b4154af7dc9"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a82b55ba871a8da2af1af6b4154af7dc9">jsonrpc::transport::FramedPipeTransport::FramedPipeTransport</a></div><div class="ttdeci">FramedPipeTransport(asio::io_context &amp;io_context, const std::string &amp;socket_path, bool is_server)</div><div class="ttdoc">Constructs a FramedPipeTransport.</div><div class="ttdef"><b>Definition</b> <a href="#l00009">framed_pipe_transport.cpp:9</a></div></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}  <span class="comment">// namespace jsonrpc::transport</span></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedPipeTransport_html_a34c6a47bae346443e6a798fc2d4d248d"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a34c6a47bae346443e6a798fc2d4d248d">jsonrpc::transport::FramedPipeTransport::ReceiveMessage</a></div><div class="ttdeci">auto ReceiveMessage() -&gt; asio::awaitable&lt; std::string &gt; override</div><div class="ttdoc">Receives a message over the transport.</div><div class="ttdef"><b>Definition</b> <a href="#l00024">framed_pipe_transport.cpp:24</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedPipeTransport_html_a773d5b4aff1f58442d3d3560ba526878"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a773d5b4aff1f58442d3d3560ba526878">jsonrpc::transport::FramedPipeTransport::SendMessage</a></div><div class="ttdeci">auto SendMessage(std::string message) -&gt; asio::awaitable&lt; void &gt; override</div><div class="ttdoc">Sends a message over the transport.</div><div class="ttdef"><b>Definition</b> <a href="#l00017">framed_pipe_transport.cpp:17</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1FramedPipeTransport_html_abf3b76d5f89755f1c879e0f892d0edc4"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1FramedPipeTransport.html#abf3b76d5f89755f1c879e0f892d0edc4">jsonrpc::transport::FramedPipeTransport::FramedPipeTransport</a></div><div class="ttdeci">FramedPipeTransport(asio::any_io_executor executor, const std::string &amp;socket_path, bool is_server)</div><div class="ttdoc">Constructs a FramedPipeTransport.</div><div class="ttdef"><b>Definition</b> <a href="#l00011">framed_pipe_transport.cpp:11</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1MessageFramer_html_a77428a3ab8f933a7767895f21e4ce210"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1MessageFramer.html#a77428a3ab8f933a7767895f21e4ce210">jsonrpc::transport::MessageFramer::Frame</a></div><div class="ttdeci">static auto Frame(const std::string &amp;message, const std::string &amp;content_type=&quot;application/vscode-jsonrpc; charset=utf-8&quot;) -&gt; std::string</div><div class="ttdef"><b>Definition</b> <a href="message__framer_8hpp_source.html#l00017">message_framer.hpp:17</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1PipeTransport_html"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1PipeTransport.html">jsonrpc::transport::PipeTransport</a></div><div class="ttdoc">Unix domain socket transport implementation.</div><div class="ttdef"><b>Definition</b> <a href="pipe__transport_8hpp_source.html#l00019">pipe_transport.hpp:19</a></div></div>
 <div class="ttc" id="aframed__pipe__transport_8hpp_html"><div class="ttname"><a href="framed__pipe__transport_8hpp.html">framed_pipe_transport.hpp</a></div></div>
