@@ -19,7 +19,7 @@ Welcome to the **JSON-RPC 2.0 Modern C++ Library**! This library provides a ligh
 
 ### Prerequisites
 
-- **Compiler**: Any compiler with C++20 support.
+- **Compiler**: Any compiler with C++23 support.
 - **Build System**: Either Bazel 7.0+ (preferred) or CMake 3.19+ (alternative).
 - **Optional**: Conan 2.0+ for dependency management with CMake.
 

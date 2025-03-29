@@ -5,8 +5,8 @@ build --action_env=CC=clang
 build --action_env=CXX=clang++
 
 # Common settings for all builds
-build --cxxopt='-std=c++20'
-build --host_cxxopt='-std=c++20'
+build --cxxopt='-std=c++23'
+build --host_cxxopt='-std=c++23'
 
 # Enable warnings
 build --cxxopt='-Wall'
