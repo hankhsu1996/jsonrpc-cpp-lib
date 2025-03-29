@@ -177,15 +177,6 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
       std::string method, typename Dispatcher::MethodCallHandler handler);
 
   /**
-   * @brief Register a notification handler
-   *
-   * @param method The method name
-   * @param handler The handler
-   */
-  void RegisterNotification(
-      std::string method, typename Dispatcher::NotificationHandler handler);
-
-  /**
    * @brief Register a typed method call handler
    *
    * @tparam ParamsType The type of the parameters
@@ -197,6 +188,15 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
   void RegisterMethodCall(
       std::string method,
       std::function<asio::awaitable<ResultType>(ParamsType)> handler);
+
+  /**
+   * @brief Register a notification handler
+   *
+   * @param method The method name
+   * @param handler The handler
+   */
+  void RegisterNotification(
+      std::string method, typename Dispatcher::NotificationHandler handler);
 
   /**
    * @brief Register a typed notification handler
