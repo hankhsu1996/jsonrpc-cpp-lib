@@ -1,7 +1,8 @@
+#include "jsonrpc/endpoint/response.hpp"
+
 #include <catch2/catch_test_macros.hpp>
 #include <nlohmann/json.hpp>
 
-#include "jsonrpc/endpoint/response.hpp"
 #include "jsonrpc/endpoint/types.hpp"
 
 using jsonrpc::endpoint::ErrorCode;

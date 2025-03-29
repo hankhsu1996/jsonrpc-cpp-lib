@@ -1,10 +1,10 @@
+#include "jsonrpc/transport/pipe_transport.hpp"
+
 #include <asio.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
-
-#include "jsonrpc/transport/pipe_transport.hpp"
 
 namespace {
 

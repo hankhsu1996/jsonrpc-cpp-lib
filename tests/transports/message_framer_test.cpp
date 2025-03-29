@@ -1,8 +1,8 @@
+#include "jsonrpc/transport/message_framer.hpp"
+
 #include <string>
 
 #include <catch2/catch_test_macros.hpp>
-
-#include "jsonrpc/transport/message_framer.hpp"
 
 using jsonrpc::transport::MessageFramer;
 

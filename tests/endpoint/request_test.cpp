@@ -1,7 +1,7 @@
+#include "jsonrpc/endpoint/request.hpp"
+
 #include <catch2/catch_test_macros.hpp>
 #include <nlohmann/json.hpp>
-
-#include "jsonrpc/endpoint/request.hpp"
 
 using jsonrpc::endpoint::Request;
 using jsonrpc::endpoint::RequestId;
