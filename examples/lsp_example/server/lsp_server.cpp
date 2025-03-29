@@ -37,8 +37,8 @@ auto HandleShutdown(std::weak_ptr<RpcEndpoint> weak) -> asio::awaitable<void> {
   co_return;
 }
 
-void RegisterLSPHandlers(RpcEndpoint& server) {
-  server.RegisterMethodCall(
+void RegisterLSPHandlers(std::shared_ptr<RpcEndpoint> server) {
+  server->RegisterMethodCall(
       "initialize", [](std::optional<Json> params) -> asio::awaitable<Json> {
         spdlog::info("LSP Server initialized");
         Json response = {
@@ -55,13 +55,13 @@ void RegisterLSPHandlers(RpcEndpoint& server) {
         co_return response;
       });
 
-  server.RegisterNotification(
+  server->RegisterNotification(
       "initialized", [](std::optional<Json> params) -> asio::awaitable<void> {
         spdlog::info("Client initialized");
         co_return;
       });
 
-  server.RegisterMethodCall(
+  server->RegisterMethodCall(
       "textDocument/completion",
       [](std::optional<Json> params) -> asio::awaitable<Json> {
         Json response;
@@ -75,16 +75,14 @@ void RegisterLSPHandlers(RpcEndpoint& server) {
         co_return response;
       });
 
-  server.RegisterMethodCall(
+  server->RegisterMethodCall(
       "shutdown", [](std::optional<Json> params) -> asio::awaitable<Json> {
         spdlog::info("Server shutting down");
         co_return Json::object();
       });
 
-  server.RegisterNotification(
-      "exit", [weak = server.weak_from_this()](std::optional<Json>) {
-        return HandleShutdown(weak);
-      });
+  server->RegisterNotification(
+      "exit", [server](std::optional<Json>) { return HandleShutdown(server); });
 }
 
 // Main server logic encapsulated in a function
@@ -95,16 +93,16 @@ auto RunLSPServer(asio::any_io_executor executor, std::string pipe_name)
       std::make_unique<FramedPipeTransport>(executor, pipe_name, false);
 
   // Step 2: Create RPC endpoint
-  RpcEndpoint server(executor, std::move(transport));
+  auto server = std::make_shared<RpcEndpoint>(executor, std::move(transport));
 
   // Step 3: Register LSP method handlers
   RegisterLSPHandlers(server);
 
   // Step 4: Start server
-  co_await server.Start();
+  co_await server->Start();
 
   // Step 5: Wait for server shutdown
-  co_await server.WaitForShutdown();
+  co_await server->WaitForShutdown();
 
   spdlog::info("Server shutdown monitoring complete");
   co_return;

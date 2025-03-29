@@ -18,9 +18,9 @@ using Json = nlohmann::json;
  * applications might benefit from helper functions to reduce boilerplate.
  */
 
-auto HandleStop(std::weak_ptr<RpcEndpoint> weak) -> asio::awaitable<void> {
-  if (auto locked = weak.lock()) {
-    co_await locked->Shutdown();
+auto HandleStop(std::shared_ptr<RpcEndpoint> endpoint) -> asio::awaitable<void> {
+  if (endpoint) {
+    co_await endpoint->Shutdown();
   }
   co_return;
 }
@@ -32,23 +32,21 @@ auto RunServer(asio::any_io_executor executor, std::string socket_path)
   auto transport = std::make_unique<PipeTransport>(executor, socket_path, true);
 
   // Step 2: Create RPC endpoint
-  RpcEndpoint server(executor, std::move(transport));
+  auto server = std::make_shared<RpcEndpoint>(executor, std::move(transport));
 
   // Step 3: Register RPC methods
-  server.RegisterMethodCall("add", Calculator::Add);
-  server.RegisterMethodCall("divide", Calculator::Divide);
+  server->RegisterMethodCall("add", Calculator::Add);
+  server->RegisterMethodCall("divide", Calculator::Divide);
 
   // Step 4: Register stop notification
-  server.RegisterNotification(
-      "stop", [weak = server.weak_from_this()](std::optional<Json>) {
-        return HandleStop(weak);
-      });
+  server->RegisterNotification(
+      "stop", [server](std::optional<Json>) { return HandleStop(server); });
 
   // Step 5: Start server
-  co_await server.Start();
+  co_await server->Start();
 
   // Step 6: Wait for server shutdown
-  co_await server.WaitForShutdown();
+  co_await server->WaitForShutdown();
 
   spdlog::info("Server shutdown complete");
   co_return;

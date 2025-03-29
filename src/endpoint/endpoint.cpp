@@ -185,8 +185,7 @@ void RpcEndpoint::ReportError(ErrorCode code, const std::string &message) {
 
 void RpcEndpoint::StartMessageProcessing() {
   asio::co_spawn(
-      endpoint_strand_,
-      [self = shared_from_this()] { return self->ProcessMessagesLoop(); },
+      endpoint_strand_, [this] { return this->ProcessMessagesLoop(); },
       asio::detached);
 }
 

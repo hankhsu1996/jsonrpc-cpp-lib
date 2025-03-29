@@ -48,4 +48,21 @@ constexpr auto kDefaultRequestTimeout = std::chrono::milliseconds(30000);
 /// Default maximum batch size
 constexpr size_t kDefaultMaxBatchSize = 100;
 
+/**
+ * @brief Exception class for RPC errors
+ */
+class RpcError : public std::runtime_error {
+ public:
+  RpcError(ErrorCode code, const std::string& message)
+      : std::runtime_error(message), code_(code) {
+  }
+
+  [[nodiscard]] auto GetCode() const -> ErrorCode {
+    return code_;
+  }
+
+ private:
+  ErrorCode code_;
+};
+
 }  // namespace jsonrpc::endpoint

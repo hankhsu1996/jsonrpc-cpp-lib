@@ -14,6 +14,7 @@
 #include "jsonrpc/endpoint/dispatcher.hpp"
 #include "jsonrpc/endpoint/pending_request.hpp"
 #include "jsonrpc/endpoint/response.hpp"
+#include "jsonrpc/endpoint/typed_handlers.hpp"
 #include "jsonrpc/endpoint/types.hpp"
 #include "jsonrpc/transport/transport.hpp"
 
@@ -22,30 +23,13 @@ namespace jsonrpc::endpoint {
 using ErrorHandler = std::function<void(ErrorCode, const std::string &)>;
 
 /**
- * @brief Exception class for RPC errors
- */
-class RpcError : public std::runtime_error {
- public:
-  RpcError(ErrorCode code, const std::string &message)
-      : std::runtime_error(message), code_(code) {
-  }
-
-  [[nodiscard]] auto GetCode() const -> ErrorCode {
-    return code_;
-  }
-
- private:
-  ErrorCode code_;
-};
-
-/**
  * @brief RPC endpoint for sending and receiving JSON-RPC messages
  *
  * This class provides a JSON-RPC endpoint that can be used to call methods
  * on a remote endpoint and register method handlers for handling incoming
  * requests.
  */
-class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
+class RpcEndpoint {
  public:
   /**
    * @brief Construct a new RPC endpoint
@@ -338,111 +322,44 @@ auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
   }
 }
 
-// Register method adapter functions
-// Note: These standalone functions are used rather than lambdas to avoid
-// coroutine lifetime issues
-
-/**
- * @brief Adapter that converts typed method call handlers to JSON handlers
- *
- * This function is implemented as a standalone function rather than a lambda
- * to avoid potential lifetime issues with coroutines. When a lambda containing
- * co_await is used, the captures might be invalidated during suspension points,
- * leading to use-after-free bugs that are difficult to diagnose.
- *
- * @tparam ParamsType The parameter type for the handler
- * @tparam ResultType The result type from the handler
- * @param handler The typed handler function
- * @param params The JSON parameters
- * @return A coroutine that returns a JSON result
- */
-template <typename ParamsType, typename ResultType>
-auto TypedMethodCallAdapter(
-    std::function<asio::awaitable<ResultType>(ParamsType)> handler,
-    std::optional<nlohmann::json> params) -> asio::awaitable<nlohmann::json> {
-  try {
-    // Convert JSON params to typed params
-    ParamsType typed_params;
-    if (params.has_value()) {
-      typed_params = params.value().get<ParamsType>();
-    } else {
-      // Initialize with default constructor if no params provided
-      typed_params = ParamsType{};
-    }
-
-    // Call the typed handler
-    ResultType result = co_await handler(typed_params);
-
-    // Convert result back to JSON
-    co_return nlohmann::json(result);
-  } catch (const nlohmann::json::exception &ex) {
-    // Handle JSON conversion errors
-    throw RpcError(
-        ErrorCode::kInvalidParams,
-        std::string("Parameter conversion error: ") + ex.what());
-  } catch (const std::exception &ex) {
-    // Handle other exceptions
-    throw RpcError(
-        ErrorCode::kInternalError, std::string("Handler error: ") + ex.what());
-  }
-}
-
-/**
- * @brief Adapter that converts typed notification handlers to JSON handlers
- *
- * This function is implemented as a standalone function rather than a lambda
- * to avoid potential lifetime issues with coroutines. When a lambda containing
- * co_await is used, the captures might be invalidated during suspension points,
- * leading to use-after-free bugs that are difficult to diagnose.
- *
- * @tparam ParamsType The parameter type for the handler
- * @param handler The typed handler function
- * @param params The JSON parameters
- * @return A coroutine that processes the notification
- */
-template <typename ParamsType>
-auto TypedNotificationAdapter(
-    std::function<asio::awaitable<void>(ParamsType)> handler,
-    std::optional<nlohmann::json> params) -> asio::awaitable<void> {
-  try {
-    // Convert JSON params to typed params
-    ParamsType typed_params;
-    if (params.has_value()) {
-      typed_params = params.value().get<ParamsType>();
-    } else {
-      // Initialize with default constructor if no params provided
-      typed_params = ParamsType{};
-    }
-
-    // Call the typed handler
-    co_await handler(typed_params);
-  } catch (const nlohmann::json::exception &ex) {
-    // JSON conversion errors will be logged by the dispatcher
-    throw RpcError(
-        ErrorCode::kInvalidParams,
-        std::string("Parameter conversion error: ") + ex.what());
-  } catch (const std::exception &ex) {
-    // Other exceptions will be logged by the dispatcher
-    throw RpcError(
-        ErrorCode::kInternalError, std::string("Handler error: ") + ex.what());
-  }
-}
-
 // Register method template implementations
 
 template <typename ParamsType, typename ResultType>
 void RpcEndpoint::RegisterMethodCall(
     std::string method,
     std::function<asio::awaitable<ResultType>(ParamsType)> handler) {
+  // Create a handler object and store its function object
+  // NOTE: We use a shared_ptr to ensure the handler object stays alive
+  // throughout the entire lifetime of any coroutine that might use it. This
+  // prevents the use-after-free issues that can occur with lambda captures in
+  // coroutines.
+  auto typed_handler =
+      std::make_shared<TypedMethodHandler<ParamsType, ResultType>>(
+          std::move(handler));
+
+  // Register a lambda that calls the handler object
   RegisterMethodCall(
-      method, TypedMethodCallAdapter<ParamsType, ResultType>(handler));
+      method,
+      [handler = std::move(typed_handler)](
+          std::optional<nlohmann::json> params) { return (*handler)(params); });
 }
 
 template <typename ParamsType>
 void RpcEndpoint::RegisterNotification(
     std::string method,
     std::function<asio::awaitable<void>(ParamsType)> handler) {
-  RegisterNotification(method, TypedNotificationAdapter<ParamsType>(handler));
+  // Create a handler object and store its function object
+  // NOTE: Using a class-based approach with shared_ptr ownership guarantees
+  // the handler remains valid even when coroutines are suspended and resumed,
+  // which is safer than direct lambda captures that may go out of scope.
+  auto typed_handler = std::make_shared<TypedNotificationHandler<ParamsType>>(
+      std::move(handler));
+
+  // Register a lambda that calls the handler object
+  RegisterNotification(
+      method,
+      [handler = std::move(typed_handler)](
+          std::optional<nlohmann::json> params) { return (*handler)(params); });
 }
 
 }  // namespace jsonrpc::endpoint

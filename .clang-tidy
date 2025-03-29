@@ -30,6 +30,8 @@ CheckOptions:
     value: k
   - key: readability-identifier-naming.FunctionCase
     value: CamelCase
+  - key: readability-identifier-naming.FunctionIgnoredRegexp
+    value: "(to_json|from_json)"
   - key: readability-identifier-naming.GlobalConstantCase
     value: CamelCase
   - key: readability-identifier-naming.GlobalConstantPrefix

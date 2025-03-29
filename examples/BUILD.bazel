@@ -56,3 +56,22 @@ cc_binary(
     ],
     deps = ["//:jsonrpc"],
 )
+
+# Typed calculator example
+cc_binary(
+    name = "typed_calculator_client",
+    srcs = [
+        "typed_calculator_example/client.cpp",
+        "typed_calculator_example/typed_calculator.hpp",
+    ],
+    deps = ["//:jsonrpc"],
+)
+
+cc_binary(
+    name = "typed_calculator_server",
+    srcs = [
+        "typed_calculator_example/server.cpp",
+        "typed_calculator_example/typed_calculator.hpp",
+    ],
+    deps = ["//:jsonrpc"],
+)

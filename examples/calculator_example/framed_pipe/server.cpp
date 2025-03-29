@@ -19,9 +19,9 @@ using Json = nlohmann::json;
  * boilerplate.
  */
 
-auto HandleStop(std::weak_ptr<RpcEndpoint> weak) -> asio::awaitable<void> {
-  if (auto locked = weak.lock()) {
-    co_await locked->Shutdown();
+auto HandleStop(std::shared_ptr<RpcEndpoint> server) -> asio::awaitable<void> {
+  if (server) {
+    co_await server->Shutdown();
   }
   co_return;
 }
@@ -43,9 +43,7 @@ auto RunServer(asio::any_io_executor executor, std::string socket_path)
 
   // Step 4: Register stop notification
   server->RegisterNotification(
-      "stop", [weak = server->weak_from_this()](std::optional<Json>) {
-        return HandleStop(weak);
-      });
+      "stop", [server](std::optional<Json>) { return HandleStop(server); });
 
   // Step 5: Start server
   co_await server->Start();
