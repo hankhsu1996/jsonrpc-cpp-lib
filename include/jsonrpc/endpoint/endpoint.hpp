@@ -294,6 +294,8 @@ class RpcEndpoint : public std::enable_shared_from_this<RpcEndpoint> {
   std::atomic<int64_t> next_request_id_{0};
 };
 
+// Send method template implementations
+
 template <typename ParamsType, typename ResultType>
 auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
     -> asio::awaitable<ResultType> {
@@ -336,9 +338,26 @@ auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
   }
 }
 
-// Create a standalone coroutine function outside the RegisterTypedMethodCall
+// Register method adapter functions
+// Note: These standalone functions are used rather than lambdas to avoid
+// coroutine lifetime issues
+
+/**
+ * @brief Adapter that converts typed method call handlers to JSON handlers
+ *
+ * This function is implemented as a standalone function rather than a lambda
+ * to avoid potential lifetime issues with coroutines. When a lambda containing
+ * co_await is used, the captures might be invalidated during suspension points,
+ * leading to use-after-free bugs that are difficult to diagnose.
+ *
+ * @tparam ParamsType The parameter type for the handler
+ * @tparam ResultType The result type from the handler
+ * @param handler The typed handler function
+ * @param params The JSON parameters
+ * @return A coroutine that returns a JSON result
+ */
 template <typename ParamsType, typename ResultType>
-auto TypedHandlerWrapper(
+auto TypedMethodCallAdapter(
     std::function<asio::awaitable<ResultType>(ParamsType)> handler,
     std::optional<nlohmann::json> params) -> asio::awaitable<nlohmann::json> {
   try {
@@ -368,9 +387,21 @@ auto TypedHandlerWrapper(
   }
 }
 
-// Create a standalone coroutine function outside the RegisterTypedNotification
+/**
+ * @brief Adapter that converts typed notification handlers to JSON handlers
+ *
+ * This function is implemented as a standalone function rather than a lambda
+ * to avoid potential lifetime issues with coroutines. When a lambda containing
+ * co_await is used, the captures might be invalidated during suspension points,
+ * leading to use-after-free bugs that are difficult to diagnose.
+ *
+ * @tparam ParamsType The parameter type for the handler
+ * @param handler The typed handler function
+ * @param params The JSON parameters
+ * @return A coroutine that processes the notification
+ */
 template <typename ParamsType>
-auto TypedNotificationWrapper(
+auto TypedNotificationAdapter(
     std::function<asio::awaitable<void>(ParamsType)> handler,
     std::optional<nlohmann::json> params) -> asio::awaitable<void> {
   try {
@@ -397,19 +428,21 @@ auto TypedNotificationWrapper(
   }
 }
 
+// Register method template implementations
+
 template <typename ParamsType, typename ResultType>
 void RpcEndpoint::RegisterMethodCall(
     std::string method,
     std::function<asio::awaitable<ResultType>(ParamsType)> handler) {
   RegisterMethodCall(
-      method, TypedHandlerWrapper<ParamsType, ResultType>(handler));
+      method, TypedMethodCallAdapter<ParamsType, ResultType>(handler));
 }
 
 template <typename ParamsType>
 void RpcEndpoint::RegisterNotification(
     std::string method,
     std::function<asio::awaitable<void>(ParamsType)> handler) {
-  RegisterNotification(method, TypedNotificationWrapper<ParamsType>(handler));
+  RegisterNotification(method, TypedNotificationAdapter<ParamsType>(handler));
 }
 
 }  // namespace jsonrpc::endpoint
