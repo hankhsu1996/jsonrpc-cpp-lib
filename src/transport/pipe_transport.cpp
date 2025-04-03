@@ -20,13 +20,13 @@ PipeTransport::PipeTransport(
 }
 
 PipeTransport::~PipeTransport() {
-  try {
-    // If we haven't closed explicitly, do it now synchronously
-    if (!is_closed_) {
+  if (!is_closed_) {
+    spdlog::debug("PipeTransport destructor triggering CloseNow()");
+    try {
       CloseNow();
+    } catch (const std::exception &e) {
+      spdlog::error("Error in PipeTransport destructor: {}", e.what());
     }
-  } catch (const std::exception &e) {
-    spdlog::error("Error in PipeTransport destructor: {}", e.what());
   }
 }
 

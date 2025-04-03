@@ -16,19 +16,16 @@ SocketTransport::SocketTransport(
       port_(port),
       is_server_(is_server),
       read_buffer_() {
-  spdlog::debug(
-      "SocketTransport initialized ({}): {}:{}",
-      is_server_ ? "server" : "client", address_, port_);
 }
 
 SocketTransport::~SocketTransport() {
-  try {
-    // If we haven't closed explicitly, do it now synchronously
-    if (!is_closed_) {
+  if (!is_closed_) {
+    spdlog::debug("SocketTransport destructor triggering CloseNow()");
+    try {
       CloseNow();
+    } catch (const std::exception &e) {
+      spdlog::error("Error in SocketTransport destructor: {}", e.what());
     }
-  } catch (const std::exception &e) {
-    spdlog::error("Error in SocketTransport destructor: {}", e.what());
   }
 }
 
