@@ -27,20 +27,21 @@ class PipeTransport : public Transport {
   PipeTransport(PipeTransport&&) = delete;
   auto operator=(PipeTransport&&) -> PipeTransport& = delete;
 
-  auto GetSocket() -> asio::local::stream_protocol::socket&;
-
   auto Start()
       -> asio::awaitable<std::expected<void, error::RpcError>> override;
+
+  auto Close()
+      -> asio::awaitable<std::expected<void, error::RpcError>> override;
+
+  void CloseNow() override;
 
   auto SendMessage(std::string message) -> asio::awaitable<void> override;
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override;
 
-  auto Close() -> asio::awaitable<void> override;
-
-  void CloseNow() override;
-
  protected:
+  auto GetSocket() -> asio::local::stream_protocol::socket&;
+
   auto RemoveExistingSocketFile() -> std::expected<void, error::RpcError>;
 
   auto Connect() -> asio::awaitable<std::expected<void, error::RpcError>>;

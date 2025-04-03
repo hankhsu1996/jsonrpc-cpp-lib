@@ -40,49 +40,6 @@ PipeTransport::~PipeTransport() {
   }
 }
 
-void PipeTransport::CloseNow() {
-  // Set the closed flag to prevent concurrent operations
-  is_closed_ = true;
-  is_connected_ = false;
-
-  try {
-    // Cancel and close the socket synchronously
-    if (socket_.is_open()) {
-      spdlog::debug("Closing socket synchronously");
-      socket_.cancel();
-      asio::error_code ec;
-      socket_.close(ec);
-      if (ec) {
-        spdlog::warn("Error closing socket: {}", ec.message());
-      }
-    }
-
-    // Cancel and close the acceptor safely
-    if (is_server_ && acceptor_ && acceptor_->is_open()) {
-      spdlog::debug("Closing acceptor synchronously");
-      acceptor_->cancel();
-      asio::error_code ec;
-      acceptor_->close(ec);
-      if (ec) {
-        spdlog::warn("Error closing acceptor: {}", ec.message());
-      }
-    }
-
-    // Clean up the socket file
-    if (is_server_ && !socket_path_.empty() &&
-        std::filesystem::exists(socket_path_)) {
-      try {
-        std::filesystem::remove(socket_path_);
-        spdlog::debug("Removed socket file: {}", socket_path_);
-      } catch (const std::exception &e) {
-        spdlog::warn("Error removing socket file: {}", e.what());
-      }
-    }
-  } catch (const std::exception &e) {
-    spdlog::error("Error in synchronous close: {}", e.what());
-  }
-}
-
 auto PipeTransport::Start()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
   co_await asio::post(GetStrand(), asio::use_awaitable);
@@ -124,6 +81,98 @@ auto PipeTransport::Start()
   is_started_ = true;
   spdlog::debug("PipeTransport successfully started");
   co_return std::expected<void, error::RpcError>();
+}
+
+auto PipeTransport::Close()
+    -> asio::awaitable<std::expected<void, error::RpcError>> {
+  co_await asio::post(GetStrand(), asio::use_awaitable);
+
+  if (is_closed_) {
+    spdlog::debug("PipeTransport already closed");
+    co_return std::expected<void, error::RpcError>();
+  }
+
+  is_closed_ = true;
+  is_connected_ = false;
+
+  // Cancel and close the socket safely
+  std::error_code ec;
+  if (socket_.is_open()) {
+    socket_.cancel(ec);
+    if (ec) {
+      spdlog::warn("Error canceling socket: {}", ec.message());
+    }
+    socket_.close(ec);
+    if (ec) {
+      spdlog::warn("Error closing socket: {}", ec.message());
+    }
+  }
+
+  // clean up acceptor if this is a server
+  if (is_server_ && acceptor_) {
+    acceptor_->cancel(ec);
+    if (ec) {
+      spdlog::warn("Error canceling acceptor: {}", ec.message());
+    }
+    acceptor_->close(ec);
+    if (ec) {
+      spdlog::warn("Error closing acceptor: {}", ec.message());
+    }
+  }
+
+  // Clean up the socket file if this is a server
+  if (is_server_ && !socket_path_.empty()) {
+    auto result = RemoveExistingSocketFile();
+    if (!result) {
+      spdlog::warn("Error removing socket file: {}", result.error().message);
+    }
+  }
+
+  spdlog::debug("PipeTransport closed");
+  co_return std::expected<void, error::RpcError>();
+}
+
+void PipeTransport::CloseNow() {
+  // Set the closed flag to prevent concurrent operations
+  is_closed_ = true;
+  is_connected_ = false;
+
+  try {
+    // Cancel and close the socket synchronously
+    if (socket_.is_open()) {
+      spdlog::debug("Closing socket synchronously");
+      socket_.cancel();
+      asio::error_code ec;
+      socket_.close(ec);
+      if (ec) {
+        spdlog::warn("Error closing socket: {}", ec.message());
+      }
+    }
+
+    // Cancel and close the acceptor safely
+    if (is_server_ && acceptor_ && acceptor_->is_open()) {
+      spdlog::debug("Closing acceptor synchronously");
+      acceptor_->cancel();
+      asio::error_code ec;
+      acceptor_->close(ec);
+      if (ec) {
+        spdlog::warn("Error closing acceptor: {}", ec.message());
+      }
+    }
+
+    // Clean up the socket file
+    if (is_server_ && !socket_path_.empty() &&
+        std::filesystem::exists(socket_path_)) {
+      try {
+        std::filesystem::remove(socket_path_);
+        spdlog::debug("Removed socket file: {}", socket_path_);
+      } catch (const std::exception &e) {
+        spdlog::warn("Error removing socket file: {}", e.what());
+      }
+    }
+  } catch (const std::exception &e) {
+    spdlog::error("Error in synchronous close: {}", e.what());
+  }
 }
 
 auto PipeTransport::GetSocket() -> asio::local::stream_protocol::socket & {
@@ -226,63 +275,6 @@ auto PipeTransport::ReceiveMessage() -> asio::awaitable<std::string> {
     throw;
   } catch (const std::exception &e) {
     spdlog::error("Error receiving message: {}", e.what());
-    throw;
-  }
-}
-
-auto PipeTransport::Close() -> asio::awaitable<void> {
-  try {
-    co_await asio::post(GetStrand(), asio::use_awaitable);
-
-    spdlog::debug("Closing pipe transport");
-
-    if (is_closed_) {
-      co_return;  // Already closed
-    }
-
-    is_closed_ = true;
-    is_connected_ = false;
-
-    // Cancel and close the socket safely
-    if (socket_.is_open()) {
-      spdlog::debug("Closing socket");
-      socket_.cancel();
-      asio::error_code ec;
-      socket_.close(ec);
-      if (ec) {
-        spdlog::warn("Error closing socket: {}", ec.message());
-      }
-    }
-
-    // Cancel and close the acceptor safely
-    if (is_server_ && acceptor_ && acceptor_->is_open()) {
-      spdlog::debug("Closing acceptor");
-      acceptor_->cancel();
-      asio::error_code ec;
-      acceptor_->close(ec);
-      if (ec) {
-        spdlog::warn("Error closing acceptor: {}", ec.message());
-      }
-    }
-
-    // Ensure the socket file is removed only after closing the socket
-    if (is_server_ && !socket_path_.empty() &&
-        std::filesystem::exists(socket_path_)) {
-      try {
-        std::filesystem::remove(socket_path_);
-        spdlog::debug("Removed socket file: {}", socket_path_);
-      } catch (const std::exception &e) {
-        spdlog::warn("Error removing socket file: {}", e.what());
-      }
-    }
-
-    // Add an additional synchronization point to ensure all operations posted
-    // to the strand complete
-    co_await asio::post(GetStrand(), asio::use_awaitable);
-
-    co_return;
-  } catch (const std::exception &e) {
-    spdlog::error("Error closing pipe transport: {}", e.what());
     throw;
   }
 }

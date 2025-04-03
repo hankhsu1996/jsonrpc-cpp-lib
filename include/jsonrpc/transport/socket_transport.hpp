@@ -31,7 +31,8 @@ class SocketTransport : public Transport {
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override;
 
-  auto Close() -> asio::awaitable<void> override;
+  auto Close()
+      -> asio::awaitable<std::expected<void, error::RpcError>> override;
 
   void CloseNow() override;
 

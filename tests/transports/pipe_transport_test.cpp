@@ -92,8 +92,7 @@ TEST_CASE(
         strand,
         [&server_transport]() -> asio::awaitable<void> {
           spdlog::info("Server is waiting for a client...");
-          co_await server_transport.GetSocket().async_wait(
-              asio::socket_base::wait_read, asio::use_awaitable);
+          co_await server_transport.Start();
           spdlog::info("Server accepted a client!");
 
           // Now it's safe to receive the message
@@ -153,9 +152,7 @@ TEST_CASE("PipeTransport handles multiple messages", "[PipeTransport]") {
         strand,
         [&server_transport]() -> asio::awaitable<void> {
           spdlog::info("Server is waiting for a client...");
-          co_await server_transport.GetSocket().async_wait(
-              asio::socket_base::wait_read, asio::use_awaitable);
-          spdlog::info("Server accepted a client!");
+          co_await server_transport.Start();
 
           // Now it's safe to receive the message
           for (int i = 0; i < 10; ++i) {

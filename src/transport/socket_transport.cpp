@@ -177,12 +177,14 @@ auto SocketTransport::ReceiveMessage() -> asio::awaitable<std::string> {
   }
 }
 
-auto SocketTransport::Close() -> asio::awaitable<void> {
+auto SocketTransport::Close()
+    -> asio::awaitable<std::expected<void, error::RpcError>> {
   try {
     co_await asio::post(GetStrand(), asio::use_awaitable);
 
     if (is_closed_) {
-      co_return;  // Already closed
+      spdlog::debug("SocketTransport already closed");
+      co_return std::expected<void, error::RpcError>();
     }
 
     is_closed_ = true;
@@ -205,7 +207,7 @@ auto SocketTransport::Close() -> asio::awaitable<void> {
     // to the strand complete
     co_await asio::post(GetStrand(), asio::use_awaitable);
 
-    co_return;
+    co_return std::expected<void, error::RpcError>();
   } catch (const std::exception &e) {
     spdlog::error("Error closing socket transport: {}", e.what());
     throw;

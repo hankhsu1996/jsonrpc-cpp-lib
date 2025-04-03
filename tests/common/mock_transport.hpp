@@ -165,7 +165,8 @@ class MockTransport : public jsonrpc::transport::Transport {
     }
   }
 
-  auto Close() -> asio::awaitable<void> override {
+  auto Close()
+      -> asio::awaitable<std::expected<void, error::RpcError>> override {
     try {
       // Get strand protection
       co_await asio::post(strand_, asio::use_awaitable);
@@ -174,7 +175,7 @@ class MockTransport : public jsonrpc::transport::Transport {
 
       if (is_closed_) {
         spdlog::debug("MockTransport: Already closed");
-        co_return;  // Already closed
+        co_return std::expected<void, error::RpcError>();
       }
 
       // Set the closed flag first
@@ -190,7 +191,7 @@ class MockTransport : public jsonrpc::transport::Transport {
       // to the strand complete
       co_await asio::post(strand_, asio::use_awaitable);
 
-      co_return;
+      co_return std::expected<void, error::RpcError>();
     } catch (const std::exception& e) {
       spdlog::error("MockTransport: Error in Close: {}", e.what());
       throw;
