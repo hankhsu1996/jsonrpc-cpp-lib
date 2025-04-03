@@ -32,27 +32,6 @@ SocketTransport::~SocketTransport() {
   }
 }
 
-void SocketTransport::CloseNow() {
-  // Set closed flag to prevent concurrent operations
-  is_closed_ = true;
-  is_connected_ = false;
-
-  try {
-    // Cancel and close the socket synchronously
-    if (socket_.is_open()) {
-      spdlog::debug("Closing socket synchronously");
-      socket_.cancel();
-      asio::error_code ec;
-      socket_.close(ec);
-      if (ec) {
-        spdlog::warn("Error closing socket: {}", ec.message());
-      }
-    }
-  } catch (const std::exception &e) {
-    spdlog::error("Error in synchronous close: {}", e.what());
-  }
-}
-
 auto SocketTransport::Start()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
   try {
@@ -91,6 +70,64 @@ auto SocketTransport::Start()
     spdlog::error("Error in Start(): {}", e.what());
     is_started_ = false;
     throw;
+  }
+}
+
+auto SocketTransport::Close()
+    -> asio::awaitable<std::expected<void, error::RpcError>> {
+  try {
+    co_await asio::post(GetStrand(), asio::use_awaitable);
+
+    if (is_closed_) {
+      spdlog::debug("SocketTransport already closed");
+      co_return std::expected<void, error::RpcError>();
+    }
+
+    is_closed_ = true;
+    is_connected_ = false;
+
+    spdlog::debug("Closing socket transport");
+
+    // Cancel and close the socket safely
+    if (socket_.is_open()) {
+      spdlog::debug("Closing socket");
+      socket_.cancel();
+      asio::error_code ec;
+      socket_.close(ec);
+      if (ec) {
+        spdlog::warn("Error closing socket: {}", ec.message());
+      }
+    }
+
+    // Add an additional synchronization point to ensure all operations posted
+    // to the strand complete
+    co_await asio::post(GetStrand(), asio::use_awaitable);
+
+    co_return std::expected<void, error::RpcError>();
+  } catch (const std::exception &e) {
+    spdlog::error("Error closing socket transport: {}", e.what());
+    throw;
+  }
+}
+
+void SocketTransport::CloseNow() {
+  // Set closed flag to prevent concurrent operations
+  is_closed_ = true;
+  is_connected_ = false;
+
+  try {
+    // Cancel and close the socket synchronously
+    if (socket_.is_open()) {
+      spdlog::debug("Closing socket synchronously");
+      socket_.cancel();
+      asio::error_code ec;
+      socket_.close(ec);
+      if (ec) {
+        spdlog::warn("Error closing socket: {}", ec.message());
+      }
+    }
+  } catch (const std::exception &e) {
+    spdlog::error("Error in synchronous close: {}", e.what());
   }
 }
 
@@ -177,130 +214,129 @@ auto SocketTransport::ReceiveMessage() -> asio::awaitable<std::string> {
   }
 }
 
-auto SocketTransport::Close()
+auto SocketTransport::Connect()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
-  try {
-    co_await asio::post(GetStrand(), asio::use_awaitable);
-
-    if (is_closed_) {
-      spdlog::debug("SocketTransport already closed");
-      co_return std::expected<void, error::RpcError>();
-    }
-
-    is_closed_ = true;
-    is_connected_ = false;
-
-    spdlog::debug("Closing socket transport");
-
-    // Cancel and close the socket safely
-    if (socket_.is_open()) {
-      spdlog::debug("Closing socket");
-      socket_.cancel();
-      asio::error_code ec;
-      socket_.close(ec);
-      if (ec) {
-        spdlog::warn("Error closing socket: {}", ec.message());
-      }
-    }
-
-    // Add an additional synchronization point to ensure all operations posted
-    // to the strand complete
-    co_await asio::post(GetStrand(), asio::use_awaitable);
-
-    co_return std::expected<void, error::RpcError>();
-  } catch (const std::exception &e) {
-    spdlog::error("Error closing socket transport: {}", e.what());
-    throw;
-  }
-}
-
-auto SocketTransport::Connect() -> asio::awaitable<void> {
   spdlog::debug("Connecting to {}:{}", address_, port_);
 
-  // Make sure we're not already connected
   if (is_connected_) {
-    co_return;
+    co_return std::expected<void, error::RpcError>{};
   }
 
-  try {
-    // Check if we're closed
-    if (is_closed_) {
-      throw std::runtime_error("Cannot connect a closed transport");
-    }
-
-    // Close any existing socket
-    if (socket_.is_open()) {
-      asio::error_code ec;
-      socket_.close(ec);
-      if (ec) {
-        spdlog::warn("Error closing socket before reconnect: {}", ec.message());
-      }
-    }
-
-    // Create a new socket if needed
-    if (!socket_.is_open()) {
-      socket_ = asio::ip::tcp::socket(GetExecutor());
-    }
-
-    // Resolve the endpoint
-    asio::ip::tcp::resolver resolver(GetExecutor());
-    auto endpoints = co_await resolver.async_resolve(
-        address_, std::to_string(port_), asio::use_awaitable);
-
-    // Connect to the first endpoint
-    co_await asio::async_connect(socket_, endpoints, asio::use_awaitable);
-
-    // Set connected flag only after successful connection
-    is_connected_ = true;
-    spdlog::debug("Connected to {}:{}", address_, port_);
-  } catch (const std::exception &e) {
-    spdlog::error("Error connecting to {}:{}: {}", address_, port_, e.what());
-
-    // Reset socket to clean state
-    try {
-      if (socket_.is_open()) {
-        asio::error_code ec;
-        socket_.close(ec);
-      }
-    } catch (...) {
-      // Ignore errors during cleanup
-    }
-
-    throw;
+  if (is_closed_) {
+    co_return std::unexpected(
+        error::CreateTransportError("Cannot connect a closed transport"));
   }
+
+  // Close any existing socket
+  asio::error_code ec;
+  if (socket_.is_open()) {
+    socket_.close(ec);
+    if (ec) {
+      spdlog::warn("Error closing socket before reconnect: {}", ec.message());
+    }
+  }
+
+  // Create new socket if needed
+  if (!socket_.is_open()) {
+    socket_ = asio::ip::tcp::socket(GetExecutor());
+  }
+
+  // Resolve address
+  asio::ip::tcp::resolver resolver(GetExecutor());
+  auto endpoints = co_await resolver.async_resolve(
+      address_, std::to_string(port_),
+      asio::redirect_error(asio::use_awaitable, ec));
+  if (ec) {
+    spdlog::error("Error resolving {}:{}: {}", address_, port_, ec.message());
+    co_return std::unexpected(
+        error::CreateTransportError("Resolve error: " + ec.message()));
+  }
+
+  // Connect
+  co_await asio::async_connect(
+      socket_, endpoints, asio::redirect_error(asio::use_awaitable, ec));
+  if (ec) {
+    spdlog::error(
+        "Error connecting to {}:{}: {}", address_, port_, ec.message());
+    socket_.close();  // cleanup
+    co_return std::unexpected(
+        error::CreateTransportError("Connect error: " + ec.message()));
+  }
+
+  is_connected_ = true;
+  spdlog::debug("Connected to {}:{}", address_, port_);
+  co_return std::expected<void, error::RpcError>{};
 }
 
-auto SocketTransport::BindAndListen() -> asio::awaitable<void> {
+auto SocketTransport::BindAndListen()
+    -> asio::awaitable<std::expected<void, error::RpcError>> {
   spdlog::debug("Binding to {}:{}", address_, port_);
 
-  try {
-    // Create the endpoint
-    asio::ip::tcp::endpoint endpoint(asio::ip::tcp::v4(), port_);
+  asio::error_code ec;
 
-    // For specific address binding
-    if (address_ != "0.0.0.0" && address_ != "::") {
-      asio::ip::tcp::resolver resolver(GetExecutor());
-      auto results = co_await resolver.async_resolve(
-          address_, std::to_string(port_), asio::use_awaitable);
-      endpoint = *results.begin();
+  // Create the endpoint
+  asio::ip::tcp::endpoint endpoint(asio::ip::tcp::v4(), port_);
+
+  // Resolve specific address if not 0.0.0.0 / ::
+  if (address_ != "0.0.0.0" && address_ != "::") {
+    asio::ip::tcp::resolver resolver(GetExecutor());
+    auto results = co_await resolver.async_resolve(
+        address_, std::to_string(port_),
+        asio::redirect_error(asio::use_awaitable, ec));
+    if (ec) {
+      spdlog::error("Error resolving {}:{}: {}", address_, port_, ec.message());
+      co_return std::unexpected(
+          error::CreateTransportError("Resolve error: " + ec.message()));
     }
-
-    // Create an acceptor
-    asio::ip::tcp::acceptor acceptor(GetExecutor(), endpoint);
-    acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
-
-    spdlog::debug("Listening on {}:{}", address_, port_);
-
-    // Accept a connection
-    co_await acceptor.async_accept(socket_, asio::use_awaitable);
-    is_connected_ = true;
-
-    spdlog::debug("Accepted connection on {}:{}", address_, port_);
-  } catch (const std::exception &e) {
-    spdlog::error(
-        "Error binding/listening on {}:{}: {}", address_, port_, e.what());
-    throw;
+    endpoint = *results.begin();
   }
+
+  // Create and open acceptor
+  asio::ip::tcp::acceptor acceptor(GetExecutor());
+
+  acceptor.open(endpoint.protocol(), ec);
+  if (ec) {
+    spdlog::error("Error opening acceptor: {}", ec.message());
+    co_return std::unexpected(
+        error::CreateTransportError("Open error: " + ec.message()));
+  }
+
+  acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true), ec);
+  if (ec) {
+    spdlog::error("Error setting reuse_address: {}", ec.message());
+    co_return std::unexpected(
+        error::CreateTransportError("Set option error: " + ec.message()));
+  }
+
+  acceptor.bind(endpoint, ec);
+  if (ec) {
+    spdlog::error("Error binding acceptor: {}", ec.message());
+    co_return std::unexpected(
+        error::CreateTransportError("Bind error: " + ec.message()));
+  }
+
+  acceptor.listen(asio::socket_base::max_listen_connections, ec);
+  if (ec) {
+    spdlog::error("Error listening: {}", ec.message());
+    co_return std::unexpected(
+        error::CreateTransportError("Listen error: " + ec.message()));
+  }
+
+  spdlog::debug("Listening on {}:{}", address_, port_);
+
+  // Accept a connection
+  co_await acceptor.async_accept(
+      socket_, asio::redirect_error(asio::use_awaitable, ec));
+  if (ec) {
+    spdlog::error("Error accepting connection: {}", ec.message());
+    co_return std::unexpected(
+        error::CreateTransportError("Accept error: " + ec.message()));
+  }
+
+  is_connected_ = true;
+  spdlog::debug("Accepted connection on {}:{}", address_, port_);
+
+  co_return std::expected<void, error::RpcError>{};
 }
 
 }  // namespace jsonrpc::transport

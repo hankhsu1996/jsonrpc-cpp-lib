@@ -27,21 +27,21 @@ class SocketTransport : public Transport {
   auto Start()
       -> asio::awaitable<std::expected<void, error::RpcError>> override;
 
+  auto Close()
+      -> asio::awaitable<std::expected<void, error::RpcError>> override;
+
+  auto CloseNow() -> void override;
+
   auto SendMessage(std::string message) -> asio::awaitable<void> override;
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override;
 
-  auto Close()
-      -> asio::awaitable<std::expected<void, error::RpcError>> override;
-
-  void CloseNow() override;
-
+ private:
   auto GetSocket() -> asio::ip::tcp::socket&;
 
- private:
-  auto Connect() -> asio::awaitable<void>;
+  auto Connect() -> asio::awaitable<std::expected<void, error::RpcError>>;
 
-  auto BindAndListen() -> asio::awaitable<void>;
+  auto BindAndListen() -> asio::awaitable<std::expected<void, error::RpcError>>;
 
   asio::ip::tcp::socket socket_;
   std::string address_;
