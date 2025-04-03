@@ -44,6 +44,7 @@ class SocketTransport : public Transport {
   auto BindAndListen() -> asio::awaitable<std::expected<void, error::RpcError>>;
 
   asio::ip::tcp::socket socket_;
+  std::unique_ptr<asio::ip::tcp::acceptor> acceptor_;
   std::string address_;
   uint16_t port_;
   bool is_server_;
