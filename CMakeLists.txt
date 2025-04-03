@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 project(jsonrpc VERSION 2.1.1 LANGUAGES CXX)
 
 # Set C++ standard
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Export compile_commands.json for tools like clangd

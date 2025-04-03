@@ -9,7 +9,7 @@ Welcome to the **JSON-RPC 2.0 Modern C++ Library**! This library provides a ligh
 ## Features
 
 - **Fully Compliant with JSON-RPC 2.0**: Supports method calls, notifications, comprehensive error handling, and batch requests.
-- **Modern and Lightweight**: Leverages C++20 features with minimal dependencies, focusing solely on the JSON-RPC protocol.
+- **Modern and Lightweight**: Leverages C++23 features with minimal dependencies, focusing solely on the JSON-RPC protocol.
 - **Unified Endpoint Design**: Single `RpcEndpoint` class that can act as both client and server, following JSON-RPC 2.0's symmetric design.
 - **Transport-Agnostic**: Abstract transport layer allows use of provided implementations or custom ones.
 - **Simple JSON Integration**: Uses [nlohmann/json](https://github.com/nlohmann/json) for easy JSON object interaction, requiring no learning curve.
