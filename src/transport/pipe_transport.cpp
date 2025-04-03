@@ -324,7 +324,12 @@ auto PipeTransport::Connect()
 
   // Create the endpoint and connect
   asio::local::stream_protocol::endpoint endpoint(socket_path_);
-  co_await socket_.async_connect(endpoint, asio::use_awaitable);
+  co_await socket_.async_connect(
+      endpoint, asio::redirect_error(asio::use_awaitable, ec));
+  if (ec) {
+    spdlog::error("Error connecting to {}: {}", socket_path_, ec.message());
+    co_return std::unexpected(error::CreateTransportError(ec.message()));
+  }
 
   is_connected_ = true;
   spdlog::debug("Connected to {}", socket_path_);
@@ -369,7 +374,12 @@ auto PipeTransport::BindAndListen()
 
   // Accept a connection
   spdlog::debug("Waiting for connection on {}", socket_path_);
-  co_await acceptor_->async_accept(socket_, asio::use_awaitable);
+  co_await acceptor_->async_accept(
+      socket_, asio::redirect_error(asio::use_awaitable, ec));
+  if (ec) {
+    spdlog::error("Error accepting connection: {}", ec.message());
+    co_return std::unexpected(error::CreateTransportError(ec.message()));
+  }
   is_connected_ = true;
   spdlog::debug("Accepted connection on {}", socket_path_);
 

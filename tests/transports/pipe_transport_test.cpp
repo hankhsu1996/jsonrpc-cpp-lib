@@ -81,48 +81,44 @@ TEST_CASE(
     "PipeTransport starts server and client communication", "[PipeTransport]") {
   RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     std::string socket_path = "/tmp/test_socket";
-
-    // Create a server transport
     auto strand = asio::make_strand(executor);
-    jsonrpc::transport::PipeTransport server_transport(
-        executor, socket_path, true);
 
-    // Start server message handling in a separate coroutine
+    // Start server thread
     asio::co_spawn(
         strand,
-        [&server_transport]() -> asio::awaitable<void> {
-          spdlog::info("Server is waiting for a client...");
-          co_await server_transport.Start();
-          spdlog::info("Server accepted a client!");
+        [executor, socket_path]() -> asio::awaitable<void> {
+          jsonrpc::transport::PipeTransport server_transport(
+              executor, socket_path, true);
+          auto start_result = co_await server_transport.Start();
+          REQUIRE(start_result);
 
-          // Now it's safe to receive the message
           auto received_message = co_await server_transport.ReceiveMessage();
           REQUIRE(received_message == "Hello, Server!");
+
+          auto close_result = co_await server_transport.Close();
+          REQUIRE(close_result);
         },
         asio::detached);
 
-    // Start the client and connect to the server
-    jsonrpc::transport::PipeTransport client_transport(
-        executor, socket_path, false);
-
-    // Make sure `SendMessage()` runs in a separate coroutine
+    // Start the client thread
     asio::co_spawn(
         strand,
-        [&client_transport]() -> asio::awaitable<void> {
+        [executor, socket_path]() -> asio::awaitable<void> {
+          jsonrpc::transport::PipeTransport client_transport(
+              executor, socket_path, false);
+          auto start_result = co_await client_transport.Start();
+          REQUIRE(start_result);
+
           co_await client_transport.SendMessage("Hello, Server!");
+
+          auto close_result = co_await client_transport.Close();
+          REQUIRE(close_result);
         },
         asio::detached);
 
-    // Close the server *within the strand* to ensure ordering
-    asio::co_spawn(
-        strand,
-        [&server_transport]() -> asio::awaitable<void> {
-          co_await server_transport.Close();
-        },
-        asio::detached);
-
-    // Close the client transport
-    co_await client_transport.Close();
+    // Wait for both threads to complete
+    co_await asio::steady_timer(executor, std::chrono::seconds(1))
+        .async_wait(asio::use_awaitable);
   });
 }
 
@@ -141,51 +137,48 @@ TEST_CASE("PipeTransport throws on invalid socket path", "[PipeTransport]") {
 TEST_CASE("PipeTransport handles multiple messages", "[PipeTransport]") {
   RunTest([](asio::any_io_executor executor) -> asio::awaitable<void> {
     std::string socket_path = "/tmp/test_socket_multi";
-
-    // Create a server transport
     auto strand = asio::make_strand(executor);
-    jsonrpc::transport::PipeTransport server_transport(
-        executor, socket_path, true);
 
-    // Start server message handling in a separate coroutine
+    // Start server thread
     asio::co_spawn(
         strand,
-        [&server_transport]() -> asio::awaitable<void> {
-          spdlog::info("Server is waiting for a client...");
-          co_await server_transport.Start();
+        [executor, socket_path]() -> asio::awaitable<void> {
+          jsonrpc::transport::PipeTransport server_transport(
+              executor, socket_path, true);
+          auto start_result = co_await server_transport.Start();
+          REQUIRE(start_result);
 
-          // Now it's safe to receive the message
           for (int i = 0; i < 10; ++i) {
             auto received_message = co_await server_transport.ReceiveMessage();
             REQUIRE(received_message == "Hello, Server! " + std::to_string(i));
           }
+
+          auto close_result = co_await server_transport.Close();
+          REQUIRE(close_result);
         },
         asio::detached);
 
-    // Start the client and connect to the server
-    jsonrpc::transport::PipeTransport client_transport(
-        executor, socket_path, false);
-
-    // Make sure `SendMessage()` runs in a separate coroutine
+    // Start the client thread
     asio::co_spawn(
         strand,
-        [&client_transport]() -> asio::awaitable<void> {
+        [executor, socket_path]() -> asio::awaitable<void> {
+          jsonrpc::transport::PipeTransport client_transport(
+              executor, socket_path, false);
+          auto start_result = co_await client_transport.Start();
+          REQUIRE(start_result);
+
           for (int i = 0; i < 10; ++i) {
             co_await client_transport.SendMessage(
                 "Hello, Server! " + std::to_string(i));
           }
+
+          auto close_result = co_await client_transport.Close();
+          REQUIRE(close_result);
         },
         asio::detached);
 
-    // Close the server *within the strand* to ensure ordering
-    asio::co_spawn(
-        strand,
-        [&server_transport]() -> asio::awaitable<void> {
-          co_await server_transport.Close();
-        },
-        asio::detached);
-
-    // Close the client transport
-    co_await client_transport.Close();
+    // Wait for both threads to complete
+    co_await asio::steady_timer(executor, std::chrono::seconds(1))
+        .async_wait(asio::use_awaitable);
   });
 }
