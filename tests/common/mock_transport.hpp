@@ -57,21 +57,25 @@ class MockTransport : public jsonrpc::transport::Transport {
    *
    * @return asio::awaitable<void>
    */
-  auto Start() -> asio::awaitable<void> override {
+  auto Start()
+      -> asio::awaitable<std::expected<void, error::RpcError>> override {
     co_await asio::post(strand_, asio::use_awaitable);
 
     if (is_started_) {
       spdlog::debug("MockTransport already started");
-      co_return;
+      co_return std::unexpected(
+          error::CreateTransportError("MockTransport already started"));
     }
 
     if (is_closed_) {
-      throw std::runtime_error("Cannot start a closed transport");
+      spdlog::error("Cannot start a closed transport");
+      co_return std::unexpected(
+          error::CreateTransportError("Cannot start a closed transport"));
     }
 
     is_started_ = true;
     spdlog::debug("MockTransport started");
-    co_return;
+    co_return std::expected<void, error::RpcError>();
   }
 
   auto SendMessage(std::string message) -> asio::awaitable<void> override {

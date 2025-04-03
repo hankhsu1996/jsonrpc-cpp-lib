@@ -9,20 +9,8 @@
 
 namespace jsonrpc::transport {
 
-/**
- * @brief Transport layer using Asio Unix domain sockets for JSON-RPC
- * communication with framing.
- */
 class FramedPipeTransport : public PipeTransport {
  public:
-  /**
-   * @brief Constructs a FramedPipeTransport.
-   *
-   * @param executor The executor to use for async operations.
-   * @param socket_path The path to the Unix domain socket.
-   * @param is_server True if the transport acts as a server; false if it acts
-   * as a client.
-   */
   FramedPipeTransport(
       asio::any_io_executor executor, const std::string& socket_path,
       bool is_server);

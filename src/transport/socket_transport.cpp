@@ -53,18 +53,21 @@ void SocketTransport::CloseNow() {
   }
 }
 
-auto SocketTransport::Start() -> asio::awaitable<void> {
+auto SocketTransport::Start()
+    -> asio::awaitable<std::expected<void, error::RpcError>> {
   try {
     co_await asio::post(GetStrand(), asio::use_awaitable);
 
     if (is_started_) {
       spdlog::debug("SocketTransport already started");
-      co_return;
+      co_return std::unexpected(
+          error::CreateTransportError("SocketTransport already started"));
     }
 
     if (is_closed_) {
       spdlog::error("Cannot start a closed transport");
-      throw std::runtime_error("Cannot start a closed transport");
+      co_return std::unexpected(
+          error::CreateTransportError("Cannot start a closed transport"));
     }
 
     // Set started flag before performing operations
@@ -83,7 +86,7 @@ auto SocketTransport::Start() -> asio::awaitable<void> {
           "SocketTransport client connected to {}:{}", address_, port_);
     }
 
-    co_return;
+    co_return std::expected<void, error::RpcError>();
   } catch (const std::exception &e) {
     spdlog::error("Error in Start(): {}", e.what());
     is_started_ = false;

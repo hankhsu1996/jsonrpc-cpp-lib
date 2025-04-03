@@ -1,21 +1,16 @@
 #pragma once
 
+#include <expected>
 #include <string>
 
 #include <asio.hpp>
 
+#include "jsonrpc/error/error.hpp"
+
 namespace jsonrpc::transport {
 
-/**
- * @brief Abstract base class for all transport implementations.
- */
 class Transport {
  public:
-  /**
-   * @brief Constructs a Transport with the given executor.
-   *
-   * @param executor The executor to use for asynchronous operations.
-   */
   explicit Transport(asio::any_io_executor executor)
       : executor_(std::move(executor)), strand_(asio::make_strand(executor_)) {
   }
@@ -28,16 +23,8 @@ class Transport {
 
   virtual ~Transport() = default;
 
-  /**
-   * @brief Starts the transport.
-   *
-   * This initializes connections and prepares the transport for communication.
-   * For server transports, this typically involves binding and listening.
-   * For client transports, this involves connecting to the server.
-   *
-   * @return asio::awaitable<void>
-   */
-  virtual auto Start() -> asio::awaitable<void> = 0;
+  virtual auto Start()
+      -> asio::awaitable<std::expected<void, error::RpcError>> = 0;
 
   /// @brief Sends a message over the transport.
   virtual auto SendMessage(std::string message) -> asio::awaitable<void> = 0;
