@@ -50,7 +50,7 @@ class PipeTransport : public Transport {
 
  private:
   asio::local::stream_protocol::socket socket_;
-  std::shared_ptr<asio::local::stream_protocol::acceptor> acceptor_;
+  std::unique_ptr<asio::local::stream_protocol::acceptor> acceptor_;
   std::string socket_path_;
   bool is_server_;
   std::atomic<bool> is_closed_{false};

@@ -17,16 +17,6 @@ PipeTransport::PipeTransport(
       socket_path_(std::move(socket_path)),
       is_server_(is_server),
       read_buffer_() {
-  spdlog::debug(
-      "PipeTransport initialized ({}): {}", is_server_ ? "server" : "client",
-      socket_path_);
-
-  // Create acceptor in constructor if this is a server, but don't bind yet
-  if (is_server_) {
-    acceptor_ =
-        std::make_shared<asio::local::stream_protocol::acceptor>(GetExecutor());
-  }
-  // Connections will be established in the Start() method
 }
 
 PipeTransport::~PipeTransport() {
@@ -346,6 +336,12 @@ auto PipeTransport::BindAndListen()
     spdlog::error(
         "Error removing existing socket file: {}", result.error().message);
     co_return std::unexpected(result.error());
+  }
+
+  // Lazily construct the acceptor if not already created
+  if (!acceptor_) {
+    acceptor_ =
+        std::make_unique<asio::local::stream_protocol::acceptor>(GetExecutor());
   }
 
   // Create the endpoint
