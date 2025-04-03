@@ -133,45 +133,61 @@ auto PipeTransport::Close()
 }
 
 void PipeTransport::CloseNow() {
-  // Set the closed flag to prevent concurrent operations
   is_closed_ = true;
   is_connected_ = false;
 
-  try {
-    // Cancel and close the socket synchronously
-    if (socket_.is_open()) {
-      spdlog::debug("Closing socket synchronously");
-      socket_.cancel();
-      asio::error_code ec;
-      socket_.close(ec);
-      if (ec) {
-        spdlog::warn("Error closing socket: {}", ec.message());
-      }
+  auto try_close_socket = [&]() {
+    if (!socket_.is_open()) {
+      return;
+    }
+    spdlog::debug("Closing socket synchronously");
+
+    std::error_code ec;
+    socket_.cancel();
+    socket_.close(ec);
+    if (ec) {
+      spdlog::warn("Error closing socket: {}", ec.message());
+    }
+  };
+
+  auto try_close_acceptor = [&]() {
+    if (!is_server_ || !acceptor_ || !acceptor_->is_open()) {
+      return;
+    }
+    spdlog::debug("Closing acceptor synchronously");
+
+    std::error_code ec;
+    acceptor_->cancel();
+    acceptor_->close(ec);
+    if (ec) {
+      spdlog::warn("Error closing acceptor: {}", ec.message());
+    }
+  };
+
+  auto try_remove_socket_file = [&]() {
+    if (!is_server_ || socket_path_.empty()) {
+      return;
     }
 
-    // Cancel and close the acceptor safely
-    if (is_server_ && acceptor_ && acceptor_->is_open()) {
-      spdlog::debug("Closing acceptor synchronously");
-      acceptor_->cancel();
-      asio::error_code ec;
-      acceptor_->close(ec);
+    std::error_code ec;
+    if (std::filesystem::exists(socket_path_, ec) && !ec) {
+      std::filesystem::remove(socket_path_, ec);
       if (ec) {
-        spdlog::warn("Error closing acceptor: {}", ec.message());
-      }
-    }
-
-    // Clean up the socket file
-    if (is_server_ && !socket_path_.empty() &&
-        std::filesystem::exists(socket_path_)) {
-      try {
-        std::filesystem::remove(socket_path_);
+        spdlog::warn("Error removing socket file: {}", ec.message());
+      } else {
         spdlog::debug("Removed socket file: {}", socket_path_);
-      } catch (const std::exception &e) {
-        spdlog::warn("Error removing socket file: {}", e.what());
       }
+    } else if (ec) {
+      spdlog::warn("Error checking socket file existence: {}", ec.message());
     }
+  };
+
+  try {
+    try_close_socket();
+    try_close_acceptor();
+    try_remove_socket_file();
   } catch (const std::exception &e) {
-    spdlog::error("Error in synchronous close: {}", e.what());
+    spdlog::error("Unexpected exception during CloseNow(): {}", e.what());
   }
 }
 

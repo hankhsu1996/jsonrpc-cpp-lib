@@ -26,14 +26,14 @@ class Transport {
   virtual auto Start()
       -> asio::awaitable<std::expected<void, error::RpcError>> = 0;
 
-  virtual auto SendMessage(std::string message) -> asio::awaitable<void> = 0;
-
-  virtual auto ReceiveMessage() -> asio::awaitable<std::string> = 0;
-
   virtual auto Close()
       -> asio::awaitable<std::expected<void, error::RpcError>> = 0;
 
-  virtual void CloseNow() = 0;
+  virtual auto CloseNow() -> void = 0;
+
+  virtual auto SendMessage(std::string message) -> asio::awaitable<void> = 0;
+
+  virtual auto ReceiveMessage() -> asio::awaitable<std::string> = 0;
 
   [[nodiscard]] auto GetExecutor() const -> asio::any_io_executor {
     return executor_;
