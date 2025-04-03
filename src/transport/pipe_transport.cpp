@@ -85,41 +85,45 @@ void PipeTransport::CloseNow() {
 
 auto PipeTransport::Start()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
-  try {
-    co_await asio::post(GetStrand(), asio::use_awaitable);
+  co_await asio::post(GetStrand(), asio::use_awaitable);
 
-    if (is_started_) {
-      spdlog::debug("PipeTransport already started");
-      co_return std::unexpected(
-          error::CreateTransportError("PipeTransport already started"));
-    }
-
-    if (is_closed_) {
-      spdlog::error("Cannot start a closed transport");
-      co_return std::unexpected(
-          error::CreateTransportError("Cannot start a closed transport"));
-    }
-
-    // Set started flag before performing operations
-    is_started_ = true;
-
-    if (is_server_) {
-      // For server, bind and listen for connections
-      spdlog::info("Starting PipeTransport server at {}", socket_path_);
-      co_await BindAndListen();
-    } else {
-      // For client, connect to the server
-      spdlog::info("Connecting PipeTransport client to {}", socket_path_);
-      co_await Connect();
-      spdlog::debug("PipeTransport client connected to {}", socket_path_);
-    }
-
-    co_return std::expected<void, error::RpcError>();
-  } catch (const std::exception &e) {
-    spdlog::error("Error in PipeTransport::Start(): {}", e.what());
-    is_started_ = false;
-    throw;
+  if (is_started_) {
+    spdlog::debug("PipeTransport already started");
+    co_return std::unexpected(
+        error::CreateTransportError("PipeTransport already started"));
   }
+
+  if (is_closed_) {
+    spdlog::error("Cannot start a closed transport");
+    co_return std::unexpected(
+        error::CreateTransportError("Cannot start a closed transport"));
+  }
+
+  if (is_server_) {
+    // For server, bind and listen for connections
+    spdlog::info("Starting PipeTransport server at {}", socket_path_);
+    auto result = co_await BindAndListen();
+    if (!result) {
+      spdlog::error(
+          "Error starting PipeTransport server: {}", result.error().message);
+      co_return std::unexpected(result.error());
+    }
+  } else {
+    // For client, connect to the server
+    spdlog::info("Connecting PipeTransport client to {}", socket_path_);
+    auto result = co_await Connect();
+    if (!result) {
+      spdlog::error(
+          "Error connecting PipeTransport client: {}", result.error().message);
+      co_return std::unexpected(result.error());
+    }
+    spdlog::debug("PipeTransport client connected to {}", socket_path_);
+  }
+
+  // Set started flag before performing operations
+  is_started_ = true;
+  spdlog::debug("PipeTransport successfully started");
+  co_return std::expected<void, error::RpcError>();
 }
 
 auto PipeTransport::GetSocket() -> asio::local::stream_protocol::socket & {
