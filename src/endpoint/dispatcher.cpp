@@ -41,10 +41,10 @@ auto Dispatcher::DispatchRequest(std::string request)
     }
 
     auto response = co_await DispatchSingleRequest(request.value());
-    if (!response.has_value()) {
-      co_return std::nullopt;
+    if (response.has_value()) {
+      co_return response.value().ToJson().dump();
     }
-    co_return response.value().ToJson().dump();
+    co_return std::nullopt;
   }
 
   // Batch request
