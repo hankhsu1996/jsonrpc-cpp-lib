@@ -26,40 +26,55 @@ void Dispatcher::RegisterNotification(
 
 auto Dispatcher::DispatchRequest(std::string request)
     -> asio::awaitable<std::optional<std::string>> {
-  nlohmann::json request_json;
+  nlohmann::json root;
   try {
-    request_json = nlohmann::json::parse(request);
+    root = nlohmann::json::parse(request);
   } catch (const nlohmann::json::parse_error& e) {
     co_return Response::CreateError(ErrorCode::kParseError).ToJson().dump();
   }
 
-  if (request_json.is_object()) {
-    auto request_obj = Request::FromJson(request_json);
-    if (!request_obj.has_value()) {
-      co_return Response::CreateError(request_obj.error()).ToJson().dump();
+  // Single request
+  if (root.is_object()) {
+    auto request = Request::FromJson(root);
+    if (!request.has_value()) {
+      co_return Response::CreateError(request.error()).ToJson().dump();
     }
+
+    auto response = co_await DispatchSingleRequest(request.value());
+    if (!response.has_value()) {
+      co_return std::nullopt;
+    }
+    co_return response.value().ToJson().dump();
   }
 
-  // Handle empty batch requests
-  if (request_json.is_array() && request_json.empty()) {
-    co_return Response::CreateError(ErrorCode::kInvalidRequest).ToJson().dump();
+  // Batch request
+  if (root.is_array()) {
+    if (root.empty()) {
+      co_return Response::CreateError(ErrorCode::kInvalidRequest)
+          .ToJson()
+          .dump();
+    }
+
+    std::vector<Request> requests;
+    std::vector<Response> responses;
+    for (const auto& element : root) {
+      auto request = Request::FromJson(element);
+      if (!request.has_value()) {
+        responses.push_back(Response::CreateError(request.error()));
+        continue;
+      }
+      requests.push_back(request.value());
+    }
+
+    auto dispatched = co_await DispatchBatchRequest(requests);
+    for (const auto& response : dispatched) {
+      responses.push_back(response);
+    }
+
+    co_return nlohmann::json(responses).dump();
   }
 
-  if (request_json.is_array()) {
-    co_return co_await DispatchBatchRequest(request_json);
-  }
-
-  auto request_obj = Request::FromJson(request_json);
-  if (!request_obj.has_value()) {
-    co_return Response::CreateError(request_obj.error()).ToJson().dump();
-  }
-
-  auto response_json = co_await DispatchSingleRequest(request_obj.value());
-  if (!response_json) {
-    co_return std::nullopt;
-  }
-
-  co_return response_json->ToJson().dump();
+  co_return Response::CreateError(ErrorCode::kInvalidRequest).ToJson().dump();
 }
 
 auto Dispatcher::DispatchSingleRequest(Request request)
@@ -93,47 +108,27 @@ auto Dispatcher::DispatchSingleRequest(Request request)
   co_return Response::CreateError(ErrorCode::kMethodNotFound, request.GetId());
 }
 
-auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
-    -> asio::awaitable<std::optional<std::string>> {
-  if (request_json.empty()) {
-    co_return Response::CreateError(ErrorCode::kInvalidRequest).ToJson().dump();
-  }
-
-  std::vector<asio::awaitable<std::optional<Response>>> pending_requests;
-  pending_requests.reserve(request_json.size());
+auto Dispatcher::DispatchBatchRequest(std::vector<Request> requests)
+    -> asio::awaitable<std::vector<Response>> {
+  std::vector<asio::awaitable<std::optional<Response>>> pending;
+  pending.reserve(requests.size());
 
   // Queue all requests in parallel
-  for (const auto& element : request_json) {
-    // Validate individual request objects in the batch
-    if (!element.is_object()) {
-      // For invalid requests, create an immediate error response as a coroutine
-      pending_requests.push_back(
-          []() -> asio::awaitable<std::optional<Response>> {
-            auto error_json =
-                Response::CreateError(ErrorCode::kInvalidRequest, std::nullopt);
-            co_return error_json;
-          }());
-    } else {
-      // For valid requests, dispatch them normally
-      pending_requests.push_back(
-          DispatchSingleRequest(Request::FromJson(element).value()));
-    }
+  for (const auto& request : requests) {
+    // For valid requests, dispatch them normally
+    pending.push_back(DispatchSingleRequest(request));
   }
 
   // Wait for all requests to complete
-  std::vector<nlohmann::json> responses;
-  for (auto& pending_request : pending_requests) {
-    auto response = co_await std::move(pending_request);
-    if (response) {
-      responses.push_back(response->ToJson());
+  std::vector<Response> responses;
+  for (auto& awaitable_response : pending) {
+    auto response = co_await std::move(awaitable_response);
+    if (response.has_value()) {
+      responses.push_back(response.value());
     }
   }
 
-  if (responses.empty()) {
-    co_return std::nullopt;
-  }
-
-  co_return nlohmann::json(responses).dump();
+  co_return responses;
 }
 
 }  // namespace jsonrpc::endpoint

@@ -42,8 +42,8 @@ class Dispatcher {
   auto DispatchSingleRequest(Request request)
       -> asio::awaitable<std::optional<Response>>;
 
-  auto DispatchBatchRequest(nlohmann::json request_json)
-      -> asio::awaitable<std::optional<std::string>>;
+  auto DispatchBatchRequest(std::vector<Request> requests)
+      -> asio::awaitable<std::vector<Response>>;
 
   std::unordered_map<std::string, MethodCallHandler> method_handlers_;
 

@@ -63,3 +63,12 @@ class Response {
 };
 
 }  // namespace jsonrpc::endpoint
+
+namespace nlohmann {
+template <>
+struct adl_serializer<jsonrpc::endpoint::Response> {
+  static void to_json(json& j, const jsonrpc::endpoint::Response& r) {
+    j = r.ToJson();
+  }
+};
+}  // namespace nlohmann
