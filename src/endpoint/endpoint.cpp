@@ -133,18 +133,20 @@ auto RpcEndpoint::SendMethodCall(
 
 auto RpcEndpoint::SendNotification(
     std::string method, std::optional<nlohmann::json> params)
-    -> asio::awaitable<void> {
+    -> asio::awaitable<std::expected<void, RpcError>> {
   if (!is_running_) {
-    throw std::runtime_error("RPC endpoint is not running");
+    co_return CreateClientError("RPC endpoint is not running");
   }
 
-  // Create the notification message (no ID)
   Request request(method, std::move(params));
   std::string message = request.ToJson().dump();
 
-  // Send the notification
-  co_await transport_->SendMessage(message);
-  co_return;
+  auto send_result = co_await transport_->SendMessage(message);
+  if (!send_result) {
+    co_return std::unexpected(send_result.error());
+  }
+
+  co_return std::expected<void, RpcError>{};
 }
 
 void RpcEndpoint::RegisterMethodCall(
