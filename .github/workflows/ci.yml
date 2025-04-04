@@ -47,6 +47,15 @@ jobs:
           cache-dependencies: true
           cache-tool: true
 
+      - name: Install Clang 19
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-19
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 100
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 100
+          sudo update-alternatives --set clang++ /usr/bin/clang++-19
+          sudo update-alternatives --set clang /usr/bin/clang-19
+
       - name: Install dependencies
         run: |
           conan profile detect --force
@@ -78,6 +87,15 @@ jobs:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
           repository-cache: true
+
+      - name: Install Clang 19
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-19
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 100
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 100
+          sudo update-alternatives --set clang++ /usr/bin/clang++-19
+          sudo update-alternatives --set clang /usr/bin/clang-19
 
       - name: Verify Clang is available
         run: clang --version
