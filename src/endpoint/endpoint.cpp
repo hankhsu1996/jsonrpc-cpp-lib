@@ -84,12 +84,12 @@ auto RpcEndpoint::Shutdown() -> asio::awaitable<std::expected<void, RpcError>> {
     co_return std::expected<void, RpcError>{};
   }
 
+  co_await asio::post(endpoint_strand_, asio::use_awaitable);
   cancel_signal_.emit(asio::cancellation_type::all);
 
   spdlog::debug("Shutting down RPC endpoint");
 
   // Ensure all operations on the strand complete, including message processing
-  co_await asio::post(endpoint_strand_, asio::use_awaitable);
 
   // Cancel pending requests
   for (auto &[id, request] : pending_requests_) {
