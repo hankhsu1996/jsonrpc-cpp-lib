@@ -35,15 +35,17 @@ auto RunClient(asio::any_io_executor executor) -> asio::awaitable<void> {
   const int add_op1 = 10;
   const int add_op2 = 5;
   Json add_params = {{"a", add_op1}, {"b", add_op2}};
-  Json add_result = co_await client->SendMethodCall("add", add_params);
-  spdlog::info("Add result: {} + {} = {}", add_op1, add_op2, add_result.dump());
+  auto add_result = co_await client->SendMethodCall("add", add_params);
+  spdlog::info(
+      "Add result: {} + {} = {}", add_op1, add_op2, add_result.value().dump());
 
   // Example 2: Call "divide" method
   const int div_op1 = 10;
   const int div_op2 = 2;
   Json div_params = {{"a", div_op1}, {"b", div_op2}};
-  Json div_result = co_await client->SendMethodCall("divide", div_params);
-  spdlog::info("Div result: {} / {} = {}", div_op1, div_op2, div_result.dump());
+  auto div_result = co_await client->SendMethodCall("divide", div_params);
+  spdlog::info(
+      "Div result: {} / {} = {}", div_op1, div_op2, div_result.value().dump());
 
   // Step 3: Send notifications
   spdlog::info("Sending 'stop' notification to server");

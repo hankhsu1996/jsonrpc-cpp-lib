@@ -28,8 +28,7 @@ auto FramedPipeTransport::ReceiveMessage()
 
     if (!result.error.empty()) {
       spdlog::error("Framing error: {}", result.error);
-      co_return std::unexpected(
-          error::CreateTransportError("Framing error: " + result.error));
+      co_return error::CreateTransportError("Framing error: " + result.error);
     }
 
     // Get more data using base class receive

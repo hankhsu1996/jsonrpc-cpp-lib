@@ -1,5 +1,6 @@
 #pragma once
 
+#include <expected>
 #include <string>
 #include <system_error>
 
@@ -19,6 +20,9 @@ enum class ErrorCode {
   kServerError = -32000,
   kTransportError = -32010,
   kTimeoutError = -32001,
+
+  // Client errors
+  kClientError = -32099,
 };
 
 inline auto DefaultMessageFor(ErrorCode code) -> std::string_view {
@@ -39,6 +43,8 @@ inline auto DefaultMessageFor(ErrorCode code) -> std::string_view {
       return "Transport error";
     case ErrorCode::kTimeoutError:
       return "Timeout error";
+    case ErrorCode::kClientError:
+      return "Client error";
   }
   return "Unknown error";
 }
@@ -86,6 +92,13 @@ struct TransportError : RpcError {
   }
 };
 
+// Client errors
+struct ClientError : RpcError {
+  explicit ClientError(std::string msg)
+      : RpcError(ErrorCode::kClientError, std::move(msg)) {
+  }
+};
+
 // Server lifecycle errors (start/stop failures, resource issues)
 struct ServerError : RpcError {
   explicit ServerError(std::string msg)
@@ -94,13 +107,19 @@ struct ServerError : RpcError {
 };
 
 [[nodiscard]] inline auto CreateTransportError(
-    std::string message, std::error_code ec = {}) -> TransportError {
-  return TransportError(std::move(message), ec);
+    std::string message, std::error_code ec = {})
+    -> std::unexpected<TransportError> {
+  return std::unexpected(TransportError(std::move(message), ec));
 }
 
 [[nodiscard]] inline auto CreateServerError(
-    std::string message = "Server error") -> ServerError {
-  return ServerError(std::move(message));
+    std::string message = "Server error") -> std::unexpected<ServerError> {
+  return std::unexpected(ServerError(std::move(message)));
+}
+
+[[nodiscard]] inline auto CreateClientError(
+    std::string message = "Client error") -> std::unexpected<ClientError> {
+  return std::unexpected(ClientError(std::move(message)));
 }
 
 }  // namespace jsonrpc::error

@@ -3,12 +3,18 @@
 #include <asio/co_spawn.hpp>
 #include <asio/detached.hpp>
 #include <asio/use_awaitable.hpp>
+#include <jsonrpc/error/error.hpp>
 #include <spdlog/spdlog.h>
 
 #include "jsonrpc/endpoint/request.hpp"
 #include "jsonrpc/endpoint/response.hpp"
 
 namespace jsonrpc::endpoint {
+
+using jsonrpc::error::CreateClientError;
+using jsonrpc::error::CreateServerError;
+using jsonrpc::error::ErrorCode;
+using jsonrpc::error::RpcError;
 
 RpcEndpoint::RpcEndpoint(
     asio::any_io_executor executor,
@@ -97,46 +103,31 @@ auto RpcEndpoint::Shutdown() -> asio::awaitable<void> {
 
 auto RpcEndpoint::SendMethodCall(
     std::string method, std::optional<nlohmann::json> params)
-    -> asio::awaitable<nlohmann::json> {
+    -> asio::awaitable<std::expected<nlohmann::json, RpcError>> {
   if (!is_running_) {
-    throw std::runtime_error("RPC endpoint is not running");
+    co_return CreateClientError("RPC endpoint is not running");
   }
 
-  // Get request ID from the executor context (thread-safe)
   auto request_id = GetNextRequestId();
-
-  // Create the request message
   Request request(method, std::move(params), request_id);
   std::string message = request.ToJson().dump();
 
-  // Create a pending request
   auto pending_request = std::make_shared<PendingRequest>(endpoint_strand_);
+  asio::post(endpoint_strand_, [this, request_id, pending_request] {
+    pending_requests_[request_id] = pending_request;
+  });
 
-  // Store the pending request under strand protection
-  asio::post(
-      endpoint_strand_, [this, id = request_id, req = pending_request]() {
-        pending_requests_[id] = req;
-      });
-
-  // Send the request
-  co_await transport_->SendMessage(message);
-
-  // Await the result
-  auto result = co_await pending_request->GetResult();
-
-  // Check if the result contains an error
-  if (result.contains("error")) {
-    // Extract error details
-    auto error = result["error"];
-    int code = error["code"].get<int>();
-    std::string msg = error["message"].get<std::string>();
-
-    // Report and throw
-    ReportError(static_cast<ErrorCode>(code), msg);
-    // throw RpcError(static_cast<ErrorCode>(code), msg);
+  auto send_result = co_await transport_->SendMessage(message);
+  if (!send_result) {
+    co_return std::unexpected(send_result.error());
   }
 
-  // Return the result
+  auto result = co_await pending_request->GetResult();
+  if (result.contains("error")) {
+    auto err = result["error"];
+    co_return CreateClientError(err["message"].get<std::string>());
+  }
+
   co_return result["result"];
 }
 
@@ -169,18 +160,6 @@ void RpcEndpoint::RegisterNotification(
 auto RpcEndpoint::HasPendingRequests() const -> bool {
   // This is safe to call without a strand because we're just checking if empty
   return !pending_requests_.empty();
-}
-
-void RpcEndpoint::SetErrorHandler(ErrorHandler handler) {
-  error_handler_ = std::move(handler);
-}
-
-void RpcEndpoint::ReportError(ErrorCode code, const std::string &message) {
-  if (error_handler_) {
-    error_handler_(code, message);
-  }
-
-  spdlog::error("JSON-RPC error ({}): {}", static_cast<int>(code), message);
 }
 
 void RpcEndpoint::StartMessageProcessing() {
@@ -233,7 +212,6 @@ auto RpcEndpoint::HandleMessage(std::string message) -> asio::awaitable<void> {
         (json_message.contains("result") || json_message.contains("error"))) {
       auto response = Response::FromJson(json_message);
       if (!response.has_value()) {
-        ReportError(response.error().code, response.error().message);
         co_return;
       }
       co_await HandleResponse(std::move(response.value()));
@@ -255,13 +233,14 @@ auto RpcEndpoint::HandleResponse(Response response) -> asio::awaitable<void> {
   // Get the request ID
   auto id_variant = response.GetId();
   if (!id_variant.has_value()) {
-    ReportError(ErrorCode::kInvalidRequest, "Response missing ID");
+    // ReportError(ErrorCode::kInvalidRequest, "Response missing ID");
     co_return;
   }
 
   // Extract the integer ID - we only support integer IDs in our implementation
   if (!std::holds_alternative<int64_t>(*id_variant)) {
-    ReportError(ErrorCode::kInvalidRequest, "Response ID must be an integer");
+    // ReportError(ErrorCode::kInvalidRequest, "Response ID must be an
+    // integer");
     co_return;
   }
 
@@ -285,9 +264,9 @@ auto RpcEndpoint::HandleResponse(Response response) -> asio::awaitable<void> {
   co_await asio::post(co_await asio::this_coro::executor, asio::use_awaitable);
 
   if (!found || !request) {
-    ReportError(
-        ErrorCode::kInvalidRequest,
-        "Received response for unknown request ID: " + std::to_string(id));
+    // ReportError(
+    //     ErrorCode::kInvalidRequest,
+    //     "Received response for unknown request ID: " + std::to_string(id));
     co_return;
   }
 
