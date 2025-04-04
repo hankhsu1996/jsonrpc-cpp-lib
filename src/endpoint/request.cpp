@@ -54,7 +54,7 @@ auto Request::ValidateJson(const nlohmann::json& json_obj) -> bool {
   if (!json_obj.is_object()) {
     return false;
   }
-  if (!json_obj.contains("jsonrpc") || json_obj["jsonrpc"] != "2.0") {
+  if (!json_obj.contains("jsonrpc") || json_obj["jsonrpc"] != kJsonRpcVersion) {
     return false;
   }
   if (!json_obj.contains("method") || !json_obj["method"].is_string()) {
@@ -92,7 +92,7 @@ auto Request::Dump() const -> std::string {
 
 auto Request::ToJson() const -> nlohmann::json {
   nlohmann::json json_obj;
-  json_obj["jsonrpc"] = "2.0";
+  json_obj["jsonrpc"] = kJsonRpcVersion;
   json_obj["method"] = method_;
 
   if (params_.has_value()) {

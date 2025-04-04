@@ -18,7 +18,7 @@ auto Response::FromJson(const nlohmann::json& json)
 auto Response::CreateSuccess(
     const nlohmann::json& result, const std::optional<RequestId>& id)
     -> Response {
-  nlohmann::json response = {{"jsonrpc", "2.0"}, {"result", result}};
+  nlohmann::json response = {{"jsonrpc", kJsonRpcVersion}, {"result", result}};
   if (id) {
     std::visit([&response](const auto& v) { response["id"] = v; }, *id);
   }
@@ -31,7 +31,7 @@ auto Response::CreateError(ErrorCode code, const std::optional<RequestId>& id)
 
   nlohmann::json error = {
       {"code", static_cast<int>(err.code)}, {"message", err.message}};
-  nlohmann::json response = {{"jsonrpc", "2.0"}, {"error", error}};
+  nlohmann::json response = {{"jsonrpc", kJsonRpcVersion}, {"error", error}};
   if (id) {
     std::visit([&response](const auto& v) { response["id"] = v; }, *id);
   } else {
@@ -43,7 +43,7 @@ auto Response::CreateError(ErrorCode code, const std::optional<RequestId>& id)
 auto Response::CreateError(
     const nlohmann::json& error, const std::optional<RequestId>& id)
     -> Response {
-  nlohmann::json response = {{"jsonrpc", "2.0"}, {"error", error}};
+  nlohmann::json response = {{"jsonrpc", kJsonRpcVersion}, {"error", error}};
   if (id) {
     std::visit([&response](const auto& v) { response["id"] = v; }, *id);
   }
@@ -92,7 +92,8 @@ inline auto CreateInvalidRequest(std::string message) {
 
 auto Response::ValidateResponse() const
     -> std::expected<void, error::RpcError> {
-  if (!response_.contains("jsonrpc") || response_["jsonrpc"] != "2.0") {
+  if (!response_.contains("jsonrpc") ||
+      response_["jsonrpc"] != kJsonRpcVersion) {
     return CreateInvalidRequest("Invalid JSON-RPC version");
   }
 
