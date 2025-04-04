@@ -40,7 +40,7 @@ auto HandleShutdown(std::weak_ptr<RpcEndpoint> weak) -> asio::awaitable<void> {
 void RegisterLSPHandlers(std::shared_ptr<RpcEndpoint> server) {
   server->RegisterMethodCall(
       "initialize", [](std::optional<Json> params) -> asio::awaitable<Json> {
-        spdlog::info("LSP Server initialized");
+        spdlog::debug("LspExample server initialized");
         Json response = {
             {"capabilities",
              {{"positionEncoding", "utf-16"},
@@ -57,7 +57,7 @@ void RegisterLSPHandlers(std::shared_ptr<RpcEndpoint> server) {
 
   server->RegisterNotification(
       "initialized", [](std::optional<Json> params) -> asio::awaitable<void> {
-        spdlog::info("Client initialized");
+        spdlog::debug("LspExample client initialized");
         co_return;
       });
 
@@ -77,7 +77,7 @@ void RegisterLSPHandlers(std::shared_ptr<RpcEndpoint> server) {
 
   server->RegisterMethodCall(
       "shutdown", [](std::optional<Json> params) -> asio::awaitable<Json> {
-        spdlog::info("Server shutting down");
+        spdlog::debug("LspExample server shutting down");
         co_return Json::object();
       });
 
@@ -104,7 +104,7 @@ auto RunLSPServer(asio::any_io_executor executor, std::string pipe_name)
   // Step 5: Wait for server shutdown
   co_await server->WaitForShutdown();
 
-  spdlog::info("Server shutdown monitoring complete");
+  spdlog::debug("LspExample server shutdown monitoring complete");
   co_return;
 }
 
@@ -115,14 +115,15 @@ auto HandleError(std::exception_ptr eptr) -> void {
       std::rethrow_exception(eptr);
     }
   } catch (const std::exception& e) {
-    spdlog::error("Server error: {}", e.what());
+    spdlog::error("LspExample server error: {}", e.what());
   }
 }
 
 auto main(int argc, char* argv[]) -> int {
   // Step 1: Setup logging
   auto cout_sink = std::make_shared<spdlog::sinks::ostream_sink_mt>(std::cout);
-  auto logger = std::make_shared<spdlog::logger>("server_logger", cout_sink);
+  auto logger = std::make_shared<spdlog::logger>("server", cout_sink);
+  logger->set_pattern("[%n] [%l] %v");
   spdlog::set_default_logger(logger);
   spdlog::set_level(spdlog::level::debug);
   spdlog::flush_on(spdlog::level::debug);
@@ -130,7 +131,7 @@ auto main(int argc, char* argv[]) -> int {
   // Step 2: Parse command line arguments
   const std::vector<std::string> args(argv, argv + argc);
   const std::string pipe_name = ParsePipeArguments(args);
-  spdlog::info("Starting LSP server on pipe: {}", pipe_name);
+  spdlog::debug("LspExample starting server on pipe: {}", pipe_name);
 
   // Step 3: Create an io_context for asio operations
   asio::io_context io_context;
@@ -142,6 +143,6 @@ auto main(int argc, char* argv[]) -> int {
   // Step 5: Run the io_context
   io_context.run();
 
-  spdlog::info("Server shutdown complete");
+  spdlog::debug("LspExample server shutdown complete");
   return 0;
 }

@@ -22,13 +22,14 @@ SocketTransport::~SocketTransport() {
     try {
       CloseNow();
     } catch (const std::exception &e) {
-      spdlog::error("Error in SocketTransport destructor: {}", e.what());
+      spdlog::error("SocketTransport destructor error: {}", e.what());
     }
   }
 }
 
 auto SocketTransport::Start()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
+  spdlog::debug("SocketTransport starting");
   co_await asio::post(GetStrand(), asio::use_awaitable);
 
   if (is_started_) {
@@ -38,7 +39,7 @@ auto SocketTransport::Start()
   }
 
   if (is_closed_) {
-    spdlog::error("Cannot start a closed transport");
+    spdlog::error("SocketTransport cannot start a closed transport");
     co_return std::unexpected(
         error::CreateTransportError("Cannot start a closed transport"));
   }
@@ -46,11 +47,11 @@ auto SocketTransport::Start()
   std::expected<void, error::RpcError> result;
 
   if (is_server_) {
-    spdlog::debug("Starting SocketTransport server at {}:{}", address_, port_);
+    spdlog::debug("SocketTransport starting server at {}:{}", address_, port_);
     result = co_await BindAndListen();
     if (!result) {
       spdlog::error(
-          "Error starting SocketTransport server: {}", result.error().message);
+          "SocketTransport error starting server: {}", result.error().message);
       co_return std::unexpected(result.error());
     }
   } else {
@@ -59,7 +60,7 @@ auto SocketTransport::Start()
     result = co_await Connect();
     if (!result) {
       spdlog::error(
-          "Error connecting SocketTransport client: {}",
+          "SocketTransport error connecting client: {}",
           result.error().message);
       co_return std::unexpected(result.error());
     }
@@ -73,6 +74,7 @@ auto SocketTransport::Start()
 
 auto SocketTransport::Close()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
+  spdlog::debug("SocketTransport closing");
   co_await asio::post(GetStrand(), asio::use_awaitable);
 
   if (is_closed_) {
@@ -83,18 +85,18 @@ auto SocketTransport::Close()
   is_closed_ = true;
   is_connected_ = false;
 
-  spdlog::debug("Closing socket transport");
+  spdlog::debug("SocketTransport closing");
 
   // Cancel and close the socket safely
   std::error_code ec;
   if (socket_.is_open()) {
     socket_.cancel(ec);
     if (ec) {
-      spdlog::warn("Error canceling socket: {}", ec.message());
+      spdlog::warn("SocketTransport error canceling socket: {}", ec.message());
     }
     socket_.close(ec);
     if (ec) {
-      spdlog::warn("Error closing socket: {}", ec.message());
+      spdlog::warn("SocketTransport error closing socket: {}", ec.message());
     }
   }
 
@@ -102,11 +104,12 @@ auto SocketTransport::Close()
   if (is_server_ && acceptor_) {
     acceptor_->cancel(ec);
     if (ec) {
-      spdlog::warn("Error canceling acceptor: {}", ec.message());
+      spdlog::warn(
+          "SocketTransport error canceling acceptor: {}", ec.message());
     }
     acceptor_->close(ec);
     if (ec) {
-      spdlog::warn("Error closing acceptor: {}", ec.message());
+      spdlog::warn("SocketTransport error closing acceptor: {}", ec.message());
     }
   }
 
@@ -128,7 +131,7 @@ void SocketTransport::CloseNow() {
     socket_.cancel();
     socket_.close(ec);
     if (ec) {
-      spdlog::warn("Error closing socket: {}", ec.message());
+      spdlog::warn("SocketTransport error closing socket: {}", ec.message());
     }
   };
 
@@ -142,7 +145,7 @@ void SocketTransport::CloseNow() {
     acceptor_->cancel();
     acceptor_->close(ec);
     if (ec) {
-      spdlog::warn("Error closing acceptor: {}", ec.message());
+      spdlog::warn("SocketTransport error closing acceptor: {}", ec.message());
     }
   };
 
@@ -150,7 +153,7 @@ void SocketTransport::CloseNow() {
     try_close_socket();
     try_close_acceptor();
   } catch (const std::exception &e) {
-    spdlog::error("Unexpected exception during CloseNow(): {}", e.what());
+    spdlog::error("SocketTransport CloseNow() error: {}", e.what());
   }
 }
 
@@ -182,7 +185,7 @@ auto SocketTransport::SendMessage(std::string message)
       socket_, asio::buffer(message),
       asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
-    spdlog::error("SendMessage failed: {}", ec.message());
+    spdlog::error("SocketTransport SendMessage failed: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Error sending message: " + ec.message()));
   }
@@ -195,7 +198,8 @@ auto SocketTransport::ReceiveMessage()
   co_await asio::post(GetStrand(), asio::use_awaitable);
 
   if (is_closed_) {
-    spdlog::warn("ReceiveMessage() called after transport was closed");
+    spdlog::warn(
+        "SocketTransport ReceiveMessage() called after transport was closed");
     co_return std::unexpected(error::CreateTransportError(
         "ReceiveMessage() called after transport was closed"));
   }
@@ -206,7 +210,7 @@ auto SocketTransport::ReceiveMessage()
   }
 
   if (!socket_.is_open()) {
-    spdlog::warn("Socket not open in ReceiveMessage()");
+    spdlog::warn("SocketTransport ReceiveMessage() socket not open");
     co_return std::unexpected(
         error::CreateTransportError("Socket not open in ReceiveMessage()"));
   }
@@ -220,16 +224,17 @@ auto SocketTransport::ReceiveMessage()
 
   if (ec) {
     if (ec == asio::error::eof) {
-      spdlog::debug("EOF received, connection closed by peer");
+      spdlog::debug("SocketTransport EOF received, connection closed by peer");
       is_connected_ = false;
       co_return std::unexpected(
           error::CreateTransportError("Connection closed by peer"));
     } else if (ec == asio::error::operation_aborted) {
-      spdlog::debug("Read operation aborted");
+      spdlog::debug("SocketTransport Read operation aborted");
       co_return std::unexpected(
           error::CreateTransportError("Receive operation aborted"));
     } else {
-      spdlog::error("ASIO error in ReceiveMessage(): {}", ec.message());
+      spdlog::error(
+          "SocketTransport ASIO error in ReceiveMessage(): {}", ec.message());
       co_return std::unexpected(
           error::CreateTransportError("Receive error: " + ec.message()));
     }
@@ -241,13 +246,13 @@ auto SocketTransport::ReceiveMessage()
   }
 
   message_buffer_.append(read_buffer_.data(), bytes_read);
-  spdlog::debug("Received {} bytes", bytes_read);
+  spdlog::debug("SocketTransport received {} bytes", bytes_read);
   co_return std::move(message_buffer_);
 }
 
 auto SocketTransport::Connect()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
-  spdlog::debug("Connecting to {}:{}", address_, port_);
+  spdlog::debug("SocketTransport connecting to {}:{}", address_, port_);
 
   if (is_connected_) {
     co_return std::expected<void, error::RpcError>{};
@@ -263,7 +268,9 @@ auto SocketTransport::Connect()
   if (socket_.is_open()) {
     socket_.close(ec);
     if (ec) {
-      spdlog::warn("Error closing socket before reconnect: {}", ec.message());
+      spdlog::warn(
+          "SocketTransport error closing socket before reconnect: {}",
+          ec.message());
     }
   }
 
@@ -278,7 +285,9 @@ auto SocketTransport::Connect()
       address_, std::to_string(port_),
       asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
-    spdlog::error("Error resolving {}:{}: {}", address_, port_, ec.message());
+    spdlog::error(
+        "SocketTransport error resolving {}:{}: {}", address_, port_,
+        ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Resolve error: " + ec.message()));
   }
@@ -288,7 +297,8 @@ auto SocketTransport::Connect()
       socket_, endpoints, asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
     spdlog::error(
-        "Error connecting to {}:{}: {}", address_, port_, ec.message());
+        "SocketTransport error connecting to {}:{}: {}", address_, port_,
+        ec.message());
     if (socket_.is_open()) {
       socket_.close();
     }
@@ -297,13 +307,13 @@ auto SocketTransport::Connect()
   }
 
   is_connected_ = true;
-  spdlog::debug("Connected to {}:{}", address_, port_);
+  spdlog::debug("SocketTransport connected to {}:{}", address_, port_);
   co_return std::expected<void, error::RpcError>{};
 }
 
 auto SocketTransport::BindAndListen()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
-  spdlog::debug("Binding to {}:{}", address_, port_);
+  spdlog::debug("SocketTransport binding to {}:{}", address_, port_);
 
   asio::error_code ec;
 
@@ -317,7 +327,9 @@ auto SocketTransport::BindAndListen()
         address_, std::to_string(port_),
         asio::redirect_error(asio::use_awaitable, ec));
     if (ec) {
-      spdlog::error("Error resolving {}:{}: {}", address_, port_, ec.message());
+      spdlog::error(
+          "SocketTransport error resolving {}:{}: {}", address_, port_,
+          ec.message());
       co_return std::unexpected(
           error::CreateTransportError("Resolve error: " + ec.message()));
     }
@@ -332,45 +344,48 @@ auto SocketTransport::BindAndListen()
   // Create and open acceptor
   acceptor_->open(endpoint.protocol(), ec);
   if (ec) {
-    spdlog::error("Error opening acceptor: {}", ec.message());
+    spdlog::error("SocketTransport error opening acceptor: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Open error: " + ec.message()));
   }
 
   acceptor_->set_option(asio::ip::tcp::acceptor::reuse_address(true), ec);
   if (ec) {
-    spdlog::error("Error setting reuse_address: {}", ec.message());
+    spdlog::error(
+        "SocketTransport error setting reuse_address: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Set option error: " + ec.message()));
   }
 
   acceptor_->bind(endpoint, ec);
   if (ec) {
-    spdlog::error("Error binding acceptor: {}", ec.message());
+    spdlog::error("SocketTransport error binding acceptor: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Bind error: " + ec.message()));
   }
 
   acceptor_->listen(asio::socket_base::max_listen_connections, ec);
   if (ec) {
-    spdlog::error("Error listening: {}", ec.message());
+    spdlog::error("SocketTransport error listening: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Listen error: " + ec.message()));
   }
 
-  spdlog::debug("Listening on {}:{}", address_, port_);
+  spdlog::debug("SocketTransport listening on {}:{}", address_, port_);
 
   // Accept a connection
   co_await acceptor_->async_accept(
       socket_, asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
-    spdlog::error("Error accepting connection: {}", ec.message());
+    spdlog::error(
+        "SocketTransport error accepting connection: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Accept error: " + ec.message()));
   }
 
   is_connected_ = true;
-  spdlog::debug("Accepted connection on {}:{}", address_, port_);
+  spdlog::debug(
+      "SocketTransport accepted connection on {}:{}", address_, port_);
 
   co_return std::expected<void, error::RpcError>{};
 }

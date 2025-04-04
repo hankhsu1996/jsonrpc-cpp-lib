@@ -163,7 +163,7 @@ auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
     co_return std::unexpected(result.error());
   }
 
-  co_return {};
+  co_return std::expected<void, RpcError>{};
 }
 
 template <typename ParamsType, typename ResultType>

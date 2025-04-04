@@ -6,6 +6,7 @@
 #include <asio/co_spawn.hpp>
 #include <asio/detached.hpp>
 #include <asio/use_awaitable.hpp>
+#include <jsonrpc/utils/string_utils.hpp>
 #include <spdlog/spdlog.h>
 
 namespace jsonrpc::transport {
@@ -25,13 +26,14 @@ PipeTransport::~PipeTransport() {
     try {
       CloseNow();
     } catch (const std::exception &e) {
-      spdlog::error("Error in PipeTransport destructor: {}", e.what());
+      spdlog::error("PipeTransport destructor error: {}", e.what());
     }
   }
 }
 
 auto PipeTransport::Start()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
+  spdlog::debug("PipeTransport starting");
   co_await asio::post(GetStrand(), asio::use_awaitable);
 
   if (is_started_) {
@@ -41,27 +43,29 @@ auto PipeTransport::Start()
   }
 
   if (is_closed_) {
-    spdlog::error("Cannot start a closed transport");
+    spdlog::error("PipeTransport cannot start a closed transport");
     co_return std::unexpected(
         error::CreateTransportError("Cannot start a closed transport"));
   }
 
   if (is_server_) {
     // For server, bind and listen for connections
-    spdlog::debug("Starting PipeTransport server at {}", socket_path_);
+    spdlog::debug("PipeTransport server starting at {}", socket_path_);
     auto result = co_await BindAndListen();
     if (!result) {
       spdlog::error(
-          "Error starting PipeTransport server: {}", result.error().message);
+          "PipeTransport server error starting at {}: {}", socket_path_,
+          result.error().message);
       co_return std::unexpected(result.error());
     }
   } else {
     // For client, connect to the server
-    spdlog::debug("Connecting PipeTransport client to {}", socket_path_);
+    spdlog::debug("PipeTransport client connecting to {}", socket_path_);
     auto result = co_await Connect();
     if (!result) {
       spdlog::error(
-          "Error connecting PipeTransport client: {}", result.error().message);
+          "PipeTransport client error connecting to {}: {}", socket_path_,
+          result.error().message);
       co_return std::unexpected(result.error());
     }
     spdlog::debug("PipeTransport client connected to {}", socket_path_);
@@ -75,6 +79,7 @@ auto PipeTransport::Start()
 
 auto PipeTransport::Close()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
+  spdlog::debug("PipeTransport closing");
   co_await asio::post(GetStrand(), asio::use_awaitable);
 
   if (is_closed_) {
@@ -90,11 +95,11 @@ auto PipeTransport::Close()
   if (socket_.is_open()) {
     socket_.cancel(ec);
     if (ec) {
-      spdlog::warn("Error canceling socket: {}", ec.message());
+      spdlog::warn("PipeTransport error canceling socket: {}", ec.message());
     }
     socket_.close(ec);
     if (ec) {
-      spdlog::warn("Error closing socket: {}", ec.message());
+      spdlog::warn("PipeTransport error closing socket: {}", ec.message());
     }
   }
 
@@ -102,11 +107,11 @@ auto PipeTransport::Close()
   if (is_server_ && acceptor_) {
     acceptor_->cancel(ec);
     if (ec) {
-      spdlog::warn("Error canceling acceptor: {}", ec.message());
+      spdlog::warn("PipeTransport error canceling acceptor: {}", ec.message());
     }
     acceptor_->close(ec);
     if (ec) {
-      spdlog::warn("Error closing acceptor: {}", ec.message());
+      spdlog::warn("PipeTransport error closing acceptor: {}", ec.message());
     }
   }
 
@@ -114,7 +119,9 @@ auto PipeTransport::Close()
   if (is_server_ && !socket_path_.empty()) {
     auto result = RemoveExistingSocketFile();
     if (!result) {
-      spdlog::warn("Error removing socket file: {}", result.error().message);
+      spdlog::warn(
+          "PipeTransport error removing socket file: {}",
+          result.error().message);
     }
   }
 
@@ -136,7 +143,7 @@ void PipeTransport::CloseNow() {
     socket_.cancel();
     socket_.close(ec);
     if (ec) {
-      spdlog::warn("Error closing socket: {}", ec.message());
+      spdlog::warn("PipeTransport error closing socket: {}", ec.message());
     }
   };
 
@@ -144,13 +151,13 @@ void PipeTransport::CloseNow() {
     if (!is_server_ || !acceptor_ || !acceptor_->is_open()) {
       return;
     }
-    spdlog::debug("Closing acceptor synchronously");
+    spdlog::debug("PipeTransport closing acceptor synchronously");
 
     std::error_code ec;
     acceptor_->cancel();
     acceptor_->close(ec);
     if (ec) {
-      spdlog::warn("Error closing acceptor: {}", ec.message());
+      spdlog::warn("PipeTransport error closing acceptor: {}", ec.message());
     }
   };
 
@@ -163,12 +170,15 @@ void PipeTransport::CloseNow() {
     if (std::filesystem::exists(socket_path_, ec) && !ec) {
       std::filesystem::remove(socket_path_, ec);
       if (ec) {
-        spdlog::warn("Error removing socket file: {}", ec.message());
+        spdlog::warn(
+            "PipeTransport error removing socket file: {}", ec.message());
       } else {
-        spdlog::debug("Removed socket file: {}", socket_path_);
+        spdlog::debug("PipeTransport removed socket file: {}", socket_path_);
       }
     } else if (ec) {
-      spdlog::warn("Error checking socket file existence: {}", ec.message());
+      spdlog::warn(
+          "PipeTransport error checking socket file existence: {}",
+          ec.message());
     }
   };
 
@@ -177,7 +187,7 @@ void PipeTransport::CloseNow() {
     try_close_acceptor();
     try_remove_socket_file();
   } catch (const std::exception &e) {
-    spdlog::error("Unexpected exception during CloseNow(): {}", e.what());
+    spdlog::error("PipeTransport CloseNow() error: {}", e.what());
   }
 }
 
@@ -198,9 +208,11 @@ auto PipeTransport::RemoveExistingSocketFile()
       return std::unexpected(error::CreateTransportError(
           "Error removing socket file: " + ec.message()));
     }
-    spdlog::debug("Removed existing socket file: {}", socket_path_);
+    spdlog::debug(
+        "PipeTransport removed existing socket file: {}", socket_path_);
   } else {
-    spdlog::debug("No existing socket file to remove: {}", socket_path_);
+    spdlog::debug(
+        "PipeTransport no existing socket file to remove: {}", socket_path_);
   }
   return {};
 }
@@ -229,7 +241,7 @@ auto PipeTransport::SendMessage(std::string message)
       socket_, asio::buffer(message),
       asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
-    spdlog::error("Error sending message: {}", ec.message());
+    spdlog::error("PipeTransport error sending message: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Error sending message: " + ec.message()));
   }
@@ -242,7 +254,8 @@ auto PipeTransport::ReceiveMessage()
   co_await asio::post(GetStrand(), asio::use_awaitable);
 
   if (is_closed_) {
-    spdlog::warn("ReceiveMessage called after transport was closed");
+    spdlog::warn(
+        "PipeTransport ReceiveMessage called after transport was closed");
     co_return std::unexpected(error::CreateTransportError(
         "ReceiveMessage called after transport was closed"));
   }
@@ -253,7 +266,7 @@ auto PipeTransport::ReceiveMessage()
   }
 
   if (!socket_.is_open()) {
-    spdlog::warn("ReceiveMessage called on a closed socket");
+    spdlog::warn("PipeTransport ReceiveMessage called on a closed socket");
     co_return std::unexpected(error::CreateTransportError(
         "ReceiveMessage called on a closed socket"));
   }
@@ -267,15 +280,15 @@ auto PipeTransport::ReceiveMessage()
 
   if (ec) {
     if (ec == asio::error::eof) {
-      spdlog::debug("Connection closed by peer (EOF)");
+      spdlog::debug("PipeTransport Connection closed by peer (EOF)");
       is_connected_ = false;
       co_return std::unexpected(
           error::CreateTransportError("Connection closed by peer"));
     } else if (ec == asio::error::operation_aborted) {
-      spdlog::debug("Receive operation aborted");
+      spdlog::debug("PipeTransport Receive operation aborted");
       co_return std::unexpected(error::CreateTransportError("Receive aborted"));
     } else {
-      spdlog::error("Error receiving message: {}", ec.message());
+      spdlog::error("PipeTransport error receiving message: {}", ec.message());
       co_return std::unexpected(
           error::CreateTransportError("Receive error: " + ec.message()));
     }
@@ -286,13 +299,15 @@ auto PipeTransport::ReceiveMessage()
   }
 
   message_buffer_.append(read_buffer_.data(), bytes_read);
-  spdlog::debug("Received message: {}", message_buffer_);
+  spdlog::debug(
+      "PipeTransport received message: {}",
+      utils::Trim(message_buffer_.substr(0, 100)));
   co_return std::move(message_buffer_);
 }
 
 auto PipeTransport::Connect()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
-  spdlog::debug("Connecting to {}", socket_path_);
+  spdlog::debug("PipeTransport connecting to {}", socket_path_);
 
   // Make sure we're not already connected
   if (is_connected_) {
@@ -310,7 +325,9 @@ auto PipeTransport::Connect()
   if (socket_.is_open()) {
     socket_.close(ec);
     if (ec) {
-      spdlog::warn("Error closing socket before reconnect: {}", ec.message());
+      spdlog::warn(
+          "PipeTransport error closing socket before reconnect: {}",
+          ec.message());
     }
   }
 
@@ -322,24 +339,26 @@ auto PipeTransport::Connect()
   co_await socket_.async_connect(
       endpoint, asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
-    spdlog::error("Error connecting to {}: {}", socket_path_, ec.message());
+    spdlog::error(
+        "PipeTransport error connecting to {}: {}", socket_path_, ec.message());
     co_return std::unexpected(error::CreateTransportError(ec.message()));
   }
 
   is_connected_ = true;
-  spdlog::debug("Connected to {}", socket_path_);
+  spdlog::debug("PipeTransport connected to {}", socket_path_);
 
   co_return std::expected<void, error::RpcError>();
 }
 
 auto PipeTransport::BindAndListen()
     -> asio::awaitable<std::expected<void, error::RpcError>> {
-  spdlog::debug("Binding to {}", socket_path_);
+  spdlog::debug("PipeTransport binding to {}", socket_path_);
 
   auto result = RemoveExistingSocketFile();
   if (!result) {
     spdlog::error(
-        "Error removing existing socket file: {}", result.error().message);
+        "PipeTransport error removing existing socket file: {}",
+        result.error().message);
     co_return std::unexpected(result.error());
   }
 
@@ -356,19 +375,20 @@ auto PipeTransport::BindAndListen()
   std::error_code ec;
   acceptor_->open(endpoint.protocol(), ec);
   if (ec) {
-    spdlog::error("Error opening acceptor: {}", ec.message());
+    spdlog::error("PipeTransport error opening acceptor: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Error opening acceptor: " + ec.message()));
   }
   acceptor_->bind(endpoint, ec);
   if (ec) {
-    spdlog::error("Error binding acceptor: {}", ec.message());
+    spdlog::error("PipeTransport error binding acceptor: {}", ec.message());
     co_return std::unexpected(
         error::CreateTransportError("Error binding acceptor: " + ec.message()));
   }
   acceptor_->listen(asio::socket_base::max_listen_connections, ec);
   if (ec) {
-    spdlog::error("Error listening on acceptor: {}", ec.message());
+    spdlog::error(
+        "PipeTransport error listening on acceptor: {}", ec.message());
     co_return std::unexpected(error::CreateTransportError(
         "Error listening on acceptor: " + ec.message()));
   }
@@ -378,11 +398,11 @@ auto PipeTransport::BindAndListen()
   co_await acceptor_->async_accept(
       socket_, asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
-    spdlog::error("Error accepting connection: {}", ec.message());
+    spdlog::error("PipeTransport error accepting connection: {}", ec.message());
     co_return std::unexpected(error::CreateTransportError(ec.message()));
   }
   is_connected_ = true;
-  spdlog::debug("Accepted connection on {}", socket_path_);
+  spdlog::debug("PipeTransport accepted connection on {}", socket_path_);
 
   co_return std::expected<void, error::RpcError>();
 }

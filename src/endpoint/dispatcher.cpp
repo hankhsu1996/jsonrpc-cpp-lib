@@ -27,9 +27,8 @@ void Dispatcher::RegisterNotification(
 auto Dispatcher::DispatchRequest(std::string request)
     -> asio::awaitable<std::optional<std::string>> {
   nlohmann::json root;
-  try {
-    root = nlohmann::json::parse(request);
-  } catch (const nlohmann::json::parse_error& e) {
+  root = nlohmann::json::parse(request, nullptr, false);
+  if (root.is_discarded()) {
     co_return Response::CreateError(ErrorCode::kParseError).ToJson().dump();
   }
 
