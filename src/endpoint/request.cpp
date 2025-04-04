@@ -2,6 +2,9 @@
 
 namespace jsonrpc::endpoint {
 
+using error::ErrorCode;
+using error::RpcError;
+
 Request::Request(
     std::string method, std::optional<nlohmann::json> params,
     const std::function<RequestId()>& id_generator)
@@ -25,9 +28,24 @@ Request::Request(std::string method, std::optional<nlohmann::json> params)
       is_notification_(true) {  // No ID for notifications
 }
 
-auto Request::FromJson(const nlohmann::json& json_obj) -> Request {
-  if (!ValidateJson(json_obj)) {
-    throw std::invalid_argument("Invalid JSON-RPC request");
+auto Request::FromJson(const nlohmann::json& json_obj)
+    -> std::expected<Request, error::RpcError> {
+  using error::ErrorCode;
+  using error::RpcError;
+
+  if (!json_obj.is_object()) {
+    return std::unexpected(
+        RpcError{ErrorCode::kInvalidRequest, "Request must be a JSON object"});
+  }
+
+  if (!json_obj.contains("jsonrpc") || json_obj["jsonrpc"] != kJsonRpcVersion) {
+    return std::unexpected(RpcError{
+        ErrorCode::kInvalidRequest, "Missing or invalid 'jsonrpc' version"});
+  }
+
+  if (!json_obj.contains("method") || !json_obj["method"].is_string()) {
+    return std::unexpected(
+        RpcError{ErrorCode::kInvalidRequest, "Missing or invalid 'method'"});
   }
 
   auto method = json_obj["method"].get<std::string>();
@@ -35,11 +53,25 @@ auto Request::FromJson(const nlohmann::json& json_obj) -> Request {
                     ? std::optional<nlohmann::json>(json_obj["params"])
                     : std::nullopt;
 
+  if (json_obj.contains("params")) {
+    const auto& p = json_obj["params"];
+    if (!p.is_array() && !p.is_object() && !p.is_null()) {
+      return std::unexpected(RpcError{
+          ErrorCode::kInvalidRequest,
+          "'params' must be object, array, or null"});
+    }
+  }
+
   if (!json_obj.contains("id")) {
     return Request(std::move(method), std::move(params));  // Notification
   }
 
   const auto& id_json = json_obj["id"];
+  if (!id_json.is_string() && !id_json.is_number_integer()) {
+    return std::unexpected(
+        RpcError{ErrorCode::kInvalidRequest, "Invalid 'id' type"});
+  }
+
   RequestId id;
   if (id_json.is_string()) {
     id = id_json.get<std::string>();
@@ -47,35 +79,7 @@ auto Request::FromJson(const nlohmann::json& json_obj) -> Request {
     id = id_json.get<int64_t>();
   }
 
-  return {std::move(method), std::move(params), std::move(id)};
-}
-
-auto Request::ValidateJson(const nlohmann::json& json_obj) -> bool {
-  if (!json_obj.is_object()) {
-    return false;
-  }
-  if (!json_obj.contains("jsonrpc") || json_obj["jsonrpc"] != kJsonRpcVersion) {
-    return false;
-  }
-  if (!json_obj.contains("method") || !json_obj["method"].is_string()) {
-    return false;
-  }
-
-  if (json_obj.contains("params")) {
-    const auto& params = json_obj["params"];
-    if (!params.is_array() && !params.is_object() && !params.is_null()) {
-      return false;
-    }
-  }
-
-  if (json_obj.contains("id")) {
-    const auto& id = json_obj["id"];
-    if (!id.is_string() && !id.is_number_integer()) {
-      return false;
-    }
-  }
-
-  return true;
+  return Request(std::move(method), std::move(params), std::move(id));
 }
 
 auto Request::RequiresResponse() const -> bool {
@@ -84,10 +88,6 @@ auto Request::RequiresResponse() const -> bool {
 
 auto Request::GetId() const -> RequestId {
   return id_;
-}
-
-auto Request::Dump() const -> std::string {
-  return ToJson().dump();
 }
 
 auto Request::ToJson() const -> nlohmann::json {

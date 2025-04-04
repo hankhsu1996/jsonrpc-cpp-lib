@@ -56,7 +56,7 @@ TEST_CASE("Method registration and handling", "[Dispatcher]") {
     auto response = co_await dispatcher.DispatchRequest(
         R"({"jsonrpc":"2.0","method":"sum","params":[1,2,3],"id":1})");
     REQUIRE(response.has_value());
-    auto result = nlohmann::json::parse(*response);
+    auto result = nlohmann::json::parse(response.value());
     REQUIRE(result["result"] == 6);
     co_return;
   });
@@ -88,7 +88,7 @@ TEST_CASE("Batch request handling", "[Dispatcher]") {
       ])";
       auto response = co_await dispatcher.DispatchRequest(batch_request);
       REQUIRE(response.has_value());
-      auto result = nlohmann::json::parse(*response);
+      auto result = nlohmann::json::parse(response.value());
       REQUIRE(result.is_array());
       REQUIRE(result.size() == 2);
       REQUIRE(result[0]["result"] == 3);

@@ -5,6 +5,7 @@
 
 using jsonrpc::endpoint::Request;
 using jsonrpc::endpoint::RequestId;
+using jsonrpc::error::ErrorCode;
 
 TEST_CASE("Request construction and basic properties", "[Request]") {
   SECTION("Create request with all parameters") {
@@ -83,10 +84,11 @@ TEST_CASE("Request JSON deserialization", "[Request]") {
         {"id", 1}};
 
     auto request = Request::FromJson(json);
-    REQUIRE(request.GetMethod() == "test_method");
-    REQUIRE(request.GetParams().has_value());
-    REQUIRE(request.GetParams()->contains("param"));
-    REQUIRE(std::get<int64_t>(request.GetId()) == 1);
+    REQUIRE(request.has_value());
+    REQUIRE(request->GetMethod() == "test_method");
+    REQUIRE(request->GetParams().has_value());
+    REQUIRE(request->GetParams()->contains("param"));
+    REQUIRE(std::get<int64_t>(request->GetId()) == 1);
   }
 
   SECTION("Deserialize valid notification") {
@@ -96,9 +98,10 @@ TEST_CASE("Request JSON deserialization", "[Request]") {
         {"params", {{"param", "value"}}}};
 
     auto request = Request::FromJson(json);
-    REQUIRE(request.GetMethod() == "test_method");
-    REQUIRE(request.GetParams().has_value());
-    REQUIRE(request.IsNotification());
+    REQUIRE(request.has_value());
+    REQUIRE(request->GetMethod() == "test_method");
+    REQUIRE(request->GetParams().has_value());
+    REQUIRE(request->IsNotification());
   }
 
   SECTION("Deserialize request with array params") {
@@ -109,10 +112,11 @@ TEST_CASE("Request JSON deserialization", "[Request]") {
         {"id", "req1"}};
 
     auto request = Request::FromJson(json);
-    REQUIRE(request.GetMethod() == "test_method");
-    REQUIRE(request.GetParams().has_value());
-    REQUIRE(request.GetParams()->is_array());
-    REQUIRE(std::get<std::string>(request.GetId()) == "req1");
+    REQUIRE(request.has_value());
+    REQUIRE(request->GetMethod() == "test_method");
+    REQUIRE(request->GetParams().has_value());
+    REQUIRE(request->GetParams()->is_array());
+    REQUIRE(std::get<std::string>(request->GetId()) == "req1");
   }
 }
 
@@ -120,18 +124,24 @@ TEST_CASE("Request validation", "[Request]") {
   SECTION("Invalid JSON-RPC version") {
     nlohmann::json json = {
         {"jsonrpc", "1.0"}, {"method", "test_method"}, {"id", 1}};
-    REQUIRE_THROWS_AS(Request::FromJson(json), std::invalid_argument);
+    auto request = Request::FromJson(json);
+    REQUIRE_FALSE(request.has_value());
+    REQUIRE(request.error().code == ErrorCode::kInvalidRequest);
   }
 
   SECTION("Missing method") {
     nlohmann::json json = {
         {"jsonrpc", "2.0"}, {"params", {{"param", "value"}}}, {"id", 1}};
-    REQUIRE_THROWS_AS(Request::FromJson(json), std::invalid_argument);
+    auto request = Request::FromJson(json);
+    REQUIRE_FALSE(request.has_value());
+    REQUIRE(request.error().code == ErrorCode::kInvalidRequest);
   }
 
   SECTION("Invalid method type") {
     nlohmann::json json = {{"jsonrpc", "2.0"}, {"method", 123}, {"id", 1}};
-    REQUIRE_THROWS_AS(Request::FromJson(json), std::invalid_argument);
+    auto request = Request::FromJson(json);
+    REQUIRE_FALSE(request.has_value());
+    REQUIRE(request.error().code == ErrorCode::kInvalidRequest);
   }
 
   SECTION("Invalid params type") {
@@ -140,6 +150,8 @@ TEST_CASE("Request validation", "[Request]") {
         {"method", "test_method"},
         {"params", "invalid"},
         {"id", 1}};
-    REQUIRE_THROWS_AS(Request::FromJson(json), std::invalid_argument);
+    auto request = Request::FromJson(json);
+    REQUIRE_FALSE(request.has_value());
+    REQUIRE(request.error().code == ErrorCode::kInvalidRequest);
   }
 }

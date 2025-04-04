@@ -107,7 +107,7 @@ auto RpcEndpoint::SendMethodCall(
 
   // Create the request message
   Request request(method, std::move(params), request_id);
-  std::string message = request.Dump();
+  std::string message = request.ToJson().dump();
 
   // Create a pending request
   auto pending_request = std::make_shared<PendingRequest>(endpoint_strand_);
@@ -149,7 +149,7 @@ auto RpcEndpoint::SendNotification(
 
   // Create the notification message (no ID)
   Request request(method, std::move(params));
-  std::string message = request.Dump();
+  std::string message = request.ToJson().dump();
 
   // Send the notification
   co_await transport_->SendMessage(message);
