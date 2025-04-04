@@ -1,8 +1,6 @@
 #include "jsonrpc/endpoint/endpoint.hpp"
 
-#include <asio/co_spawn.hpp>
-#include <asio/detached.hpp>
-#include <asio/use_awaitable.hpp>
+#include <asio.hpp>
 #include <jsonrpc/error/error.hpp>
 #include <spdlog/spdlog.h>
 
@@ -45,7 +43,7 @@ auto RpcEndpoint::Start() -> asio::awaitable<std::expected<void, RpcError>> {
     co_return CreateClientError("RPC endpoint is already running");
   }
 
-  spdlog::info("Starting RPC endpoint");
+  spdlog::debug("Starting RPC endpoint");
   pending_requests_.clear();
 
   // Start the transport
@@ -86,17 +84,25 @@ auto RpcEndpoint::Shutdown() -> asio::awaitable<std::expected<void, RpcError>> {
     co_return std::expected<void, RpcError>{};
   }
 
-  spdlog::info("Shutting down RPC endpoint");
+  cancel_signal_.emit(asio::cancellation_type::all);
 
-  // Cancel all pending requests
-  asio::post(endpoint_strand_, [this]() {
-    for (auto &[id, request] : pending_requests_) {
-      request->Cancel(-32603, "RPC endpoint shutting down");
-    }
-    pending_requests_.clear();
-  });
+  spdlog::debug("Shutting down RPC endpoint");
 
-  // Close the transport - this ensures any pending operations are canceled
+  // Ensure all operations on the strand complete, including message processing
+  co_await asio::post(endpoint_strand_, asio::use_awaitable);
+
+  // Cancel pending requests
+  for (auto &[id, request] : pending_requests_) {
+    request->Cancel(-32603, "RPC endpoint shutting down");
+  }
+  pending_requests_.clear();
+
+  // Wait for the message loop to complete
+  if (message_loop_.valid()) {
+    co_await std::move(message_loop_);
+  }
+
+  // Now close the transport
   auto close_result = co_await transport_->Close();
   if (!close_result) {
     co_return std::unexpected(close_result.error());
@@ -169,41 +175,35 @@ auto RpcEndpoint::HasPendingRequests() const -> bool {
 }
 
 void RpcEndpoint::StartMessageProcessing() {
-  asio::co_spawn(
-      endpoint_strand_, [this] { return this->ProcessMessagesLoop(); },
-      asio::detached);
+  message_loop_ = asio::co_spawn(
+      endpoint_strand_,
+      [this] { return this->ProcessMessagesLoop(cancel_signal_.slot()); },
+      asio::use_awaitable);
 }
 
-auto RpcEndpoint::ProcessMessagesLoop() -> asio::awaitable<void> {
-  while (is_running_) {
-    try {
-      // Wait for the next message
-      auto message = co_await transport_->ReceiveMessage();
-      if (!message.has_value()) {
-        spdlog::error("Error receiving message: {}", message.error().message);
-        continue;
-      }
+namespace {
+auto RetryDelay(asio::any_io_executor exec) -> asio::awaitable<void> {
+  asio::steady_timer timer(exec, std::chrono::milliseconds(100));
+  co_await timer.async_wait(asio::use_awaitable);
+}
+}  // namespace
 
-      // Process the message
-      co_await HandleMessage(message.value());
-    } catch (const std::exception &e) {
-      spdlog::error("Error processing message: {}", e.what());
+auto RpcEndpoint::ProcessMessagesLoop(asio::cancellation_slot slot)
+    -> asio::awaitable<void> {
+  auto state = co_await asio::this_coro::cancellation_state;
+  while (is_running_ && !state.cancelled()) {
+    auto message_result = co_await transport_->ReceiveMessage();
+    if (!message_result) {
+      spdlog::error("Receive error: {}", message_result.error().message);
+      co_await RetryDelay(executor_);
+      continue;
+    }
 
-      if (!is_running_) {
-        break;  // Exit loop if we're shutting down
-      }
-
-      // We can't use co_await in a catch block, so we need to continue the loop
-      // and do the pause in the next iteration
-      asio::steady_timer retry_timer(executor_, std::chrono::milliseconds(100));
-
-      // Use a non-coroutine wait to prevent co_await in catch handler
-      asio::error_code ec;
-      retry_timer.wait(ec);
-
-      if (ec) {
-        spdlog::warn("Error waiting for retry timer: {}", ec.message());
-      }
+    auto handle_result = co_await HandleMessage(*message_result);
+    if (!handle_result) {
+      spdlog::error("Handle error: {}", handle_result.error().message);
+      co_await RetryDelay(executor_);
+      continue;
     }
   }
 }

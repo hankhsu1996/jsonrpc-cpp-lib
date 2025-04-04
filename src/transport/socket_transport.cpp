@@ -46,7 +46,7 @@ auto SocketTransport::Start()
   std::expected<void, error::RpcError> result;
 
   if (is_server_) {
-    spdlog::info("Starting SocketTransport server at {}:{}", address_, port_);
+    spdlog::debug("Starting SocketTransport server at {}:{}", address_, port_);
     result = co_await BindAndListen();
     if (!result) {
       spdlog::error(
@@ -54,7 +54,8 @@ auto SocketTransport::Start()
       co_return std::unexpected(result.error());
     }
   } else {
-    spdlog::info("Connecting SocketTransport client to {}:{}", address_, port_);
+    spdlog::debug(
+        "Connecting SocketTransport client to {}:{}", address_, port_);
     result = co_await Connect();
     if (!result) {
       spdlog::error(

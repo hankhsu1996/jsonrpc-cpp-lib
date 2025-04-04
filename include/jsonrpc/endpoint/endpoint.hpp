@@ -88,7 +88,8 @@ class RpcEndpoint {
  private:
   void StartMessageProcessing();
 
-  auto ProcessMessagesLoop() -> asio::awaitable<void>;
+  auto ProcessMessagesLoop(asio::cancellation_slot slot)
+      -> asio::awaitable<void>;
 
   auto HandleMessage(std::string message)
       -> asio::awaitable<std::expected<void, RpcError>>;
@@ -116,6 +117,10 @@ class RpcEndpoint {
   asio::strand<asio::any_io_executor> endpoint_strand_;
 
   std::atomic<int64_t> next_request_id_{0};
+
+  asio::cancellation_signal cancel_signal_;
+
+  asio::awaitable<void> message_loop_;
 };
 
 template <typename ParamsType, typename ResultType>

@@ -56,35 +56,33 @@ class MockTransport : public jsonrpc::transport::Transport {
 
   auto Close()
       -> asio::awaitable<std::expected<void, error::RpcError>> override {
-    try {
-      // Get strand protection
-      co_await asio::post(strand_, asio::use_awaitable);
+    // Get strand protection
+    co_await asio::post(strand_, asio::use_awaitable);
 
-      spdlog::debug("MockTransport: Closing transport");
+    spdlog::debug("MockTransport: Closing transport");
 
-      if (is_closed_) {
-        spdlog::debug("MockTransport: Already closed");
-        co_return std::expected<void, error::RpcError>();
-      }
-
-      // Set the closed flag first
-      is_closed_ = true;
-      is_started_ = false;
-
-      // Cancel timer to interrupt any waiting operations
-      receive_timer_.cancel();
-
-      spdlog::debug("MockTransport: Closed");
-
-      // Add an additional synchronization point to ensure all operations posted
-      // to the strand complete
-      co_await asio::post(strand_, asio::use_awaitable);
-
-      co_return std::expected<void, error::RpcError>();
-    } catch (const std::exception& e) {
-      spdlog::error("MockTransport: Error in Close: {}", e.what());
-      throw;
+    if (is_closed_) {
+      spdlog::debug("MockTransport: Already closed");
+      co_return std::expected<void, error::RpcError>{};
     }
+
+    // Set the closed flag first
+    is_closed_ = true;
+    is_started_ = false;
+
+    asio::error_code ec;
+    receive_timer_.cancel(ec);
+    if (ec) {
+      co_return std::unexpected(error::CreateTransportError(
+          "Failed to cancel receive timer during close", ec));
+    }
+
+    spdlog::debug("MockTransport: Closed");
+
+    // Optional sync point for strand tasks to flush
+    co_await asio::post(strand_, asio::use_awaitable);
+
+    co_return std::expected<void, error::RpcError>{};
   }
 
   void CloseNow() override {

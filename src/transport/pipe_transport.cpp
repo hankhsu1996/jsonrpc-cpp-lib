@@ -48,7 +48,7 @@ auto PipeTransport::Start()
 
   if (is_server_) {
     // For server, bind and listen for connections
-    spdlog::info("Starting PipeTransport server at {}", socket_path_);
+    spdlog::debug("Starting PipeTransport server at {}", socket_path_);
     auto result = co_await BindAndListen();
     if (!result) {
       spdlog::error(
@@ -57,7 +57,7 @@ auto PipeTransport::Start()
     }
   } else {
     // For client, connect to the server
-    spdlog::info("Connecting PipeTransport client to {}", socket_path_);
+    spdlog::debug("Connecting PipeTransport client to {}", socket_path_);
     auto result = co_await Connect();
     if (!result) {
       spdlog::error(
