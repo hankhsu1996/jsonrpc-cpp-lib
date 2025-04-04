@@ -21,28 +21,19 @@ class MockTransport : public jsonrpc::transport::Transport {
       : Transport(executor),
         strand_(asio::make_strand(executor)),
         receive_timer_(executor) {
-    spdlog::debug("Created mock transport");
   }
 
   ~MockTransport() override {
-    // Ensure we're closed when destroyed - use the synchronous method
     spdlog::debug("Destroying mock transport");
     CloseNow();
   }
 
-  // Delete copy/move operations to follow Rule of Five
   MockTransport(const MockTransport&) = delete;
   MockTransport(MockTransport&&) = delete;
   auto operator=(const MockTransport&) -> MockTransport& = delete;
   auto operator=(MockTransport&&) -> MockTransport& = delete;
 
-  /**
-   * @brief Close the transport synchronously
-   *
-   * This is safe to use in destructors
-   */
   void CloseNow() override {
-    // Set closed flag and cancel any timers
     is_closed_ = true;
     is_started_ = false;
     receive_timer_.cancel();
@@ -50,13 +41,6 @@ class MockTransport : public jsonrpc::transport::Transport {
     spdlog::debug("MockTransport closed synchronously");
   }
 
-  /**
-   * @brief Start the transport
-   *
-   * For MockTransport, this just sets the is_started_ flag.
-   *
-   * @return asio::awaitable<void>
-   */
   auto Start()
       -> asio::awaitable<std::expected<void, error::RpcError>> override {
     co_await asio::post(strand_, asio::use_awaitable);
@@ -78,19 +62,22 @@ class MockTransport : public jsonrpc::transport::Transport {
     co_return std::expected<void, error::RpcError>();
   }
 
-  auto SendMessage(std::string message) -> asio::awaitable<void> override {
+  auto SendMessage(std::string message)
+      -> asio::awaitable<std::expected<void, error::RpcError>> override {
     co_await asio::post(strand_, asio::use_awaitable);
 
     if (is_closed_) {
-      throw std::runtime_error("Cannot send on closed transport");
+      co_return std::unexpected(
+          error::CreateTransportError("Cannot send on closed transport"));
     }
 
     if (!is_started_) {
-      throw std::runtime_error("Cannot send before transport is started");
+      co_return std::unexpected(error::CreateTransportError(
+          "Cannot send before transport is started"));
     }
 
     sent_requests_.push_back(message);
-    co_return;
+    co_return std::expected<void, error::RpcError>();
   }
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override {

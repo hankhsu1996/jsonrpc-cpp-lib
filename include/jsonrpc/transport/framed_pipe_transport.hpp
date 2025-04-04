@@ -15,7 +15,8 @@ class FramedPipeTransport : public PipeTransport {
       asio::any_io_executor executor, const std::string& socket_path,
       bool is_server);
 
-  auto SendMessage(std::string message) -> asio::awaitable<void> override;
+  auto SendMessage(std::string message)
+      -> asio::awaitable<std::expected<void, error::RpcError>> override;
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override;
 

@@ -35,7 +35,8 @@ class PipeTransport : public Transport {
 
   void CloseNow() override;
 
-  auto SendMessage(std::string message) -> asio::awaitable<void> override;
+  auto SendMessage(std::string message)
+      -> asio::awaitable<std::expected<void, error::RpcError>> override;
 
   auto ReceiveMessage() -> asio::awaitable<std::string> override;
 

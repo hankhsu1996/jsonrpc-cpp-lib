@@ -31,7 +31,8 @@ class Transport {
 
   virtual auto CloseNow() -> void = 0;
 
-  virtual auto SendMessage(std::string message) -> asio::awaitable<void> = 0;
+  virtual auto SendMessage(std::string message)
+      -> asio::awaitable<std::expected<void, error::RpcError>> = 0;
 
   virtual auto ReceiveMessage() -> asio::awaitable<std::string> = 0;
 

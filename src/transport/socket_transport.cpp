@@ -160,28 +160,35 @@ auto SocketTransport::GetSocket() -> asio::ip::tcp::socket & {
 }
 
 auto SocketTransport::SendMessage(std::string message)
-    -> asio::awaitable<void> {
-  try {
-    co_await asio::post(GetStrand(), asio::use_awaitable);
+    -> asio::awaitable<std::expected<void, error::RpcError>> {
+  co_await asio::post(GetStrand(), asio::use_awaitable);
 
-    if (is_closed_) {
-      throw std::runtime_error("SendMessage() called on closed transport");
-    }
-
-    if (!is_started_) {
-      throw std::runtime_error("Transport not started before sending message");
-    }
-
-    if (!socket_.is_open()) {
-      throw std::runtime_error("Socket not open in SendMessage()");
-    }
-
-    co_await asio::async_write(
-        socket_, asio::buffer(message), asio::use_awaitable);
-  } catch (const std::exception &e) {
-    spdlog::error("Exception in SendMessage(): {}", e.what());
-    throw;
+  if (is_closed_) {
+    co_return std::unexpected(error::CreateTransportError(
+        "SendMessage() called on closed transport"));
   }
+
+  if (!is_started_) {
+    co_return std::unexpected(error::CreateTransportError(
+        "Transport not started before sending message"));
+  }
+
+  if (!socket_.is_open()) {
+    co_return std::unexpected(
+        error::CreateTransportError("Socket not open in SendMessage()"));
+  }
+
+  std::error_code ec;
+  co_await asio::async_write(
+      socket_, asio::buffer(message),
+      asio::redirect_error(asio::use_awaitable, ec));
+  if (ec) {
+    spdlog::error("SendMessage failed: {}", ec.message());
+    co_return std::unexpected(
+        error::CreateTransportError("Error sending message: " + ec.message()));
+  }
+
+  co_return std::expected<void, error::RpcError>{};
 }
 
 auto SocketTransport::ReceiveMessage() -> asio::awaitable<std::string> {

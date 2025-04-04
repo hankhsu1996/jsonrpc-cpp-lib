@@ -15,10 +15,9 @@ FramedPipeTransport::FramedPipeTransport(
 }
 
 auto FramedPipeTransport::SendMessage(std::string message)
-    -> asio::awaitable<void> {
+    -> asio::awaitable<std::expected<void, error::RpcError>> {
   auto framed_message = MessageFramer::Frame(message);
-  co_await asio::async_write(
-      GetSocket(), asio::buffer(framed_message), asio::use_awaitable);
+  co_return co_await PipeTransport::SendMessage(std::move(framed_message));
 }
 
 auto FramedPipeTransport::ReceiveMessage() -> asio::awaitable<std::string> {
