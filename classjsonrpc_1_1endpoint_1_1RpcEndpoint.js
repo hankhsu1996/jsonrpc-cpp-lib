@@ -12,13 +12,11 @@ var classjsonrpc_1_1endpoint_1_1RpcEndpoint =
     [ "RegisterMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a9220c74ca4539ec5b98d620555c30691", null ],
     [ "RegisterNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a839b5fdea0e29d2d199132b7075065d9", null ],
     [ "RegisterNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6abb39be0165c3d20d79974dc00accc7", null ],
-    [ "ReportError", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acc5650d94fd4500aa62fca8c3877f675", null ],
-    [ "SendMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a09c709db772bdeabd666319f3f56e825", null ],
-    [ "SendMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6053eaa8e69ea06e11a7c70a371e4562", null ],
-    [ "SendNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a9e68952edb51803464a37f547e931188", null ],
-    [ "SendNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a113ad564ae93fa71ccc9d9521196f1f7", null ],
-    [ "SetErrorHandler", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a93b27978503f54019e62443ec359fbc3", null ],
-    [ "Shutdown", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#acf93495d095343f6fa16aff4d26ab17b", null ],
-    [ "Start", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a3de3f9bf52bd1714c5fcd9399134e8bf", null ],
-    [ "WaitForShutdown", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aec53ed6d17aad23f0f8ea5c705a339f5", null ]
+    [ "SendMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae72c290fa5a21394863bcea0265a51c1", null ],
+    [ "SendMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab87006bb19847eafa4b0487165a2ae82", null ],
+    [ "SendNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a1e29e84e029d64802bded07f9b7a863b", null ],
+    [ "SendNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae235ed10d68e2090491f7da16b8c1485", null ],
+    [ "Shutdown", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a75eb3956929cf75238822abfb55f46ee", null ],
+    [ "Start", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ad5176975926ea55caaae5fa082e80ba0", null ],
+    [ "WaitForShutdown", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab164c7f8630e0b2535826ac2a80b1a9b", null ]
 ];

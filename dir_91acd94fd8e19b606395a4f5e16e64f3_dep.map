@@ -1,9 +1,14 @@
 <map id="include/jsonrpc" name="include/jsonrpc">
 <area shape="rect" id="node2" href="dir_755483ad69aacbc7da0500fa430543ae.html" title="endpoint" alt="" coords="113,63,191,88"/>
-<area shape="rect" id="node3" href="dir_2ce0c8d339038b015f21a4e20b874555.html" title="transport" alt="" coords="111,136,193,161"/>
-<area shape="poly" id="edge1" href="dir_000000_000005.html" alt="" coords="155,88,155,122,149,122,149,88"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000000_000005.html" title="1" alt="" coords="156,110,165,125"/>
-<area shape="rect" id="node4" href="dir_edf0081d170a1b3eb4024fc3a82e0d61.html" title="utils" alt="" coords="37,63,88,88"/>
-<area shape="rect" id="clust2" href="dir_91acd94fd8e19b606395a4f5e16e64f3.html" alt="" coords="27,52,296,172"/>
-<area shape="rect" id="clust1" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="16,16,307,183"/>
+<area shape="rect" id="node3" href="dir_6c84b61cc4c65d2206238a3259207340.html" title="error" alt="" coords="125,209,179,235"/>
+<area shape="poly" id="edge2" href="dir_000000_000002.html" alt="" coords="150,89,136,136,137,167,144,196,139,197,132,168,131,136,145,87"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000000_000002.html" title="2" alt="" coords="143,182,153,197"/>
+<area shape="rect" id="node4" href="dir_2ce0c8d339038b015f21a4e20b874555.html" title="transport" alt="" coords="145,136,226,161"/>
+<area shape="poly" id="edge1" href="dir_000000_000006.html" alt="" coords="160,87,177,123,172,125,155,89"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000000_000006.html" title="1" alt="" coords="175,109,185,123"/>
+<area shape="poly" id="edge3" href="dir_000006_000002.html" alt="" coords="182,163,166,198,161,196,177,161"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000006_000002.html" title="2" alt="" coords="168,189,177,204"/>
+<area shape="rect" id="node5" href="dir_edf0081d170a1b3eb4024fc3a82e0d61.html" title="utils" alt="" coords="37,63,88,88"/>
+<area shape="rect" id="clust2" href="dir_91acd94fd8e19b606395a4f5e16e64f3.html" alt="" coords="27,52,296,245"/>
+<area shape="rect" id="clust1" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="16,16,307,256"/>
 </map>

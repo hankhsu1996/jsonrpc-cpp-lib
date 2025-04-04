@@ -1,5 +1,5 @@
 <map id="jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall" name="jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall">
-<area shape="rect" id="Node000001" title="Register a method call handler." alt="" coords="5,5,244,45"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Dispatcher.html#a91858af35b7e497e6e422eaafca49d9f" title="Register a method call handler." alt="" coords="292,5,520,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,244,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Dispatcher.html#a91858af35b7e497e6e422eaafca49d9f" title=" " alt="" coords="292,5,520,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,23,278,23,278,28,244,28"/>
 </map>

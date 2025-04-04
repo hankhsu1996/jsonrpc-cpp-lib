@@ -1,0 +1,7 @@
+<map id="jsonrpc::error::CreateClientError" name="jsonrpc::error::CreateClientError">
+<area shape="rect" id="Node000001" title=" " alt="" coords="272,37,469,77"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae72c290fa5a21394863bcea0265a51c1" title=" " alt="" coords="6,5,223,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="258,46,223,42,224,36,259,41"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a1e29e84e029d64802bded07f9b7a863b" title=" " alt="" coords="5,69,224,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,74,224,78,224,73,258,69"/>
+</map>

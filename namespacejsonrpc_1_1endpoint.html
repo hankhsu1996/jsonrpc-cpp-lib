@@ -115,7 +115,6 @@ $(function(){initNavTree('namespacejsonrpc_1_1endpoint.html',''); initResizable(
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">jsonrpc::endpoint Namespace Reference</div></div>
 </div><!--header-->
@@ -129,16 +128,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class representing a pending RPC request.  <a href="classjsonrpc_1_1endpoint_1_1PendingRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html">Request</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a JSON-RPC request.  <a href="classjsonrpc_1_1endpoint_1_1Request.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html">Response</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a JSON-RPC response.  <a href="classjsonrpc_1_1endpoint_1_1Response.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">RpcEndpoint</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RPC endpoint for sending and receiving JSON-RPC messages.  <a href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1RpcError.html">RpcError</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception class for RPC errors.  <a href="classjsonrpc_1_1endpoint_1_1RpcError.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html">TypedMethodHandler</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,60 +140,24 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ad5f4eeee8d842f6f0fb8ec293aa0069d" id="r_ad5f4eeee8d842f6f0fb8ec293aa0069d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5f4eeee8d842f6f0fb8ec293aa0069d">ErrorHandler</a> = std::function&lt;void(<a class="el" href="#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a>, const std::string &amp;)&gt;</td></tr>
+<tr class="memitem:ad5f4eeee8d842f6f0fb8ec293aa0069d" id="r_ad5f4eeee8d842f6f0fb8ec293aa0069d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5f4eeee8d842f6f0fb8ec293aa0069d">ErrorHandler</a> = std::function&lt;void(ErrorCode, const std::string &amp;)&gt;</td></tr>
 <tr class="separator:ad5f4eeee8d842f6f0fb8ec293aa0069d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a9244e250467edd344ae481aaf3687f" id="r_a6a9244e250467edd344ae481aaf3687f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a9244e250467edd344ae481aaf3687f">ErrorInfoMap</a></td></tr>
-<tr class="separator:a6a9244e250467edd344ae481aaf3687f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7820fe3ffe99ddbd431a8d25c012a113" id="r_a7820fe3ffe99ddbd431a8d25c012a113"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7820fe3ffe99ddbd431a8d25c012a113">RequestId</a> = std::variant&lt;int64_t, std::string&gt;</td></tr>
-<tr class="memdesc:a7820fe3ffe99ddbd431a8d25c012a113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for request IDs that can be either integer or string.  <br /></td></tr>
 <tr class="separator:a7820fe3ffe99ddbd431a8d25c012a113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72855eb2a9497623864731bfeecf4e43" id="r_a72855eb2a9497623864731bfeecf4e43"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72855eb2a9497623864731bfeecf4e43">MethodCallHandler</a></td></tr>
-<tr class="memdesc:a72855eb2a9497623864731bfeecf4e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for handling method calls - now synchronous for simplicity.  <br /></td></tr>
 <tr class="separator:a72855eb2a9497623864731bfeecf4e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e1ed6cc8bdd42d59dbd41ae9d20a5a7" id="r_a0e1ed6cc8bdd42d59dbd41ae9d20a5a7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e1ed6cc8bdd42d59dbd41ae9d20a5a7">NotificationHandler</a> = void(const std::optional&lt;nlohmann::json&gt;&amp; params)</td></tr>
-<tr class="memdesc:a0e1ed6cc8bdd42d59dbd41ae9d20a5a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for handling notifications - now synchronous for simplicity.  <br /></td></tr>
 <tr class="separator:a0e1ed6cc8bdd42d59dbd41ae9d20a5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe1afdee88ee6cd87b6a0e88fdf950dc" id="r_abe1afdee88ee6cd87b6a0e88fdf950dc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe1afdee88ee6cd87b6a0e88fdf950dc">Handler</a> = std::variant&lt;<a class="el" href="#a72855eb2a9497623864731bfeecf4e43">MethodCallHandler</a>, <a class="el" href="#a0e1ed6cc8bdd42d59dbd41ae9d20a5a7">NotificationHandler</a>&gt;</td></tr>
 <tr class="separator:abe1afdee88ee6cd87b6a0e88fdf950dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a2e18db7323b95f7c68d7afb25f3f9f44" id="r_a2e18db7323b95f7c68d7afb25f3f9f44"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e18db7323b95f7c68d7afb25f3f9f44">LibErrorKind</a> { <br />
-&#160;&#160;<a class="el" href="#a2e18db7323b95f7c68d7afb25f3f9f44a70bc2f6598437e307b2b8d35f1c49a18">kParseError</a>
-, <a class="el" href="#a2e18db7323b95f7c68d7afb25f3f9f44a6c4ae9ad285a625b8bfdc0a62e289f6e">kInvalidRequest</a>
-, <a class="el" href="#a2e18db7323b95f7c68d7afb25f3f9f44aa0fcc6e288e7806a406405f780cdaf0f">kMethodNotFound</a>
-, <a class="el" href="#a2e18db7323b95f7c68d7afb25f3f9f44afcd417a134c251034b0d61b07c826394">kInternalError</a>
-, <br />
-&#160;&#160;<a class="el" href="#a2e18db7323b95f7c68d7afb25f3f9f44ac0743fba36fbd100b50c78be97655ae8">kServerError</a>
-<br />
- }</td></tr>
-<tr class="memdesc:a2e18db7323b95f7c68d7afb25f3f9f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration for library error kinds.  <a href="#a2e18db7323b95f7c68d7afb25f3f9f44">More...</a><br /></td></tr>
-<tr class="separator:a2e18db7323b95f7c68d7afb25f3f9f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a046f8f30c33d765e7861d48c239257cd" id="r_a046f8f30c33d765e7861d48c239257cd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a> { <br />
-&#160;&#160;<a class="el" href="#a046f8f30c33d765e7861d48c239257cda70bc2f6598437e307b2b8d35f1c49a18">kParseError</a> = -32700
-, <a class="el" href="#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">kInvalidRequest</a> = -32600
-, <a class="el" href="#a046f8f30c33d765e7861d48c239257cdaa0fcc6e288e7806a406405f780cdaf0f">kMethodNotFound</a> = -32601
-, <a class="el" href="#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">kInvalidParams</a> = -32602
-, <br />
-&#160;&#160;<a class="el" href="#a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394">kInternalError</a> = -32603
-, <a class="el" href="#a046f8f30c33d765e7861d48c239257cdac0743fba36fbd100b50c78be97655ae8">kServerError</a> = -32000
-, <a class="el" href="#a046f8f30c33d765e7861d48c239257cdadbe4fbec4b2cb2c2709a455206fed67f">kTransportError</a> = -32010
-, <a class="el" href="#a046f8f30c33d765e7861d48c239257cda39a70ca912cee0eb36eb375f25c2fca6">kTimeoutError</a> = -32001
-<br />
- }</td></tr>
-<tr class="memdesc:a046f8f30c33d765e7861d48c239257cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard JSON-RPC 2.0 error codes.  <a href="#a046f8f30c33d765e7861d48c239257cd">More...</a><br /></td></tr>
-<tr class="separator:a046f8f30c33d765e7861d48c239257cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a7f0e2e6c3174ba320dab909a312b3a1f" id="r_a7f0e2e6c3174ba320dab909a312b3a1f"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f0e2e6c3174ba320dab909a312b3a1f">kJsonRpcVersion</a> = &quot;2.0&quot;</td></tr>
-<tr class="memdesc:a7f0e2e6c3174ba320dab909a312b3a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">JSON-RPC 2.0 protocol version string.  <br /></td></tr>
 <tr class="separator:a7f0e2e6c3174ba320dab909a312b3a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af708291be52090bcccbb1b60caf9d6e8" id="r_af708291be52090bcccbb1b60caf9d6e8"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af708291be52090bcccbb1b60caf9d6e8">kDefaultRequestTimeout</a> = std::chrono::milliseconds(30000)</td></tr>
-<tr class="memdesc:af708291be52090bcccbb1b60caf9d6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default request timeout in milliseconds.  <br /></td></tr>
 <tr class="separator:af708291be52090bcccbb1b60caf9d6e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac45fe723f73ee42928b4bebb579926bb" id="r_ac45fe723f73ee42928b4bebb579926bb"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac45fe723f73ee42928b4bebb579926bb">kDefaultMaxBatchSize</a> = 100</td></tr>
-<tr class="memdesc:ac45fe723f73ee42928b4bebb579926bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum batch size.  <br /></td></tr>
 <tr class="separator:ac45fe723f73ee42928b4bebb579926bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -211,30 +168,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="#ad5f4eeee8d842f6f0fb8ec293aa0069d">jsonrpc::endpoint::ErrorHandler</a> = std::function&lt;void(<a class="el" href="#a046f8f30c33d765e7861d48c239257cd">ErrorCode</a>, const std::string &amp;)&gt;</td>
+          <td class="memname">using <a class="el" href="#ad5f4eeee8d842f6f0fb8ec293aa0069d">jsonrpc::endpoint::ErrorHandler</a> = std::function&lt;void(ErrorCode, const std::string &amp;)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00023">23</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a6a9244e250467edd344ae481aaf3687f" name="a6a9244e250467edd344ae481aaf3687f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a9244e250467edd344ae481aaf3687f">&#9670;&#160;</a></span>ErrorInfoMap</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#a6a9244e250467edd344ae481aaf3687f">jsonrpc::endpoint::ErrorInfoMap</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line"> </div>
-<div class="line">    std::unordered_map&lt;LibErrorKind, std::pair&lt;int, const char*&gt;&gt;</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="response_8hpp_source.html#l00022">22</a> of file <a class="el" href="response_8hpp_source.html">response.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00024">24</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
 
 </div>
 </div>
@@ -249,9 +188,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Type for a handler which can be either a method call handler or notification handler </p>
 
-<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00043">43</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00022">22</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
 
 </div>
 </div>
@@ -269,9 +207,7 @@ Variables</h2></td></tr>
 <b>Initial value:</b><div class="fragment"><div class="line"> </div>
 <div class="line">    nlohmann::json(<span class="keyword">const</span> std::optional&lt;nlohmann::json&gt;&amp; params)</div>
 </div><!-- fragment -->
-<p>Type for handling method calls - now synchronous for simplicity. </p>
-
-<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00035">35</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00017">17</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
 
 </div>
 </div>
@@ -287,9 +223,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Type for handling notifications - now synchronous for simplicity. </p>
-
-<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00039">39</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00020">20</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
 
 </div>
 </div>
@@ -305,116 +239,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Type for request IDs that can be either integer or string. </p>
+<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00015">15</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00032">32</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a046f8f30c33d765e7861d48c239257cd" name="a046f8f30c33d765e7861d48c239257cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a046f8f30c33d765e7861d48c239257cd">&#9670;&#160;</a></span>ErrorCode</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="#a046f8f30c33d765e7861d48c239257cd">jsonrpc::endpoint::ErrorCode</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Standard JSON-RPC 2.0 error codes. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a046f8f30c33d765e7861d48c239257cda70bc2f6598437e307b2b8d35f1c49a18" name="a046f8f30c33d765e7861d48c239257cda70bc2f6598437e307b2b8d35f1c49a18"></a>kParseError&#160;</td><td class="fielddoc"><p>Invalid JSON was received. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e" name="a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e"></a>kInvalidRequest&#160;</td><td class="fielddoc"><p>The JSON sent is not a valid <a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html" title="Represents a JSON-RPC request.">Request</a> object. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a046f8f30c33d765e7861d48c239257cdaa0fcc6e288e7806a406405f780cdaf0f" name="a046f8f30c33d765e7861d48c239257cdaa0fcc6e288e7806a406405f780cdaf0f"></a>kMethodNotFound&#160;</td><td class="fielddoc"><p>The method does not exist / is not available. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054" name="a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054"></a>kInvalidParams&#160;</td><td class="fielddoc"><p>Invalid method parameter(s) </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394" name="a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394"></a>kInternalError&#160;</td><td class="fielddoc"><p>Internal JSON-RPC error. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a046f8f30c33d765e7861d48c239257cdac0743fba36fbd100b50c78be97655ae8" name="a046f8f30c33d765e7861d48c239257cdac0743fba36fbd100b50c78be97655ae8"></a>kServerError&#160;</td><td class="fielddoc"><p>Generic server error. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a046f8f30c33d765e7861d48c239257cdadbe4fbec4b2cb2c2709a455206fed67f" name="a046f8f30c33d765e7861d48c239257cdadbe4fbec4b2cb2c2709a455206fed67f"></a>kTransportError&#160;</td><td class="fielddoc"><p>Transport-related error. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a046f8f30c33d765e7861d48c239257cda39a70ca912cee0eb36eb375f25c2fca6" name="a046f8f30c33d765e7861d48c239257cda39a70ca912cee0eb36eb375f25c2fca6"></a>kTimeoutError&#160;</td><td class="fielddoc"><p>Timeout error. </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00017">17</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   17</span>                     {</div>
-<div class="line"><span class="lineno">   18</span>  <span class="comment">// Standard errors</span></div>
-<div class="line"><span class="lineno">   19</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44a70bc2f6598437e307b2b8d35f1c49a18">kParseError</a> = -32700,      </div>
-<div class="line"><span class="lineno">   20</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44a6c4ae9ad285a625b8bfdc0a62e289f6e">kInvalidRequest</a> = -32600,  </div>
-<div class="line"><span class="lineno">   21</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44aa0fcc6e288e7806a406405f780cdaf0f">kMethodNotFound</a> = -32601,  </div>
-<div class="line"><span class="lineno">   22</span>  <a class="code hl_enumvalue" href="#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">kInvalidParams</a> = -32602,   </div>
-<div class="line"><span class="lineno">   23</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44afcd417a134c251034b0d61b07c826394">kInternalError</a> = -32603,   </div>
-<div class="line"><span class="lineno">   24</span> </div>
-<div class="line"><span class="lineno">   25</span>  <span class="comment">// Implementation-defined server errors</span></div>
-<div class="line"><span class="lineno">   26</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44ac0743fba36fbd100b50c78be97655ae8">kServerError</a> = -32000,     </div>
-<div class="line"><span class="lineno">   27</span>  <a class="code hl_enumvalue" href="#a046f8f30c33d765e7861d48c239257cdadbe4fbec4b2cb2c2709a455206fed67f">kTransportError</a> = -32010,  </div>
-<div class="line"><span class="lineno">   28</span>  <a class="code hl_enumvalue" href="#a046f8f30c33d765e7861d48c239257cda39a70ca912cee0eb36eb375f25c2fca6">kTimeoutError</a> = -32001,    </div>
-<div class="line"><span class="lineno">   29</span>};</div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cda39a70ca912cee0eb36eb375f25c2fca6"><div class="ttname"><a href="#a046f8f30c33d765e7861d48c239257cda39a70ca912cee0eb36eb375f25c2fca6">jsonrpc::endpoint::ErrorCode::kTimeoutError</a></div><div class="ttdeci">@ kTimeoutError</div><div class="ttdoc">Timeout error.</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054"><div class="ttname"><a href="#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::endpoint::ErrorCode::kInvalidParams</a></div><div class="ttdeci">@ kInvalidParams</div><div class="ttdoc">Invalid method parameter(s)</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cdadbe4fbec4b2cb2c2709a455206fed67f"><div class="ttname"><a href="#a046f8f30c33d765e7861d48c239257cdadbe4fbec4b2cb2c2709a455206fed67f">jsonrpc::endpoint::ErrorCode::kTransportError</a></div><div class="ttdeci">@ kTransportError</div><div class="ttdoc">Transport-related error.</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a2e18db7323b95f7c68d7afb25f3f9f44a6c4ae9ad285a625b8bfdc0a62e289f6e"><div class="ttname"><a href="#a2e18db7323b95f7c68d7afb25f3f9f44a6c4ae9ad285a625b8bfdc0a62e289f6e">jsonrpc::endpoint::LibErrorKind::kInvalidRequest</a></div><div class="ttdeci">@ kInvalidRequest</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a2e18db7323b95f7c68d7afb25f3f9f44a70bc2f6598437e307b2b8d35f1c49a18"><div class="ttname"><a href="#a2e18db7323b95f7c68d7afb25f3f9f44a70bc2f6598437e307b2b8d35f1c49a18">jsonrpc::endpoint::LibErrorKind::kParseError</a></div><div class="ttdeci">@ kParseError</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a2e18db7323b95f7c68d7afb25f3f9f44aa0fcc6e288e7806a406405f780cdaf0f"><div class="ttname"><a href="#a2e18db7323b95f7c68d7afb25f3f9f44aa0fcc6e288e7806a406405f780cdaf0f">jsonrpc::endpoint::LibErrorKind::kMethodNotFound</a></div><div class="ttdeci">@ kMethodNotFound</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a2e18db7323b95f7c68d7afb25f3f9f44ac0743fba36fbd100b50c78be97655ae8"><div class="ttname"><a href="#a2e18db7323b95f7c68d7afb25f3f9f44ac0743fba36fbd100b50c78be97655ae8">jsonrpc::endpoint::LibErrorKind::kServerError</a></div><div class="ttdeci">@ kServerError</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a2e18db7323b95f7c68d7afb25f3f9f44afcd417a134c251034b0d61b07c826394"><div class="ttname"><a href="#a2e18db7323b95f7c68d7afb25f3f9f44afcd417a134c251034b0d61b07c826394">jsonrpc::endpoint::LibErrorKind::kInternalError</a></div><div class="ttdeci">@ kInternalError</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a2e18db7323b95f7c68d7afb25f3f9f44" name="a2e18db7323b95f7c68d7afb25f3f9f44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e18db7323b95f7c68d7afb25f3f9f44">&#9670;&#160;</a></span>LibErrorKind</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="#a2e18db7323b95f7c68d7afb25f3f9f44">jsonrpc::endpoint::LibErrorKind</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Enumeration for library error kinds. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2e18db7323b95f7c68d7afb25f3f9f44a70bc2f6598437e307b2b8d35f1c49a18" name="a2e18db7323b95f7c68d7afb25f3f9f44a70bc2f6598437e307b2b8d35f1c49a18"></a>kParseError&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2e18db7323b95f7c68d7afb25f3f9f44a6c4ae9ad285a625b8bfdc0a62e289f6e" name="a2e18db7323b95f7c68d7afb25f3f9f44a6c4ae9ad285a625b8bfdc0a62e289f6e"></a>kInvalidRequest&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2e18db7323b95f7c68d7afb25f3f9f44aa0fcc6e288e7806a406405f780cdaf0f" name="a2e18db7323b95f7c68d7afb25f3f9f44aa0fcc6e288e7806a406405f780cdaf0f"></a>kMethodNotFound&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2e18db7323b95f7c68d7afb25f3f9f44afcd417a134c251034b0d61b07c826394" name="a2e18db7323b95f7c68d7afb25f3f9f44afcd417a134c251034b0d61b07c826394"></a>kInternalError&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2e18db7323b95f7c68d7afb25f3f9f44ac0743fba36fbd100b50c78be97655ae8" name="a2e18db7323b95f7c68d7afb25f3f9f44ac0743fba36fbd100b50c78be97655ae8"></a>kServerError&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="response_8hpp_source.html#l00014">14</a> of file <a class="el" href="response_8hpp_source.html">response.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>                        {</div>
-<div class="line"><span class="lineno">   15</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44a70bc2f6598437e307b2b8d35f1c49a18">kParseError</a>,</div>
-<div class="line"><span class="lineno">   16</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44a6c4ae9ad285a625b8bfdc0a62e289f6e">kInvalidRequest</a>,</div>
-<div class="line"><span class="lineno">   17</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44aa0fcc6e288e7806a406405f780cdaf0f">kMethodNotFound</a>,</div>
-<div class="line"><span class="lineno">   18</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44afcd417a134c251034b0d61b07c826394">kInternalError</a>,</div>
-<div class="line"><span class="lineno">   19</span>  <a class="code hl_enumvalue" href="#a2e18db7323b95f7c68d7afb25f3f9f44ac0743fba36fbd100b50c78be97655ae8">kServerError</a></div>
-<div class="line"><span class="lineno">   20</span>};</div>
-</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -438,9 +264,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Default maximum batch size. </p>
-
-<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00049">49</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00026">26</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
 
 </div>
 </div>
@@ -464,9 +288,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Default request timeout in milliseconds. </p>
-
-<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00046">46</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00024">24</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
 
 </div>
 </div>
@@ -490,9 +312,9 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>JSON-RPC 2.0 protocol version string. </p>
+<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00013">13</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="types_8hpp_source.html#l00014">14</a> of file <a class="el" href="types_8hpp_source.html">types.hpp</a>.</p>
+<p class="reference">Referenced by <a class="el" href="response_8cpp_source.html#l00050">jsonrpc::endpoint::Response::CreateError()</a>, <a class="el" href="response_8cpp_source.html#l00028">jsonrpc::endpoint::Response::CreateError()</a>, <a class="el" href="response_8cpp_source.html#l00018">jsonrpc::endpoint::Response::CreateSuccess()</a>, <a class="el" href="request_8cpp_source.html#l00031">jsonrpc::endpoint::Request::FromJson()</a>, and <a class="el" href="request_8cpp_source.html#l00093">jsonrpc::endpoint::Request::ToJson()</a>.</p>
 
 </div>
 </div>

@@ -1,7 +1,0 @@
-<map id="jsonrpc::endpoint::RpcEndpoint::SendMethodCall" name="jsonrpc::endpoint::RpcEndpoint::SendMethodCall">
-<area shape="rect" id="Node000001" title="Call a method on the remote endpoint." alt="" coords="5,5,223,45"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Request.html#ab06a29b8ccbf8d947e8640c776f9031c" title="Serializes the request to a JSON string." alt="" coords="271,5,413,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,23,256,23,256,28,223,28"/>
-<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1Request.html#a82cd14ec1dd3f15d068e5737e409663d" title="Converts the request to a JSON object." alt="" coords="461,5,604,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="413,23,448,23,448,28,413,28"/>
-</map>

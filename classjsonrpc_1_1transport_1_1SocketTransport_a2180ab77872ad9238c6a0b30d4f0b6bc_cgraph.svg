@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Destroys the Socket Transport object.">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="106,-41 0,-41 0,0 106,0 106,-41"/>
 <text text-anchor="start" x="8" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::transport</text>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">::SocketTransport::</text>
@@ -22,7 +22,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classjsonrpc_1_1transport_1_1SocketTransport.html#aa2e12c6709d9fd67204429f381801aa4" target="_top" xlink:title="Close the transport synchronously.">
+<g id="a_Node000002"><a xlink:href="classjsonrpc_1_1transport_1_1SocketTransport.html#a3642cc686cb19f96112aedb2e385cf1e" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="297,-35.5 142,-35.5 142,-5.5 297,-5.5 297,-35.5"/>
 <text text-anchor="start" x="150" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::transport</text>
 <text text-anchor="middle" x="219.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">::SocketTransport::CloseNow</text>

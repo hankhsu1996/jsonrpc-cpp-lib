@@ -1,7 +1,7 @@
 <map id="jsonrpc::endpoint::Dispatcher::RegisterNotification" name="jsonrpc::endpoint::Dispatcher::RegisterNotification">
-<area shape="rect" id="Node000001" title="Register a notification handler." alt="" coords="581,5,811,45"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6abb39be0165c3d20d79974dc00accc7" title="Register a notification handler." alt="" coords="293,5,533,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="581,5,811,45"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6abb39be0165c3d20d79974dc00accc7" title=" " alt="" coords="293,5,533,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="568,28,534,28,534,23,568,23"/>
-<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a839b5fdea0e29d2d199132b7075065d9" title="Register a typed notification handler." alt="" coords="5,5,245,45"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a839b5fdea0e29d2d199132b7075065d9" title=" " alt="" coords="5,5,245,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="280,28,245,28,245,23,280,23"/>
 </map>

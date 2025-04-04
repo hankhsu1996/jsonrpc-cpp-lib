@@ -1,0 +1,5 @@
+<map id="jsonrpc::transport::PipeTransport::SendMessage" name="jsonrpc::transport::PipeTransport::SendMessage">
+<area shape="rect" id="Node000001" title=" " alt="" coords="220,13,436,53"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a628643b273f0d3a6be24acd0ad35500f" title=" " alt="" coords="5,5,172,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,35,172,35,172,30,206,30"/>
+</map>

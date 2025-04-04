@@ -114,21 +114,19 @@ $(function(){initNavTree('response_8hpp.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">response.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;optional&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
-<code>#include &lt;unordered_map&gt;</code><br />
+<div class="textblock"><code>#include &lt;expected&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;nlohmann/json.hpp&gt;</code><br />
 <code>#include &quot;<a class="el" href="types_8hpp_source.html">jsonrpc/endpoint/types.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="error_8hpp_source.html">jsonrpc/error/error.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for response.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="response_8hpp__incl.svg" width="655" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="response_8hpp__incl.svg" width="895" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -141,7 +139,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1Response.html">jsonrpc::endpoint::Response</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a JSON-RPC response.  <a href="classjsonrpc_1_1endpoint_1_1Response.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnlohmann_1_1adl__serializer_3_01jsonrpc_1_1endpoint_1_1Response_01_4.html">nlohmann::adl_serializer&lt; jsonrpc::endpoint::Response &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -150,25 +149,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html">jsonrpc::endpoint</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a6a9244e250467edd344ae481aaf3687f" id="r_a6a9244e250467edd344ae481aaf3687f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a6a9244e250467edd344ae481aaf3687f">jsonrpc::endpoint::ErrorInfoMap</a></td></tr>
-<tr class="separator:a6a9244e250467edd344ae481aaf3687f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a2e18db7323b95f7c68d7afb25f3f9f44" id="r_a2e18db7323b95f7c68d7afb25f3f9f44"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a2e18db7323b95f7c68d7afb25f3f9f44">jsonrpc::endpoint::LibErrorKind</a> { <br />
-&#160;&#160;<a class="el" href="namespacejsonrpc_1_1endpoint.html#a2e18db7323b95f7c68d7afb25f3f9f44a70bc2f6598437e307b2b8d35f1c49a18">jsonrpc::endpoint::kParseError</a>
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a2e18db7323b95f7c68d7afb25f3f9f44a6c4ae9ad285a625b8bfdc0a62e289f6e">jsonrpc::endpoint::kInvalidRequest</a>
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a2e18db7323b95f7c68d7afb25f3f9f44aa0fcc6e288e7806a406405f780cdaf0f">jsonrpc::endpoint::kMethodNotFound</a>
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a2e18db7323b95f7c68d7afb25f3f9f44afcd417a134c251034b0d61b07c826394">jsonrpc::endpoint::kInternalError</a>
-, <br />
-&#160;&#160;<a class="el" href="namespacejsonrpc_1_1endpoint.html#a2e18db7323b95f7c68d7afb25f3f9f44ac0743fba36fbd100b50c78be97655ae8">jsonrpc::endpoint::kServerError</a>
-<br />
- }</td></tr>
-<tr class="memdesc:a2e18db7323b95f7c68d7afb25f3f9f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration for library error kinds.  <a href="namespacejsonrpc_1_1endpoint.html#a2e18db7323b95f7c68d7afb25f3f9f44">More...</a><br /></td></tr>
-<tr class="separator:a2e18db7323b95f7c68d7afb25f3f9f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenlohmann.html">nlohmann</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

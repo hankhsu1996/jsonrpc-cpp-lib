@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['dispatcher_0',['Dispatcher',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a1ea35b4df8c6be41aa8b009145a4dada',1,'jsonrpc::endpoint::Dispatcher::Dispatcher(asio::any_io_executor executor)'],['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a2ada2a75e97435e67a119c99a117c59c',1,'jsonrpc::endpoint::Dispatcher::Dispatcher(const Dispatcher &amp;)=delete'],['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a5be26c2fd0d0c878131032bb03b474cf',1,'jsonrpc::endpoint::Dispatcher::Dispatcher(Dispatcher &amp;&amp;)=delete']]],
-  ['dispatchrequest_1',['DispatchRequest',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59f23de0593ce9999f3e07e70b6e1ab5',1,'jsonrpc::endpoint::Dispatcher']]],
-  ['dump_2',['Dump',['../classjsonrpc_1_1endpoint_1_1Request.html#ab06a29b8ccbf8d947e8640c776f9031c',1,'jsonrpc::endpoint::Request']]]
+  ['defaultmessagefor_0',['DefaultMessageFor',['../namespacejsonrpc_1_1error.html#a82529e81c244fc0e808d33525d5bdaf4',1,'jsonrpc::error']]],
+  ['dispatcher_1',['Dispatcher',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a1ea35b4df8c6be41aa8b009145a4dada',1,'jsonrpc::endpoint::Dispatcher::Dispatcher(asio::any_io_executor executor)'],['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a2ada2a75e97435e67a119c99a117c59c',1,'jsonrpc::endpoint::Dispatcher::Dispatcher(const Dispatcher &amp;)=delete'],['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a5be26c2fd0d0c878131032bb03b474cf',1,'jsonrpc::endpoint::Dispatcher::Dispatcher(Dispatcher &amp;&amp;)=delete']]],
+  ['dispatchrequest_2',['DispatchRequest',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59f23de0593ce9999f3e07e70b6e1ab5',1,'jsonrpc::endpoint::Dispatcher']]],
+  ['dump_3',['Dump',['../classjsonrpc_1_1endpoint_1_1Request.html#ab06a29b8ccbf8d947e8640c776f9031c',1,'jsonrpc::endpoint::Request']]]
 ];

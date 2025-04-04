@@ -1,9 +1,15 @@
 <map id="include/jsonrpc/endpoint/request.hpp" name="include/jsonrpc/endpoint/request.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="235,5,416,45"/>
-<area shape="rect" id="Node000002" href="$dispatcher_8cpp.html" title=" " alt="" coords="5,93,205,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="261,52,139,96,137,91,259,47"/>
-<area shape="rect" id="Node000003" href="$endpoint_8cpp.html" title=" " alt="" coords="230,93,421,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="328,59,328,93,323,93,323,59"/>
-<area shape="rect" id="Node000004" href="$request_8cpp.html" title=" " alt="" coords="445,93,627,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="389,48,506,91,504,96,388,53"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="332,5,513,45"/>
+<area shape="rect" id="Node000002" href="$dispatcher_8hpp.html" title=" " alt="" coords="179,93,360,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="378,54,304,96,302,91,376,50"/>
+<area shape="rect" id="Node000004" href="$endpoint_8cpp.html" title=" " alt="" coords="177,269,367,295"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="436,59,443,95,447,138,442,182,435,203,425,223,410,240,391,254,349,272,347,267,388,249,406,236,420,220,431,201,437,181,442,138,438,96,430,60"/>
+<area shape="rect" id="Node000005" href="$dispatcher_8cpp.html" title=" " alt="" coords="211,189,411,214"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="413,59,396,96,374,135,349,166,325,191,321,187,345,163,370,132,392,94,408,57"/>
+<area shape="rect" id="Node000006" href="$request_8cpp.html" title=" " alt="" coords="486,101,669,126"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="470,50,558,98,555,103,467,54"/>
+<area shape="rect" id="Node000003" href="$endpoint_8hpp.html" title=" " alt="" coords="5,181,187,221"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="220,142,135,184,133,179,218,137"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="287,145,307,187,303,189,282,147"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="151,224,247,267,245,272,149,229"/>
 </map>

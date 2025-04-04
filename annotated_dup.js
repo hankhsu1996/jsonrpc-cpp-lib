@@ -7,9 +7,14 @@ var annotated_dup =
         [ "Request", "classjsonrpc_1_1endpoint_1_1Request.html", "classjsonrpc_1_1endpoint_1_1Request" ],
         [ "Response", "classjsonrpc_1_1endpoint_1_1Response.html", "classjsonrpc_1_1endpoint_1_1Response" ],
         [ "RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html", "classjsonrpc_1_1endpoint_1_1RpcEndpoint" ],
-        [ "RpcError", "classjsonrpc_1_1endpoint_1_1RpcError.html", "classjsonrpc_1_1endpoint_1_1RpcError" ],
         [ "TypedMethodHandler", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler" ],
         [ "TypedNotificationHandler", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler" ]
+      ] ],
+      [ "error", "namespacejsonrpc_1_1error.html", [
+        [ "ClientError", "structjsonrpc_1_1error_1_1ClientError.html", "structjsonrpc_1_1error_1_1ClientError" ],
+        [ "RpcError", "structjsonrpc_1_1error_1_1RpcError.html", "structjsonrpc_1_1error_1_1RpcError" ],
+        [ "ServerError", "structjsonrpc_1_1error_1_1ServerError.html", "structjsonrpc_1_1error_1_1ServerError" ],
+        [ "TransportError", "structjsonrpc_1_1error_1_1TransportError.html", "structjsonrpc_1_1error_1_1TransportError" ]
       ] ],
       [ "transport", "namespacejsonrpc_1_1transport.html", [
         [ "FramedPipeTransport", "classjsonrpc_1_1transport_1_1FramedPipeTransport.html", "classjsonrpc_1_1transport_1_1FramedPipeTransport" ],
@@ -18,5 +23,8 @@ var annotated_dup =
         [ "SocketTransport", "classjsonrpc_1_1transport_1_1SocketTransport.html", "classjsonrpc_1_1transport_1_1SocketTransport" ],
         [ "Transport", "classjsonrpc_1_1transport_1_1Transport.html", "classjsonrpc_1_1transport_1_1Transport" ]
       ] ]
+    ] ],
+    [ "nlohmann", "namespacenlohmann.html", [
+      [ "adl_serializer< jsonrpc::endpoint::Response >", "structnlohmann_1_1adl__serializer_3_01jsonrpc_1_1endpoint_1_1Response_01_4.html", null ]
     ] ]
 ];

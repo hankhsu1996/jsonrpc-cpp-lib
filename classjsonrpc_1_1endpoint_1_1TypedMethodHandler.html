@@ -208,20 +208,16 @@ template&lt;typename ParamsType , typename ResultType &gt; </div>
 <div class="line"><span class="lineno">   54</span>      <span class="comment">// Convert result back to JSON</span></div>
 <div class="line"><span class="lineno">   55</span>      <span class="keyword">co_return</span> nlohmann::json(result);</div>
 <div class="line"><span class="lineno">   56</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
-<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">throw</span> RpcError(</div>
-<div class="line"><span class="lineno">   58</span>          <a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">ErrorCode::kInvalidParams</a>,</div>
-<div class="line"><span class="lineno">   59</span>          std::string(<span class="stringliteral">&quot;Parameter conversion error: &quot;</span>) + ex.what());</div>
+<div class="line"><span class="lineno">   57</span>      <span class="comment">// throw RpcError(</span></div>
+<div class="line"><span class="lineno">   58</span>      <span class="comment">//     ErrorCode::kInvalidParams,</span></div>
+<div class="line"><span class="lineno">   59</span>      <span class="comment">//     std::string(&quot;Parameter conversion error: &quot;) + ex.what());</span></div>
 <div class="line"><span class="lineno">   60</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;ex) {</div>
-<div class="line"><span class="lineno">   61</span>      <span class="keywordflow">throw</span> RpcError(</div>
-<div class="line"><span class="lineno">   62</span>          <a class="code hl_enumvalue" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394">ErrorCode::kInternalError</a>,</div>
-<div class="line"><span class="lineno">   63</span>          std::string(<span class="stringliteral">&quot;Handler error: &quot;</span>) + ex.what());</div>
+<div class="line"><span class="lineno">   61</span>      <span class="comment">// throw RpcError(</span></div>
+<div class="line"><span class="lineno">   62</span>      <span class="comment">//     ErrorCode::kInternalError,</span></div>
+<div class="line"><span class="lineno">   63</span>      <span class="comment">//     std::string(&quot;Handler error: &quot;) + ex.what());</span></div>
 <div class="line"><span class="lineno">   64</span>    }</div>
 <div class="line"><span class="lineno">   65</span>  }</div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::endpoint::ErrorCode::kInvalidParams</a></div><div class="ttdeci">@ kInvalidParams</div><div class="ttdoc">Invalid method parameter(s)</div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394">jsonrpc::endpoint::ErrorCode::kInternalError</a></div><div class="ttdeci">@ kInternalError</div><div class="ttdoc">Internal JSON-RPC error.</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394">jsonrpc::endpoint::kInternalError</a>, and <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::endpoint::kInvalidParams</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

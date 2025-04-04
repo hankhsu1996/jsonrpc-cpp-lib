@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['framedpipetransport_0',['FramedPipeTransport',['../classjsonrpc_1_1transport_1_1FramedPipeTransport.html',1,'jsonrpc::transport']]]
+  ['clienterror_0',['ClientError',['../structjsonrpc_1_1error_1_1ClientError.html',1,'jsonrpc::error']]]
 ];

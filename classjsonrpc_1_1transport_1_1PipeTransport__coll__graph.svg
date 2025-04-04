@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Unix domain socket transport implementation.">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="transparent" points="158,-270 0,-270 0,0 158,0 158,-270"/>
 <text text-anchor="start" x="36" y="-258" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::transport</text>
 <text text-anchor="start" x="42.5" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">::PipeTransport</text>
@@ -29,17 +29,17 @@
 <text text-anchor="start" x="4" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
 <text text-anchor="start" x="4" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">GetSocket()</text>
+<text text-anchor="start" x="17" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">Start()</text>
 <text text-anchor="start" x="4" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">Start()</text>
+<text text-anchor="start" x="17" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">Close()</text>
 <text text-anchor="start" x="4" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">SendMessage()</text>
+<text text-anchor="start" x="17" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">CloseNow()</text>
 <text text-anchor="start" x="4" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">ReceiveMessage()</text>
+<text text-anchor="start" x="17" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">SendMessage()</text>
 <text text-anchor="start" x="4" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">Close()</text>
-<text text-anchor="start" x="4" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">CloseNow()</text>
+<text text-anchor="start" x="17" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">ReceiveMessage()</text>
+<text text-anchor="start" x="4" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="17" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">GetSocket()</text>
 <text text-anchor="start" x="4" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
 <text text-anchor="start" x="17" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">RemoveExistingSocketFile()</text>
 <text text-anchor="start" x="4" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
@@ -55,7 +55,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classjsonrpc_1_1transport_1_1Transport.html" target="_top" xlink:title="Abstract base class for all transport implementations.">
+<g id="a_Node000002"><a xlink:href="classjsonrpc_1_1transport_1_1Transport.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="transparent" points="135,-546 23,-546 23,-306 135,-306 135,-546"/>
 <text text-anchor="start" x="36" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::transport</text>
 <text text-anchor="start" x="53" y="-523" font-family="Helvetica,sans-Serif" font-size="10.00">::Transport</text>
@@ -75,13 +75,13 @@
 <text text-anchor="start" x="27" y="-403" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="40" y="-403" font-family="Helvetica,sans-Serif" font-size="10.00">Start()</text>
 <text text-anchor="start" x="27" y="-388" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="40" y="-388" font-family="Helvetica,sans-Serif" font-size="10.00">SendMessage()</text>
+<text text-anchor="start" x="40" y="-388" font-family="Helvetica,sans-Serif" font-size="10.00">Close()</text>
 <text text-anchor="start" x="27" y="-373" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="40" y="-373" font-family="Helvetica,sans-Serif" font-size="10.00">ReceiveMessage()</text>
+<text text-anchor="start" x="40" y="-373" font-family="Helvetica,sans-Serif" font-size="10.00">CloseNow()</text>
 <text text-anchor="start" x="27" y="-358" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="40" y="-358" font-family="Helvetica,sans-Serif" font-size="10.00">Close()</text>
+<text text-anchor="start" x="40" y="-358" font-family="Helvetica,sans-Serif" font-size="10.00">SendMessage()</text>
 <text text-anchor="start" x="27" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="40" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">CloseNow()</text>
+<text text-anchor="start" x="40" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">ReceiveMessage()</text>
 <text text-anchor="start" x="27" y="-328" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="40" y="-328" font-family="Helvetica,sans-Serif" font-size="10.00">GetExecutor()</text>
 <text text-anchor="start" x="27" y="-313" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

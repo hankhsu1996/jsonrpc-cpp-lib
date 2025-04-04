@@ -1,5 +1,5 @@
 <map id="jsonrpc::transport::SocketTransport::~SocketTransport" name="jsonrpc::transport::SocketTransport::~SocketTransport">
-<area shape="rect" id="Node000001" title="Destroys the Socket Transport object." alt="" coords="5,5,147,60"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#aa2e12c6709d9fd67204429f381801aa4" title="Close the transport synchronously." alt="" coords="195,13,401,53"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,147,60"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#a3642cc686cb19f96112aedb2e385cf1e" title=" " alt="" coords="195,13,401,53"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,30,181,30,181,35,147,35"/>
 </map>

@@ -113,10 +113,8 @@ $(function(){initNavTree('types_8hpp.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">types.hpp File Reference</div></div>
 </div><!--header-->
@@ -135,17 +133,11 @@ Include dependency graph for types.hpp:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="types_8hpp__dep__incl.svg" width="1024" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="types_8hpp__dep__incl.svg" width="942" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="types_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1RpcError.html">jsonrpc::endpoint::RpcError</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception class for RPC errors.  <a href="classjsonrpc_1_1endpoint_1_1RpcError.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc.html">jsonrpc</a></td></tr>
@@ -156,44 +148,21 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a7820fe3ffe99ddbd431a8d25c012a113" id="r_a7820fe3ffe99ddbd431a8d25c012a113"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a7820fe3ffe99ddbd431a8d25c012a113">jsonrpc::endpoint::RequestId</a> = std::variant&lt;int64_t, std::string&gt;</td></tr>
-<tr class="memdesc:a7820fe3ffe99ddbd431a8d25c012a113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for request IDs that can be either integer or string.  <br /></td></tr>
 <tr class="separator:a7820fe3ffe99ddbd431a8d25c012a113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72855eb2a9497623864731bfeecf4e43" id="r_a72855eb2a9497623864731bfeecf4e43"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a72855eb2a9497623864731bfeecf4e43">jsonrpc::endpoint::MethodCallHandler</a></td></tr>
-<tr class="memdesc:a72855eb2a9497623864731bfeecf4e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for handling method calls - now synchronous for simplicity.  <br /></td></tr>
 <tr class="separator:a72855eb2a9497623864731bfeecf4e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e1ed6cc8bdd42d59dbd41ae9d20a5a7" id="r_a0e1ed6cc8bdd42d59dbd41ae9d20a5a7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a0e1ed6cc8bdd42d59dbd41ae9d20a5a7">jsonrpc::endpoint::NotificationHandler</a> = void(const std::optional&lt;nlohmann::json&gt;&amp; params)</td></tr>
-<tr class="memdesc:a0e1ed6cc8bdd42d59dbd41ae9d20a5a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for handling notifications - now synchronous for simplicity.  <br /></td></tr>
 <tr class="separator:a0e1ed6cc8bdd42d59dbd41ae9d20a5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe1afdee88ee6cd87b6a0e88fdf950dc" id="r_abe1afdee88ee6cd87b6a0e88fdf950dc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#abe1afdee88ee6cd87b6a0e88fdf950dc">jsonrpc::endpoint::Handler</a> = std::variant&lt;<a class="el" href="namespacejsonrpc_1_1endpoint.html#a72855eb2a9497623864731bfeecf4e43">MethodCallHandler</a>, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a0e1ed6cc8bdd42d59dbd41ae9d20a5a7">NotificationHandler</a>&gt;</td></tr>
 <tr class="separator:abe1afdee88ee6cd87b6a0e88fdf950dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a046f8f30c33d765e7861d48c239257cd" id="r_a046f8f30c33d765e7861d48c239257cd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">jsonrpc::endpoint::ErrorCode</a> { <br />
-&#160;&#160;<a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda70bc2f6598437e307b2b8d35f1c49a18">jsonrpc::endpoint::kParseError</a> = -32700
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda6c4ae9ad285a625b8bfdc0a62e289f6e">jsonrpc::endpoint::kInvalidRequest</a> = -32600
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdaa0fcc6e288e7806a406405f780cdaf0f">jsonrpc::endpoint::kMethodNotFound</a> = -32601
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::endpoint::kInvalidParams</a> = -32602
-, <br />
-&#160;&#160;<a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdafcd417a134c251034b0d61b07c826394">jsonrpc::endpoint::kInternalError</a> = -32603
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdac0743fba36fbd100b50c78be97655ae8">jsonrpc::endpoint::kServerError</a> = -32000
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cdadbe4fbec4b2cb2c2709a455206fed67f">jsonrpc::endpoint::kTransportError</a> = -32010
-, <a class="el" href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cda39a70ca912cee0eb36eb375f25c2fca6">jsonrpc::endpoint::kTimeoutError</a> = -32001
-<br />
- }</td></tr>
-<tr class="memdesc:a046f8f30c33d765e7861d48c239257cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard JSON-RPC 2.0 error codes.  <a href="namespacejsonrpc_1_1endpoint.html#a046f8f30c33d765e7861d48c239257cd">More...</a><br /></td></tr>
-<tr class="separator:a046f8f30c33d765e7861d48c239257cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a7f0e2e6c3174ba320dab909a312b3a1f" id="r_a7f0e2e6c3174ba320dab909a312b3a1f"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#a7f0e2e6c3174ba320dab909a312b3a1f">jsonrpc::endpoint::kJsonRpcVersion</a> = &quot;2.0&quot;</td></tr>
-<tr class="memdesc:a7f0e2e6c3174ba320dab909a312b3a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">JSON-RPC 2.0 protocol version string.  <br /></td></tr>
 <tr class="separator:a7f0e2e6c3174ba320dab909a312b3a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af708291be52090bcccbb1b60caf9d6e8" id="r_af708291be52090bcccbb1b60caf9d6e8"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#af708291be52090bcccbb1b60caf9d6e8">jsonrpc::endpoint::kDefaultRequestTimeout</a> = std::chrono::milliseconds(30000)</td></tr>
-<tr class="memdesc:af708291be52090bcccbb1b60caf9d6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default request timeout in milliseconds.  <br /></td></tr>
 <tr class="separator:af708291be52090bcccbb1b60caf9d6e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac45fe723f73ee42928b4bebb579926bb" id="r_ac45fe723f73ee42928b4bebb579926bb"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html#ac45fe723f73ee42928b4bebb579926bb">jsonrpc::endpoint::kDefaultMaxBatchSize</a> = 100</td></tr>
-<tr class="memdesc:ac45fe723f73ee42928b4bebb579926bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum batch size.  <br /></td></tr>
 <tr class="separator:ac45fe723f73ee42928b4bebb579926bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

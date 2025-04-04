@@ -1,4 +1,5 @@
 var namespaces_dup =
 [
-    [ "jsonrpc", "namespacejsonrpc.html", "namespacejsonrpc" ]
+    [ "jsonrpc", "namespacejsonrpc.html", "namespacejsonrpc" ],
+    [ "nlohmann", "namespacenlohmann.html", "namespacenlohmann" ]
 ];

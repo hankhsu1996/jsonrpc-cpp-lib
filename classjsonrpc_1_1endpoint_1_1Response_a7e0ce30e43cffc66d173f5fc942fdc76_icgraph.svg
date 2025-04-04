@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Checks if the response indicates success.">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="271,-54 154,-54 154,-24 271,-24 271,-54"/>
 <text text-anchor="start" x="162" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::endpoint::</text>
 <text text-anchor="middle" x="212.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">Response::IsSuccess</text>
@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classjsonrpc_1_1endpoint_1_1Response.html#aa186f2c6882041cfea79a1103c6e617f" target="_top" xlink:title="Gets the error if this is an error response.">
+<g id="a_Node000002"><a xlink:href="classjsonrpc_1_1endpoint_1_1Response.html#aa186f2c6882041cfea79a1103c6e617f" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="114,-78 4,-78 4,-48 114,-48 114,-78"/>
 <text text-anchor="start" x="12" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::endpoint::</text>
 <text text-anchor="middle" x="59" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Response::GetError</text>
@@ -40,7 +40,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classjsonrpc_1_1endpoint_1_1Response.html#a1c033921f18c991bbeba0fa2adcea199" target="_top" xlink:title="Gets the result if this is a success response.">
+<g id="a_Node000003"><a xlink:href="classjsonrpc_1_1endpoint_1_1Response.html#a1c033921f18c991bbeba0fa2adcea199" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="118,-30 0,-30 0,0 118,0 118,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::endpoint::</text>
 <text text-anchor="middle" x="59" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Response::GetResult</text>
