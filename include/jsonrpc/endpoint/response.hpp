@@ -35,6 +35,10 @@ class Response {
       -> Response;
 
   static auto CreateError(
+      const RpcError& error, const std::optional<RequestId>& id = std::nullopt)
+      -> Response;
+
+  static auto CreateError(
       const nlohmann::json& error, const std::optional<RequestId>& id)
       -> Response;
 

@@ -41,6 +41,13 @@ auto Response::CreateError(ErrorCode code, const std::optional<RequestId>& id)
 }
 
 auto Response::CreateError(
+    const RpcError& error, const std::optional<RequestId>& id) -> Response {
+  nlohmann::json error_json = {
+      {"code", static_cast<int>(error.code)}, {"message", error.message}};
+  return CreateError(error_json, id);
+}
+
+auto Response::CreateError(
     const nlohmann::json& error, const std::optional<RequestId>& id)
     -> Response {
   nlohmann::json response = {{"jsonrpc", kJsonRpcVersion}, {"error", error}};

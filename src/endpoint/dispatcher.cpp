@@ -3,7 +3,12 @@
 #include <jsonrpc/endpoint/request.hpp>
 #include <spdlog/spdlog.h>
 
+#include "jsonrpc/endpoint/response.hpp"
+
 namespace jsonrpc::endpoint {
+
+using jsonrpc::error::ErrorCode;
+using jsonrpc::error::RpcError;
 
 Dispatcher::Dispatcher(asio::any_io_executor executor)
     : executor_(std::move(executor)) {
@@ -53,9 +58,9 @@ auto Dispatcher::DispatchRequest(std::string request)
 
 auto Dispatcher::DispatchSingleRequest(nlohmann::json request_json)
     -> asio::awaitable<std::optional<nlohmann::json>> {
-  auto validation_result = ValidateRequest(request_json);
-  if (validation_result) {
-    co_return validation_result->ToJson();
+  auto result = ValidateRequest(request_json);
+  if (!result) {
+    co_return Response::CreateError(result.error()).ToJson().dump();
   }
 
   Request request = Request::FromJson(request_json);
@@ -133,29 +138,29 @@ auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
 }
 
 auto Dispatcher::ValidateRequest(const nlohmann::json& request_json)
-    -> std::optional<Response> {
+    -> std::expected<void, error::RpcError> {
   if (!request_json.contains("method")) {
-    return Response::CreateError(
-        ErrorCode::kInvalidRequest, "Method is required");
+    return std::unexpected(
+        error::RpcError{ErrorCode::kInvalidRequest, "Method is required"});
   }
 
   const auto& method = request_json["method"];
   if (!method.is_string()) {
-    return Response::CreateError(
-        ErrorCode::kInvalidRequest, "Method must be a string");
+    return std::unexpected(
+        error::RpcError{ErrorCode::kInvalidRequest, "Method must be a string"});
   }
 
   // For params, if present, must be object or array
   if (request_json.contains("params")) {
     const auto& params = request_json["params"];
     if (!params.is_object() && !params.is_array() && !params.is_null()) {
-      return Response::CreateError(
-          ErrorCode::kInvalidRequest, "Params must be object or array");
+      return std::unexpected(error::RpcError{
+          ErrorCode::kInvalidRequest, "Params must be object or array"});
     }
   }
 
   // Request is valid
-  return std::nullopt;
+  return {};
 }
 
 }  // namespace jsonrpc::endpoint

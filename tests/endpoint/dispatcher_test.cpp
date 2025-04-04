@@ -6,10 +6,8 @@
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 
-#include "jsonrpc/endpoint/types.hpp"
-
 using jsonrpc::endpoint::Dispatcher;
-using jsonrpc::endpoint::ErrorCode;
+using jsonrpc::error::ErrorCode;
 
 // Helper function for running dispatcher tests
 template <typename TestFunc>
