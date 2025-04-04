@@ -136,30 +136,4 @@ auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
   co_return nlohmann::json(responses).dump();
 }
 
-auto Dispatcher::ValidateRequest(const nlohmann::json& request_json)
-    -> std::expected<void, error::RpcError> {
-  if (!request_json.contains("method")) {
-    return std::unexpected(
-        error::RpcError{ErrorCode::kInvalidRequest, "Method is required"});
-  }
-
-  const auto& method = request_json["method"];
-  if (!method.is_string()) {
-    return std::unexpected(
-        error::RpcError{ErrorCode::kInvalidRequest, "Method must be a string"});
-  }
-
-  // For params, if present, must be object or array
-  if (request_json.contains("params")) {
-    const auto& params = request_json["params"];
-    if (!params.is_object() && !params.is_array() && !params.is_null()) {
-      return std::unexpected(error::RpcError{
-          ErrorCode::kInvalidRequest, "Params must be object or array"});
-    }
-  }
-
-  // Request is valid
-  return {};
-}
-
 }  // namespace jsonrpc::endpoint

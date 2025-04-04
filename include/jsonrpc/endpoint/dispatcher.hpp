@@ -11,7 +11,6 @@
 
 #include "jsonrpc/endpoint/request.hpp"
 #include "jsonrpc/endpoint/response.hpp"
-#include "jsonrpc/error/error.hpp"
 
 namespace jsonrpc::endpoint {
 
@@ -45,9 +44,6 @@ class Dispatcher {
 
   auto DispatchBatchRequest(nlohmann::json request_json)
       -> asio::awaitable<std::optional<std::string>>;
-
-  static auto ValidateRequest(const nlohmann::json& request_json)
-      -> std::expected<void, error::RpcError>;
 
   std::unordered_map<std::string, MethodCallHandler> method_handlers_;
 
