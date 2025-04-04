@@ -41,7 +41,7 @@ class RpcEndpoint {
 
   ~RpcEndpoint() = default;
 
-  auto Start() -> asio::awaitable<void>;
+  auto Start() -> asio::awaitable<std::expected<void, RpcError>>;
 
   auto WaitForShutdown() -> asio::awaitable<void>;
 

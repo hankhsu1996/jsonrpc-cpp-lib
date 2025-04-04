@@ -45,22 +45,25 @@ auto RpcEndpoint::CreateClient(
   co_return endpoint;
 }
 
-auto RpcEndpoint::Start() -> asio::awaitable<void> {
-  if (is_running_.exchange(true)) {  // Prevent double start
-    throw std::runtime_error("RPC endpoint is already running");
+auto RpcEndpoint::Start() -> asio::awaitable<std::expected<void, RpcError>> {
+  if (is_running_.exchange(true)) {
+    co_return CreateClientError("RPC endpoint is already running");
   }
 
   spdlog::info("Starting RPC endpoint");
   pending_requests_.clear();
 
   // Start the transport
-  co_await transport_->Start();
+  auto start_result = co_await transport_->Start();
+  if (!start_result) {
+    co_return std::unexpected(start_result.error());
+  }
 
   // Start message processing on the endpoint strand
   StartMessageProcessing();
 
   // Ensure Start completes before Wait checks is_running_
-  co_return;
+  co_return std::expected<void, RpcError>{};
 }
 
 auto RpcEndpoint::WaitForShutdown() -> asio::awaitable<void> {

@@ -55,7 +55,8 @@ TEST_CASE("RpcEndpoint - Basic lifecycle", "[endpoint]") {
           std::make_unique<RpcEndpoint>(executor, std::move(transport));
 
       // Start and shutdown
-      co_await endpoint->Start();
+      auto start_result = co_await endpoint->Start();
+      REQUIRE(start_result);
       co_await endpoint->Shutdown();
     });
   }
@@ -68,10 +69,14 @@ TEST_CASE("RpcEndpoint - Basic lifecycle", "[endpoint]") {
           std::make_unique<RpcEndpoint>(executor, std::move(transport));
 
       // First start should succeed
-      co_await endpoint->Start();
+      auto start_result = co_await endpoint->Start();
+      REQUIRE(start_result);
 
       // Second start should throw
-      REQUIRE_THROWS_AS(co_await endpoint->Start(), std::runtime_error);
+      auto start_result2 = co_await endpoint->Start();
+      REQUIRE_FALSE(start_result2);
+      REQUIRE(
+          start_result2.error().message == "RPC endpoint is already running");
 
       // Shutdown should work
       co_await endpoint->Shutdown();
@@ -82,74 +87,3 @@ TEST_CASE("RpcEndpoint - Basic lifecycle", "[endpoint]") {
     });
   }
 }
-
-// // Basic Request/Response Format Tests
-// TEST_CASE("RpcEndpoint - Message format", "[endpoint]") {
-//   asio::io_context io_ctx;
-
-//   SECTION("Notification format") {
-//     RunTest([&]() -> asio::awaitable<void> {
-//       auto transport = std::make_unique<MockTransport>(io_ctx);
-//       auto* transport_ptr = transport.get();
-//       auto endpoint = std::make_unique<RpcEndpoint>(std::move(transport));
-
-//       co_await endpoint->Start();
-
-//       // Send a notification
-//       Json params = {{"event", "update"}, {"value", 100}};
-//       co_await endpoint->SendNotification("test_notification", params);
-
-//       // Verify notification format
-//       REQUIRE(!transport_ptr->GetSentRequests().empty());
-//       auto sent_notification =
-//           Json::parse(transport_ptr->GetSentRequests().back());
-//       REQUIRE(sent_notification["jsonrpc"] == "2.0");
-//       REQUIRE(sent_notification["method"] == "test_notification");
-//       REQUIRE(sent_notification["params"] == params);
-//       REQUIRE_FALSE(sent_notification.contains("id"));
-
-//       co_await endpoint->Shutdown();
-//     });
-//   }
-// }
-
-// // Method Registration Tests
-// TEST_CASE("RpcEndpoint - Method registration", "[endpoint]") {
-//   asio::io_context io_ctx;
-
-//   SECTION("Method registration") {
-//     RunTest([&]() -> asio::awaitable<void> {
-//       auto transport = std::make_unique<MockTransport>(io_ctx);
-//       auto endpoint = std::make_unique<RpcEndpoint>(std::move(transport));
-
-//       co_await endpoint->Start();
-
-//       // Register a method
-//       endpoint->RegisterMethodCall(
-//           "test_method",
-//           [](const std::optional<nlohmann::json>& params)
-//               -> asio::awaitable<nlohmann::json> {
-//             co_return nlohmann::json::object({{"result", "success"}});
-//           });
-
-//       co_await endpoint->Shutdown();
-//     });
-//   }
-
-//   SECTION("Notification registration") {
-//     RunTest([&]() -> asio::awaitable<void> {
-//       auto transport = std::make_unique<MockTransport>(io_ctx);
-//       auto endpoint = std::make_unique<RpcEndpoint>(std::move(transport));
-
-//       co_await endpoint->Start();
-
-//       // Register a notification handler
-//       endpoint->RegisterNotification(
-//           "test_notification",
-//           [](const std::optional<nlohmann::json>& params)
-//               -> asio::awaitable<void> { co_return; });
-
-//       co_await endpoint->Shutdown();
-//     });
-//   }
-// }
