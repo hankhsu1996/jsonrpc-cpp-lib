@@ -14,7 +14,7 @@ TEST_CASE("Response creation and basic properties", "[Response]") {
   SECTION("Create success response with result") {
     nlohmann::json result = {{"data", "test_value"}};
     RequestId id = 1;
-    auto response = Response::CreateResult(result, id);
+    auto response = Response::CreateSuccess(result, id);
 
     REQUIRE(response.IsSuccess());
     REQUIRE(response.GetResult() == result);
@@ -23,7 +23,7 @@ TEST_CASE("Response creation and basic properties", "[Response]") {
 
   SECTION("Create error response") {
     RequestId id = "req1";
-    auto response = Response::CreateLibError(ErrorCode::kMethodNotFound, id);
+    auto response = Response::CreateError(ErrorCode::kMethodNotFound, id);
 
     REQUIRE_FALSE(response.IsSuccess());
     REQUIRE(
@@ -34,7 +34,7 @@ TEST_CASE("Response creation and basic properties", "[Response]") {
 
   SECTION("Create response without id") {
     nlohmann::json result = "test";
-    auto response = Response::CreateResult(result, std::nullopt);
+    auto response = Response::CreateSuccess(result, std::nullopt);
 
     REQUIRE(response.IsSuccess());
     REQUIRE(response.GetResult() == result);
@@ -43,7 +43,7 @@ TEST_CASE("Response creation and basic properties", "[Response]") {
 
   SECTION("Create success response") {
     nlohmann::json result = {{"key", "value"}};
-    auto response = Response::CreateResult(result, std::nullopt);
+    auto response = Response::CreateSuccess(result, std::nullopt);
 
     REQUIRE(response.IsSuccess());
     REQUIRE(response.GetResult() == result);
@@ -53,7 +53,7 @@ TEST_CASE("Response creation and basic properties", "[Response]") {
   SECTION("Create success response with ID") {
     nlohmann::json result = {{"key", "value"}};
     RequestId id = "req1";
-    auto response = Response::CreateResult(result, id);
+    auto response = Response::CreateSuccess(result, id);
 
     REQUIRE(response.IsSuccess());
     REQUIRE(response.GetResult() == result);
@@ -63,7 +63,7 @@ TEST_CASE("Response creation and basic properties", "[Response]") {
   }
 
   SECTION("Create error response") {
-    auto response = Response::CreateLibError(ErrorCode::kMethodNotFound);
+    auto response = Response::CreateError(ErrorCode::kMethodNotFound);
 
     REQUIRE_FALSE(response.IsSuccess());
     REQUIRE(response.GetError()["code"] == -32601);
@@ -76,7 +76,7 @@ TEST_CASE("Response JSON serialization", "[Response]") {
   SECTION("Serialize success response") {
     nlohmann::json result = {{"key", "value"}};
     RequestId id = 1;
-    auto response = Response::CreateResult(result, id);
+    auto response = Response::CreateSuccess(result, id);
     auto json = response.ToJson();
 
     REQUIRE(json["jsonrpc"] == "2.0");
@@ -87,7 +87,7 @@ TEST_CASE("Response JSON serialization", "[Response]") {
 
   SECTION("Serialize error response") {
     RequestId id = "req1";
-    auto response = Response::CreateLibError(ErrorCode::kInvalidRequest, id);
+    auto response = Response::CreateError(ErrorCode::kInvalidRequest, id);
     auto json = response.ToJson();
 
     REQUIRE(json["jsonrpc"] == "2.0");
@@ -98,7 +98,7 @@ TEST_CASE("Response JSON serialization", "[Response]") {
   }
 
   SECTION("Serialize response without id") {
-    auto response = Response::CreateLibError(ErrorCode::kParseError);
+    auto response = Response::CreateError(ErrorCode::kParseError);
     auto json = response.ToJson();
 
     REQUIRE(json["jsonrpc"] == "2.0");

@@ -26,15 +26,15 @@ class Response {
   static auto FromJson(const nlohmann::json& json)
       -> std::expected<Response, error::RpcError>;
 
-  static auto CreateResult(
+  static auto CreateSuccess(
       const nlohmann::json& result, const std::optional<RequestId>& id)
       -> Response;
 
-  static auto CreateLibError(
+  static auto CreateError(
       ErrorCode code, const std::optional<RequestId>& id = std::nullopt)
       -> Response;
 
-  static auto CreateUserError(
+  static auto CreateError(
       const nlohmann::json& error, const std::optional<RequestId>& id)
       -> Response;
 

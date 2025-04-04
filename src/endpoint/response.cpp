@@ -15,7 +15,7 @@ auto Response::FromJson(const nlohmann::json& json)
   return r;
 }
 
-auto Response::CreateResult(
+auto Response::CreateSuccess(
     const nlohmann::json& result, const std::optional<RequestId>& id)
     -> Response {
   nlohmann::json response = {{"jsonrpc", "2.0"}, {"result", result}};
@@ -25,8 +25,8 @@ auto Response::CreateResult(
   return Response{std::move(response)};
 }
 
-auto Response::CreateLibError(
-    ErrorCode code, const std::optional<RequestId>& id) -> Response {
+auto Response::CreateError(ErrorCode code, const std::optional<RequestId>& id)
+    -> Response {
   RpcError err{code};
 
   nlohmann::json error = {
@@ -40,7 +40,7 @@ auto Response::CreateLibError(
   return Response{std::move(response)};
 }
 
-auto Response::CreateUserError(
+auto Response::CreateError(
     const nlohmann::json& error, const std::optional<RequestId>& id)
     -> Response {
   nlohmann::json response = {{"jsonrpc", "2.0"}, {"error", error}};
@@ -84,30 +84,32 @@ auto Response::ToJson() const -> nlohmann::json {
   return response_;
 }
 
-inline auto InvalidRequestError(std::string message) {
+namespace {
+inline auto CreateInvalidRequest(std::string message) {
   return std::unexpected(RpcError{ErrorCode::kInvalidRequest, message});
 }
+}  // namespace
 
 auto Response::ValidateResponse() const
     -> std::expected<void, error::RpcError> {
   if (!response_.contains("jsonrpc") || response_["jsonrpc"] != "2.0") {
-    return InvalidRequestError("Invalid JSON-RPC version");
+    return CreateInvalidRequest("Invalid JSON-RPC version");
   }
 
   if (!response_.contains("result") && !response_.contains("error")) {
-    return InvalidRequestError(
+    return CreateInvalidRequest(
         "Response must contain either 'result' or 'error' field");
   }
 
   if (response_.contains("result") && response_.contains("error")) {
-    return InvalidRequestError(
+    return CreateInvalidRequest(
         "Response cannot contain both 'result' and 'error' fields");
   }
 
   if (response_.contains("error")) {
     const auto& error = response_["error"];
     if (!error.contains("code") || !error.contains("message")) {
-      return InvalidRequestError(
+      return CreateInvalidRequest(
           "Error object must contain 'code' and 'message' fields");
     }
   }
