@@ -4,10 +4,12 @@
 #include <nlohmann/json.hpp>
 
 #include "jsonrpc/endpoint/types.hpp"
+#include "jsonrpc/error/error.hpp"
 
-using jsonrpc::endpoint::ErrorCode;
 using jsonrpc::endpoint::RequestId;
 using jsonrpc::endpoint::Response;
+using jsonrpc::error::ErrorCode;
+using jsonrpc::error::RpcError;
 
 TEST_CASE("Response creation and basic properties", "[Response]") {
   SECTION("Create success response with result") {
@@ -112,9 +114,10 @@ TEST_CASE("Response deserialization", "[Response]") {
         {"jsonrpc", "2.0"}, {"result", {{"key", "value"}}}, {"id", 1}};
 
     auto response = Response::FromJson(json);
-    REQUIRE(response.IsSuccess());
-    REQUIRE(response.GetResult()["key"] == "value");
-    auto id = response.GetId();
+    REQUIRE(response.has_value());
+    REQUIRE(response->IsSuccess());
+    REQUIRE(response->GetResult()["key"] == "value");
+    auto id = response->GetId();
     REQUIRE(id.has_value());
     REQUIRE(std::get<int64_t>(*id) == 1);
   }
@@ -126,10 +129,11 @@ TEST_CASE("Response deserialization", "[Response]") {
         {"id", "req1"}};
 
     auto response = Response::FromJson(json);
-    REQUIRE_FALSE(response.IsSuccess());
-    REQUIRE(response.GetError()["code"] == -32601);
-    REQUIRE(response.GetError()["message"] == "Method not found");
-    auto id = response.GetId();
+    REQUIRE(response.has_value());
+    REQUIRE_FALSE(response->IsSuccess());
+    REQUIRE(response->GetError()["code"] == -32601);
+    REQUIRE(response->GetError()["message"] == "Method not found");
+    auto id = response->GetId();
     REQUIRE(id.has_value());
     REQUIRE(std::get<std::string>(*id) == "req1");
   }
@@ -138,12 +142,16 @@ TEST_CASE("Response deserialization", "[Response]") {
 TEST_CASE("Response validation", "[Response]") {
   SECTION("Invalid JSON-RPC version") {
     nlohmann::json json = {{"jsonrpc", "1.0"}, {"result", "test"}, {"id", 1}};
-    REQUIRE_THROWS_AS(Response::FromJson(json), std::invalid_argument);
+    auto response = Response::FromJson(json);
+    REQUIRE_FALSE(response.has_value());
+    REQUIRE(response.error().code == ErrorCode::kInvalidRequest);
   }
 
   SECTION("Missing both result and error") {
     nlohmann::json json = {{"jsonrpc", "2.0"}, {"id", 1}};
-    REQUIRE_THROWS_AS(Response::FromJson(json), std::invalid_argument);
+    auto response = Response::FromJson(json);
+    REQUIRE_FALSE(response.has_value());
+    REQUIRE(response.error().code == ErrorCode::kInvalidRequest);
   }
 
   SECTION("Both result and error present") {
@@ -152,7 +160,9 @@ TEST_CASE("Response validation", "[Response]") {
         {"result", "test"},
         {"error", {{"code", -32601}, {"message", "Method not found"}}},
         {"id", 1}};
-    REQUIRE_THROWS_AS(Response::FromJson(json), std::invalid_argument);
+    auto response = Response::FromJson(json);
+    REQUIRE_FALSE(response.has_value());
+    REQUIRE(response.error().code == ErrorCode::kInvalidRequest);
   }
 
   SECTION("Invalid error object") {
@@ -160,6 +170,8 @@ TEST_CASE("Response validation", "[Response]") {
         {"jsonrpc", "2.0"},
         {"error", {{"message", "Method not found"}}},  // Missing code
         {"id", 1}};
-    REQUIRE_THROWS_AS(Response::FromJson(json), std::invalid_argument);
+    auto response = Response::FromJson(json);
+    REQUIRE_FALSE(response.has_value());
+    REQUIRE(response.error().code == ErrorCode::kInvalidRequest);
   }
 }

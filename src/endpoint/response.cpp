@@ -1,20 +1,16 @@
 #include "jsonrpc/endpoint/response.hpp"
 
+#include <jsonrpc/error/error.hpp>
+
 namespace jsonrpc::endpoint {
 
-Response::Response(Response&& other) noexcept
-    : response_(std::move(other.response_)) {
-}
-
-Response::Response(nlohmann::json response) : response_(std::move(response)) {
-  ValidateResponse();
-}
-
-auto Response::FromJson(const nlohmann::json& json) -> Response {
-  if (!json.contains("jsonrpc") || json["jsonrpc"] != "2.0") {
-    throw std::invalid_argument("Invalid JSON-RPC version");
+auto Response::FromJson(const nlohmann::json& json)
+    -> std::expected<Response, error::RpcError> {
+  Response r{json};
+  if (auto result = r.ValidateResponse(); !result) {
+    return std::unexpected(result.error());
   }
-  return Response(json);
+  return r;
 }
 
 auto Response::CreateResult(
@@ -121,28 +117,33 @@ auto Response::CreateErrorResponse(
   return response;
 }
 
-void Response::ValidateResponse() const {
+auto Response::ValidateResponse() const
+    -> std::expected<void, error::RpcError> {
+  using error::CreateInvalidRequest;
+
   if (!response_.contains("jsonrpc") || response_["jsonrpc"] != "2.0") {
-    throw std::invalid_argument("Invalid JSON-RPC version");
+    return std::unexpected(CreateInvalidRequest("Invalid JSON-RPC version"));
   }
 
   if (!response_.contains("result") && !response_.contains("error")) {
-    throw std::invalid_argument(
-        "Response must contain either 'result' or 'error' field");
+    return std::unexpected(CreateInvalidRequest(
+        "Response must contain either 'result' or 'error' field"));
   }
 
   if (response_.contains("result") && response_.contains("error")) {
-    throw std::invalid_argument(
-        "Response cannot contain both 'result' and 'error' fields");
+    return std::unexpected(CreateInvalidRequest(
+        "Response cannot contain both 'result' and 'error' fields"));
   }
 
   if (response_.contains("error")) {
     const auto& error = response_["error"];
     if (!error.contains("code") || !error.contains("message")) {
-      throw std::invalid_argument(
-          "Error object must contain 'code' and 'message' fields");
+      return std::unexpected(CreateInvalidRequest(
+          "Error object must contain 'code' and 'message' fields"));
     }
   }
+
+  return {};
 }
 
 }  // namespace jsonrpc::endpoint

@@ -54,13 +54,13 @@ class TypedMethodHandler {
       // Convert result back to JSON
       co_return nlohmann::json(result);
     } catch (const nlohmann::json::exception &ex) {
-      throw RpcError(
-          ErrorCode::kInvalidParams,
-          std::string("Parameter conversion error: ") + ex.what());
+      // throw RpcError(
+      //     ErrorCode::kInvalidParams,
+      //     std::string("Parameter conversion error: ") + ex.what());
     } catch (const std::exception &ex) {
-      throw RpcError(
-          ErrorCode::kInternalError,
-          std::string("Handler error: ") + ex.what());
+      // throw RpcError(
+      //     ErrorCode::kInternalError,
+      //     std::string("Handler error: ") + ex.what());
     }
   }
 };
@@ -86,13 +86,13 @@ class TypedNotificationHandler {
       // Call the typed handler
       co_await handler_(typed_params);
     } catch (const nlohmann::json::exception &ex) {
-      throw RpcError(
-          ErrorCode::kInvalidParams,
-          std::string("Parameter conversion error: ") + ex.what());
+      // throw RpcError(
+      //     ErrorCode::kInvalidParams,
+      //     std::string("Parameter conversion error: ") + ex.what());
     } catch (const std::exception &ex) {
-      throw RpcError(
-          ErrorCode::kInternalError,
-          std::string("Handler error: ") + ex.what());
+      // throw RpcError(
+      //     ErrorCode::kInternalError,
+      //     std::string("Handler error: ") + ex.what());
     }
   }
 };

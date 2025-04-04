@@ -47,7 +47,7 @@ auto Request::FromJson(const nlohmann::json& json_obj) -> Request {
     id = id_json.get<int64_t>();
   }
 
-  return Request(std::move(method), std::move(params), std::move(id));
+  return {std::move(method), std::move(params), std::move(id)};
 }
 
 auto Request::ValidateJson(const nlohmann::json& json_obj) -> bool {

@@ -133,7 +133,7 @@ auto RpcEndpoint::SendMethodCall(
 
     // Report and throw
     ReportError(static_cast<ErrorCode>(code), msg);
-    throw RpcError(static_cast<ErrorCode>(code), msg);
+    // throw RpcError(static_cast<ErrorCode>(code), msg);
   }
 
   // Return the result
@@ -231,8 +231,12 @@ auto RpcEndpoint::HandleMessage(std::string message) -> asio::awaitable<void> {
     // Check if it's a response
     if (json_message.contains("id") &&
         (json_message.contains("result") || json_message.contains("error"))) {
-      Response response(json_message);
-      co_await HandleResponse(std::move(response));
+      auto response = Response::FromJson(json_message);
+      if (!response.has_value()) {
+        ReportError(response.error().code, response.error().message);
+        co_return;
+      }
+      co_await HandleResponse(std::move(response.value()));
       co_return;
     }
 

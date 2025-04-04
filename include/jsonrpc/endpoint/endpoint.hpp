@@ -296,9 +296,9 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
     co_return typed_result;
   } catch (const nlohmann::json::exception &ex) {
     // Handle JSON conversion errors
-    throw RpcError(
-        ErrorCode::kInvalidParams,
-        std::string("Result conversion error: ") + ex.what());
+    // throw RpcError(
+    //     ErrorCode::kInvalidParams,
+    //     std::string("Result conversion error: ") + ex.what());
   }
 }
 
