@@ -9,6 +9,8 @@
 #include <asio.hpp>
 #include <nlohmann/json.hpp>
 
+#include "jsonrpc/endpoint/request.hpp"
+#include "jsonrpc/endpoint/response.hpp"
 #include "jsonrpc/error/error.hpp"
 
 namespace jsonrpc::endpoint {
@@ -38,8 +40,8 @@ class Dispatcher {
       -> asio::awaitable<std::optional<std::string>>;
 
  private:
-  auto DispatchSingleRequest(nlohmann::json request_json)
-      -> asio::awaitable<std::optional<nlohmann::json>>;
+  auto DispatchSingleRequest(Request request)
+      -> asio::awaitable<std::optional<Response>>;
 
   auto DispatchBatchRequest(nlohmann::json request_json)
       -> asio::awaitable<std::optional<std::string>>;

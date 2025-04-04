@@ -49,34 +49,29 @@ auto Dispatcher::DispatchRequest(std::string request)
     co_return co_await DispatchBatchRequest(request_json);
   }
 
-  auto response_json = co_await DispatchSingleRequest(request_json);
+  auto request_obj = Request::FromJson(request_json);
+  if (!request_obj.has_value()) {
+    co_return Response::CreateError(request_obj.error()).ToJson().dump();
+  }
+
+  auto response_json = co_await DispatchSingleRequest(request_obj.value());
   if (!response_json) {
     co_return std::nullopt;
   }
 
-  co_return response_json->dump();
+  co_return response_json->ToJson().dump();
 }
 
-auto Dispatcher::DispatchSingleRequest(nlohmann::json request_json)
-    -> asio::awaitable<std::optional<nlohmann::json>> {
-  auto result = ValidateRequest(request_json);
-  if (!result) {
-    co_return Response::CreateError(result.error()).ToJson().dump();
-  }
+auto Dispatcher::DispatchSingleRequest(Request request)
+    -> asio::awaitable<std::optional<Response>> {
+  auto method = request.GetMethod();
 
-  auto request = Request::FromJson(request_json);
-  if (!request) {
-    co_return Response::CreateError(request.error()).ToJson().dump();
-  }
-
-  auto method = request->GetMethod();
-
-  if (request->IsNotification()) {
+  if (request.IsNotification()) {
     auto it = notification_handlers_.find(method);
     if (it != notification_handlers_.end()) {
       co_spawn(
           executor_,
-          [handler = it->second, params = request->GetParams()] {
+          [handler = it->second, params = request.GetParams()] {
             return handler(params);
           },
           asio::detached);
@@ -88,15 +83,14 @@ auto Dispatcher::DispatchSingleRequest(nlohmann::json request_json)
   if (it != method_handlers_.end()) {
     auto result = co_await asio::co_spawn(
         executor_,
-        [handler = it->second, params = request->GetParams()] {
+        [handler = it->second, params = request.GetParams()] {
           return handler(params);
         },
         asio::use_awaitable);
-    co_return Response::CreateSuccess(result, request->GetId()).ToJson();
+    co_return Response::CreateSuccess(result, request.GetId());
   }
 
-  co_return Response::CreateError(ErrorCode::kMethodNotFound, request->GetId())
-      .ToJson();
+  co_return Response::CreateError(ErrorCode::kMethodNotFound, request.GetId());
 }
 
 auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
@@ -105,7 +99,7 @@ auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
     co_return Response::CreateError(ErrorCode::kInvalidRequest).ToJson().dump();
   }
 
-  std::vector<asio::awaitable<std::optional<nlohmann::json>>> pending_requests;
+  std::vector<asio::awaitable<std::optional<Response>>> pending_requests;
   pending_requests.reserve(request_json.size());
 
   // Queue all requests in parallel
@@ -114,15 +108,15 @@ auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
     if (!element.is_object()) {
       // For invalid requests, create an immediate error response as a coroutine
       pending_requests.push_back(
-          []() -> asio::awaitable<std::optional<nlohmann::json>> {
+          []() -> asio::awaitable<std::optional<Response>> {
             auto error_json =
-                Response::CreateError(ErrorCode::kInvalidRequest, std::nullopt)
-                    .ToJson();
+                Response::CreateError(ErrorCode::kInvalidRequest, std::nullopt);
             co_return error_json;
           }());
     } else {
       // For valid requests, dispatch them normally
-      pending_requests.push_back(DispatchSingleRequest(element));
+      pending_requests.push_back(
+          DispatchSingleRequest(Request::FromJson(element).value()));
     }
   }
 
@@ -131,7 +125,7 @@ auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
   for (auto& pending_request : pending_requests) {
     auto response = co_await std::move(pending_request);
     if (response) {
-      responses.push_back(*response);
+      responses.push_back(response->ToJson());
     }
   }
 
