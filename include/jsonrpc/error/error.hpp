@@ -21,10 +21,35 @@ enum class ErrorCode {
   kTimeoutError = -32001,
 };
 
+inline auto DefaultMessageFor(ErrorCode code) -> std::string_view {
+  switch (code) {
+    case ErrorCode::kParseError:
+      return "Parse error";
+    case ErrorCode::kInvalidRequest:
+      return "Invalid request";
+    case ErrorCode::kMethodNotFound:
+      return "Method not found";
+    case ErrorCode::kInvalidParams:
+      return "Invalid parameters";
+    case ErrorCode::kInternalError:
+      return "Internal error";
+    case ErrorCode::kServerError:
+      return "Server error";
+    case ErrorCode::kTransportError:
+      return "Transport error";
+    case ErrorCode::kTimeoutError:
+      return "Timeout error";
+  }
+  return "Unknown error";
+}
+
 // Base error type for all JSON-RPC errors
 struct RpcError {
-  RpcError(ErrorCode code, std::string message)
-      : code(code), message(std::move(message)) {
+  explicit RpcError(ErrorCode code, std::string message = "")
+      : code(code),
+        message(
+            message.empty() ? std::string(DefaultMessageFor(code))
+                            : std::move(message)) {
   }
   ErrorCode code;
   std::string message;
@@ -67,37 +92,6 @@ struct ServerError : RpcError {
       : RpcError(ErrorCode::kServerError, std::move(msg)) {
   }
 };
-
-// Factory functions to create errors
-[[nodiscard]] inline auto CreateProtocolError(
-    ErrorCode code, std::string message) -> RpcError {
-  return RpcError{code, std::move(message)};
-}
-
-[[nodiscard]] inline auto CreateParseError(std::string message = "Parse error")
-    -> RpcError {
-  return RpcError{ErrorCode::kParseError, std::move(message)};
-}
-
-[[nodiscard]] inline auto CreateInvalidRequest(
-    std::string message = "Invalid request") -> RpcError {
-  return RpcError{ErrorCode::kInvalidRequest, std::move(message)};
-}
-
-[[nodiscard]] inline auto CreateMethodNotFound(
-    std::string message = "Method not found") -> RpcError {
-  return RpcError{ErrorCode::kMethodNotFound, std::move(message)};
-}
-
-[[nodiscard]] inline auto CreateInvalidParams(
-    std::string message = "Invalid parameters") -> RpcError {
-  return RpcError{ErrorCode::kInvalidParams, std::move(message)};
-}
-
-[[nodiscard]] inline auto CreateInternalError(
-    std::string message = "Internal error") -> RpcError {
-  return RpcError{ErrorCode::kInternalError, std::move(message)};
-}
 
 [[nodiscard]] inline auto CreateTransportError(
     std::string message, std::error_code ec = {}) -> TransportError {

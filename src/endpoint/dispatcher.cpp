@@ -25,18 +25,22 @@ auto Dispatcher::DispatchRequest(std::string request)
   try {
     request_json = nlohmann::json::parse(request);
   } catch (const nlohmann::json::parse_error& e) {
-    co_return Response::CreateLibError(ErrorCode::kParseError).ToStr();
+    co_return Response::CreateLibError(ErrorCode::kParseError).ToJson().dump();
   }
 
   // Now validate the request
   if (request_json.is_object() && !Request::ValidateJson(request_json)) {
     // This is an invalid request error
-    co_return Response::CreateLibError(ErrorCode::kInvalidRequest).ToStr();
+    co_return Response::CreateLibError(ErrorCode::kInvalidRequest)
+        .ToJson()
+        .dump();
   }
 
   // Handle empty batch requests
   if (request_json.is_array() && request_json.empty()) {
-    co_return Response::CreateLibError(ErrorCode::kInvalidRequest).ToStr();
+    co_return Response::CreateLibError(ErrorCode::kInvalidRequest)
+        .ToJson()
+        .dump();
   }
 
   if (request_json.is_array()) {
@@ -93,7 +97,9 @@ auto Dispatcher::DispatchSingleRequest(nlohmann::json request_json)
 auto Dispatcher::DispatchBatchRequest(nlohmann::json request_json)
     -> asio::awaitable<std::optional<std::string>> {
   if (request_json.empty()) {
-    co_return Response::CreateLibError(ErrorCode::kInvalidRequest).ToStr();
+    co_return Response::CreateLibError(ErrorCode::kInvalidRequest)
+        .ToJson()
+        .dump();
   }
 
   std::vector<asio::awaitable<std::optional<nlohmann::json>>> pending_requests;
@@ -151,7 +157,7 @@ auto Dispatcher::ValidateRequest(const nlohmann::json& request_json)
     const auto& params = request_json["params"];
     if (!params.is_object() && !params.is_array() && !params.is_null()) {
       return Response::CreateLibError(
-          ErrorCode::kInvalidParams, "Params must be object or array");
+          ErrorCode::kInvalidRequest, "Params must be object or array");
     }
   }
 

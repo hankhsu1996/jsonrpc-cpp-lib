@@ -9,7 +9,6 @@
 using jsonrpc::endpoint::RequestId;
 using jsonrpc::endpoint::Response;
 using jsonrpc::error::ErrorCode;
-using jsonrpc::error::RpcError;
 
 TEST_CASE("Response creation and basic properties", "[Response]") {
   SECTION("Create success response with result") {

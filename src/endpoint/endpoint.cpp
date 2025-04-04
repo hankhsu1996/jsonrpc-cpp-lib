@@ -292,7 +292,7 @@ auto RpcEndpoint::HandleResponse(Response response) -> asio::awaitable<void> {
   }
 
   // Set the result
-  request->SetResult(response.GetJson());
+  request->SetResult(response.ToJson());
 
   co_return;
 }

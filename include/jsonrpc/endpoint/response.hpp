@@ -2,7 +2,6 @@
 
 #include <expected>
 #include <optional>
-#include <string>
 
 #include <nlohmann/json.hpp>
 
@@ -12,6 +11,7 @@
 namespace jsonrpc::endpoint {
 
 using jsonrpc::error::ErrorCode;
+using jsonrpc::error::RpcError;
 
 class Response {
  public:
@@ -31,7 +31,7 @@ class Response {
       -> Response;
 
   static auto CreateLibError(
-      ErrorCode error_code, const std::optional<RequestId>& id = std::nullopt)
+      ErrorCode code, const std::optional<RequestId>& id = std::nullopt)
       -> Response;
 
   static auto CreateUserError(
@@ -46,12 +46,7 @@ class Response {
 
   [[nodiscard]] auto GetId() const -> std::optional<RequestId>;
 
-  [[nodiscard]] auto GetJson() const -> const nlohmann::json& {
-    return response_;
-  }
-
   [[nodiscard]] auto ToJson() const -> nlohmann::json;
-  [[nodiscard]] auto ToStr() const -> std::string;
 
  private:
   explicit Response(nlohmann::json response) : response_(std::move(response)) {
@@ -59,10 +54,6 @@ class Response {
 
   [[nodiscard]] auto ValidateResponse() const
       -> std::expected<void, error::RpcError>;
-
-  static auto CreateErrorResponse(
-      const std::string& message, int code, const std::optional<RequestId>& id)
-      -> nlohmann::json;
 
   nlohmann::json response_;
 };
