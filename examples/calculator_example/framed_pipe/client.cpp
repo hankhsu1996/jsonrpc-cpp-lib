@@ -27,8 +27,9 @@ auto RunClient(asio::any_io_executor executor) -> asio::awaitable<void> {
   auto transport =
       std::make_unique<FramedPipeTransport>(executor, socket_path, false);
 
-  auto client =
+  auto client_result =
       co_await RpcEndpoint::CreateClient(executor, std::move(transport));
+  auto client = std::move(client_result.value());
 
   // Step 2: Make RPC method calls
   // Example 1: Call "add" method

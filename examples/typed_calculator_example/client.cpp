@@ -23,8 +23,9 @@ auto RunClient(asio::any_io_executor executor) -> asio::awaitable<void> {
   const std::string socket_path = "/tmp/typed_calculator_pipe";
   auto transport = std::make_unique<PipeTransport>(executor, socket_path);
 
-  auto client =
+  auto client_result =
       co_await RpcEndpoint::CreateClient(executor, std::move(transport));
+  auto client = std::move(client_result.value());
 
   // Call "add" method with typed params and result
   AddParams add_params{.a = 10.0, .b = 5.0};

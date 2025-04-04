@@ -28,20 +28,15 @@ RpcEndpoint::RpcEndpoint(
 auto RpcEndpoint::CreateClient(
     asio::any_io_executor executor,
     std::unique_ptr<transport::Transport> transport)
-    -> asio::awaitable<std::unique_ptr<RpcEndpoint>> {
-  // Create the endpoint
+    -> asio::awaitable<std::expected<std::unique_ptr<RpcEndpoint>, RpcError>> {
   auto endpoint = std::make_unique<RpcEndpoint>(executor, std::move(transport));
 
-  // Start the endpoint and wait for it to be ready
-  try {
-    co_await endpoint->Start();
-    spdlog::debug("Client endpoint initialized");
-  } catch (const std::exception &e) {
-    spdlog::error("Error starting client endpoint: {}", e.what());
-    throw;
+  auto start_result = co_await endpoint->Start();
+  if (!start_result) {
+    co_return std::unexpected(start_result.error());
   }
 
-  // Return the fully initialized endpoint
+  spdlog::debug("Client endpoint initialized");
   co_return endpoint;
 }
 
@@ -66,10 +61,11 @@ auto RpcEndpoint::Start() -> asio::awaitable<std::expected<void, RpcError>> {
   co_return std::expected<void, RpcError>{};
 }
 
-auto RpcEndpoint::WaitForShutdown() -> asio::awaitable<void> {
+auto RpcEndpoint::WaitForShutdown()
+    -> asio::awaitable<std::expected<void, RpcError>> {
   // If already shut down, return immediately
   if (!is_running_) {
-    co_return;
+    co_return std::expected<void, RpcError>{};
   }
 
   // Create a timer to check if the service is running
@@ -81,11 +77,13 @@ auto RpcEndpoint::WaitForShutdown() -> asio::awaitable<void> {
     co_await timer.async_wait(asio::use_awaitable);
     timer.expires_after(std::chrono::milliseconds(100));
   }
+
+  co_return std::expected<void, RpcError>{};
 }
 
-auto RpcEndpoint::Shutdown() -> asio::awaitable<void> {
+auto RpcEndpoint::Shutdown() -> asio::awaitable<std::expected<void, RpcError>> {
   if (!is_running_.exchange(false)) {
-    co_return;
+    co_return std::expected<void, RpcError>{};
   }
 
   spdlog::info("Shutting down RPC endpoint");
@@ -99,9 +97,12 @@ auto RpcEndpoint::Shutdown() -> asio::awaitable<void> {
   });
 
   // Close the transport - this ensures any pending operations are canceled
-  co_await transport_->Close();
+  auto close_result = co_await transport_->Close();
+  if (!close_result) {
+    co_return std::unexpected(close_result.error());
+  }
 
-  co_return;
+  co_return std::expected<void, RpcError>{};
 }
 
 auto RpcEndpoint::SendMethodCall(
@@ -207,56 +208,51 @@ auto RpcEndpoint::ProcessMessagesLoop() -> asio::awaitable<void> {
   }
 }
 
-auto RpcEndpoint::HandleMessage(std::string message) -> asio::awaitable<void> {
-  try {
-    // Try to parse as a JSON object
-    auto json_message = nlohmann::json::parse(message);
+namespace {
+auto IsResponse(const nlohmann::json &msg) -> bool {
+  return msg.contains("id") &&
+         (msg.contains("result") || msg.contains("error"));
+}
+}  // namespace
 
-    // Check if it's a response
-    if (json_message.contains("id") &&
-        (json_message.contains("result") || json_message.contains("error"))) {
-      auto response = Response::FromJson(json_message);
-      if (!response.has_value()) {
-        co_return;
-      }
-      co_await HandleResponse(std::move(response.value()));
-      co_return;
-    }
-
-    // Try to handle as a request
-    auto response = co_await dispatcher_.DispatchRequest(message);
-    if (response) {
-      co_await transport_->SendMessage(*response);
-    }
-  } catch (const std::exception &e) {
-    spdlog::error("Error handling message: {}", e.what());
-    throw;
+auto RpcEndpoint::HandleMessage(std::string message)
+    -> asio::awaitable<std::expected<void, RpcError>> {
+  const auto json_message_result =
+      nlohmann::json::parse(message, nullptr, false);
+  if (json_message_result.is_discarded()) {
+    co_return std::unexpected(CreateClientError("Failed to parse message"));
   }
+  const auto &json_message = json_message_result;
+
+  if (IsResponse(json_message)) {
+    auto response = Response::FromJson(json_message);
+    if (!response.has_value()) {
+      co_return std::unexpected(CreateClientError("Invalid response"));
+    }
+    co_return co_await HandleResponse(std::move(response.value()));
+  }
+
+  if (auto response = co_await dispatcher_.DispatchRequest(message)) {
+    co_return co_await transport_->SendMessage(*response);
+  }
+
+  co_return std::expected<void, RpcError>{};
 }
 
-auto RpcEndpoint::HandleResponse(Response response) -> asio::awaitable<void> {
-  // Get the request ID
-  auto id_variant = response.GetId();
-  if (!id_variant.has_value()) {
-    // ReportError(ErrorCode::kInvalidRequest, "Response missing ID");
-    co_return;
+auto RpcEndpoint::HandleResponse(Response response)
+    -> asio::awaitable<std::expected<void, RpcError>> {
+  auto id_opt = response.GetId();
+  if (!id_opt || !std::holds_alternative<int64_t>(*id_opt)) {
+    co_return std::unexpected(
+        CreateClientError("Response ID missing or not int64"));
   }
 
-  // Extract the integer ID - we only support integer IDs in our implementation
-  if (!std::holds_alternative<int64_t>(*id_variant)) {
-    // ReportError(ErrorCode::kInvalidRequest, "Response ID must be an
-    // integer");
-    co_return;
-  }
+  const auto id = std::get<int64_t>(*id_opt);
 
-  auto id = std::get<int64_t>(*id_variant);
-
-  // Use a local variable to capture the pending request when found
   std::shared_ptr<PendingRequest> request;
   bool found = false;
 
-  // Find the request in a strand-protected way
-  asio::post(endpoint_strand_, [this, id, &request, &found]() {
+  asio::post(endpoint_strand_, [this, id, &request, &found] {
     auto it = pending_requests_.find(id);
     if (it != pending_requests_.end()) {
       request = it->second;
@@ -265,20 +261,15 @@ auto RpcEndpoint::HandleResponse(Response response) -> asio::awaitable<void> {
     }
   });
 
-  // Wait for the post to complete
   co_await asio::post(co_await asio::this_coro::executor, asio::use_awaitable);
 
   if (!found || !request) {
-    // ReportError(
-    //     ErrorCode::kInvalidRequest,
-    //     "Received response for unknown request ID: " + std::to_string(id));
-    co_return;
+    co_return std::unexpected(
+        CreateClientError("Unknown request ID: " + std::to_string(id)));
   }
 
-  // Set the result
   request->SetResult(response.ToJson());
-
-  co_return;
+  co_return std::expected<void, RpcError>{};
 }
 
 }  // namespace jsonrpc::endpoint

@@ -57,7 +57,8 @@ TEST_CASE("RpcEndpoint - Basic lifecycle", "[endpoint]") {
       // Start and shutdown
       auto start_result = co_await endpoint->Start();
       REQUIRE(start_result);
-      co_await endpoint->Shutdown();
+      auto shutdown_result = co_await endpoint->Shutdown();
+      REQUIRE(shutdown_result);
     });
   }
 
@@ -79,7 +80,8 @@ TEST_CASE("RpcEndpoint - Basic lifecycle", "[endpoint]") {
           start_result2.error().message == "RPC endpoint is already running");
 
       // Shutdown should work
-      co_await endpoint->Shutdown();
+      auto shutdown_result = co_await endpoint->Shutdown();
+      REQUIRE(shutdown_result);
 
       // Verify endpoint is no longer running
       bool is_running = endpoint->IsRunning();

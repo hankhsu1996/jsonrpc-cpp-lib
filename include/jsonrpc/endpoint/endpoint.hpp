@@ -32,7 +32,7 @@ class RpcEndpoint {
   static auto CreateClient(
       asio::any_io_executor executor,
       std::unique_ptr<transport::Transport> transport)
-      -> asio::awaitable<std::unique_ptr<RpcEndpoint>>;
+      -> asio::awaitable<std::expected<std::unique_ptr<RpcEndpoint>, RpcError>>;
 
   RpcEndpoint(const RpcEndpoint &) = delete;
   RpcEndpoint(RpcEndpoint &&) = delete;
@@ -43,9 +43,9 @@ class RpcEndpoint {
 
   auto Start() -> asio::awaitable<std::expected<void, RpcError>>;
 
-  auto WaitForShutdown() -> asio::awaitable<void>;
+  auto WaitForShutdown() -> asio::awaitable<std::expected<void, RpcError>>;
 
-  auto Shutdown() -> asio::awaitable<void>;
+  auto Shutdown() -> asio::awaitable<std::expected<void, RpcError>>;
 
   [[nodiscard]] auto IsRunning() const -> bool {
     return is_running_.load();
@@ -90,9 +90,11 @@ class RpcEndpoint {
 
   auto ProcessMessagesLoop() -> asio::awaitable<void>;
 
-  auto HandleMessage(std::string message) -> asio::awaitable<void>;
+  auto HandleMessage(std::string message)
+      -> asio::awaitable<std::expected<void, RpcError>>;
 
-  auto HandleResponse(Response response) -> asio::awaitable<void>;
+  auto HandleResponse(Response response)
+      -> asio::awaitable<std::expected<void, RpcError>>;
 
   auto GetNextRequestId() -> int64_t {
     return next_request_id_++;
