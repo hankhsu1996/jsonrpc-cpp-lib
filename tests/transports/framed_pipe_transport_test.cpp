@@ -92,10 +92,12 @@ TEST_CASE("FramedPipeTransport basic communication", "[FramedPipeTransport]") {
         asio::detached);
 
     // Receiver gets complete messages regardless of how they were sent
-    std::string received1 = co_await framed_receiver->ReceiveMessage();
-    REQUIRE(received1 == msg1);
-    std::string received2 = co_await framed_receiver->ReceiveMessage();
-    REQUIRE(received2 == msg2);
+    auto received1 = co_await framed_receiver->ReceiveMessage();
+    REQUIRE(received1.has_value());
+    REQUIRE(received1.value() == msg1);
+    auto received2 = co_await framed_receiver->ReceiveMessage();
+    REQUIRE(received2.has_value());
+    REQUIRE(received2.value() == msg2);
 
     co_await raw_sender->Close();
     co_await framed_receiver->Close();
@@ -144,8 +146,9 @@ TEST_CASE(
           },
           asio::detached);
 
-      std::string received = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received == message);
+      auto received = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received.has_value());
+      REQUIRE(received.value() == message);
     }
 
     SECTION("Split in middle of length value") {
@@ -171,8 +174,9 @@ TEST_CASE(
           },
           asio::detached);
 
-      std::string received = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received == message);
+      auto received = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received.has_value());
+      REQUIRE(received.value() == message);
     }
 
     SECTION("Split at header boundary") {
@@ -195,8 +199,9 @@ TEST_CASE(
           },
           asio::detached);
 
-      std::string received = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received == message);
+      auto received = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received.has_value());
+      REQUIRE(received.value() == message);
     }
 
     SECTION("Split in middle of delimiter") {
@@ -221,8 +226,9 @@ TEST_CASE(
           },
           asio::detached);
 
-      std::string received = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received == message);
+      auto received = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received.has_value());
+      REQUIRE(received.value() == message);
     }
 
     SECTION("Split into tiny chunks") {
@@ -239,8 +245,9 @@ TEST_CASE(
           },
           asio::detached);
 
-      std::string received = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received == message);
+      auto received = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received.has_value());
+      REQUIRE(received.value() == message);
     }
 
     co_await raw_sender->Close();
@@ -291,8 +298,9 @@ TEST_CASE(
 
     // Receive all messages
     for (const auto& expected : messages) {
-      std::string received = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received == expected);
+      auto received = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received.has_value());
+      REQUIRE(received.value() == expected);
     }
 
     co_await raw_sender->Close();
@@ -352,11 +360,13 @@ TEST_CASE(
           asio::detached);
 
       // Receive both messages
-      std::string received1 = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received1 == msg1);
+      auto received1 = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received1.has_value());
+      REQUIRE(received1.value() == msg1);
 
-      std::string received2 = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received2 == msg2);
+      auto received2 = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received2.has_value());
+      REQUIRE(received2.value() == msg2);
     }
 
     SECTION("Overlapping messages with proper header-content order") {
@@ -393,11 +403,13 @@ TEST_CASE(
           asio::detached);
 
       // Receive both messages
-      std::string received1 = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received1 == msg1);
+      auto received1 = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received1.has_value());
+      REQUIRE(received1.value() == msg1);
 
-      std::string received2 = co_await framed_receiver->ReceiveMessage();
-      REQUIRE(received2 == msg2);
+      auto received2 = co_await framed_receiver->ReceiveMessage();
+      REQUIRE(received2.has_value());
+      REQUIRE(received2.value() == msg2);
     }
 
     co_await raw_sender->Close();
@@ -443,7 +455,11 @@ TEST_CASE(
         asio::detached);
 
     // Should throw or return error when trying to parse invalid length
-    REQUIRE_THROWS(co_await framed_receiver->ReceiveMessage());
+    auto result = co_await framed_receiver->ReceiveMessage();
+    REQUIRE(!result.has_value());
+    REQUIRE(
+        result.error().message.find("Invalid Content-Length header") !=
+        std::string::npos);
 
     co_await raw_sender->Close();
     co_await framed_receiver->Close();
@@ -487,7 +503,11 @@ TEST_CASE(
         asio::detached);
 
     // Should throw or return error when trying to parse message without header
-    REQUIRE_THROWS(co_await framed_receiver->ReceiveMessage());
+    auto result = co_await framed_receiver->ReceiveMessage();
+    REQUIRE(!result.has_value());
+    REQUIRE(
+        result.error().message.find("Missing Content-Length header") !=
+        std::string::npos);
 
     co_await raw_sender->Close();
     co_await framed_receiver->Close();

@@ -33,14 +33,6 @@ class MockTransport : public jsonrpc::transport::Transport {
   auto operator=(const MockTransport&) -> MockTransport& = delete;
   auto operator=(MockTransport&&) -> MockTransport& = delete;
 
-  void CloseNow() override {
-    is_closed_ = true;
-    is_started_ = false;
-    receive_timer_.cancel();
-
-    spdlog::debug("MockTransport closed synchronously");
-  }
-
   auto Start()
       -> asio::awaitable<std::expected<void, error::RpcError>> override {
     co_await asio::post(strand_, asio::use_awaitable);
@@ -60,96 +52,6 @@ class MockTransport : public jsonrpc::transport::Transport {
     is_started_ = true;
     spdlog::debug("MockTransport started");
     co_return std::expected<void, error::RpcError>();
-  }
-
-  auto SendMessage(std::string message)
-      -> asio::awaitable<std::expected<void, error::RpcError>> override {
-    co_await asio::post(strand_, asio::use_awaitable);
-
-    if (is_closed_) {
-      co_return std::unexpected(
-          error::CreateTransportError("Cannot send on closed transport"));
-    }
-
-    if (!is_started_) {
-      co_return std::unexpected(error::CreateTransportError(
-          "Cannot send before transport is started"));
-    }
-
-    sent_requests_.push_back(message);
-    co_return std::expected<void, error::RpcError>();
-  }
-
-  auto ReceiveMessage() -> asio::awaitable<std::string> override {
-    try {
-      // Start with a simple check for closed state
-      if (is_closed_) {
-        spdlog::debug(
-            "MockTransport: ReceiveMessage called after transport was closed");
-        co_return std::string();
-      }
-
-      // Check if transport is started
-      if (!is_started_) {
-        throw std::runtime_error("Cannot receive before transport is started");
-      }
-
-      // Get strand protection
-      co_await asio::post(strand_, asio::use_awaitable);
-
-      // Check again if closed (might have changed while waiting for strand)
-      if (is_closed_) {
-        spdlog::debug("MockTransport: ReceiveMessage found transport closed");
-        co_return std::string();
-      }
-
-      // If we already have messages, return one immediately
-      if (!incoming_messages_.empty()) {
-        auto message = incoming_messages_.front();
-        incoming_messages_.pop();
-        co_return message;
-      }
-
-      // No message available, need to wait
-      // Use a simpler loop with shorter timeouts for more frequent closed
-      // checks
-      while (!is_closed_) {
-        // Set up a short timer so we'll wake up periodically even without
-        // messages
-        receive_timer_.expires_after(std::chrono::milliseconds(10));
-
-        try {
-          // Wait for the timer to expire or be canceled
-          co_await receive_timer_.async_wait(asio::use_awaitable);
-        } catch (const asio::system_error& e) {
-          // Just continue if timer was canceled
-          if (e.code() != asio::error::operation_aborted) {
-            throw;
-          }
-        }
-
-        // Get strand protection to check state
-        co_await asio::post(strand_, asio::use_awaitable);
-
-        // Check if closed while we were waiting
-        if (is_closed_) {
-          co_return std::string();
-        }
-
-        // Check for new messages
-        if (!incoming_messages_.empty()) {
-          auto message = incoming_messages_.front();
-          incoming_messages_.pop();
-          co_return message;
-        }
-      }
-
-      // Transport was closed
-      co_return std::string();
-    } catch (const std::exception& e) {
-      spdlog::error("MockTransport: Error in ReceiveMessage: {}", e.what());
-      throw;
-    }
   }
 
   auto Close()
@@ -183,6 +85,91 @@ class MockTransport : public jsonrpc::transport::Transport {
       spdlog::error("MockTransport: Error in Close: {}", e.what());
       throw;
     }
+  }
+
+  void CloseNow() override {
+    is_closed_ = true;
+    is_started_ = false;
+    receive_timer_.cancel();
+
+    spdlog::debug("MockTransport closed synchronously");
+  }
+
+  auto SendMessage(std::string message)
+      -> asio::awaitable<std::expected<void, error::RpcError>> override {
+    co_await asio::post(strand_, asio::use_awaitable);
+
+    if (is_closed_) {
+      co_return std::unexpected(
+          error::CreateTransportError("Cannot send on closed transport"));
+    }
+
+    if (!is_started_) {
+      co_return std::unexpected(error::CreateTransportError(
+          "Cannot send before transport is started"));
+    }
+
+    sent_requests_.push_back(message);
+    co_return std::expected<void, error::RpcError>();
+  }
+
+  auto ReceiveMessage()
+      -> asio::awaitable<std::expected<std::string, error::RpcError>> override {
+    if (is_closed_) {
+      spdlog::debug(
+          "MockTransport: ReceiveMessage called after transport was closed");
+      co_return std::unexpected(error::CreateTransportError(
+          "ReceiveMessage called after transport was closed"));
+    }
+
+    if (!is_started_) {
+      co_return std::unexpected(error::CreateTransportError(
+          "Cannot receive before transport is started"));
+    }
+
+    co_await asio::post(strand_, asio::use_awaitable);
+
+    if (is_closed_) {
+      spdlog::debug("MockTransport: ReceiveMessage found transport closed");
+      co_return std::unexpected(error::CreateTransportError(
+          "ReceiveMessage called after transport was closed"));
+    }
+
+    if (!incoming_messages_.empty()) {
+      auto message = incoming_messages_.front();
+      incoming_messages_.pop();
+      co_return message;
+    }
+
+    // Poll periodically for new messages
+    while (!is_closed_) {
+      receive_timer_.expires_after(std::chrono::milliseconds(10));
+
+      std::error_code ec;
+      co_await receive_timer_.async_wait(
+          asio::redirect_error(asio::use_awaitable, ec));
+
+      if (ec && ec != asio::error::operation_aborted) {
+        co_return std::unexpected(error::CreateTransportError(
+            "Error during receive wait: " + ec.message()));
+      }
+
+      co_await asio::post(strand_, asio::use_awaitable);
+
+      if (is_closed_) {
+        co_return std::unexpected(error::CreateTransportError(
+            "ReceiveMessage called after transport was closed"));
+      }
+
+      if (!incoming_messages_.empty()) {
+        auto message = incoming_messages_.front();
+        incoming_messages_.pop();
+        co_return message;
+      }
+    }
+
+    co_return std::unexpected(error::CreateTransportError(
+        "ReceiveMessage called after transport was closed"));
   }
 
   auto SetMessage(const std::string& message) -> void {

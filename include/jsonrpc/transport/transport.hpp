@@ -34,7 +34,8 @@ class Transport {
   virtual auto SendMessage(std::string message)
       -> asio::awaitable<std::expected<void, error::RpcError>> = 0;
 
-  virtual auto ReceiveMessage() -> asio::awaitable<std::string> = 0;
+  virtual auto ReceiveMessage()
+      -> asio::awaitable<std::expected<std::string, error::RpcError>> = 0;
 
   [[nodiscard]] auto GetExecutor() const -> asio::any_io_executor {
     return executor_;

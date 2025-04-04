@@ -193,10 +193,14 @@ auto RpcEndpoint::ProcessMessagesLoop() -> asio::awaitable<void> {
   while (is_running_) {
     try {
       // Wait for the next message
-      std::string message = co_await transport_->ReceiveMessage();
+      auto message = co_await transport_->ReceiveMessage();
+      if (!message.has_value()) {
+        spdlog::error("Error receiving message: {}", message.error().message);
+        continue;
+      }
 
       // Process the message
-      co_await HandleMessage(message);
+      co_await HandleMessage(message.value());
     } catch (const std::exception &e) {
       spdlog::error("Error processing message: {}", e.what());
 

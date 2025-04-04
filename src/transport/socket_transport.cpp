@@ -1,7 +1,5 @@
 #include "jsonrpc/transport/socket_transport.hpp"
 
-#include <stdexcept>
-
 #include <asio.hpp>
 #include <spdlog/spdlog.h>
 
@@ -191,58 +189,59 @@ auto SocketTransport::SendMessage(std::string message)
   co_return std::expected<void, error::RpcError>{};
 }
 
-auto SocketTransport::ReceiveMessage() -> asio::awaitable<std::string> {
-  try {
-    co_await asio::post(GetStrand(), asio::use_awaitable);
+auto SocketTransport::ReceiveMessage()
+    -> asio::awaitable<std::expected<std::string, error::RpcError>> {
+  co_await asio::post(GetStrand(), asio::use_awaitable);
 
-    if (is_closed_) {
-      spdlog::warn("ReceiveMessage() called after transport was closed");
-      co_return std::string();
-    }
+  if (is_closed_) {
+    spdlog::warn("ReceiveMessage() called after transport was closed");
+    co_return std::unexpected(error::CreateTransportError(
+        "ReceiveMessage() called after transport was closed"));
+  }
 
-    if (!is_started_) {
-      throw std::runtime_error(
-          "Transport not started before receiving message");
-    }
+  if (!is_started_) {
+    co_return std::unexpected(error::CreateTransportError(
+        "Transport not started before receiving message"));
+  }
 
-    if (!socket_.is_open()) {
-      spdlog::warn("Socket not open in ReceiveMessage()");
-      co_return std::string();
-    }
+  if (!socket_.is_open()) {
+    spdlog::warn("Socket not open in ReceiveMessage()");
+    co_return std::unexpected(
+        error::CreateTransportError("Socket not open in ReceiveMessage()"));
+  }
 
-    // Clear any existing message buffer
-    message_buffer_.clear();
+  message_buffer_.clear();
 
-    // Read data from socket
-    size_t bytes_read = co_await socket_.async_read_some(
-        asio::buffer(read_buffer_), asio::use_awaitable);
+  std::error_code ec;
+  size_t bytes_read = co_await socket_.async_read_some(
+      asio::buffer(read_buffer_),
+      asio::redirect_error(asio::use_awaitable, ec));
 
-    if (bytes_read == 0) {
-      if (is_closed_) {
-        co_return std::string();
-      }
-      throw std::runtime_error("Connection closed by peer");
-    }
-
-    message_buffer_.append(read_buffer_.data(), bytes_read);
-    spdlog::debug("Received {} bytes", bytes_read);
-
-    co_return std::move(message_buffer_);
-  } catch (const asio::system_error &e) {
-    // Handle ASIO-specific errors
-    if (e.code() == asio::error::eof) {
+  if (ec) {
+    if (ec == asio::error::eof) {
       spdlog::debug("EOF received, connection closed by peer");
       is_connected_ = false;
-    } else if (e.code() == asio::error::operation_aborted) {
+      co_return std::unexpected(
+          error::CreateTransportError("Connection closed by peer"));
+    } else if (ec == asio::error::operation_aborted) {
       spdlog::debug("Read operation aborted");
+      co_return std::unexpected(
+          error::CreateTransportError("Receive operation aborted"));
     } else {
-      spdlog::error("ASIO error in ReceiveMessage(): {}", e.what());
+      spdlog::error("ASIO error in ReceiveMessage(): {}", ec.message());
+      co_return std::unexpected(
+          error::CreateTransportError("Receive error: " + ec.message()));
     }
-    throw;
-  } catch (const std::exception &e) {
-    spdlog::error("Exception in ReceiveMessage(): {}", e.what());
-    throw;
   }
+
+  if (bytes_read == 0) {
+    co_return std::unexpected(
+        error::CreateTransportError("Connection closed by peer (no data)"));
+  }
+
+  message_buffer_.append(read_buffer_.data(), bytes_read);
+  spdlog::debug("Received {} bytes", bytes_read);
+  co_return std::move(message_buffer_);
 }
 
 auto SocketTransport::Connect()

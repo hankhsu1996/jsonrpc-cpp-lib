@@ -18,7 +18,8 @@ class FramedPipeTransport : public PipeTransport {
   auto SendMessage(std::string message)
       -> asio::awaitable<std::expected<void, error::RpcError>> override;
 
-  auto ReceiveMessage() -> asio::awaitable<std::string> override;
+  auto ReceiveMessage()
+      -> asio::awaitable<std::expected<std::string, error::RpcError>> override;
 
  private:
   std::string read_buffer_;
