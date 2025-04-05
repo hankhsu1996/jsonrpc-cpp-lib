@@ -1,7 +1,11 @@
 <map id="jsonrpc::endpoint::Request::ToJson" name="jsonrpc::endpoint::Request::ToJson">
-<area shape="rect" id="Node000001" title=" " alt="" coords="272,37,415,77"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab87006bb19847eafa4b0487165a2ae82" title=" " alt="" coords="6,5,223,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="258,48,223,43,224,38,259,43"/>
-<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae235ed10d68e2090491f7da16b8c1485" title=" " alt="" coords="5,69,224,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,72,225,77,224,71,258,67"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="539,37,681,77"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab87006bb19847eafa4b0487165a2ae82" title=" " alt="" coords="273,5,490,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="524,48,490,43,491,38,525,43"/>
+<area shape="rect" id="Node000004" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae235ed10d68e2090491f7da16b8c1485" title=" " alt="" coords="272,69,491,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="525,72,491,77,491,71,525,67"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a7c9af8d5f83d86b6c22c56c8f65346c8" title=" " alt="" coords="6,5,223,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="259,28,224,28,224,23,259,23"/>
+<area shape="rect" id="Node000005" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a8b8e0370b2300029396d3cf570fb40c8" title=" " alt="" coords="5,69,224,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="258,92,224,92,224,87,258,87"/>
 </map>
