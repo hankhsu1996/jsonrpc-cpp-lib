@@ -57,7 +57,11 @@ class RpcEndpoint {
 
   template <typename ParamsType, typename ResultType>
   auto SendMethodCall(std::string method, ParamsType params)
-      -> asio::awaitable<std::expected<ResultType, RpcError>>;
+      -> asio::awaitable<std::expected<ResultType, RpcError>>
+    requires(
+        !std::is_same_v<std::decay_t<ParamsType>, nlohmann::json> &&
+        !std::is_same_v<
+            std::decay_t<ParamsType>, std::optional<nlohmann::json>>);
 
   auto SendNotification(
       std::string method, std::optional<nlohmann::json> params = std::nullopt)
@@ -65,7 +69,11 @@ class RpcEndpoint {
 
   template <typename ParamsType>
   auto SendNotification(std::string method, ParamsType params)
-      -> asio::awaitable<std::expected<void, RpcError>>;
+      -> asio::awaitable<std::expected<void, RpcError>>
+    requires(
+        !std::is_same_v<std::decay_t<ParamsType>, nlohmann::json> &&
+        !std::is_same_v<
+            std::decay_t<ParamsType>, std::optional<nlohmann::json>>);
 
   void RegisterMethodCall(
       std::string method, typename Dispatcher::MethodCallHandler handler);
@@ -125,23 +133,32 @@ class RpcEndpoint {
 
 template <typename ParamsType, typename ResultType>
 auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
-    -> asio::awaitable<std::expected<ResultType, RpcError>> {
+    -> asio::awaitable<std::expected<ResultType, RpcError>>
+  requires(
+      !std::is_same_v<std::decay_t<ParamsType>, nlohmann::json> &&
+      !std::is_same_v<std::decay_t<ParamsType>, std::optional<nlohmann::json>>)
+{
+  spdlog::debug("RpcEndpoint sending typed method call: {}", method);
   nlohmann::json json_params;
   try {
     json_params = params;
   } catch (const nlohmann::json::exception &ex) {
+    spdlog::error(
+        "RpcEndpoint failed to convert parameters to JSON: {}", ex.what());
     co_return error::CreateClientError(
         "Failed to convert parameters to JSON: " + std::string(ex.what()));
   }
 
-  auto result = co_await SendMethodCall(method, json_params);
+  auto result = co_await RpcEndpoint::SendMethodCall(method, json_params);
   if (!result) {
+    spdlog::error("RpcEndpoint failed to send method call: {}", method);
     co_return std::unexpected(result.error());
   }
 
   try {
     co_return result->template get<ResultType>();
   } catch (const nlohmann::json::exception &ex) {
+    spdlog::error("RpcEndpoint failed to convert result: {}", ex.what());
     co_return error::CreateClientError(
         "Failed to convert result: " + std::string(ex.what()));
   }
@@ -149,17 +166,25 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
 
 template <typename ParamsType>
 auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
-    -> asio::awaitable<std::expected<void, RpcError>> {
+    -> asio::awaitable<std::expected<void, RpcError>>
+  requires(
+      !std::is_same_v<std::decay_t<ParamsType>, nlohmann::json> &&
+      !std::is_same_v<std::decay_t<ParamsType>, std::optional<nlohmann::json>>)
+{
+  spdlog::debug("RpcEndpoint sending typed notification: {}", method);
   nlohmann::json json_params;
   try {
     json_params = params;
   } catch (const nlohmann::json::exception &ex) {
+    spdlog::error(
+        "RpcEndpoint failed to convert notification parameters: {}", ex.what());
     co_return error::CreateClientError(
         "Failed to convert notification parameters: " + std::string(ex.what()));
   }
 
-  auto result = co_await SendNotification(method, json_params);
+  auto result = co_await RpcEndpoint::SendNotification(method, json_params);
   if (!result) {
+    spdlog::error("RpcEndpoint failed to send notification: {}", method);
     co_return std::unexpected(result.error());
   }
 

@@ -139,7 +139,9 @@ auto RpcEndpoint::SendMethodCall(
 auto RpcEndpoint::SendNotification(
     std::string method, std::optional<nlohmann::json> params)
     -> asio::awaitable<std::expected<void, RpcError>> {
+  spdlog::debug("RpcEndpoint sending notification: {}", method);
   if (!is_running_) {
+    spdlog::error("RpcEndpoint sending notification failed: {}", method);
     co_return CreateClientError("RPC endpoint is not running");
   }
 
@@ -171,12 +173,12 @@ auto RpcEndpoint::HasPendingRequests() const -> bool {
 }
 
 void RpcEndpoint::StartMessageProcessing() {
-  spdlog::debug("Endpoint starting message processing");
+  spdlog::debug("RpcEndpoint starting message processing");
   message_loop_ = asio::co_spawn(
       endpoint_strand_,
       [this] {
         spdlog::debug(
-            "Endpoint starting message processing, is_running_: {}",
+            "RpcEndpoint starting message processing, is_running_: {}",
             is_running_.load());
         return this->ProcessMessagesLoop(cancel_signal_.slot());
       },
@@ -196,10 +198,10 @@ auto RpcEndpoint::ProcessMessagesLoop(asio::cancellation_slot slot)
 
   // log is_running_ and state.cancelled()
   spdlog::debug(
-      "Endpoint processing messages loop, is_running_: {}, !cancelled: {}",
+      "RpcEndpoint processing messages loop, is_running_: {}, !cancelled: {}",
       is_running_.load(), !state.cancelled());
   while (is_running_ && !state.cancelled()) {
-    spdlog::debug("Endpoint processing messages loop");
+    spdlog::debug("RpcEndpoint processing messages loop");
     auto message_result = co_await transport_->ReceiveMessage();
     if (!message_result) {
       spdlog::error("Receive error: {}", message_result.error().message);
