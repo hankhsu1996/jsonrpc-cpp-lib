@@ -28,7 +28,7 @@ class MockTransport : public jsonrpc::transport::Transport {
   }
 
   ~MockTransport() override {
-    spdlog::debug("Destroying mock transport");
+    Logger().debug("Destroying mock transport");
     CloseNow();
   }
 
@@ -42,19 +42,19 @@ class MockTransport : public jsonrpc::transport::Transport {
     co_await asio::post(strand_, asio::use_awaitable);
 
     if (is_started_) {
-      spdlog::debug("MockTransport already started");
+      Logger().debug("MockTransport already started");
       co_return RpcError::UnexpectedFromCode(
           RpcErrorCode::kTransportError, "MockTransport already started");
     }
 
     if (is_closed_) {
-      spdlog::error("Cannot start a closed transport");
+      Logger().error("Cannot start a closed transport");
       co_return RpcError::UnexpectedFromCode(
           RpcErrorCode::kTransportError, "Cannot start a closed transport");
     }
 
     is_started_ = true;
-    spdlog::debug("MockTransport started");
+    Logger().debug("MockTransport started");
     co_return Ok();
   }
 
@@ -63,10 +63,10 @@ class MockTransport : public jsonrpc::transport::Transport {
     // Get strand protection
     co_await asio::post(strand_, asio::use_awaitable);
 
-    spdlog::debug("MockTransport: Closing transport");
+    Logger().debug("MockTransport: Closing transport");
 
     if (is_closed_) {
-      spdlog::debug("MockTransport: Already closed");
+      Logger().debug("MockTransport: Already closed");
       co_return std::expected<void, error::RpcError>{};
     }
 
@@ -82,7 +82,7 @@ class MockTransport : public jsonrpc::transport::Transport {
           "Failed to cancel receive timer during close: " + ec.message());
     }
 
-    spdlog::debug("MockTransport: Closed");
+    Logger().debug("MockTransport: Closed");
 
     // Optional sync point for strand tasks to flush
     co_await asio::post(strand_, asio::use_awaitable);
@@ -95,7 +95,7 @@ class MockTransport : public jsonrpc::transport::Transport {
     is_started_ = false;
     receive_timer_.cancel();
 
-    spdlog::debug("MockTransport closed synchronously");
+    Logger().debug("MockTransport closed synchronously");
   }
 
   auto SendMessage(std::string message)
@@ -120,7 +120,7 @@ class MockTransport : public jsonrpc::transport::Transport {
   auto ReceiveMessage()
       -> asio::awaitable<std::expected<std::string, error::RpcError>> override {
     if (is_closed_) {
-      spdlog::debug(
+      Logger().debug(
           "MockTransport: ReceiveMessage called after transport was closed");
       co_return RpcError::UnexpectedFromCode(
           RpcErrorCode::kTransportError,
@@ -136,7 +136,7 @@ class MockTransport : public jsonrpc::transport::Transport {
     co_await asio::post(strand_, asio::use_awaitable);
 
     if (is_closed_) {
-      spdlog::debug("MockTransport: ReceiveMessage found transport closed");
+      Logger().debug("MockTransport: ReceiveMessage found transport closed");
       co_return RpcError::UnexpectedFromCode(
           RpcErrorCode::kTransportError,
           "ReceiveMessage called after transport was closed");
