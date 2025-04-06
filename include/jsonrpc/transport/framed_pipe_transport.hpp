@@ -13,7 +13,7 @@ class FramedPipeTransport : public PipeTransport {
  public:
   FramedPipeTransport(
       asio::any_io_executor executor, const std::string& socket_path,
-      bool is_server);
+      bool is_server, std::shared_ptr<spdlog::logger> logger = nullptr);
 
   auto SendMessage(std::string message)
       -> asio::awaitable<std::expected<void, error::RpcError>> override;

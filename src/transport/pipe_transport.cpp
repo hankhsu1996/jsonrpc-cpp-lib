@@ -17,8 +17,9 @@ using error::RpcError;
 using error::RpcErrorCode;
 
 PipeTransport::PipeTransport(
-    asio::any_io_executor executor, std::string socket_path, bool is_server)
-    : Transport(std::move(executor)),
+    asio::any_io_executor executor, std::string socket_path, bool is_server,
+    std::shared_ptr<spdlog::logger> logger)
+    : Transport(std::move(executor), logger),
       socket_(GetExecutor()),
       socket_path_(std::move(socket_path)),
       is_server_(is_server),

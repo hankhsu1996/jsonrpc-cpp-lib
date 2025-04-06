@@ -10,8 +10,8 @@ using error::RpcErrorCode;
 
 SocketTransport::SocketTransport(
     asio::any_io_executor executor, std::string address, uint16_t port,
-    bool is_server)
-    : Transport(std::move(executor)),
+    bool is_server, std::shared_ptr<spdlog::logger> logger)
+    : Transport(std::move(executor), logger),
       socket_(GetExecutor()),
       address_(std::move(address)),
       port_(port),

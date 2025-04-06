@@ -14,7 +14,7 @@ class SocketTransport : public Transport {
  public:
   SocketTransport(
       asio::any_io_executor executor, std::string address, uint16_t port,
-      bool is_server);
+      bool is_server, std::shared_ptr<spdlog::logger> logger = nullptr);
 
   ~SocketTransport() override;
 

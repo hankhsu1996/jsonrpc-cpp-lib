@@ -9,8 +9,8 @@ using error::RpcErrorCode;
 
 FramedPipeTransport::FramedPipeTransport(
     asio::any_io_executor executor, const std::string& socket_path,
-    bool is_server)
-    : PipeTransport(std::move(executor), socket_path, is_server) {
+    bool is_server, std::shared_ptr<spdlog::logger> logger)
+    : PipeTransport(std::move(executor), socket_path, is_server, logger) {
 }
 
 auto FramedPipeTransport::SendMessage(std::string message)

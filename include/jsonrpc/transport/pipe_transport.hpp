@@ -17,7 +17,7 @@ class PipeTransport : public Transport {
  public:
   explicit PipeTransport(
       asio::any_io_executor executor, std::string socket_path,
-      bool is_server = false);
+      bool is_server = false, std::shared_ptr<spdlog::logger> logger = nullptr);
 
   ~PipeTransport() override;
 
