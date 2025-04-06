@@ -1,0 +1,10 @@
+<map id="include/jsonrpc/endpoint/jsonrpc_traits.hpp" name="include/jsonrpc/endpoint/jsonrpc_traits.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="10,5,191,45"/>
+<area shape="rect" id="Node000002" href="$endpoint_8hpp.html" title=" " alt="" coords="10,181,191,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,58,65,94,61,113,65,133,75,158,88,179,84,182,70,160,59,134,56,113,59,93,76,56"/>
+<area shape="rect" id="Node000004" href="$typed__handlers_8hpp.html" title="Type&#45;safe handlers for JSON&#45;RPC method calls and notifications." alt="" coords="74,93,255,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="125,55,153,92,148,95,121,58"/>
+<area shape="rect" id="Node000003" href="$endpoint_8cpp.html" title=" " alt="" coords="5,269,196,295"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,235,103,269,98,269,98,235"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="144,146,117,183,113,180,140,143"/>
+</map>

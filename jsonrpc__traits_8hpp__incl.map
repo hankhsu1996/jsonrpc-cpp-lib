@@ -1,0 +1,9 @@
+<map id="include/jsonrpc/endpoint/jsonrpc_traits.hpp" name="include/jsonrpc/endpoint/jsonrpc_traits.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="53,5,235,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,85,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,48,72,87,69,82,118,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="110,93,178,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,46,147,79,141,79,141,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="203,93,349,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="177,43,246,84,243,88,174,48"/>
+</map>

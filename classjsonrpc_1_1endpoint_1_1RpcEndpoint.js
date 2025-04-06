@@ -11,7 +11,7 @@ var classjsonrpc_1_1endpoint_1_1RpcEndpoint =
     [ "RegisterMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6aa574b757a312478df1fef37270b1fa", null ],
     [ "RegisterMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a04d5b3d140b60a0dc0f3aa36f49f729d", null ],
     [ "RegisterMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a9220c74ca4539ec5b98d620555c30691", null ],
-    [ "RegisterNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aea2aed99619b738049b19feecc2f06f1", null ],
+    [ "RegisterNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a4b5058958116eaa24f7c31c078f42510", null ],
     [ "RegisterNotification", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6abb39be0165c3d20d79974dc00accc7", null ],
     [ "SendMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5043d60cf27902e1f373b368d670b81a", null ],
     [ "SendMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab87006bb19847eafa4b0487165a2ae82", null ],

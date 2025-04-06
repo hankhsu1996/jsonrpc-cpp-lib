@@ -11,6 +11,7 @@ var namespacejsonrpc_1_1endpoint =
     [ "ToJson", "conceptjsonrpc_1_1endpoint_1_1ToJson.html", null ],
     [ "JsonConvertible", "conceptjsonrpc_1_1endpoint_1_1JsonConvertible.html", null ],
     [ "NotJsonLike", "conceptjsonrpc_1_1endpoint_1_1NotJsonLike.html", null ],
+    [ "HasMessageMethod", "conceptjsonrpc_1_1endpoint_1_1HasMessageMethod.html", null ],
     [ "Handler", "namespacejsonrpc_1_1endpoint.html#abe1afdee88ee6cd87b6a0e88fdf950dc", null ],
     [ "MethodCallHandler", "namespacejsonrpc_1_1endpoint.html#a72855eb2a9497623864731bfeecf4e43", null ],
     [ "NotificationHandler", "namespacejsonrpc_1_1endpoint.html#a0e1ed6cc8bdd42d59dbd41ae9d20a5a7", null ],

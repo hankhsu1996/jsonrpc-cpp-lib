@@ -137,8 +137,9 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename ParamsType, typename ResultType, typename ErrorType = std::monostate&gt;<br />
+requires (FromJson&lt;ParamsType&gt; &amp;&amp; ToJson&lt;ResultType&gt; &amp;&amp; ToJson&lt;ErrorType&gt;)<br />
 class jsonrpc::endpoint::TypedMethodHandler&lt; ParamsType, ResultType, ErrorType &gt;</div>
-<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00037">37</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00041">41</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9e1b5c3afbd9b73e42fb560e99c2e442" name="a9e1b5c3afbd9b73e42fb560e99c2e442"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e1b5c3afbd9b73e42fb560e99c2e442">&#9670;&#160;</a></span>TypedMethodHandler() <span class="overload">[1/2]</span></h2>
@@ -165,9 +166,9 @@ template&lt;typename ParamsType , typename ResultType , typename ErrorType  = st
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00051">51</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>      : handler_(std::move(handler)) {</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00055">55</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>      : handler_(std::move(handler)) {</div>
+<div class="line"><span class="lineno">   58</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -196,9 +197,9 @@ template&lt;typename ParamsType , typename ResultType , typename ErrorType  = st
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00057">57</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>      : handler_(std::move(handler)) {</div>
-<div class="line"><span class="lineno">   60</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00061">61</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>      : handler_(std::move(handler)) {</div>
+<div class="line"><span class="lineno">   64</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -228,39 +229,39 @@ template&lt;typename ParamsType , typename ResultType , typename ErrorType  = st
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00062">62</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>                                     {</div>
-<div class="line"><span class="lineno">   64</span>    ParamsType typed_params{};</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">if</span> (params.has_value()) {</div>
-<div class="line"><span class="lineno">   67</span>        typed_params = params.value().get&lt;ParamsType&gt;();</div>
-<div class="line"><span class="lineno">   68</span>      }</div>
-<div class="line"><span class="lineno">   69</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception&amp; ex) {</div>
-<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><span class="lineno">   71</span>          <span class="stringliteral">&quot;Failed to parse parameters: &quot;</span> + std::string(ex.what()));</div>
-<div class="line"><span class="lineno">   72</span>    }</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;ErrorType, std::monostate&gt;) {</div>
-<div class="line"><span class="lineno">   75</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_void_v&lt;ResultType&gt;) {</div>
-<div class="line"><span class="lineno">   76</span>        <span class="keyword">co_await</span> handler_(typed_params);</div>
-<div class="line"><span class="lineno">   77</span>        <span class="keyword">co_return</span> nlohmann::json();</div>
-<div class="line"><span class="lineno">   78</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   79</span>        ResultType result = <span class="keyword">co_await</span> handler_(typed_params);</div>
-<div class="line"><span class="lineno">   80</span>        <span class="keyword">co_return</span> nlohmann::json(result);</div>
-<div class="line"><span class="lineno">   81</span>      }</div>
-<div class="line"><span class="lineno">   82</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   83</span>      <span class="keyword">auto</span> result = <span class="keyword">co_await</span> handler_(typed_params);</div>
-<div class="line"><span class="lineno">   84</span>      <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_void_v&lt;ResultType&gt;) {</div>
-<div class="line"><span class="lineno">   86</span>          <span class="keyword">co_return</span> nlohmann::json();</div>
-<div class="line"><span class="lineno">   87</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   88</span>          <span class="keyword">co_return</span> nlohmann::json(*result);</div>
-<div class="line"><span class="lineno">   89</span>        }</div>
-<div class="line"><span class="lineno">   90</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">throw</span> result.error();</div>
-<div class="line"><span class="lineno">   92</span>      }</div>
-<div class="line"><span class="lineno">   93</span>    }</div>
-<div class="line"><span class="lineno">   94</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00066">66</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>                                     {</div>
+<div class="line"><span class="lineno">   68</span>    ParamsType typed_params{};</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">if</span> (params.has_value()) {</div>
+<div class="line"><span class="lineno">   71</span>        typed_params = params.value().get&lt;ParamsType&gt;();</div>
+<div class="line"><span class="lineno">   72</span>      }</div>
+<div class="line"><span class="lineno">   73</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception&amp; ex) {</div>
+<div class="line"><span class="lineno">   74</span>      <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">   75</span>          <span class="stringliteral">&quot;Failed to parse parameters: &quot;</span> + std::string(ex.what()));</div>
+<div class="line"><span class="lineno">   76</span>    }</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;ErrorType, std::monostate&gt;) {</div>
+<div class="line"><span class="lineno">   79</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_void_v&lt;ResultType&gt;) {</div>
+<div class="line"><span class="lineno">   80</span>        <span class="keyword">co_await</span> handler_(typed_params);</div>
+<div class="line"><span class="lineno">   81</span>        <span class="keyword">co_return</span> nlohmann::json();</div>
+<div class="line"><span class="lineno">   82</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   83</span>        ResultType result = <span class="keyword">co_await</span> handler_(typed_params);</div>
+<div class="line"><span class="lineno">   84</span>        <span class="keyword">co_return</span> nlohmann::json(result);</div>
+<div class="line"><span class="lineno">   85</span>      }</div>
+<div class="line"><span class="lineno">   86</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   87</span>      <span class="keyword">auto</span> result = <span class="keyword">co_await</span> handler_(typed_params);</div>
+<div class="line"><span class="lineno">   88</span>      <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_void_v&lt;ResultType&gt;) {</div>
+<div class="line"><span class="lineno">   90</span>          <span class="keyword">co_return</span> nlohmann::json();</div>
+<div class="line"><span class="lineno">   91</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   92</span>          <span class="keyword">co_return</span> nlohmann::json(*result);</div>
+<div class="line"><span class="lineno">   93</span>        }</div>
+<div class="line"><span class="lineno">   94</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   95</span>        <span class="keywordflow">throw</span> result.error();</div>
+<div class="line"><span class="lineno">   96</span>      }</div>
+<div class="line"><span class="lineno">   97</span>    }</div>
+<div class="line"><span class="lineno">   98</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -171,10 +171,10 @@ requires (FromJson&lt;ParamsType&gt; &amp;&amp; ToJson&lt;ResultType&gt; &amp;&a
 <tr class="separator:a04d5b3d140b60a0dc0f3aa36f49f729d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6abb39be0165c3d20d79974dc00accc7" id="r_a6abb39be0165c3d20d79974dc00accc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6abb39be0165c3d20d79974dc00accc7">RegisterNotification</a> (std::string method, typename <a class="el" href="classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59ec448d0eeb1c0515ada640b55ed273">Dispatcher::NotificationHandler</a> handler)</td></tr>
 <tr class="separator:a6abb39be0165c3d20d79974dc00accc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea2aed99619b738049b19feecc2f06f1" id="r_aea2aed99619b738049b19feecc2f06f1"><td class="memTemplParams" colspan="2">template&lt;typename ParamsType , typename ErrorType &gt; <br />
-requires (FromJson&lt;ParamsType&gt;)</td></tr>
-<tr class="memitem:aea2aed99619b738049b19feecc2f06f1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aea2aed99619b738049b19feecc2f06f1">RegisterNotification</a> (std::string method, std::function&lt; asio::awaitable&lt; std::expected&lt; void, ErrorType &gt; &gt;(ParamsType)&gt; handler)</td></tr>
-<tr class="separator:aea2aed99619b738049b19feecc2f06f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b5058958116eaa24f7c31c078f42510" id="r_a4b5058958116eaa24f7c31c078f42510"><td class="memTemplParams" colspan="2">template&lt;typename ParamsType , typename ErrorType &gt; <br />
+requires (FromJson&lt;ParamsType&gt; &amp;&amp; HasMessageMethod&lt;ErrorType&gt;)</td></tr>
+<tr class="memitem:a4b5058958116eaa24f7c31c078f42510"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4b5058958116eaa24f7c31c078f42510">RegisterNotification</a> (std::string method, std::function&lt; asio::awaitable&lt; std::expected&lt; void, ErrorType &gt; &gt;(ParamsType)&gt; handler)</td></tr>
+<tr class="separator:a4b5058958116eaa24f7c31c078f42510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41c2da77c0083d740c17679628a35e64" id="r_a41c2da77c0083d740c17679628a35e64"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41c2da77c0083d740c17679628a35e64">HasPendingRequests</a> () const -&gt; bool</td></tr>
 <tr class="separator:a41c2da77c0083d740c17679628a35e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -565,14 +565,14 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="aea2aed99619b738049b19feecc2f06f1" name="aea2aed99619b738049b19feecc2f06f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea2aed99619b738049b19feecc2f06f1">&#9670;&#160;</a></span>RegisterNotification() <span class="overload">[1/2]</span></h2>
+<a id="a4b5058958116eaa24f7c31c078f42510" name="a4b5058958116eaa24f7c31c078f42510"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b5058958116eaa24f7c31c078f42510">&#9670;&#160;</a></span>RegisterNotification() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ParamsType , typename ErrorType &gt; <br />
-requires (FromJson&lt;ParamsType&gt;)</div>
+requires (FromJson&lt;ParamsType&gt; &amp;&amp; HasMessageMethod&lt;ErrorType&gt;)</div>
       <table class="memname">
         <tr>
           <td class="memname">void jsonrpc::endpoint::RpcEndpoint::RegisterNotification </td>

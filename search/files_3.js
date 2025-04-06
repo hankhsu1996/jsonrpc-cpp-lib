@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['json_5ftrait_2ehpp_0',['json_trait.hpp',['../json__trait_8hpp.html',1,'']]]
+  ['jsonrpc_5ftraits_2ehpp_0',['jsonrpc_traits.hpp',['../jsonrpc__traits_8hpp.html',1,'']]]
 ];

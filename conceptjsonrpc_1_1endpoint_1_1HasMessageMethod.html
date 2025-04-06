@@ -86,7 +86,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('endpoint_8hpp.html',''); initResizable(true); });
+$(function(){initNavTree('conceptjsonrpc_1_1endpoint_1_1HasMessageMethod.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -112,58 +112,26 @@ $(function(){initNavTree('endpoint_8hpp.html',''); initResizable(true); });
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
-  <div class="headertitle"><div class="title">endpoint.hpp File Reference</div></div>
+  <div class="headertitle"><div class="title">jsonrpc::endpoint::HasMessageMethod Concept Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;atomic&gt;</code><br />
-<code>#include &lt;functional&gt;</code><br />
-<code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;optional&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
-<code>#include &lt;unordered_map&gt;</code><br />
-<code>#include &lt;asio.hpp&gt;</code><br />
-<code>#include &lt;nlohmann/json.hpp&gt;</code><br />
-<code>#include &lt;spdlog/spdlog.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="dispatcher_8hpp_source.html">jsonrpc/endpoint/dispatcher.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="jsonrpc__traits_8hpp_source.html">jsonrpc/endpoint/jsonrpc_traits.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="pending__request_8hpp_source.html">jsonrpc/endpoint/pending_request.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="response_8hpp_source.html">jsonrpc/endpoint/response.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="typed__handlers_8hpp_source.html">jsonrpc/endpoint/typed_handlers.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="transport_8hpp_source.html">jsonrpc/transport/transport.hpp</a>&quot;</code><br />
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for endpoint.hpp:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="endpoint_8hpp__incl.svg" width="2592" height="374"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="endpoint_8hpp__dep__incl.svg" width="202" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-<p><a href="endpoint_8hpp_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1RpcEndpoint.html">jsonrpc::endpoint::RpcEndpoint</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc.html">jsonrpc</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1endpoint.html">jsonrpc::endpoint</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-</div><!-- contents -->
+
+<p><code>#include &lt;<a class="el" href="jsonrpc__traits_8hpp_source.html">jsonrpc_traits.hpp</a>&gt;</code></p>
+<h2 class="groupheader">Concept definition</h2>
+<div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptjsonrpc_1_1endpoint_1_1HasMessageMethod.html">jsonrpc::endpoint::HasMessageMethod</a> =  std::is_same_v&lt;T, std::monostate&gt; || <span class="keyword">requires</span>(T e) {</div>
+<div class="line">  { e.Message() } -&gt; std::convertible_to&lt;std::string&gt;;</div>
+<div class="line">}</div>
+<div class="ttc" id="aconceptjsonrpc_1_1endpoint_1_1HasMessageMethod_html"><div class="ttname"><a href="conceptjsonrpc_1_1endpoint_1_1HasMessageMethod.html">jsonrpc::endpoint::HasMessageMethod</a></div><div class="ttdef"><b>Definition</b> <a href="jsonrpc__traits_8hpp_source.html#l00029">jsonrpc_traits.hpp:29</a></div></div>
+</div><!-- fragment --><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="jsonrpc__traits_8hpp_source.html#l00029">29</a> of file <a class="el" href="jsonrpc__traits_8hpp_source.html">jsonrpc_traits.hpp</a>.</p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_91acd94fd8e19b606395a4f5e16e64f3.html">jsonrpc</a></li><li class="navelem"><a class="el" href="dir_755483ad69aacbc7da0500fa430543ae.html">endpoint</a></li><li class="navelem"><a class="el" href="endpoint_8hpp.html">endpoint.hpp</a></li>
+    <li class="navelem"><a class="el" href="namespacejsonrpc.html">jsonrpc</a></li><li class="navelem"><a class="el" href="namespacejsonrpc_1_1endpoint.html">endpoint</a></li><li class="navelem"><a class="el" href="conceptjsonrpc_1_1endpoint_1_1HasMessageMethod.html">HasMessageMethod</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
   </ul>
 </div>
