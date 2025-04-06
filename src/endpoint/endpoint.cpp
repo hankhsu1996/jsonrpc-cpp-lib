@@ -99,7 +99,7 @@ auto RpcEndpoint::Shutdown() -> asio::awaitable<std::expected<void, RpcError>> {
   // Now close the transport
   auto close_result = co_await transport_->Close();
   if (!close_result) {
-    co_return std::unexpected(close_result.error());
+    co_return close_result;
   }
 
   co_return Ok();
@@ -153,7 +153,7 @@ auto RpcEndpoint::SendNotification(
   spdlog::debug("RpcEndpoint sending message: {}", message.substr(0, 100));
   auto send_result = co_await transport_->SendMessage(message);
   if (!send_result) {
-    co_return std::unexpected(send_result.error());
+    co_return send_result;
   }
 
   co_return std::expected<void, RpcError>{};

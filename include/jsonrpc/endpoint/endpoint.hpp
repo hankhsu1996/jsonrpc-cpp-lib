@@ -150,8 +150,7 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
 
   auto result = co_await RpcEndpoint::SendMethodCall(method, json_params);
   if (!result) {
-    spdlog::error("RpcEndpoint failed to send method call: {}", method);
-    co_return std::unexpected(result.error());
+    co_return result;
   }
 
   try {
@@ -186,8 +185,7 @@ auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
 
   auto result = co_await RpcEndpoint::SendNotification(method, json_params);
   if (!result) {
-    spdlog::error("RpcEndpoint failed to send notification: {}", method);
-    co_return std::unexpected(result.error());
+    co_return result;
   }
 
   co_return Ok();
