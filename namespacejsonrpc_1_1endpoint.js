@@ -7,7 +7,6 @@ var namespacejsonrpc_1_1endpoint =
     [ "RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html", "classjsonrpc_1_1endpoint_1_1RpcEndpoint" ],
     [ "TypedMethodHandler", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler" ],
     [ "TypedNotificationHandler", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler" ],
-    [ "ErrorHandler", "namespacejsonrpc_1_1endpoint.html#ad5f4eeee8d842f6f0fb8ec293aa0069d", null ],
     [ "Handler", "namespacejsonrpc_1_1endpoint.html#abe1afdee88ee6cd87b6a0e88fdf950dc", null ],
     [ "MethodCallHandler", "namespacejsonrpc_1_1endpoint.html#a72855eb2a9497623864731bfeecf4e43", null ],
     [ "NotificationHandler", "namespacejsonrpc_1_1endpoint.html#a0e1ed6cc8bdd42d59dbd41ae9d20a5a7", null ],

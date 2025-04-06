@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['errorhandler_0',['ErrorHandler',['../namespacejsonrpc_1_1endpoint.html#ad5f4eeee8d842f6f0fb8ec293aa0069d',1,'jsonrpc::endpoint']]]
+  ['handler_0',['Handler',['../namespacejsonrpc_1_1endpoint.html#abe1afdee88ee6cd87b6a0e88fdf950dc',1,'jsonrpc::endpoint']]]
 ];

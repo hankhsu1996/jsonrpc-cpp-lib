@@ -152,7 +152,7 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aeded22734248d9dd10743262102673fc" id="r_aeded22734248d9dd10743262102673fc"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeded22734248d9dd10743262102673fc">FromJson</a> (const nlohmann::json &amp;json_obj) -&gt; std::expected&lt; <a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html">Request</a>, <a class="el" href="structjsonrpc_1_1error_1_1RpcError.html">error::RpcError</a> &gt;</td></tr>
+<tr class="memitem:aeded22734248d9dd10743262102673fc" id="r_aeded22734248d9dd10743262102673fc"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeded22734248d9dd10743262102673fc">FromJson</a> (const nlohmann::json &amp;json_obj) -&gt; std::expected&lt; <a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html">Request</a>, <a class="el" href="classjsonrpc_1_1error_1_1RpcError.html">error::RpcError</a> &gt;</td></tr>
 <tr class="separator:aeded22734248d9dd10743262102673fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -299,7 +299,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">auto jsonrpc::endpoint::Request::FromJson </td>
           <td>(</td>
           <td class="paramtype">const nlohmann::json &amp;</td>          <td class="paramname"><span class="paramname"><em>json_obj</em></span></td><td>)</td>
-          <td> -&gt; std::expected&lt;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html">Request</a>, <a class="el" href="structjsonrpc_1_1error_1_1RpcError.html">error::RpcError</a>&gt;</td>
+          <td> -&gt; std::expected&lt;<a class="el" href="classjsonrpc_1_1endpoint_1_1Request.html">Request</a>, <a class="el" href="classjsonrpc_1_1error_1_1RpcError.html">error::RpcError</a>&gt;</td>
         </tr>
       </table>
   </td>
@@ -311,22 +311,22 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="request_8cpp_source.html#l00031">31</a> of file <a class="el" href="request_8cpp_source.html">request.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>                                           {</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keyword">using </span><a class="code hl_enumeration" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916">error::ErrorCode</a>;</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keyword">using </span>error::RpcError;</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keyword">using </span>error::RpcError;</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keyword">using </span><a class="code hl_enumeration" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496e">error::RpcErrorCode</a>;</div>
 <div class="line"><span class="lineno">   35</span> </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (!json_obj.is_object()) {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span> std::unexpected(</div>
-<div class="line"><span class="lineno">   38</span>        RpcError{ErrorCode::kInvalidRequest, <span class="stringliteral">&quot;Request must be a JSON object&quot;</span>});</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">   38</span>        RpcErrorCode::kInvalidRequest, <span class="stringliteral">&quot;Request must be a JSON object&quot;</span>);</div>
 <div class="line"><span class="lineno">   39</span>  }</div>
 <div class="line"><span class="lineno">   40</span> </div>
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">if</span> (!json_obj.contains(<span class="stringliteral">&quot;jsonrpc&quot;</span>) || json_obj[<span class="stringliteral">&quot;jsonrpc&quot;</span>] != <a class="code hl_variable" href="namespacejsonrpc_1_1endpoint.html#a7f0e2e6c3174ba320dab909a312b3a1f">kJsonRpcVersion</a>) {</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> std::unexpected(RpcError{</div>
-<div class="line"><span class="lineno">   43</span>        ErrorCode::kInvalidRequest, <span class="stringliteral">&quot;Missing or invalid &#39;jsonrpc&#39; version&quot;</span>});</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">   43</span>        RpcErrorCode::kInvalidRequest, <span class="stringliteral">&quot;Missing or invalid &#39;jsonrpc&#39; version&quot;</span>);</div>
 <div class="line"><span class="lineno">   44</span>  }</div>
 <div class="line"><span class="lineno">   45</span> </div>
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> (!json_obj.contains(<span class="stringliteral">&quot;method&quot;</span>) || !json_obj[<span class="stringliteral">&quot;method&quot;</span>].is_string()) {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> std::unexpected(</div>
-<div class="line"><span class="lineno">   48</span>        RpcError{ErrorCode::kInvalidRequest, <span class="stringliteral">&quot;Missing or invalid &#39;method&#39;&quot;</span>});</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">   48</span>        RpcErrorCode::kInvalidRequest, <span class="stringliteral">&quot;Missing or invalid &#39;method&#39;&quot;</span>);</div>
 <div class="line"><span class="lineno">   49</span>  }</div>
 <div class="line"><span class="lineno">   50</span> </div>
 <div class="line"><span class="lineno">   51</span>  <span class="keyword">auto</span> method = json_obj[<span class="stringliteral">&quot;method&quot;</span>].get&lt;std::string&gt;();</div>
@@ -337,9 +337,9 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>  <span class="keywordflow">if</span> (json_obj.contains(<span class="stringliteral">&quot;params&quot;</span>)) {</div>
 <div class="line"><span class="lineno">   57</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; p = json_obj[<span class="stringliteral">&quot;params&quot;</span>];</div>
 <div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (!p.is_array() &amp;&amp; !p.is_object() &amp;&amp; !p.is_null()) {</div>
-<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">return</span> std::unexpected(RpcError{</div>
-<div class="line"><span class="lineno">   60</span>          ErrorCode::kInvalidRequest,</div>
-<div class="line"><span class="lineno">   61</span>          <span class="stringliteral">&quot;&#39;params&#39; must be object, array, or null&quot;</span>});</div>
+<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">   60</span>          RpcErrorCode::kInvalidRequest,</div>
+<div class="line"><span class="lineno">   61</span>          <span class="stringliteral">&quot;&#39;params&#39; must be object, array, or null&quot;</span>);</div>
 <div class="line"><span class="lineno">   62</span>    }</div>
 <div class="line"><span class="lineno">   63</span>  }</div>
 <div class="line"><span class="lineno">   64</span> </div>
@@ -349,8 +349,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   68</span> </div>
 <div class="line"><span class="lineno">   69</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; id_json = json_obj[<span class="stringliteral">&quot;id&quot;</span>];</div>
 <div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (!id_json.is_string() &amp;&amp; !id_json.is_number_integer()) {</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> std::unexpected(</div>
-<div class="line"><span class="lineno">   72</span>        RpcError{ErrorCode::kInvalidRequest, <span class="stringliteral">&quot;Invalid &#39;id&#39; type&quot;</span>});</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">   72</span>        RpcErrorCode::kInvalidRequest, <span class="stringliteral">&quot;Invalid &#39;id&#39; type&quot;</span>);</div>
 <div class="line"><span class="lineno">   73</span>  }</div>
 <div class="line"><span class="lineno">   74</span> </div>
 <div class="line"><span class="lineno">   75</span>  <a class="code hl_typedef" href="namespacejsonrpc_1_1endpoint.html#a7820fe3ffe99ddbd431a8d25c012a113">RequestId</a> id;</div>
@@ -363,13 +363,19 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   82</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="#a85a554ca354958606a3419da6f8804c9">Request</a>(std::move(method), std::move(params), std::move(<span class="keywordtype">id</span>));</div>
 <div class="line"><span class="lineno">   83</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Request_html_a85a554ca354958606a3419da6f8804c9"><div class="ttname"><a href="#a85a554ca354958606a3419da6f8804c9">jsonrpc::endpoint::Request::Request</a></div><div class="ttdeci">Request(std::string method, std::optional&lt; nlohmann::json &gt; params, const std::function&lt; RequestId()&gt; &amp;id_generator)</div><div class="ttdef"><b>Definition</b> <a href="request_8cpp_source.html#l00008">request.cpp:8</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_af6c693a01e31520716999275a48b73fb"><div class="ttname"><a href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">jsonrpc::error::RpcError::UnexpectedFromCode</a></div><div class="ttdeci">static auto UnexpectedFromCode(RpcErrorCode code, std::string message=&quot;&quot;) -&gt; std::unexpected&lt; RpcError &gt;</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00091">error.hpp:91</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a7820fe3ffe99ddbd431a8d25c012a113"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a7820fe3ffe99ddbd431a8d25c012a113">jsonrpc::endpoint::RequestId</a></div><div class="ttdeci">std::variant&lt; int64_t, std::string &gt; RequestId</div><div class="ttdef"><b>Definition</b> <a href="types_8hpp_source.html#l00015">types.hpp:15</a></div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1endpoint_html_a7f0e2e6c3174ba320dab909a312b3a1f"><div class="ttname"><a href="namespacejsonrpc_1_1endpoint.html#a7f0e2e6c3174ba320dab909a312b3a1f">jsonrpc::endpoint::kJsonRpcVersion</a></div><div class="ttdeci">constexpr std::string_view kJsonRpcVersion</div><div class="ttdef"><b>Definition</b> <a href="types_8hpp_source.html#l00013">types.hpp:13</a></div></div>
-<div class="ttc" id="anamespacejsonrpc_1_1error_html_a77c9a738884664b5fa3529818c7d9916"><div class="ttname"><a href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916">jsonrpc::error::ErrorCode</a></div><div class="ttdeci">ErrorCode</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00011">error.hpp:11</a></div></div>
+<div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496e"><div class="ttname"><a href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496e">jsonrpc::error::RpcErrorCode</a></div><div class="ttdeci">RpcErrorCode</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00010">error.hpp:10</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="types_8hpp_source.html#l00013">jsonrpc::endpoint::kJsonRpcVersion</a>.</p>
+<p class="reference">References <a class="el" href="types_8hpp_source.html#l00013">jsonrpc::endpoint::kJsonRpcVersion</a>, and <a class="el" href="error_8hpp_source.html#l00091">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="dispatcher_8cpp_source.html#l00027">jsonrpc::endpoint::Dispatcher::DispatchRequest()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1Request_aeded22734248d9dd10743262102673fc_cgraph.svg" width="595" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -574,7 +580,7 @@ Here is the caller graph for this function:</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="types_8hpp_source.html#l00013">jsonrpc::endpoint::kJsonRpcVersion</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00108">jsonrpc::endpoint::RpcEndpoint::SendMethodCall()</a>, and <a class="el" href="endpoint_8cpp_source.html#l00139">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00108">jsonrpc::endpoint::RpcEndpoint::SendMethodCall()</a>, and <a class="el" href="endpoint_8cpp_source.html#l00141">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

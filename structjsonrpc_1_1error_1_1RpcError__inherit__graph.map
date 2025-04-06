@@ -1,9 +1,0 @@
-<map id="jsonrpc::error::RpcError" name="jsonrpc::error::RpcError">
-<area shape="rect" id="Node000001" title=" " alt="" coords="217,5,379,111"/>
-<area shape="rect" id="Node000002" href="$structjsonrpc_1_1error_1_1ClientError.html" title=" " alt="" coords="5,176,183,241"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,121,139,178,136,174,215,117"/>
-<area shape="rect" id="Node000003" href="$structjsonrpc_1_1error_1_1ServerError.html" title=" " alt="" coords="207,176,389,241"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="301,124,301,176,295,176,295,124"/>
-<area shape="rect" id="Node000004" href="$structjsonrpc_1_1error_1_1TransportError.html" title=" " alt="" coords="413,159,581,259"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="379,117,433,156,430,161,376,121"/>
-</map>

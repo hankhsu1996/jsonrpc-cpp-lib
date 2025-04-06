@@ -5,6 +5,7 @@ var searchData=
   ['jsonrpc_2',['jsonrpc',['../namespacejsonrpc.html',1,'']]],
   ['jsonrpc_3a_3aendpoint_3',['endpoint',['../namespacejsonrpc_1_1endpoint.html',1,'jsonrpc']]],
   ['jsonrpc_3a_3aerror_4',['error',['../namespacejsonrpc_1_1error.html',1,'jsonrpc']]],
-  ['jsonrpc_3a_3atransport_5',['transport',['../namespacejsonrpc_1_1transport.html',1,'jsonrpc']]],
-  ['jsonrpc_3a_3autils_6',['utils',['../namespacejsonrpc_1_1utils.html',1,'jsonrpc']]]
+  ['jsonrpc_3a_3aerror_3a_3adetail_5',['detail',['../namespacejsonrpc_1_1error_1_1detail.html',1,'jsonrpc::error']]],
+  ['jsonrpc_3a_3atransport_6',['transport',['../namespacejsonrpc_1_1transport.html',1,'jsonrpc']]],
+  ['jsonrpc_3a_3autils_7',['utils',['../namespacejsonrpc_1_1utils.html',1,'jsonrpc']]]
 ];

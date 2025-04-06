@@ -2,7 +2,7 @@ var searchData=
 [
   ['database_0',['Compilation Database',['../index.html#autotoc_md17',1,'']]],
   ['debug_20configuration_1',['Optional: Debug Configuration',['../index.html#autotoc_md15',1,'']]],
-  ['defaultmessagefor_2',['DefaultMessageFor',['../namespacejsonrpc_1_1error.html#a82529e81c244fc0e808d33525d5bdaf4',1,'jsonrpc::error']]],
+  ['defaultmessagefor_2',['DefaultMessageFor',['../namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383',1,'jsonrpc::error::detail']]],
   ['deframeresult_3',['DeframeResult',['../structjsonrpc_1_1transport_1_1MessageFramer_1_1DeframeResult.html',1,'jsonrpc::transport::MessageFramer']]],
   ['dependency_20fetchcontent_4',['A. As a Build-Time Dependency (FetchContent)',['../index.html#autotoc_md7',1,'']]],
   ['developer_20guide_5',['Developer Guide',['../index.html#autotoc_md12',1,'']]],

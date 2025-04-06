@@ -122,12 +122,11 @@ $(function(){initNavTree('error_8hpp.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><code>#include &lt;expected&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-<code>#include &lt;system_error&gt;</code><br />
 <code>#include &lt;nlohmann/json.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for error.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="error_8hpp__incl.svg" width="480" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="error_8hpp__incl.svg" width="347" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -139,13 +138,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjsonrpc_1_1error_1_1RpcError.html">jsonrpc::error::RpcError</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjsonrpc_1_1error_1_1TransportError.html">jsonrpc::error::TransportError</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjsonrpc_1_1error_1_1ClientError.html">jsonrpc::error::ClientError</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjsonrpc_1_1error_1_1ServerError.html">jsonrpc::error::ServerError</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1error_1_1RpcError.html">jsonrpc::error::RpcError</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -154,35 +147,33 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error.html">jsonrpc::error</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error_1_1detail.html">jsonrpc::error::detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a77c9a738884664b5fa3529818c7d9916" id="r_a77c9a738884664b5fa3529818c7d9916"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916">jsonrpc::error::ErrorCode</a> { <br />
-&#160;&#160;<a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916a70bc2f6598437e307b2b8d35f1c49a18">jsonrpc::error::kParseError</a> = -32700
-, <a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916a6c4ae9ad285a625b8bfdc0a62e289f6e">jsonrpc::error::kInvalidRequest</a> = -32600
-, <a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916aa0fcc6e288e7806a406405f780cdaf0f">jsonrpc::error::kMethodNotFound</a> = -32601
-, <a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916a71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::error::kInvalidParams</a> = -32602
+<tr class="memitem:ad1943c3839a0a47773023a566017496e" id="r_ad1943c3839a0a47773023a566017496e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496e">jsonrpc::error::RpcErrorCode</a> { <br />
+&#160;&#160;<a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea70bc2f6598437e307b2b8d35f1c49a18">jsonrpc::error::kParseError</a> = -32700
+, <a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea6c4ae9ad285a625b8bfdc0a62e289f6e">jsonrpc::error::kInvalidRequest</a> = -32600
+, <a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496eaa0fcc6e288e7806a406405f780cdaf0f">jsonrpc::error::kMethodNotFound</a> = -32601
+, <a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::error::kInvalidParams</a> = -32602
 , <br />
-&#160;&#160;<a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916afcd417a134c251034b0d61b07c826394">jsonrpc::error::kInternalError</a> = -32603
-, <a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916ac0743fba36fbd100b50c78be97655ae8">jsonrpc::error::kServerError</a> = -32000
-, <a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916adbe4fbec4b2cb2c2709a455206fed67f">jsonrpc::error::kTransportError</a> = -32010
-, <a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916a39a70ca912cee0eb36eb375f25c2fca6">jsonrpc::error::kTimeoutError</a> = -32001
+&#160;&#160;<a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496eafcd417a134c251034b0d61b07c826394">jsonrpc::error::kInternalError</a> = -32603
+, <a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496eac0743fba36fbd100b50c78be97655ae8">jsonrpc::error::kServerError</a> = -32000
+, <a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f">jsonrpc::error::kTransportError</a> = -32010
+, <a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6">jsonrpc::error::kTimeoutError</a> = -32001
 , <br />
-&#160;&#160;<a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916a3c0bdd652e1f7f374b97b9e730cb7338">jsonrpc::error::kClientError</a> = -32099
+&#160;&#160;<a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338">jsonrpc::error::kClientError</a> = -32099
 <br />
  }</td></tr>
-<tr class="separator:a77c9a738884664b5fa3529818c7d9916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ad1943c3839a0a47773023a566017496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a82529e81c244fc0e808d33525d5bdaf4" id="r_a82529e81c244fc0e808d33525d5bdaf4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error.html#a82529e81c244fc0e808d33525d5bdaf4">jsonrpc::error::DefaultMessageFor</a> (<a class="el" href="namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916">ErrorCode</a> code) -&gt; std::string_view</td></tr>
-<tr class="separator:a82529e81c244fc0e808d33525d5bdaf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eee4bf05668aeea551a7ca00cf27d14" id="r_a8eee4bf05668aeea551a7ca00cf27d14"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error.html#a8eee4bf05668aeea551a7ca00cf27d14">jsonrpc::error::CreateTransportError</a> (std::string message, std::error_code ec={}) -&gt; std::unexpected&lt; <a class="el" href="structjsonrpc_1_1error_1_1TransportError.html">TransportError</a> &gt;</td></tr>
-<tr class="separator:a8eee4bf05668aeea551a7ca00cf27d14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a807ed9a7bbe402126dcb6b232682bb40" id="r_a807ed9a7bbe402126dcb6b232682bb40"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error.html#a807ed9a7bbe402126dcb6b232682bb40">jsonrpc::error::CreateServerError</a> (std::string message=&quot;Server error&quot;) -&gt; std::unexpected&lt; <a class="el" href="structjsonrpc_1_1error_1_1ServerError.html">ServerError</a> &gt;</td></tr>
-<tr class="separator:a807ed9a7bbe402126dcb6b232682bb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f17280db2e160bcf8436db1f0512d10" id="r_a9f17280db2e160bcf8436db1f0512d10"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error.html#a9f17280db2e160bcf8436db1f0512d10">jsonrpc::error::CreateClientError</a> (std::string message=&quot;Client error&quot;) -&gt; std::unexpected&lt; <a class="el" href="structjsonrpc_1_1error_1_1ClientError.html">ClientError</a> &gt;</td></tr>
-<tr class="separator:a9f17280db2e160bcf8436db1f0512d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae1fee218c1f2c4f51e7f029be8b0383" id="r_aae1fee218c1f2c4f51e7f029be8b0383"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383">jsonrpc::error::detail::DefaultMessageFor</a> (<a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496e">RpcErrorCode</a> code) -&gt; std::string_view</td></tr>
+<tr class="separator:aae1fee218c1f2c4f51e7f029be8b0383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a971cc68c72af7eff146b690d223af984" id="r_a971cc68c72af7eff146b690d223af984"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejsonrpc_1_1error.html#a971cc68c72af7eff146b690d223af984">jsonrpc::error::Ok</a> () -&gt; std::expected&lt; void, <a class="el" href="classjsonrpc_1_1error_1_1RpcError.html">RpcError</a> &gt;</td></tr>
+<tr class="separator:a971cc68c72af7eff146b690d223af984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,22 +1,17 @@
 var error_8hpp =
 [
-    [ "jsonrpc::error::RpcError", "structjsonrpc_1_1error_1_1RpcError.html", "structjsonrpc_1_1error_1_1RpcError" ],
-    [ "jsonrpc::error::TransportError", "structjsonrpc_1_1error_1_1TransportError.html", "structjsonrpc_1_1error_1_1TransportError" ],
-    [ "jsonrpc::error::ClientError", "structjsonrpc_1_1error_1_1ClientError.html", "structjsonrpc_1_1error_1_1ClientError" ],
-    [ "jsonrpc::error::ServerError", "structjsonrpc_1_1error_1_1ServerError.html", "structjsonrpc_1_1error_1_1ServerError" ],
-    [ "ErrorCode", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916", [
-      [ "kParseError", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916a70bc2f6598437e307b2b8d35f1c49a18", null ],
-      [ "kInvalidRequest", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916a6c4ae9ad285a625b8bfdc0a62e289f6e", null ],
-      [ "kMethodNotFound", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916aa0fcc6e288e7806a406405f780cdaf0f", null ],
-      [ "kInvalidParams", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916a71aef956fd9cddbf4828a62cdb0e0054", null ],
-      [ "kInternalError", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916afcd417a134c251034b0d61b07c826394", null ],
-      [ "kServerError", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916ac0743fba36fbd100b50c78be97655ae8", null ],
-      [ "kTransportError", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916adbe4fbec4b2cb2c2709a455206fed67f", null ],
-      [ "kTimeoutError", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916a39a70ca912cee0eb36eb375f25c2fca6", null ],
-      [ "kClientError", "error_8hpp.html#a77c9a738884664b5fa3529818c7d9916a3c0bdd652e1f7f374b97b9e730cb7338", null ]
+    [ "jsonrpc::error::RpcError", "classjsonrpc_1_1error_1_1RpcError.html", "classjsonrpc_1_1error_1_1RpcError" ],
+    [ "RpcErrorCode", "error_8hpp.html#ad1943c3839a0a47773023a566017496e", [
+      [ "kParseError", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea70bc2f6598437e307b2b8d35f1c49a18", null ],
+      [ "kInvalidRequest", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea6c4ae9ad285a625b8bfdc0a62e289f6e", null ],
+      [ "kMethodNotFound", "error_8hpp.html#ad1943c3839a0a47773023a566017496eaa0fcc6e288e7806a406405f780cdaf0f", null ],
+      [ "kInvalidParams", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea71aef956fd9cddbf4828a62cdb0e0054", null ],
+      [ "kInternalError", "error_8hpp.html#ad1943c3839a0a47773023a566017496eafcd417a134c251034b0d61b07c826394", null ],
+      [ "kServerError", "error_8hpp.html#ad1943c3839a0a47773023a566017496eac0743fba36fbd100b50c78be97655ae8", null ],
+      [ "kTransportError", "error_8hpp.html#ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f", null ],
+      [ "kTimeoutError", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6", null ],
+      [ "kClientError", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338", null ]
     ] ],
-    [ "CreateClientError", "error_8hpp.html#a9f17280db2e160bcf8436db1f0512d10", null ],
-    [ "CreateServerError", "error_8hpp.html#a807ed9a7bbe402126dcb6b232682bb40", null ],
-    [ "CreateTransportError", "error_8hpp.html#a8eee4bf05668aeea551a7ca00cf27d14", null ],
-    [ "DefaultMessageFor", "error_8hpp.html#a82529e81c244fc0e808d33525d5bdaf4", null ]
+    [ "DefaultMessageFor", "error_8hpp.html#aae1fee218c1f2c4f51e7f029be8b0383", null ],
+    [ "Ok", "error_8hpp.html#a971cc68c72af7eff146b690d223af984", null ]
 ];

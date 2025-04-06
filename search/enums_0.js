@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['errorcode_0',['ErrorCode',['../namespacejsonrpc_1_1error.html#a77c9a738884664b5fa3529818c7d9916',1,'jsonrpc::error']]]
+  ['rpcerrorcode_0',['RpcErrorCode',['../namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496e',1,'jsonrpc::error']]]
 ];

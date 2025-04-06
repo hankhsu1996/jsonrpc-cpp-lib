@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['clienterror_0',['ClientError',['../structjsonrpc_1_1error_1_1ClientError.html',1,'jsonrpc::error']]]
+  ['deframeresult_0',['DeframeResult',['../structjsonrpc_1_1transport_1_1MessageFramer_1_1DeframeResult.html',1,'jsonrpc::transport::MessageFramer']]],
+  ['dispatcher_1',['Dispatcher',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html',1,'jsonrpc::endpoint']]]
 ];

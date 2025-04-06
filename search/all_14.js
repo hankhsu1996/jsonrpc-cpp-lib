@@ -17,5 +17,6 @@ var searchData=
   ['rpc_202_200_20modern_20c_20library_14',['JSON-RPC 2.0 Modern C++ Library',['../index.html',1,'']]],
   ['rpc_20client_20and_20server_15',['Creating a JSON-RPC Client and Server',['../index.html#autotoc_md11',1,'']]],
   ['rpcendpoint_16',['RpcEndpoint',['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html',1,'jsonrpc::endpoint::RpcEndpoint'],['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a4acd1cc8a4f08518b01df7a1bd5947e2',1,'jsonrpc::endpoint::RpcEndpoint::RpcEndpoint(asio::any_io_executor executor, std::unique_ptr&lt; transport::Transport &gt; transport)'],['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a87e00ed72fe74f85e192c3971367018c',1,'jsonrpc::endpoint::RpcEndpoint::RpcEndpoint(const RpcEndpoint &amp;)=delete'],['../classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab25e43f6a488a5dd4fb93671a1696c7e',1,'jsonrpc::endpoint::RpcEndpoint::RpcEndpoint(RpcEndpoint &amp;&amp;)=delete']]],
-  ['rpcerror_17',['RpcError',['../structjsonrpc_1_1error_1_1RpcError.html',1,'jsonrpc::error::RpcError'],['../structjsonrpc_1_1error_1_1RpcError.html#a877840a800be9f1008a24dad0c1b736c',1,'jsonrpc::error::RpcError::RpcError()']]]
+  ['rpcerror_17',['RpcError',['../classjsonrpc_1_1error_1_1RpcError.html',1,'jsonrpc::error::RpcError'],['../classjsonrpc_1_1error_1_1RpcError.html#aef9c4c8109aa31b1bedf66aa8a2bc375',1,'jsonrpc::error::RpcError::RpcError()']]],
+  ['rpcerrorcode_18',['RpcErrorCode',['../namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496e',1,'jsonrpc::error']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['methodcallhandler_0',['MethodCallHandler',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a3a3802aa9defd66e5fca9f8236d72a19',1,'jsonrpc::endpoint::Dispatcher::MethodCallHandler'],['../namespacejsonrpc_1_1endpoint.html#a72855eb2a9497623864731bfeecf4e43',1,'jsonrpc::endpoint::MethodCallHandler']]]
+  ['notificationhandler_0',['NotificationHandler',['../classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59ec448d0eeb1c0515ada640b55ed273',1,'jsonrpc::endpoint::Dispatcher::NotificationHandler'],['../namespacejsonrpc_1_1endpoint.html#a0e1ed6cc8bdd42d59dbd41ae9d20a5a7',1,'jsonrpc::endpoint::NotificationHandler']]]
 ];

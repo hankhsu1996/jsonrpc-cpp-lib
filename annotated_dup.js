@@ -11,10 +11,7 @@ var annotated_dup =
         [ "TypedNotificationHandler", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler" ]
       ] ],
       [ "error", "namespacejsonrpc_1_1error.html", [
-        [ "ClientError", "structjsonrpc_1_1error_1_1ClientError.html", "structjsonrpc_1_1error_1_1ClientError" ],
-        [ "RpcError", "structjsonrpc_1_1error_1_1RpcError.html", "structjsonrpc_1_1error_1_1RpcError" ],
-        [ "ServerError", "structjsonrpc_1_1error_1_1ServerError.html", "structjsonrpc_1_1error_1_1ServerError" ],
-        [ "TransportError", "structjsonrpc_1_1error_1_1TransportError.html", "structjsonrpc_1_1error_1_1TransportError" ]
+        [ "RpcError", "classjsonrpc_1_1error_1_1RpcError.html", "classjsonrpc_1_1error_1_1RpcError" ]
       ] ],
       [ "transport", "namespacejsonrpc_1_1transport.html", [
         [ "FramedPipeTransport", "classjsonrpc_1_1transport_1_1FramedPipeTransport.html", "classjsonrpc_1_1transport_1_1FramedPipeTransport" ],

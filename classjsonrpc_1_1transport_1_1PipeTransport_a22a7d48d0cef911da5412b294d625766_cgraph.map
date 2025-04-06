@@ -1,5 +1,9 @@
 <map id="jsonrpc::transport::PipeTransport::RemoveExistingSocketFile" name="jsonrpc::transport::PipeTransport::RemoveExistingSocketFile">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,237,60"/>
-<area shape="rect" id="Node000002" href="$namespacejsonrpc_1_1error.html#a8eee4bf05668aeea551a7ca00cf27d14" title=" " alt="" coords="285,13,504,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,30,272,30,272,35,237,35"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,30,237,85"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb" title=" " alt="" coords="285,37,460,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,55,272,55,272,60,238,60"/>
+<area shape="rect" id="Node000003" href="$namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383" title=" " alt="" coords="515,5,671,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="460,42,501,36,502,41,461,47"/>
+<area shape="rect" id="Node000004" href="$classjsonrpc_1_1error_1_1RpcError.html#aef9c4c8109aa31b1bedf66aa8a2bc375" title=" " alt="" coords="508,69,679,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="461,67,495,72,494,78,460,73"/>
 </map>

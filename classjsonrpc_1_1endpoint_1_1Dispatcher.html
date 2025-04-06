@@ -318,63 +318,64 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dispatcher_8cpp_source.html#l00027">27</a> of file <a class="el" href="dispatcher_8cpp_source.html">dispatcher.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   28</span>                                             {</div>
-<div class="line"><span class="lineno">   29</span>  nlohmann::json root;</div>
-<div class="line"><span class="lineno">   30</span>  root = nlohmann::json::parse(request, <span class="keyword">nullptr</span>, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">if</span> (root.is_discarded()) {</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a778d4578d7bbc5d687c5f4b21ac1ea13">Response::CreateError</a>(ErrorCode::kParseError).ToJson().dump();</div>
-<div class="line"><span class="lineno">   33</span>  }</div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>  <span class="comment">// Single request</span></div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (root.is_object()) {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keyword">auto</span> request = <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Request.html#aeded22734248d9dd10743262102673fc">Request::FromJson</a>(root);</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (!request.has_value()) {</div>
-<div class="line"><span class="lineno">   39</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a778d4578d7bbc5d687c5f4b21ac1ea13">Response::CreateError</a>(request.error()).ToJson().dump();</div>
-<div class="line"><span class="lineno">   40</span>    }</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    <span class="keyword">auto</span> response = <span class="keyword">co_await</span> DispatchSingleRequest(request.value());</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> (response.has_value()) {</div>
-<div class="line"><span class="lineno">   44</span>      <span class="keyword">co_return</span> response.value().ToJson().dump();</div>
-<div class="line"><span class="lineno">   45</span>    }</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keyword">co_return</span> std::nullopt;</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <span class="comment">// Batch request</span></div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> (root.is_array()) {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (root.empty()) {</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a778d4578d7bbc5d687c5f4b21ac1ea13">Response::CreateError</a>(ErrorCode::kInvalidRequest)</div>
-<div class="line"><span class="lineno">   53</span>          .ToJson()</div>
-<div class="line"><span class="lineno">   54</span>          .dump();</div>
-<div class="line"><span class="lineno">   55</span>    }</div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>    std::vector&lt;Request&gt; requests;</div>
-<div class="line"><span class="lineno">   58</span>    std::vector&lt;Response&gt; responses;</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; element : root) {</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keyword">auto</span> request = <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Request.html#aeded22734248d9dd10743262102673fc">Request::FromJson</a>(element);</div>
-<div class="line"><span class="lineno">   61</span>      <span class="keywordflow">if</span> (!request.has_value()) {</div>
-<div class="line"><span class="lineno">   62</span>        responses.push_back(<a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a778d4578d7bbc5d687c5f4b21ac1ea13">Response::CreateError</a>(request.error()));</div>
-<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   64</span>      }</div>
-<div class="line"><span class="lineno">   65</span>      requests.push_back(request.value());</div>
-<div class="line"><span class="lineno">   66</span>    }</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>    <span class="keyword">auto</span> dispatched = <span class="keyword">co_await</span> DispatchBatchRequest(requests);</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; response : dispatched) {</div>
-<div class="line"><span class="lineno">   70</span>      responses.push_back(response);</div>
-<div class="line"><span class="lineno">   71</span>    }</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>    <span class="keyword">co_return</span> nlohmann::json(responses).dump();</div>
-<div class="line"><span class="lineno">   74</span>  }</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a778d4578d7bbc5d687c5f4b21ac1ea13">Response::CreateError</a>(ErrorCode::kInvalidRequest).ToJson().dump();</div>
-<div class="line"><span class="lineno">   77</span>}</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keyword">auto</span> root = nlohmann::json::parse(request, <span class="keyword">nullptr</span>, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (root.is_discarded()) {</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a1fb087a9e11568a9de167be16156d8f1">Response::CreateError</a>(RpcErrorCode::kParseError).ToJson().dump();</div>
+<div class="line"><span class="lineno">   32</span>  }</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>  <span class="comment">// Single request</span></div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (root.is_object()) {</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keyword">auto</span> request = <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Request.html#aeded22734248d9dd10743262102673fc">Request::FromJson</a>(root);</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> (!request.has_value()) {</div>
+<div class="line"><span class="lineno">   38</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a1fb087a9e11568a9de167be16156d8f1">Response::CreateError</a>(request.error()).ToJson().dump();</div>
+<div class="line"><span class="lineno">   39</span>    }</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>    <span class="keyword">auto</span> response = <span class="keyword">co_await</span> DispatchSingleRequest(request.value());</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> (response.has_value()) {</div>
+<div class="line"><span class="lineno">   43</span>      <span class="keyword">co_return</span> response.value().ToJson().dump();</div>
+<div class="line"><span class="lineno">   44</span>    }</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keyword">co_return</span> std::nullopt;</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="comment">// Batch request</span></div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (root.is_array()) {</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> (root.empty()) {</div>
+<div class="line"><span class="lineno">   51</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a1fb087a9e11568a9de167be16156d8f1">Response::CreateError</a>(RpcErrorCode::kInvalidRequest)</div>
+<div class="line"><span class="lineno">   52</span>          .ToJson()</div>
+<div class="line"><span class="lineno">   53</span>          .dump();</div>
+<div class="line"><span class="lineno">   54</span>    }</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>    std::vector&lt;Request&gt; requests;</div>
+<div class="line"><span class="lineno">   57</span>    std::vector&lt;Response&gt; responses;</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; element : root) {</div>
+<div class="line"><span class="lineno">   59</span>      <span class="keyword">auto</span> request = <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Request.html#aeded22734248d9dd10743262102673fc">Request::FromJson</a>(element);</div>
+<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">if</span> (!request.has_value()) {</div>
+<div class="line"><span class="lineno">   61</span>        responses.push_back(<a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a1fb087a9e11568a9de167be16156d8f1">Response::CreateError</a>(request.error()));</div>
+<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   63</span>      }</div>
+<div class="line"><span class="lineno">   64</span>      requests.push_back(request.value());</div>
+<div class="line"><span class="lineno">   65</span>    }</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>    <span class="keyword">auto</span> dispatched = <span class="keyword">co_await</span> DispatchBatchRequest(requests);</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; response : dispatched) {</div>
+<div class="line"><span class="lineno">   69</span>      responses.push_back(response);</div>
+<div class="line"><span class="lineno">   70</span>    }</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    <span class="keyword">co_return</span> nlohmann::json(responses).dump();</div>
+<div class="line"><span class="lineno">   73</span>  }</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>  <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1endpoint_1_1Response.html#a1fb087a9e11568a9de167be16156d8f1">Response::CreateError</a>(RpcErrorCode::kInvalidRequest)</div>
+<div class="line"><span class="lineno">   76</span>      .ToJson()</div>
+<div class="line"><span class="lineno">   77</span>      .dump();</div>
+<div class="line"><span class="lineno">   78</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Request_html_aeded22734248d9dd10743262102673fc"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Request.html#aeded22734248d9dd10743262102673fc">jsonrpc::endpoint::Request::FromJson</a></div><div class="ttdeci">static auto FromJson(const nlohmann::json &amp;json_obj) -&gt; std::expected&lt; Request, error::RpcError &gt;</div><div class="ttdef"><b>Definition</b> <a href="request_8cpp_source.html#l00031">request.cpp:31</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Response_html_a778d4578d7bbc5d687c5f4b21ac1ea13"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Response.html#a778d4578d7bbc5d687c5f4b21ac1ea13">jsonrpc::endpoint::Response::CreateError</a></div><div class="ttdeci">static auto CreateError(ErrorCode code, const std::optional&lt; RequestId &gt; &amp;id=std::nullopt) -&gt; Response</div><div class="ttdef"><b>Definition</b> <a href="response_8cpp_source.html#l00028">response.cpp:28</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1Response_html_a1fb087a9e11568a9de167be16156d8f1"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1Response.html#a1fb087a9e11568a9de167be16156d8f1">jsonrpc::endpoint::Response::CreateError</a></div><div class="ttdeci">static auto CreateError(RpcErrorCode code, const std::optional&lt; RequestId &gt; &amp;id=std::nullopt) -&gt; Response</div><div class="ttdef"><b>Definition</b> <a href="response_8cpp_source.html#l00028">response.cpp:28</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="response_8cpp_source.html#l00028">jsonrpc::endpoint::Response::CreateError()</a>, and <a class="el" href="request_8cpp_source.html#l00031">jsonrpc::endpoint::Request::FromJson()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1Dispatcher_a59f23de0593ce9999f3e07e70b6e1ab5_cgraph.svg" width="436" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1Dispatcher_a59f23de0593ce9999f3e07e70b6e1ab5_cgraph.svg" width="878" height="243"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -453,7 +454,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   19</span>  method_handlers_[method] = handler;</div>
 <div class="line"><span class="lineno">   20</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00160">jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00162">jsonrpc::endpoint::RpcEndpoint::RegisterMethodCall()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -486,7 +487,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">   24</span>  notification_handlers_[method] = handler;</div>
 <div class="line"><span class="lineno">   25</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00165">jsonrpc::endpoint::RpcEndpoint::RegisterNotification()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="endpoint_8cpp_source.html#l00167">jsonrpc::endpoint::RpcEndpoint::RegisterNotification()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

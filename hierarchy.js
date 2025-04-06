@@ -8,11 +8,7 @@ var hierarchy =
     [ "jsonrpc::endpoint::Request", "classjsonrpc_1_1endpoint_1_1Request.html", null ],
     [ "jsonrpc::endpoint::Response", "classjsonrpc_1_1endpoint_1_1Response.html", null ],
     [ "jsonrpc::endpoint::RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html", null ],
-    [ "jsonrpc::error::RpcError", "structjsonrpc_1_1error_1_1RpcError.html", [
-      [ "jsonrpc::error::ClientError", "structjsonrpc_1_1error_1_1ClientError.html", null ],
-      [ "jsonrpc::error::ServerError", "structjsonrpc_1_1error_1_1ServerError.html", null ],
-      [ "jsonrpc::error::TransportError", "structjsonrpc_1_1error_1_1TransportError.html", null ]
-    ] ],
+    [ "jsonrpc::error::RpcError", "classjsonrpc_1_1error_1_1RpcError.html", null ],
     [ "jsonrpc::transport::Transport", "classjsonrpc_1_1transport_1_1Transport.html", [
       [ "jsonrpc::transport::PipeTransport", "classjsonrpc_1_1transport_1_1PipeTransport.html", [
         [ "jsonrpc::transport::FramedPipeTransport", "classjsonrpc_1_1transport_1_1FramedPipeTransport.html", null ]
