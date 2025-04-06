@@ -117,7 +117,7 @@ auto RpcEndpoint::SendMethodCall(
   Request request(method, std::move(params), request_id);
   std::string message = request.ToJson().dump();
 
-  spdlog::debug("RpcEndpoint sending message: {}", message.substr(0, 100));
+  spdlog::debug("RpcEndpoint sending message: {}", message.substr(0, 70));
   auto pending_request = std::make_shared<PendingRequest>(endpoint_strand_);
   asio::post(endpoint_strand_, [this, request_id, pending_request] {
     pending_requests_[request_id] = pending_request;
@@ -150,7 +150,7 @@ auto RpcEndpoint::SendNotification(
   Request request(method, std::move(params));
   std::string message = request.ToJson().dump();
 
-  spdlog::debug("RpcEndpoint sending message: {}", message.substr(0, 100));
+  spdlog::debug("RpcEndpoint sending message: {}", message.substr(0, 70));
   auto send_result = co_await transport_->SendMessage(message);
   if (!send_result) {
     co_return send_result;
@@ -198,12 +198,7 @@ auto RpcEndpoint::ProcessMessagesLoop(asio::cancellation_slot slot)
     -> asio::awaitable<void> {
   auto state = co_await asio::this_coro::cancellation_state;
 
-  // log is_running_ and state.cancelled()
-  spdlog::debug(
-      "RpcEndpoint processing messages loop, is_running_: {}, !cancelled: {}",
-      is_running_.load(), !state.cancelled());
   while (is_running_ && !state.cancelled()) {
-    spdlog::debug("RpcEndpoint processing messages loop");
     auto message_result = co_await transport_->ReceiveMessage();
     if (!message_result) {
       spdlog::error("Receive error: {}", message_result.error().Message());
@@ -229,7 +224,7 @@ auto IsResponse(const nlohmann::json &msg) -> bool {
 
 auto RpcEndpoint::HandleMessage(std::string message)
     -> asio::awaitable<std::expected<void, RpcError>> {
-  spdlog::debug("RpcEndpoint handling message: {}", message.substr(0, 100));
+  spdlog::debug("RpcEndpoint handling message: {}", message.substr(0, 70));
   const auto json_message_result =
       nlohmann::json::parse(message, nullptr, false);
   if (json_message_result.is_discarded()) {

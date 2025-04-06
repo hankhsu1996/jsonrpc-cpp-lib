@@ -1,5 +1,6 @@
 #include "jsonrpc/transport/pipe_transport.hpp"
 
+#include <algorithm>
 #include <filesystem>
 #include <string>
 
@@ -314,7 +315,13 @@ auto PipeTransport::ReceiveMessage()
   }
 
   message_buffer_.append(read_buffer_.data(), bytes_read);
-  spdlog::debug("PipeTransport received message: {}", message_buffer_);
+  auto log_message = message_buffer_;
+  if (log_message.size() > 70) {
+    log_message = log_message.substr(0, 70) + "...";
+  }
+  std::ranges::replace(log_message, '\n', ' ');
+  std::ranges::replace(log_message, '\r', ' ');
+  spdlog::debug("PipeTransport received message: {}", log_message);
   co_return std::move(message_buffer_);
 }
 
