@@ -12,7 +12,7 @@
 #include <spdlog/spdlog.h>
 
 #include "jsonrpc/endpoint/dispatcher.hpp"
-#include "jsonrpc/endpoint/json_trait.hpp"
+#include "jsonrpc/endpoint/jsonrpc_traits.hpp"
 #include "jsonrpc/endpoint/pending_request.hpp"
 #include "jsonrpc/endpoint/response.hpp"
 #include "jsonrpc/endpoint/typed_handlers.hpp"
@@ -95,7 +95,7 @@ class RpcEndpoint {
       std::string method,
       std::function<asio::awaitable<std::expected<void, ErrorType>>(ParamsType)>
           handler)
-    requires(FromJson<ParamsType>);
+    requires(FromJson<ParamsType> && HasMessageMethod<ErrorType>);
 
   [[nodiscard]] auto HasPendingRequests() const -> bool;
 
@@ -240,7 +240,7 @@ void RpcEndpoint::RegisterNotification(
     std::string method,
     std::function<asio::awaitable<std::expected<void, ErrorType>>(ParamsType)>
         handler)
-  requires(FromJson<ParamsType>)
+  requires(FromJson<ParamsType> && HasMessageMethod<ErrorType>)
 {
   // Create a handler object and store its function object
   // NOTE: Using a class-based approach with shared_ptr ownership guarantees

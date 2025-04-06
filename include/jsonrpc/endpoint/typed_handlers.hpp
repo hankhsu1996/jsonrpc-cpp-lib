@@ -29,11 +29,15 @@
 #include <asio/awaitable.hpp>
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
+
+#include "jsonrpc/endpoint/jsonrpc_traits.hpp"
+
 namespace jsonrpc::endpoint {
 
 template <
     typename ParamsType, typename ResultType,
     typename ErrorType = std::monostate>
+  requires(FromJson<ParamsType> && ToJson<ResultType> && ToJson<ErrorType>)
 class TypedMethodHandler {
  private:
   using SimpleHandler = std::function<asio::awaitable<ResultType>(ParamsType)>;
@@ -95,6 +99,7 @@ class TypedMethodHandler {
 };
 
 template <typename ParamsType, typename ErrorType = std::monostate>
+  requires(FromJson<ParamsType> && HasMessageMethod<ErrorType>)
 class TypedNotificationHandler {
  private:
   using SimpleHandler = std::function<asio::awaitable<void>(ParamsType)>;
@@ -135,7 +140,9 @@ class TypedNotificationHandler {
     } else {
       auto result = co_await handler_(typed_params);
       if (!result) {
-        spdlog::warn("TypedNotificationHandler ignored error");
+        spdlog::warn(
+            "TypedNotificationHandler ignored error: {}",
+            result.error().Message());
       }
     }
   }
