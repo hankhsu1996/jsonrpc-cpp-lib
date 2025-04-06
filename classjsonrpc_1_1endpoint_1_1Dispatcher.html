@@ -148,8 +148,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a797b02f99922cd8a851fef9c1738a9f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e63bb793fd9f2b36bce6221ef57f2d8" id="r_a6e63bb793fd9f2b36bce6221ef57f2d8"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e63bb793fd9f2b36bce6221ef57f2d8">~Dispatcher</a> ()=default</td></tr>
 <tr class="separator:a6e63bb793fd9f2b36bce6221ef57f2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28d1694fce943eef0c178173fd098278" id="r_a28d1694fce943eef0c178173fd098278"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28d1694fce943eef0c178173fd098278">Logger</a> () -&gt; spdlog::logger &amp;</td></tr>
-<tr class="separator:a28d1694fce943eef0c178173fd098278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f713a7d58cbeab8faf0e1f47cf119e" id="r_a41f713a7d58cbeab8faf0e1f47cf119e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41f713a7d58cbeab8faf0e1f47cf119e">Logger</a> () -&gt; std::shared_ptr&lt; spdlog::logger &gt;</td></tr>
+<tr class="separator:a41f713a7d58cbeab8faf0e1f47cf119e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91858af35b7e497e6e422eaafca49d9f" id="r_a91858af35b7e497e6e422eaafca49d9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91858af35b7e497e6e422eaafca49d9f">RegisterMethodCall</a> (const std::string &amp;method, const <a class="el" href="#a3a3802aa9defd66e5fca9f8236d72a19">MethodCallHandler</a> &amp;handler)</td></tr>
 <tr class="separator:a91858af35b7e497e6e422eaafca49d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b90ccbbe2b0715fcb9d03865cd5c957" id="r_a3b90ccbbe2b0715fcb9d03865cd5c957"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b90ccbbe2b0715fcb9d03865cd5c957">RegisterNotification</a> (const std::string &amp;method, const <a class="el" href="#a59ec448d0eeb1c0515ada640b55ed273">NotificationHandler</a> &amp;handler)</td></tr>
@@ -387,8 +387,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a28d1694fce943eef0c178173fd098278" name="a28d1694fce943eef0c178173fd098278"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28d1694fce943eef0c178173fd098278">&#9670;&#160;</a></span>Logger()</h2>
+<a id="a41f713a7d58cbeab8faf0e1f47cf119e" name="a41f713a7d58cbeab8faf0e1f47cf119e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f713a7d58cbeab8faf0e1f47cf119e">&#9670;&#160;</a></span>Logger()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,7 +400,7 @@ Here is the call graph for this function:</div>
           <td class="memname">auto jsonrpc::endpoint::Dispatcher::Logger </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> -&gt; spdlog::logger&amp; </td>
+          <td> -&gt; std::shared_ptr&lt;spdlog::logger&gt; </td>
         </tr>
       </table>
   </td>
@@ -411,8 +411,8 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="dispatcher_8hpp_source.html#l00035">35</a> of file <a class="el" href="dispatcher_8hpp_source.html">dispatcher.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>                                 {</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">return</span> *logger_;</div>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>                                               {</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">return</span> logger_;</div>
 <div class="line"><span class="lineno">   37</span>  }</div>
 </div><!-- fragment -->
 </div>

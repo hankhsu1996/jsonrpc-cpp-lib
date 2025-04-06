@@ -41,7 +41,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classjsonrpc_1_1transport_1_1Transport.html#a4959a71460665835c99f9789640355c8" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="440,-35.5 333,-35.5 333,-5.5 440,-5.5 440,-35.5"/>
 <text text-anchor="start" x="341" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::transport</text>
 <text text-anchor="middle" x="386.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">::Transport::Logger</text>

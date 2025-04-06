@@ -149,8 +149,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a75eb3956929cf75238822abfb55f46ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae3ce7f968e4da001e1c2c18c03e8a69" id="r_aae3ce7f968e4da001e1c2c18c03e8a69"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae3ce7f968e4da001e1c2c18c03e8a69">IsRunning</a> () const -&gt; bool</td></tr>
 <tr class="separator:aae3ce7f968e4da001e1c2c18c03e8a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e0c4ee65bc51a5f4d9239966428cb85" id="r_a9e0c4ee65bc51a5f4d9239966428cb85"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e0c4ee65bc51a5f4d9239966428cb85">Logger</a> () -&gt; spdlog::logger &amp;</td></tr>
-<tr class="separator:a9e0c4ee65bc51a5f4d9239966428cb85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affca4ca3a3b9696a3ce49159b4a510ba" id="r_affca4ca3a3b9696a3ce49159b4a510ba"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affca4ca3a3b9696a3ce49159b4a510ba">Logger</a> () -&gt; std::shared_ptr&lt; spdlog::logger &gt;</td></tr>
+<tr class="separator:affca4ca3a3b9696a3ce49159b4a510ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab87006bb19847eafa4b0487165a2ae82" id="r_ab87006bb19847eafa4b0487165a2ae82"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab87006bb19847eafa4b0487165a2ae82">SendMethodCall</a> (std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; std::expected&lt; nlohmann::json, <a class="el" href="classjsonrpc_1_1error_1_1RpcError.html">RpcError</a> &gt; &gt;</td></tr>
 <tr class="separator:ab87006bb19847eafa4b0487165a2ae82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5043d60cf27902e1f373b368d670b81a" id="r_a5043d60cf27902e1f373b368d670b81a"><td class="memTemplParams" colspan="2">template&lt;typename ParamsType , typename ResultType &gt; </td></tr>
@@ -343,7 +343,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>    <span class="keyword">co_return</span> std::unexpected(start_result.error());</div>
 <div class="line"><span class="lineno">   36</span>  }</div>
 <div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>  endpoint-&gt;Logger().debug(<span class="stringliteral">&quot;Client endpoint initialized&quot;</span>);</div>
+<div class="line"><span class="lineno">   38</span>  endpoint-&gt;Logger()-&gt;debug(<span class="stringliteral">&quot;Client endpoint initialized&quot;</span>);</div>
 <div class="line"><span class="lineno">   39</span>  <span class="keyword">co_return</span> endpoint;</div>
 <div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
@@ -410,8 +410,8 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a9e0c4ee65bc51a5f4d9239966428cb85" name="a9e0c4ee65bc51a5f4d9239966428cb85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e0c4ee65bc51a5f4d9239966428cb85">&#9670;&#160;</a></span>Logger()</h2>
+<a id="affca4ca3a3b9696a3ce49159b4a510ba" name="affca4ca3a3b9696a3ce49159b4a510ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affca4ca3a3b9696a3ce49159b4a510ba">&#9670;&#160;</a></span>Logger()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -423,7 +423,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">auto jsonrpc::endpoint::RpcEndpoint::Logger </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> -&gt; spdlog::logger &amp; </td>
+          <td> -&gt; std::shared_ptr&lt;spdlog::logger&gt; </td>
         </tr>
       </table>
   </td>
@@ -434,8 +434,8 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="endpoint_8hpp_source.html#l00055">55</a> of file <a class="el" href="endpoint_8hpp_source.html">endpoint.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>                                  {</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> *logger_;</div>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>                                               {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> logger_;</div>
 <div class="line"><span class="lineno">   57</span>  }</div>
 </div><!-- fragment -->
 </div>
@@ -773,7 +773,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  119</span>  Request request(method, std::move(params), request_id);</div>
 <div class="line"><span class="lineno">  120</span>  std::string message = request.ToJson().dump();</div>
 <div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>  <a class="code hl_function" href="#a9e0c4ee65bc51a5f4d9239966428cb85">Logger</a>().debug(<span class="stringliteral">&quot;RpcEndpoint sending message: {}&quot;</span>, message.substr(0, 70));</div>
+<div class="line"><span class="lineno">  122</span>  <a class="code hl_function" href="#affca4ca3a3b9696a3ce49159b4a510ba">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;RpcEndpoint sending message: {}&quot;</span>, message.substr(0, 70));</div>
 <div class="line"><span class="lineno">  123</span>  <span class="keyword">auto</span> pending_request = std::make_shared&lt;PendingRequest&gt;(endpoint_strand_);</div>
 <div class="line"><span class="lineno">  124</span>  asio::post(endpoint_strand_, [<span class="keyword">this</span>, request_id, pending_request] {</div>
 <div class="line"><span class="lineno">  125</span>    pending_requests_[request_id] = pending_request;</div>
@@ -793,7 +793,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  139</span> </div>
 <div class="line"><span class="lineno">  140</span>  <span class="keyword">co_return</span> result[<span class="stringliteral">&quot;result&quot;</span>];</div>
 <div class="line"><span class="lineno">  141</span>}</div>
-<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_a9e0c4ee65bc51a5f4d9239966428cb85"><div class="ttname"><a href="#a9e0c4ee65bc51a5f4d9239966428cb85">jsonrpc::endpoint::RpcEndpoint::Logger</a></div><div class="ttdeci">auto Logger() -&gt; spdlog::logger &amp;</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8hpp_source.html#l00055">endpoint.hpp:55</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_affca4ca3a3b9696a3ce49159b4a510ba"><div class="ttname"><a href="#affca4ca3a3b9696a3ce49159b4a510ba">jsonrpc::endpoint::RpcEndpoint::Logger</a></div><div class="ttdeci">auto Logger() -&gt; std::shared_ptr&lt; spdlog::logger &gt;</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8hpp_source.html#l00055">endpoint.hpp:55</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="request_8cpp_source.html#l00093">jsonrpc::endpoint::Request::ToJson()</a>, and <a class="el" href="error_8hpp_source.html#l00101">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
 
@@ -887,7 +887,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00143">143</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  145</span>                                                  {</div>
-<div class="line"><span class="lineno">  146</span>  <a class="code hl_function" href="#a9e0c4ee65bc51a5f4d9239966428cb85">Logger</a>().debug(<span class="stringliteral">&quot;RpcEndpoint sending notification: {}&quot;</span>, method);</div>
+<div class="line"><span class="lineno">  146</span>  <a class="code hl_function" href="#affca4ca3a3b9696a3ce49159b4a510ba">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;RpcEndpoint sending notification: {}&quot;</span>, method);</div>
 <div class="line"><span class="lineno">  147</span>  <span class="keywordflow">if</span> (!is_running_) {</div>
 <div class="line"><span class="lineno">  148</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><span class="lineno">  149</span>        RpcErrorCode::kClientError, <span class="stringliteral">&quot;RpcEndpoint is not running&quot;</span>);</div>
@@ -896,7 +896,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  152</span>  Request request(method, std::move(params));</div>
 <div class="line"><span class="lineno">  153</span>  std::string message = request.ToJson().dump();</div>
 <div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span>  <a class="code hl_function" href="#a9e0c4ee65bc51a5f4d9239966428cb85">Logger</a>().debug(<span class="stringliteral">&quot;RpcEndpoint sending message: {}&quot;</span>, message.substr(0, 70));</div>
+<div class="line"><span class="lineno">  155</span>  <a class="code hl_function" href="#affca4ca3a3b9696a3ce49159b4a510ba">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;RpcEndpoint sending message: {}&quot;</span>, message.substr(0, 70));</div>
 <div class="line"><span class="lineno">  156</span>  <span class="keyword">auto</span> send_result = <span class="keyword">co_await</span> transport_-&gt;SendMessage(message);</div>
 <div class="line"><span class="lineno">  157</span>  <span class="keywordflow">if</span> (!send_result) {</div>
 <div class="line"><span class="lineno">  158</span>    <span class="keyword">co_return</span> send_result;</div>
@@ -945,7 +945,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">   83</span>  <span class="keyword">co_await</span> asio::post(endpoint_strand_, asio::use_awaitable);</div>
 <div class="line"><span class="lineno">   84</span>  cancel_signal_.emit(asio::cancellation_type::all);</div>
 <div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>  <a class="code hl_function" href="#a9e0c4ee65bc51a5f4d9239966428cb85">Logger</a>().debug(<span class="stringliteral">&quot;Shutting down RPC endpoint&quot;</span>);</div>
+<div class="line"><span class="lineno">   86</span>  <a class="code hl_function" href="#affca4ca3a3b9696a3ce49159b4a510ba">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;Shutting down RPC endpoint&quot;</span>);</div>
 <div class="line"><span class="lineno">   87</span> </div>
 <div class="line"><span class="lineno">   88</span>  <span class="comment">// Ensure all operations on the strand complete, including message processing</span></div>
 <div class="line"><span class="lineno">   89</span> </div>
@@ -988,7 +988,7 @@ Here is the caller graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="endpoint_8cpp_source.html#l00042">42</a> of file <a class="el" href="endpoint_8cpp_source.html">endpoint.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   42</span>                                                                      {</div>
-<div class="line"><span class="lineno">   43</span>  <a class="code hl_function" href="#a9e0c4ee65bc51a5f4d9239966428cb85">Logger</a>().debug(<span class="stringliteral">&quot;RpcEndpoint starting&quot;</span>);</div>
+<div class="line"><span class="lineno">   43</span>  <a class="code hl_function" href="#affca4ca3a3b9696a3ce49159b4a510ba">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;RpcEndpoint starting&quot;</span>);</div>
 <div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (is_running_.exchange(<span class="keyword">true</span>)) {</div>
 <div class="line"><span class="lineno">   45</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><span class="lineno">   46</span>        RpcErrorCode::kClientError, <span class="stringliteral">&quot;RPC endpoint is already running&quot;</span>);</div>
