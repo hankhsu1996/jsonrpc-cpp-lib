@@ -735,7 +735,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  117</span>  Request request(method, std::move(params), request_id);</div>
 <div class="line"><span class="lineno">  118</span>  std::string message = request.ToJson().dump();</div>
 <div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>  spdlog::debug(<span class="stringliteral">&quot;RpcEndpoint sending message: {}&quot;</span>, message.substr(0, 100));</div>
+<div class="line"><span class="lineno">  120</span>  spdlog::debug(<span class="stringliteral">&quot;RpcEndpoint sending message: {}&quot;</span>, message.substr(0, 70));</div>
 <div class="line"><span class="lineno">  121</span>  <span class="keyword">auto</span> pending_request = std::make_shared&lt;PendingRequest&gt;(endpoint_strand_);</div>
 <div class="line"><span class="lineno">  122</span>  asio::post(endpoint_strand_, [<span class="keyword">this</span>, request_id, pending_request] {</div>
 <div class="line"><span class="lineno">  123</span>    pending_requests_[request_id] = pending_request;</div>
@@ -857,7 +857,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  150</span>  Request request(method, std::move(params));</div>
 <div class="line"><span class="lineno">  151</span>  std::string message = request.ToJson().dump();</div>
 <div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>  spdlog::debug(<span class="stringliteral">&quot;RpcEndpoint sending message: {}&quot;</span>, message.substr(0, 100));</div>
+<div class="line"><span class="lineno">  153</span>  spdlog::debug(<span class="stringliteral">&quot;RpcEndpoint sending message: {}&quot;</span>, message.substr(0, 70));</div>
 <div class="line"><span class="lineno">  154</span>  <span class="keyword">auto</span> send_result = <span class="keyword">co_await</span> transport_-&gt;SendMessage(message);</div>
 <div class="line"><span class="lineno">  155</span>  <span class="keywordflow">if</span> (!send_result) {</div>
 <div class="line"><span class="lineno">  156</span>    <span class="keyword">co_return</span> send_result;</div>
