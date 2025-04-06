@@ -11,6 +11,8 @@ var error_8hpp =
       [ "kTransportError", "error_8hpp.html#ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f", null ],
       [ "kTimeoutError", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6", null ],
       [ "kClientError", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338", null ],
+      [ "kClientSerializationError", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea760d2a0e505dfddcc7b8c7c0b4c5d769", null ],
+      [ "kClientDeserializationError", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea3fd42fa1d00b4acc560f2914eb6e904b", null ],
       [ "kUnknownError", "error_8hpp.html#ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd", null ]
     ] ],
     [ "DefaultMessageFor", "error_8hpp.html#aae1fee218c1f2c4f51e7f029be8b0383", null ],

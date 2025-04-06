@@ -14,6 +14,8 @@ var namespacejsonrpc_1_1error =
       [ "kTransportError", "namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f", null ],
       [ "kTimeoutError", "namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6", null ],
       [ "kClientError", "namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338", null ],
+      [ "kClientSerializationError", "namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea760d2a0e505dfddcc7b8c7c0b4c5d769", null ],
+      [ "kClientDeserializationError", "namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea3fd42fa1d00b4acc560f2914eb6e904b", null ],
       [ "kUnknownError", "namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd", null ]
     ] ],
     [ "Ok", "namespacejsonrpc_1_1error.html#a971cc68c72af7eff146b690d223af984", null ]

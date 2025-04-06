@@ -59,7 +59,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classjsonrpc_1_1error_1_1RpcError.html#a5b4b3dd0fb43f1bf00bc4b766b292ac4" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="classjsonrpc_1_1error_1_1RpcError.html#a9af3d6885d01c2707863c8b6911a952b" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="289,-30 161,-30 161,0 289,0 289,-30"/>
 <text text-anchor="start" x="169" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">jsonrpc::error::RpcError</text>
 <text text-anchor="middle" x="225" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::Message</text>

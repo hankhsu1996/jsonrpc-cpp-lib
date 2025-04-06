@@ -121,15 +121,17 @@ $(function(){initNavTree('typed__handlers_8hpp.html',''); initResizable(true); }
 
 <p>Type-safe handlers for JSON-RPC method calls and notifications.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;optional&gt;</code><br />
+<div class="textblock"><code>#include &lt;expected&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
+<code>#include &lt;variant&gt;</code><br />
 <code>#include &lt;asio/awaitable.hpp&gt;</code><br />
 <code>#include &lt;nlohmann/json.hpp&gt;</code><br />
-<code>#include &quot;<a class="el" href="types_8hpp_source.html">jsonrpc/endpoint/types.hpp</a>&quot;</code><br />
+<code>#include &lt;spdlog/spdlog.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for typed_handlers.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="typed__handlers_8hpp__incl.svg" width="670" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="typed__handlers_8hpp__incl.svg" width="859" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -141,9 +143,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html">jsonrpc::endpoint::TypedMethodHandler&lt; ParamsType, ResultType &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html">jsonrpc::endpoint::TypedMethodHandler&lt; ParamsType, ResultType, ErrorType &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html">jsonrpc::endpoint::TypedNotificationHandler&lt; ParamsType &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html">jsonrpc::endpoint::TypedNotificationHandler&lt; ParamsType, ErrorType &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>

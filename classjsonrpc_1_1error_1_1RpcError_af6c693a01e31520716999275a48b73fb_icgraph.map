@@ -18,11 +18,11 @@
 <area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="542,513,498,507,498,502,543,507"/>
 <area shape="rect" id="Node000012" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#aa13237af44ed295661fa1643c6e95ff3" title=" " alt="" coords="275,535,505,575"/>
 <area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="543,538,506,543,505,537,542,533"/>
-<area shape="rect" id="Node000013" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a7c9af8d5f83d86b6c22c56c8f65346c8" title=" " alt="" coords="6,633,223,673"/>
+<area shape="rect" id="Node000013" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5043d60cf27902e1f373b368d670b81a" title=" " alt="" coords="6,633,223,673"/>
 <area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="596,552,554,572,509,589,436,609,361,625,224,646,223,641,360,620,435,604,507,584,552,567,593,547"/>
 <area shape="rect" id="Node000014" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab87006bb19847eafa4b0487165a2ae82" title=" " alt="" coords="281,649,499,689"/>
 <area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="614,554,567,594,509,633,466,652,464,647,507,628,563,590,610,550"/>
-<area shape="rect" id="Node000015" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a8b8e0370b2300029396d3cf570fb40c8" title=" " alt="" coords="5,723,224,763"/>
+<area shape="rect" id="Node000015" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a1744b6a9e27cbac8d48fbfa617dd7128" title=" " alt="" coords="5,723,224,763"/>
 <area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="630,557,611,593,584,633,550,672,509,704,458,721,386,732,224,744,224,738,385,727,457,716,507,699,547,668,580,630,606,590,625,554"/>
 <area shape="rect" id="Node000016" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae235ed10d68e2090491f7da16b8c1485" title=" " alt="" coords="281,764,499,804"/>
 <area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="633,557,615,600,588,651,553,703,510,747,478,766,475,761,506,743,549,700,584,649,610,598,628,555"/>

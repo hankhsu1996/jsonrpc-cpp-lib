@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['message_5fframer_2ehpp_0',['message_framer.hpp',['../message__framer_8hpp.html',1,'']]]
+  ['json_5ftrait_2ehpp_0',['json_trait.hpp',['../json__trait_8hpp.html',1,'']]]
 ];

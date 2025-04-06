@@ -15,6 +15,6 @@ var hierarchy =
       ] ],
       [ "jsonrpc::transport::SocketTransport", "classjsonrpc_1_1transport_1_1SocketTransport.html", null ]
     ] ],
-    [ "jsonrpc::endpoint::TypedMethodHandler< ParamsType, ResultType >", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html", null ],
-    [ "jsonrpc::endpoint::TypedNotificationHandler< ParamsType >", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html", null ]
+    [ "jsonrpc::endpoint::TypedMethodHandler< ParamsType, ResultType, ErrorType >", "classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html", null ],
+    [ "jsonrpc::endpoint::TypedNotificationHandler< ParamsType, ErrorType >", "classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html", null ]
 ];

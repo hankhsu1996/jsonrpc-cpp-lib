@@ -145,6 +145,8 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6">kTimeoutError</a> = -32001
 , <br />
 &#160;&#160;<a class="el" href="#ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338">kClientError</a> = -32099
+, <a class="el" href="#ad1943c3839a0a47773023a566017496ea760d2a0e505dfddcc7b8c7c0b4c5d769">kClientSerializationError</a> = -32002
+, <a class="el" href="#ad1943c3839a0a47773023a566017496ea3fd42fa1d00b4acc560f2914eb6e904b">kClientDeserializationError</a> = -32003
 , <a class="el" href="#ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd">kUnknownError</a> = -32098
 <br />
  }</td></tr>
@@ -185,6 +187,8 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f" name="ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f"></a>kTransportError&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6" name="ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6"></a>kTimeoutError&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338" name="ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338"></a>kClientError&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad1943c3839a0a47773023a566017496ea760d2a0e505dfddcc7b8c7c0b4c5d769" name="ad1943c3839a0a47773023a566017496ea760d2a0e505dfddcc7b8c7c0b4c5d769"></a>kClientSerializationError&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad1943c3839a0a47773023a566017496ea3fd42fa1d00b4acc560f2914eb6e904b" name="ad1943c3839a0a47773023a566017496ea3fd42fa1d00b4acc560f2914eb6e904b"></a>kClientDeserializationError&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd" name="ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd"></a>kUnknownError&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
@@ -204,16 +208,20 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   22</span> </div>
 <div class="line"><span class="lineno">   23</span>  <span class="comment">// Client errors</span></div>
 <div class="line"><span class="lineno">   24</span>  <a class="code hl_enumvalue" href="#ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338">kClientError</a> = -32099,</div>
-<div class="line"><span class="lineno">   25</span> </div>
-<div class="line"><span class="lineno">   26</span>  <span class="comment">// Unknown error</span></div>
-<div class="line"><span class="lineno">   27</span>  <a class="code hl_enumvalue" href="#ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd">kUnknownError</a> = -32098,</div>
-<div class="line"><span class="lineno">   28</span>};</div>
+<div class="line"><span class="lineno">   25</span>  <a class="code hl_enumvalue" href="#ad1943c3839a0a47773023a566017496ea760d2a0e505dfddcc7b8c7c0b4c5d769">kClientSerializationError</a> = -32002,</div>
+<div class="line"><span class="lineno">   26</span>  <a class="code hl_enumvalue" href="#ad1943c3839a0a47773023a566017496ea3fd42fa1d00b4acc560f2914eb6e904b">kClientDeserializationError</a> = -32003,</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>  <span class="comment">// Unknown error</span></div>
+<div class="line"><span class="lineno">   29</span>  <a class="code hl_enumvalue" href="#ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd">kUnknownError</a> = -32098,</div>
+<div class="line"><span class="lineno">   30</span>};</div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6">jsonrpc::error::RpcErrorCode::kTimeoutError</a></div><div class="ttdeci">@ kTimeoutError</div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496ea3c0bdd652e1f7f374b97b9e730cb7338">jsonrpc::error::RpcErrorCode::kClientError</a></div><div class="ttdeci">@ kClientError</div></div>
+<div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496ea3fd42fa1d00b4acc560f2914eb6e904b"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496ea3fd42fa1d00b4acc560f2914eb6e904b">jsonrpc::error::RpcErrorCode::kClientDeserializationError</a></div><div class="ttdeci">@ kClientDeserializationError</div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd">jsonrpc::error::RpcErrorCode::kUnknownError</a></div><div class="ttdeci">@ kUnknownError</div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496ea6c4ae9ad285a625b8bfdc0a62e289f6e"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496ea6c4ae9ad285a625b8bfdc0a62e289f6e">jsonrpc::error::RpcErrorCode::kInvalidRequest</a></div><div class="ttdeci">@ kInvalidRequest</div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496ea70bc2f6598437e307b2b8d35f1c49a18"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496ea70bc2f6598437e307b2b8d35f1c49a18">jsonrpc::error::RpcErrorCode::kParseError</a></div><div class="ttdeci">@ kParseError</div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496ea71aef956fd9cddbf4828a62cdb0e0054"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496ea71aef956fd9cddbf4828a62cdb0e0054">jsonrpc::error::RpcErrorCode::kInvalidParams</a></div><div class="ttdeci">@ kInvalidParams</div></div>
+<div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496ea760d2a0e505dfddcc7b8c7c0b4c5d769"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496ea760d2a0e505dfddcc7b8c7c0b4c5d769">jsonrpc::error::RpcErrorCode::kClientSerializationError</a></div><div class="ttdeci">@ kClientSerializationError</div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496eaa0fcc6e288e7806a406405f780cdaf0f"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496eaa0fcc6e288e7806a406405f780cdaf0f">jsonrpc::error::RpcErrorCode::kMethodNotFound</a></div><div class="ttdeci">@ kMethodNotFound</div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496eac0743fba36fbd100b50c78be97655ae8"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496eac0743fba36fbd100b50c78be97655ae8">jsonrpc::error::RpcErrorCode::kServerError</a></div><div class="ttdeci">@ kServerError</div></div>
 <div class="ttc" id="anamespacejsonrpc_1_1error_html_ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f"><div class="ttname"><a href="#ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f">jsonrpc::error::RpcErrorCode::kTransportError</a></div><div class="ttdeci">@ kTransportError</div></div>
@@ -245,10 +253,10 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00105">105</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span>                                                {</div>
-<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">return</span> {};</div>
-<div class="line"><span class="lineno">  107</span>}</div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00111">111</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>                                                {</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">return</span> {};</div>
+<div class="line"><span class="lineno">  113</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

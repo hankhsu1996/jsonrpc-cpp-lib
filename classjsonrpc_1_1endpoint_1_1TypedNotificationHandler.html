@@ -115,44 +115,46 @@ $(function(){initNavTree('classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.h
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">jsonrpc::endpoint::TypedNotificationHandler&lt; ParamsType &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">jsonrpc::endpoint::TypedNotificationHandler&lt; ParamsType, ErrorType &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for jsonrpc::endpoint::TypedNotificationHandler&lt; ParamsType &gt;:</div>
+Collaboration diagram for jsonrpc::endpoint::TypedNotificationHandler&lt; ParamsType, ErrorType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler__coll__graph.svg" width="214" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler__coll__graph.svg" width="214" height="146"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a970bf518c2cee825a50626ffed5fcf2f" id="r_a970bf518c2cee825a50626ffed5fcf2f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a970bf518c2cee825a50626ffed5fcf2f">TypedNotificationHandler</a> (std::function&lt; asio::awaitable&lt; void &gt;(ParamsType)&gt; handler)</td></tr>
-<tr class="separator:a970bf518c2cee825a50626ffed5fcf2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae101821efa88cc48068f8e3f2a2ae290" id="r_ae101821efa88cc48068f8e3f2a2ae290"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae101821efa88cc48068f8e3f2a2ae290">operator()</a> (std::optional&lt; nlohmann::json &gt; params) -&gt; asio::awaitable&lt; void &gt;</td></tr>
-<tr class="separator:ae101821efa88cc48068f8e3f2a2ae290"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6115129570bf8334f1757f660d333efd" id="r_a6115129570bf8334f1757f660d333efd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6115129570bf8334f1757f660d333efd">TypedNotificationHandler</a> (SimpleHandler handler)</td></tr>
+<tr class="separator:a6115129570bf8334f1757f660d333efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14921ce74a7b4a06512d47d236715ee2" id="r_a14921ce74a7b4a06512d47d236715ee2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14921ce74a7b4a06512d47d236715ee2">TypedNotificationHandler</a> (ExpectedHandler handler)</td></tr>
+<tr class="separator:a14921ce74a7b4a06512d47d236715ee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a4e553b64c7228187cab8f92aa05201" id="r_a2a4e553b64c7228187cab8f92aa05201"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a4e553b64c7228187cab8f92aa05201">operator()</a> (std::optional&lt; nlohmann::json &gt; params) -&gt; asio::awaitable&lt; void &gt;</td></tr>
+<tr class="separator:a2a4e553b64c7228187cab8f92aa05201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename ParamsType&gt;<br />
-class jsonrpc::endpoint::TypedNotificationHandler&lt; ParamsType &gt;</div>
-<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00069">69</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename ParamsType, typename ErrorType = std::monostate&gt;<br />
+class jsonrpc::endpoint::TypedNotificationHandler&lt; ParamsType, ErrorType &gt;</div>
+<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00098">98</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a970bf518c2cee825a50626ffed5fcf2f" name="a970bf518c2cee825a50626ffed5fcf2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a970bf518c2cee825a50626ffed5fcf2f">&#9670;&#160;</a></span>TypedNotificationHandler()</h2>
+<a id="a6115129570bf8334f1757f660d333efd" name="a6115129570bf8334f1757f660d333efd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6115129570bf8334f1757f660d333efd">&#9670;&#160;</a></span>TypedNotificationHandler() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ParamsType &gt; </div>
+template&lt;typename ParamsType , typename ErrorType  = std::monostate&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html">jsonrpc::endpoint::TypedNotificationHandler</a>&lt; ParamsType &gt;::TypedNotificationHandler </td>
+          <td class="memname"><a class="el" href="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html">jsonrpc::endpoint::TypedNotificationHandler</a>&lt; ParamsType, ErrorType &gt;::TypedNotificationHandler </td>
           <td>(</td>
-          <td class="paramtype">std::function&lt; asio::awaitable&lt; void &gt;(ParamsType)&gt;</td>          <td class="paramname"><span class="paramname"><em>handler</em></span></td><td>)</td>
+          <td class="paramtype">SimpleHandler</td>          <td class="paramname"><span class="paramname"><em>handler</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -163,26 +165,57 @@ template&lt;typename ParamsType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00074">74</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>      : handler_(std::move(handler)) {</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00111">111</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>      : handler_(std::move(handler)) {</div>
+<div class="line"><span class="lineno">  114</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae101821efa88cc48068f8e3f2a2ae290" name="ae101821efa88cc48068f8e3f2a2ae290"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae101821efa88cc48068f8e3f2a2ae290">&#9670;&#160;</a></span>operator()()</h2>
+<a id="a14921ce74a7b4a06512d47d236715ee2" name="a14921ce74a7b4a06512d47d236715ee2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14921ce74a7b4a06512d47d236715ee2">&#9670;&#160;</a></span>TypedNotificationHandler() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ParamsType &gt; </div>
+template&lt;typename ParamsType , typename ErrorType  = std::monostate&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html">jsonrpc::endpoint::TypedNotificationHandler</a>&lt; ParamsType &gt;::operator() </td>
+          <td class="memname"><a class="el" href="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html">jsonrpc::endpoint::TypedNotificationHandler</a>&lt; ParamsType, ErrorType &gt;::TypedNotificationHandler </td>
+          <td>(</td>
+          <td class="paramtype">ExpectedHandler</td>          <td class="paramname"><span class="paramname"><em>handler</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00116">116</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>      : handler_(std::move(handler)) {</div>
+<div class="line"><span class="lineno">  119</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2a4e553b64c7228187cab8f92aa05201" name="a2a4e553b64c7228187cab8f92aa05201"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a4e553b64c7228187cab8f92aa05201">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ParamsType , typename ErrorType  = std::monostate&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classjsonrpc_1_1endpoint_1_1TypedNotificationHandler.html">jsonrpc::endpoint::TypedNotificationHandler</a>&lt; ParamsType, ErrorType &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">std::optional&lt; nlohmann::json &gt;</td>          <td class="paramname"><span class="paramname"><em>params</em></span></td><td>)</td>
           <td> -&gt; asio::awaitable&lt;void&gt; </td>
@@ -195,25 +228,27 @@ template&lt;typename ParamsType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00079">79</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>                             {</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">   82</span>      <span class="comment">// Convert JSON params to typed params</span></div>
-<div class="line"><span class="lineno">   83</span>      ParamsType typed_params =</div>
-<div class="line"><span class="lineno">   84</span>          params.has_value() ? params.value().get&lt;ParamsType&gt;() : ParamsType{};</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>      <span class="comment">// Call the typed handler</span></div>
-<div class="line"><span class="lineno">   87</span>      <span class="keyword">co_await</span> handler_(typed_params);</div>
-<div class="line"><span class="lineno">   88</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
-<div class="line"><span class="lineno">   89</span>      <span class="comment">// throw RpcError(</span></div>
-<div class="line"><span class="lineno">   90</span>      <span class="comment">//     ErrorCode::kInvalidParams,</span></div>
-<div class="line"><span class="lineno">   91</span>      <span class="comment">//     std::string(&quot;Parameter conversion error: &quot;) + ex.what());</span></div>
-<div class="line"><span class="lineno">   92</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;ex) {</div>
-<div class="line"><span class="lineno">   93</span>      <span class="comment">// throw RpcError(</span></div>
-<div class="line"><span class="lineno">   94</span>      <span class="comment">//     ErrorCode::kInternalError,</span></div>
-<div class="line"><span class="lineno">   95</span>      <span class="comment">//     std::string(&quot;Handler error: &quot;) + ex.what());</span></div>
-<div class="line"><span class="lineno">   96</span>    }</div>
-<div class="line"><span class="lineno">   97</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="typed__handlers_8hpp_source.html#l00121">121</a> of file <a class="el" href="typed__handlers_8hpp_source.html">typed_handlers.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  122</span>                             {</div>
+<div class="line"><span class="lineno">  123</span>    ParamsType typed_params{};</div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  125</span>      <span class="keywordflow">if</span> (params.has_value()) {</div>
+<div class="line"><span class="lineno">  126</span>        typed_params = params.value().get&lt;ParamsType&gt;();</div>
+<div class="line"><span class="lineno">  127</span>      }</div>
+<div class="line"><span class="lineno">  128</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception&amp; ex) {</div>
+<div class="line"><span class="lineno">  129</span>      spdlog::error(<span class="stringliteral">&quot;Failed to parse parameters: {}&quot;</span>, ex.what());</div>
+<div class="line"><span class="lineno">  130</span>      <span class="keyword">co_return</span>;</div>
+<div class="line"><span class="lineno">  131</span>    }</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;ErrorType, std::monostate&gt;) {</div>
+<div class="line"><span class="lineno">  134</span>      <span class="keyword">co_await</span> handler_(typed_params);</div>
+<div class="line"><span class="lineno">  135</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  136</span>      <span class="keyword">auto</span> result = <span class="keyword">co_await</span> handler_(typed_params);</div>
+<div class="line"><span class="lineno">  137</span>      <span class="keywordflow">if</span> (!result) {</div>
+<div class="line"><span class="lineno">  138</span>        spdlog::warn(<span class="stringliteral">&quot;TypedNotificationHandler ignored error&quot;</span>);</div>
+<div class="line"><span class="lineno">  139</span>      }</div>
+<div class="line"><span class="lineno">  140</span>    }</div>
+<div class="line"><span class="lineno">  141</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

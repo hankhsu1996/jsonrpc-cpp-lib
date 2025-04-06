@@ -135,8 +135,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a80b1062fe878b1b4d4940792b9eaaa8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a71bca815129bbef0053810b1cac3b1" id="r_a9a71bca815129bbef0053810b1cac3b1"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a71bca815129bbef0053810b1cac3b1">Code</a> () const -&gt; <a class="el" href="namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496e">RpcErrorCode</a></td></tr>
 <tr class="separator:a9a71bca815129bbef0053810b1cac3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b4b3dd0fb43f1bf00bc4b766b292ac4" id="r_a5b4b3dd0fb43f1bf00bc4b766b292ac4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b4b3dd0fb43f1bf00bc4b766b292ac4">Message</a> () const -&gt; std::string_view</td></tr>
-<tr class="separator:a5b4b3dd0fb43f1bf00bc4b766b292ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af3d6885d01c2707863c8b6911a952b" id="r_a9af3d6885d01c2707863c8b6911a952b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9af3d6885d01c2707863c8b6911a952b">Message</a> () const -&gt; std::string</td></tr>
+<tr class="separator:a9af3d6885d01c2707863c8b6911a952b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37963f6424e8da6f9d7c5ee3507577d3" id="r_a37963f6424e8da6f9d7c5ee3507577d3"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37963f6424e8da6f9d7c5ee3507577d3">operator==</a> (const <a class="el" href="classjsonrpc_1_1error_1_1RpcError.html">RpcError</a> &amp;other) const -&gt; bool</td></tr>
 <tr class="separator:a37963f6424e8da6f9d7c5ee3507577d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a386fcb379e14028bd7526dd261d67ebb" id="r_a386fcb379e14028bd7526dd261d67ebb"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a386fcb379e14028bd7526dd261d67ebb">operator!=</a> (const <a class="el" href="classjsonrpc_1_1error_1_1RpcError.html">RpcError</a> &amp;other) const -&gt; bool</td></tr>
@@ -151,7 +151,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00058">58</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00064">64</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aef9c4c8109aa31b1bedf66aa8a2bc375" name="aef9c4c8109aa31b1bedf66aa8a2bc375"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef9c4c8109aa31b1bedf66aa8a2bc375">&#9670;&#160;</a></span>RpcError()</h2>
@@ -180,9 +180,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00060">60</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>      : code_(code), message_(std::move(message)) {</div>
-<div class="line"><span class="lineno">   62</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00066">66</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>      : code_(code), message_(std::move(message)) {</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -210,12 +210,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00071">71</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>                                                  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> code_;</div>
-<div class="line"><span class="lineno">   73</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00077">77</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>                                                  {</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> code_;</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="response_8cpp_source.html#l00028">jsonrpc::endpoint::Response::CreateError()</a>, <a class="el" href="error_8hpp_source.html#l00079">operator==()</a>, and <a class="el" href="error_8hpp_source.html#l00064">to_json()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="response_8cpp_source.html#l00028">jsonrpc::endpoint::Response::CreateError()</a>, <a class="el" href="error_8hpp_source.html#l00085">operator==()</a>, and <a class="el" href="error_8hpp_source.html#l00070">to_json()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -251,18 +251,18 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00087">87</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>                  {</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">if</span> (message.empty()) {</div>
-<div class="line"><span class="lineno">   90</span>      message = std::string(<a class="code hl_function" href="namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383">detail::DefaultMessageFor</a>(code));</div>
-<div class="line"><span class="lineno">   91</span>    }</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">return</span> {code, std::move(message)};</div>
-<div class="line"><span class="lineno">   93</span>  }</div>
-<div class="ttc" id="anamespacejsonrpc_1_1error_1_1detail_html_aae1fee218c1f2c4f51e7f029be8b0383"><div class="ttname"><a href="namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383">jsonrpc::error::detail::DefaultMessageFor</a></div><div class="ttdeci">auto DefaultMessageFor(RpcErrorCode code) -&gt; std::string_view</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00031">error.hpp:31</a></div></div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00093">93</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>                  {</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">if</span> (message.empty()) {</div>
+<div class="line"><span class="lineno">   96</span>      message = std::string(<a class="code hl_function" href="namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383">detail::DefaultMessageFor</a>(code));</div>
+<div class="line"><span class="lineno">   97</span>    }</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span> {code, std::move(message)};</div>
+<div class="line"><span class="lineno">   99</span>  }</div>
+<div class="ttc" id="anamespacejsonrpc_1_1error_1_1detail_html_aae1fee218c1f2c4f51e7f029be8b0383"><div class="ttname"><a href="namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383">jsonrpc::error::detail::DefaultMessageFor</a></div><div class="ttdeci">auto DefaultMessageFor(RpcErrorCode code) -&gt; std::string_view</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00033">error.hpp:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="error_8hpp_source.html#l00031">jsonrpc::error::detail::DefaultMessageFor()</a>.</p>
+<p class="reference">References <a class="el" href="error_8hpp_source.html#l00033">jsonrpc::error::detail::DefaultMessageFor()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="response_8cpp_source.html#l00028">jsonrpc::endpoint::Response::CreateError()</a>, and <a class="el" href="error_8hpp_source.html#l00095">UnexpectedFromCode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="response_8cpp_source.html#l00028">jsonrpc::endpoint::Response::CreateError()</a>, and <a class="el" href="error_8hpp_source.html#l00101">UnexpectedFromCode()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -276,8 +276,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a5b4b3dd0fb43f1bf00bc4b766b292ac4" name="a5b4b3dd0fb43f1bf00bc4b766b292ac4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b4b3dd0fb43f1bf00bc4b766b292ac4">&#9670;&#160;</a></span>Message()</h2>
+<a id="a9af3d6885d01c2707863c8b6911a952b" name="a9af3d6885d01c2707863c8b6911a952b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9af3d6885d01c2707863c8b6911a952b">&#9670;&#160;</a></span>Message()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -289,7 +289,7 @@ Here is the caller graph for this function:</div>
           <td class="memname">auto jsonrpc::error::RpcError::Message </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; std::string_view </td>
+          <td> const -&gt; std::string </td>
         </tr>
       </table>
   </td>
@@ -299,16 +299,16 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00075">75</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>                                                       {</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> message_;</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00081">81</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>                                                  {</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">return</span> message_;</div>
+<div class="line"><span class="lineno">   83</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="response_8cpp_source.html#l00028">jsonrpc::endpoint::Response::CreateError()</a>, <a class="el" href="error_8hpp_source.html#l00079">operator==()</a>, and <a class="el" href="error_8hpp_source.html#l00064">to_json()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="response_8cpp_source.html#l00028">jsonrpc::endpoint::Response::CreateError()</a>, <a class="el" href="error_8hpp_source.html#l00085">operator==()</a>, and <a class="el" href="error_8hpp_source.html#l00070">to_json()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1error_1_1RpcError_a5b4b3dd0fb43f1bf00bc4b766b292ac4_icgraph.svg" width="659" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1error_1_1RpcError_a9af3d6885d01c2707863c8b6911a952b_icgraph.svg" width="659" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -336,10 +336,10 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00083">83</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>                                                       {</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == other);</div>
-<div class="line"><span class="lineno">   85</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00089">89</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>                                                       {</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == other);</div>
+<div class="line"><span class="lineno">   91</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -366,14 +366,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00079">79</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   79</span>                                                       {</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="#a9a71bca815129bbef0053810b1cac3b1">Code</a>() == other.Code() &amp;&amp; <a class="code hl_function" href="#a5b4b3dd0fb43f1bf00bc4b766b292ac4">Message</a>() == other.Message();</div>
-<div class="line"><span class="lineno">   81</span>  }</div>
-<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_a5b4b3dd0fb43f1bf00bc4b766b292ac4"><div class="ttname"><a href="#a5b4b3dd0fb43f1bf00bc4b766b292ac4">jsonrpc::error::RpcError::Message</a></div><div class="ttdeci">auto Message() const -&gt; std::string_view</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00075">error.hpp:75</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_a9a71bca815129bbef0053810b1cac3b1"><div class="ttname"><a href="#a9a71bca815129bbef0053810b1cac3b1">jsonrpc::error::RpcError::Code</a></div><div class="ttdeci">auto Code() const -&gt; RpcErrorCode</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00071">error.hpp:71</a></div></div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00085">85</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>                                                       {</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="#a9a71bca815129bbef0053810b1cac3b1">Code</a>() == other.Code() &amp;&amp; <a class="code hl_function" href="#a9af3d6885d01c2707863c8b6911a952b">Message</a>() == other.Message();</div>
+<div class="line"><span class="lineno">   87</span>  }</div>
+<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_a9a71bca815129bbef0053810b1cac3b1"><div class="ttname"><a href="#a9a71bca815129bbef0053810b1cac3b1">jsonrpc::error::RpcError::Code</a></div><div class="ttdeci">auto Code() const -&gt; RpcErrorCode</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00077">error.hpp:77</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_a9af3d6885d01c2707863c8b6911a952b"><div class="ttname"><a href="#a9af3d6885d01c2707863c8b6911a952b">jsonrpc::error::RpcError::Message</a></div><div class="ttdeci">auto Message() const -&gt; std::string</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00081">error.hpp:81</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="error_8hpp_source.html#l00071">Code()</a>, and <a class="el" href="error_8hpp_source.html#l00075">Message()</a>.</p>
+<p class="reference">References <a class="el" href="error_8hpp_source.html#l00077">Code()</a>, and <a class="el" href="error_8hpp_source.html#l00081">Message()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -405,15 +405,15 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00064">64</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>                                                     {</div>
-<div class="line"><span class="lineno">   65</span>    nlohmann::json json;</div>
-<div class="line"><span class="lineno">   66</span>    json[<span class="stringliteral">&quot;code&quot;</span>] = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="#a9a71bca815129bbef0053810b1cac3b1">Code</a>());</div>
-<div class="line"><span class="lineno">   67</span>    json[<span class="stringliteral">&quot;message&quot;</span>] = <a class="code hl_function" href="#a5b4b3dd0fb43f1bf00bc4b766b292ac4">Message</a>();</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> json;</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00070">70</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>                                                     {</div>
+<div class="line"><span class="lineno">   71</span>    nlohmann::json json;</div>
+<div class="line"><span class="lineno">   72</span>    json[<span class="stringliteral">&quot;code&quot;</span>] = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="#a9a71bca815129bbef0053810b1cac3b1">Code</a>());</div>
+<div class="line"><span class="lineno">   73</span>    json[<span class="stringliteral">&quot;message&quot;</span>] = <a class="code hl_function" href="#a9af3d6885d01c2707863c8b6911a952b">Message</a>();</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span> json;</div>
+<div class="line"><span class="lineno">   75</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="error_8hpp_source.html#l00071">Code()</a>, and <a class="el" href="error_8hpp_source.html#l00075">Message()</a>.</p>
+<p class="reference">References <a class="el" href="error_8hpp_source.html#l00077">Code()</a>, and <a class="el" href="error_8hpp_source.html#l00081">Message()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -449,15 +449,15 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00095">95</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   96</span>                                 {</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">return</span> std::unexpected(<a class="code hl_function" href="#a43714364e8781ace6d728a70edf089d6">RpcError::FromCode</a>(code, std::move(message)));</div>
-<div class="line"><span class="lineno">   98</span>  }</div>
-<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_a43714364e8781ace6d728a70edf089d6"><div class="ttname"><a href="#a43714364e8781ace6d728a70edf089d6">jsonrpc::error::RpcError::FromCode</a></div><div class="ttdeci">static auto FromCode(RpcErrorCode code, std::string message=&quot;&quot;) -&gt; RpcError</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00087">error.hpp:87</a></div></div>
+<p class="definition">Definition at line <a class="el" href="error_8hpp_source.html#l00101">101</a> of file <a class="el" href="error_8hpp_source.html">error.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>                                 {</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">return</span> std::unexpected(<a class="code hl_function" href="#a43714364e8781ace6d728a70edf089d6">RpcError::FromCode</a>(code, std::move(message)));</div>
+<div class="line"><span class="lineno">  104</span>  }</div>
+<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_a43714364e8781ace6d728a70edf089d6"><div class="ttname"><a href="#a43714364e8781ace6d728a70edf089d6">jsonrpc::error::RpcError::FromCode</a></div><div class="ttdeci">static auto FromCode(RpcErrorCode code, std::string message=&quot;&quot;) -&gt; RpcError</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00093">error.hpp:93</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="error_8hpp_source.html#l00087">FromCode()</a>.</p>
+<p class="reference">References <a class="el" href="error_8hpp_source.html#l00093">FromCode()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pipe__transport_8cpp_source.html#l00367">jsonrpc::transport::PipeTransport::BindAndListen()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00321">jsonrpc::transport::PipeTransport::Connect()</a>, <a class="el" href="request_8cpp_source.html#l00031">jsonrpc::endpoint::Request::FromJson()</a>, <a class="el" href="framed__pipe__transport_8cpp_source.html#l00022">jsonrpc::transport::FramedPipeTransport::ReceiveMessage()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00262">jsonrpc::transport::PipeTransport::ReceiveMessage()</a>, <a class="el" href="socket__transport_8cpp_source.html#l00204">jsonrpc::transport::SocketTransport::ReceiveMessage()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00202">jsonrpc::transport::PipeTransport::RemoveExistingSocketFile()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00226">jsonrpc::transport::PipeTransport::SendMessage()</a>, <a class="el" href="socket__transport_8cpp_source.html#l00169">jsonrpc::transport::SocketTransport::SendMessage()</a>, <a class="el" href="endpoint_8hpp_source.html#l00132">jsonrpc::endpoint::RpcEndpoint::SendMethodCall()</a>, <a class="el" href="endpoint_8cpp_source.html#l00108">jsonrpc::endpoint::RpcEndpoint::SendMethodCall()</a>, <a class="el" href="endpoint_8hpp_source.html#l00167">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>, <a class="el" href="endpoint_8cpp_source.html#l00141">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>, <a class="el" href="endpoint_8cpp_source.html#l00040">jsonrpc::endpoint::RpcEndpoint::Start()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00038">jsonrpc::transport::PipeTransport::Start()</a>, and <a class="el" href="socket__transport_8cpp_source.html#l00034">jsonrpc::transport::SocketTransport::Start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pipe__transport_8cpp_source.html#l00367">jsonrpc::transport::PipeTransport::BindAndListen()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00321">jsonrpc::transport::PipeTransport::Connect()</a>, <a class="el" href="request_8cpp_source.html#l00031">jsonrpc::endpoint::Request::FromJson()</a>, <a class="el" href="framed__pipe__transport_8cpp_source.html#l00022">jsonrpc::transport::FramedPipeTransport::ReceiveMessage()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00262">jsonrpc::transport::PipeTransport::ReceiveMessage()</a>, <a class="el" href="socket__transport_8cpp_source.html#l00204">jsonrpc::transport::SocketTransport::ReceiveMessage()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00202">jsonrpc::transport::PipeTransport::RemoveExistingSocketFile()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00226">jsonrpc::transport::PipeTransport::SendMessage()</a>, <a class="el" href="socket__transport_8cpp_source.html#l00169">jsonrpc::transport::SocketTransport::SendMessage()</a>, <a class="el" href="endpoint_8hpp_source.html#l00139">jsonrpc::endpoint::RpcEndpoint::SendMethodCall()</a>, <a class="el" href="endpoint_8cpp_source.html#l00108">jsonrpc::endpoint::RpcEndpoint::SendMethodCall()</a>, <a class="el" href="endpoint_8hpp_source.html#l00173">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>, <a class="el" href="endpoint_8cpp_source.html#l00141">jsonrpc::endpoint::RpcEndpoint::SendNotification()</a>, <a class="el" href="endpoint_8cpp_source.html#l00040">jsonrpc::endpoint::RpcEndpoint::Start()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00038">jsonrpc::transport::PipeTransport::Start()</a>, and <a class="el" href="socket__transport_8cpp_source.html#l00034">jsonrpc::transport::SocketTransport::Start()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

@@ -24,11 +24,11 @@
 <area shape="poly" id="edge13_Node000004_Node000012" title=" " alt="" coords="542,531,498,531,498,526,542,526"/>
 <area shape="rect" id="Node000014" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#aa13237af44ed295661fa1643c6e95ff3" title=" " alt="" coords="275,572,505,612"/>
 <area shape="poly" id="edge15_Node000004_Node000014" title=" " alt="" coords="551,554,470,575,469,570,550,549"/>
-<area shape="rect" id="Node000015" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a7c9af8d5f83d86b6c22c56c8f65346c8" title=" " alt="" coords="6,671,223,711"/>
+<area shape="rect" id="Node000015" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a5043d60cf27902e1f373b368d670b81a" title=" " alt="" coords="6,671,223,711"/>
 <area shape="poly" id="edge16_Node000004_Node000015" title=" " alt="" coords="612,560,566,595,509,627,457,642,384,657,224,681,223,676,383,652,456,637,507,622,563,591,609,555"/>
 <area shape="rect" id="Node000016" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab87006bb19847eafa4b0487165a2ae82" title=" " alt="" coords="281,687,499,727"/>
 <area shape="poly" id="edge17_Node000004_Node000016" title=" " alt="" coords="622,561,574,617,543,646,509,671,471,689,469,685,507,666,540,641,570,613,618,558"/>
-<area shape="rect" id="Node000017" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a8b8e0370b2300029396d3cf570fb40c8" title=" " alt="" coords="5,760,224,800"/>
+<area shape="rect" id="Node000017" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a1744b6a9e27cbac8d48fbfa617dd7128" title=" " alt="" coords="5,760,224,800"/>
 <area shape="poly" id="edge19_Node000004_Node000017" title=" " alt="" coords="634,563,616,605,590,655,555,703,533,724,509,741,488,751,459,760,386,772,304,779,224,782,224,777,304,773,386,766,458,754,486,746,507,737,530,720,551,699,586,652,611,603,629,561"/>
 <area shape="rect" id="Node000018" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae235ed10d68e2090491f7da16b8c1485" title=" " alt="" coords="281,802,499,842"/>
 <area shape="poly" id="edge20_Node000004_Node000018" title=" " alt="" coords="636,562,620,611,594,671,558,732,535,760,510,785,479,804,476,799,506,781,531,757,553,729,589,669,615,609,631,561"/>
