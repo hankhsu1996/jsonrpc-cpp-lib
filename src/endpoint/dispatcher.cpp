@@ -7,8 +7,8 @@
 
 namespace jsonrpc::endpoint {
 
-using jsonrpc::error::ErrorCode;
 using jsonrpc::error::RpcError;
+using jsonrpc::error::RpcErrorCode;
 
 Dispatcher::Dispatcher(asio::any_io_executor executor)
     : executor_(std::move(executor)) {
@@ -26,10 +26,9 @@ void Dispatcher::RegisterNotification(
 
 auto Dispatcher::DispatchRequest(std::string request)
     -> asio::awaitable<std::optional<std::string>> {
-  nlohmann::json root;
-  root = nlohmann::json::parse(request, nullptr, false);
+  auto root = nlohmann::json::parse(request, nullptr, false);
   if (root.is_discarded()) {
-    co_return Response::CreateError(ErrorCode::kParseError).ToJson().dump();
+    co_return Response::CreateError(RpcErrorCode::kParseError).ToJson().dump();
   }
 
   // Single request
@@ -49,7 +48,7 @@ auto Dispatcher::DispatchRequest(std::string request)
   // Batch request
   if (root.is_array()) {
     if (root.empty()) {
-      co_return Response::CreateError(ErrorCode::kInvalidRequest)
+      co_return Response::CreateError(RpcErrorCode::kInvalidRequest)
           .ToJson()
           .dump();
     }
@@ -73,7 +72,9 @@ auto Dispatcher::DispatchRequest(std::string request)
     co_return nlohmann::json(responses).dump();
   }
 
-  co_return Response::CreateError(ErrorCode::kInvalidRequest).ToJson().dump();
+  co_return Response::CreateError(RpcErrorCode::kInvalidRequest)
+      .ToJson()
+      .dump();
 }
 
 auto Dispatcher::DispatchSingleRequest(Request request)
@@ -104,7 +105,8 @@ auto Dispatcher::DispatchSingleRequest(Request request)
     co_return Response::CreateSuccess(result, request.GetId());
   }
 
-  co_return Response::CreateError(ErrorCode::kMethodNotFound, request.GetId());
+  co_return Response::CreateError(
+      RpcErrorCode::kMethodNotFound, request.GetId());
 }
 
 auto Dispatcher::DispatchBatchRequest(std::vector<Request> requests)

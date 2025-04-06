@@ -25,12 +25,12 @@ auto Response::CreateSuccess(
   return Response{std::move(response)};
 }
 
-auto Response::CreateError(ErrorCode code, const std::optional<RequestId>& id)
-    -> Response {
-  RpcError err{code};
+auto Response::CreateError(
+    RpcErrorCode code, const std::optional<RequestId>& id) -> Response {
+  RpcError err = RpcError::FromCode(code);
 
   nlohmann::json error = {
-      {"code", static_cast<int>(err.code)}, {"message", err.message}};
+      {"code", static_cast<int>(err.Code())}, {"message", err.Message()}};
   nlohmann::json response = {{"jsonrpc", kJsonRpcVersion}, {"error", error}};
   if (id) {
     std::visit([&response](const auto& v) { response["id"] = v; }, *id);
@@ -42,8 +42,7 @@ auto Response::CreateError(ErrorCode code, const std::optional<RequestId>& id)
 
 auto Response::CreateError(
     const RpcError& error, const std::optional<RequestId>& id) -> Response {
-  nlohmann::json error_json = {
-      {"code", static_cast<int>(error.code)}, {"message", error.message}};
+  nlohmann::json error_json = error.to_json();
   return CreateError(error_json, id);
 }
 
@@ -91,33 +90,31 @@ auto Response::ToJson() const -> nlohmann::json {
   return response_;
 }
 
-namespace {
-inline auto CreateInvalidRequest(std::string message) {
-  return std::unexpected(RpcError{ErrorCode::kInvalidRequest, message});
-}
-}  // namespace
-
 auto Response::ValidateResponse() const
     -> std::expected<void, error::RpcError> {
   if (!response_.contains("jsonrpc") ||
       response_["jsonrpc"] != kJsonRpcVersion) {
-    return CreateInvalidRequest("Invalid JSON-RPC version");
+    return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kInvalidRequest, "Invalid JSON-RPC version");
   }
 
   if (!response_.contains("result") && !response_.contains("error")) {
-    return CreateInvalidRequest(
+    return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kInvalidRequest,
         "Response must contain either 'result' or 'error' field");
   }
 
   if (response_.contains("result") && response_.contains("error")) {
-    return CreateInvalidRequest(
+    return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kInvalidRequest,
         "Response cannot contain both 'result' and 'error' fields");
   }
 
   if (response_.contains("error")) {
     const auto& error = response_["error"];
     if (!error.contains("code") || !error.contains("message")) {
-      return CreateInvalidRequest(
+      return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kInvalidRequest,
           "Error object must contain 'code' and 'message' fields");
     }
   }

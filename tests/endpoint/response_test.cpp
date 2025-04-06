@@ -8,7 +8,7 @@
 
 using jsonrpc::endpoint::RequestId;
 using jsonrpc::endpoint::Response;
-using jsonrpc::error::ErrorCode;
+using jsonrpc::error::RpcErrorCode;
 
 TEST_CASE("Response creation and basic properties", "[Response]") {
   SECTION("Create success response with result") {
@@ -23,12 +23,12 @@ TEST_CASE("Response creation and basic properties", "[Response]") {
 
   SECTION("Create error response") {
     RequestId id = "req1";
-    auto response = Response::CreateError(ErrorCode::kMethodNotFound, id);
+    auto response = Response::CreateError(RpcErrorCode::kMethodNotFound, id);
 
     REQUIRE_FALSE(response.IsSuccess());
     REQUIRE(
         response.GetError()["code"] ==
-        static_cast<int>(ErrorCode::kMethodNotFound));
+        static_cast<int>(RpcErrorCode::kMethodNotFound));
     REQUIRE(response.GetId() == id);
   }
 
@@ -63,7 +63,7 @@ TEST_CASE("Response creation and basic properties", "[Response]") {
   }
 
   SECTION("Create error response") {
-    auto response = Response::CreateError(ErrorCode::kMethodNotFound);
+    auto response = Response::CreateError(RpcErrorCode::kMethodNotFound);
 
     REQUIRE_FALSE(response.IsSuccess());
     REQUIRE(response.GetError()["code"] == -32601);
@@ -87,22 +87,24 @@ TEST_CASE("Response JSON serialization", "[Response]") {
 
   SECTION("Serialize error response") {
     RequestId id = "req1";
-    auto response = Response::CreateError(ErrorCode::kInvalidRequest, id);
+    auto response = Response::CreateError(RpcErrorCode::kInvalidRequest, id);
     auto json = response.ToJson();
 
     REQUIRE(json["jsonrpc"] == "2.0");
     REQUIRE(
-        json["error"]["code"] == static_cast<int>(ErrorCode::kInvalidRequest));
+        json["error"]["code"] ==
+        static_cast<int>(RpcErrorCode::kInvalidRequest));
     REQUIRE_FALSE(json.contains("result"));
     REQUIRE(json["id"] == "req1");
   }
 
   SECTION("Serialize response without id") {
-    auto response = Response::CreateError(ErrorCode::kParseError);
+    auto response = Response::CreateError(RpcErrorCode::kParseError);
     auto json = response.ToJson();
 
     REQUIRE(json["jsonrpc"] == "2.0");
-    REQUIRE(json["error"]["code"] == static_cast<int>(ErrorCode::kParseError));
+    REQUIRE(
+        json["error"]["code"] == static_cast<int>(RpcErrorCode::kParseError));
     REQUIRE(json["id"] == nullptr);
   }
 }
@@ -143,14 +145,14 @@ TEST_CASE("Response validation", "[Response]") {
     nlohmann::json json = {{"jsonrpc", "1.0"}, {"result", "test"}, {"id", 1}};
     auto response = Response::FromJson(json);
     REQUIRE_FALSE(response.has_value());
-    REQUIRE(response.error().code == ErrorCode::kInvalidRequest);
+    REQUIRE(response.error().Code() == RpcErrorCode::kInvalidRequest);
   }
 
   SECTION("Missing both result and error") {
     nlohmann::json json = {{"jsonrpc", "2.0"}, {"id", 1}};
     auto response = Response::FromJson(json);
     REQUIRE_FALSE(response.has_value());
-    REQUIRE(response.error().code == ErrorCode::kInvalidRequest);
+    REQUIRE(response.error().Code() == RpcErrorCode::kInvalidRequest);
   }
 
   SECTION("Both result and error present") {
@@ -161,7 +163,7 @@ TEST_CASE("Response validation", "[Response]") {
         {"id", 1}};
     auto response = Response::FromJson(json);
     REQUIRE_FALSE(response.has_value());
-    REQUIRE(response.error().code == ErrorCode::kInvalidRequest);
+    REQUIRE(response.error().Code() == RpcErrorCode::kInvalidRequest);
   }
 
   SECTION("Invalid error object") {
@@ -171,6 +173,6 @@ TEST_CASE("Response validation", "[Response]") {
         {"id", 1}};
     auto response = Response::FromJson(json);
     REQUIRE_FALSE(response.has_value());
-    REQUIRE(response.error().code == ErrorCode::kInvalidRequest);
+    REQUIRE(response.error().Code() == RpcErrorCode::kInvalidRequest);
   }
 }

@@ -4,6 +4,9 @@
 
 namespace jsonrpc::transport {
 
+using error::RpcError;
+using error::RpcErrorCode;
+
 FramedPipeTransport::FramedPipeTransport(
     asio::any_io_executor executor, const std::string& socket_path,
     bool is_server)
@@ -28,13 +31,14 @@ auto FramedPipeTransport::ReceiveMessage()
 
     if (!result.error.empty()) {
       spdlog::error("Framing error: {}", result.error);
-      co_return error::CreateTransportError("Framing error: " + result.error);
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError, "Framing error: " + result.error);
     }
 
     // Get more data using base class receive
     auto chunk_result = co_await PipeTransport::ReceiveMessage();
     if (!chunk_result) {
-      co_return std::unexpected(chunk_result.error());
+      co_return chunk_result;
     }
 
     read_buffer_ += *chunk_result;  // append new data

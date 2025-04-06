@@ -12,6 +12,10 @@
 
 namespace jsonrpc::test {
 
+using error::Ok;
+using error::RpcError;
+using error::RpcErrorCode;
+
 /**
  * @brief A mock transport implementation for testing.
  */
@@ -39,19 +43,19 @@ class MockTransport : public jsonrpc::transport::Transport {
 
     if (is_started_) {
       spdlog::debug("MockTransport already started");
-      co_return std::unexpected(
-          error::CreateTransportError("MockTransport already started"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError, "MockTransport already started");
     }
 
     if (is_closed_) {
       spdlog::error("Cannot start a closed transport");
-      co_return std::unexpected(
-          error::CreateTransportError("Cannot start a closed transport"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError, "Cannot start a closed transport");
     }
 
     is_started_ = true;
     spdlog::debug("MockTransport started");
-    co_return std::expected<void, error::RpcError>();
+    co_return Ok();
   }
 
   auto Close()
@@ -73,8 +77,9 @@ class MockTransport : public jsonrpc::transport::Transport {
     asio::error_code ec;
     receive_timer_.cancel(ec);
     if (ec) {
-      co_return std::unexpected(error::CreateTransportError(
-          "Failed to cancel receive timer during close", ec));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError,
+          "Failed to cancel receive timer during close: " + ec.message());
     }
 
     spdlog::debug("MockTransport: Closed");
@@ -82,7 +87,7 @@ class MockTransport : public jsonrpc::transport::Transport {
     // Optional sync point for strand tasks to flush
     co_await asio::post(strand_, asio::use_awaitable);
 
-    co_return std::expected<void, error::RpcError>{};
+    co_return Ok();
   }
 
   void CloseNow() override {
@@ -98,17 +103,18 @@ class MockTransport : public jsonrpc::transport::Transport {
     co_await asio::post(strand_, asio::use_awaitable);
 
     if (is_closed_) {
-      co_return std::unexpected(
-          error::CreateTransportError("Cannot send on closed transport"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError, "Cannot send on closed transport");
     }
 
     if (!is_started_) {
-      co_return std::unexpected(error::CreateTransportError(
-          "Cannot send before transport is started"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError,
+          "Cannot send before transport is started");
     }
 
     sent_requests_.push_back(message);
-    co_return std::expected<void, error::RpcError>();
+    co_return Ok();
   }
 
   auto ReceiveMessage()
@@ -116,21 +122,24 @@ class MockTransport : public jsonrpc::transport::Transport {
     if (is_closed_) {
       spdlog::debug(
           "MockTransport: ReceiveMessage called after transport was closed");
-      co_return std::unexpected(error::CreateTransportError(
-          "ReceiveMessage called after transport was closed"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError,
+          "ReceiveMessage called after transport was closed");
     }
 
     if (!is_started_) {
-      co_return std::unexpected(error::CreateTransportError(
-          "Cannot receive before transport is started"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError,
+          "Cannot receive before transport is started");
     }
 
     co_await asio::post(strand_, asio::use_awaitable);
 
     if (is_closed_) {
       spdlog::debug("MockTransport: ReceiveMessage found transport closed");
-      co_return std::unexpected(error::CreateTransportError(
-          "ReceiveMessage called after transport was closed"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError,
+          "ReceiveMessage called after transport was closed");
     }
 
     if (!incoming_messages_.empty()) {
@@ -148,15 +157,17 @@ class MockTransport : public jsonrpc::transport::Transport {
           asio::redirect_error(asio::use_awaitable, ec));
 
       if (ec && ec != asio::error::operation_aborted) {
-        co_return std::unexpected(error::CreateTransportError(
-            "Error during receive wait: " + ec.message()));
+        co_return RpcError::UnexpectedFromCode(
+            RpcErrorCode::kTransportError,
+            "Error during receive wait: " + ec.message());
       }
 
       co_await asio::post(strand_, asio::use_awaitable);
 
       if (is_closed_) {
-        co_return std::unexpected(error::CreateTransportError(
-            "ReceiveMessage called after transport was closed"));
+        co_return RpcError::UnexpectedFromCode(
+            RpcErrorCode::kTransportError,
+            "ReceiveMessage called after transport was closed");
       }
 
       if (!incoming_messages_.empty()) {
@@ -166,8 +177,9 @@ class MockTransport : public jsonrpc::transport::Transport {
       }
     }
 
-    co_return std::unexpected(error::CreateTransportError(
-        "ReceiveMessage called after transport was closed"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "ReceiveMessage called after transport was closed");
   }
 
   auto SetMessage(const std::string& message) -> void {

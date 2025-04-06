@@ -2,13 +2,12 @@
 
 #include <expected>
 #include <string>
-#include <system_error>
 
 #include <nlohmann/json.hpp>
 
 namespace jsonrpc::error {
 
-enum class ErrorCode {
+enum class RpcErrorCode {
   // Standard errors
   kParseError = -32700,
   kInvalidRequest = -32600,
@@ -25,101 +24,85 @@ enum class ErrorCode {
   kClientError = -32099,
 };
 
-inline auto DefaultMessageFor(ErrorCode code) -> std::string_view {
+namespace detail {
+inline auto DefaultMessageFor(RpcErrorCode code) -> std::string_view {
   switch (code) {
-    case ErrorCode::kParseError:
+    case RpcErrorCode::kParseError:
       return "Parse error";
-    case ErrorCode::kInvalidRequest:
+    case RpcErrorCode::kInvalidRequest:
       return "Invalid request";
-    case ErrorCode::kMethodNotFound:
+    case RpcErrorCode::kMethodNotFound:
       return "Method not found";
-    case ErrorCode::kInvalidParams:
+    case RpcErrorCode::kInvalidParams:
       return "Invalid parameters";
-    case ErrorCode::kInternalError:
+    case RpcErrorCode::kInternalError:
       return "Internal error";
-    case ErrorCode::kServerError:
+    case RpcErrorCode::kServerError:
       return "Server error";
-    case ErrorCode::kTransportError:
+    case RpcErrorCode::kTransportError:
       return "Transport error";
-    case ErrorCode::kTimeoutError:
+    case RpcErrorCode::kTimeoutError:
       return "Timeout error";
-    case ErrorCode::kClientError:
+    case RpcErrorCode::kClientError:
       return "Client error";
   }
   return "Unknown error";
 }
+}  // namespace detail
 
 // Base error type for all JSON-RPC errors
-struct RpcError {
-  explicit RpcError(ErrorCode code, std::string message = "")
-      : code(code),
-        message(
-            message.empty() ? std::string(DefaultMessageFor(code))
-                            : std::move(message)) {
+class RpcError {
+ public:
+  RpcError(RpcErrorCode code, std::string message)
+      : code_(code), message_(std::move(message)) {
   }
-  ErrorCode code;
-  std::string message;
 
-  // Convert to JSON-RPC error object
   [[nodiscard]] auto to_json() const -> nlohmann::json {
     nlohmann::json json;
-    json["code"] = static_cast<int>(code);
-    json["message"] = message;
+    json["code"] = static_cast<int>(Code());
+    json["message"] = Message();
     return json;
   }
-};
 
-// Transport-related errors (network, IO failures, etc)
-struct TransportError : RpcError {
-  std::error_code system_error;
+  [[nodiscard]] auto Code() const -> RpcErrorCode {
+    return code_;
+  }
 
-  explicit TransportError(std::string msg, std::error_code ec = {})
-      : RpcError(ErrorCode::kTransportError, std::move(msg)), system_error(ec) {
-    if (system_error) {
-      message += ": " + system_error.message();
+  [[nodiscard]] auto Message() const -> std::string_view {
+    return message_;
+  }
+
+  auto operator==(const RpcError& other) const -> bool {
+    return Code() == other.Code() && Message() == other.Message();
+  }
+
+  auto operator!=(const RpcError& other) const -> bool {
+    return !(*this == other);
+  }
+
+  static auto FromCode(RpcErrorCode code, std::string message = "")
+      -> RpcError {
+    if (message.empty()) {
+      message = std::string(detail::DefaultMessageFor(code));
     }
+    return {code, std::move(message)};
   }
 
-  [[nodiscard]] auto to_json() const -> nlohmann::json {
-    nlohmann::json json = RpcError::to_json();
-    if (system_error) {
-      nlohmann::json data;
-      data["system_code"] = system_error.value();
-      data["system_message"] = system_error.message();
-      json["data"] = data;
+  static auto UnexpectedFromCode(RpcErrorCode code, std::string message = "")
+      -> std::unexpected<RpcError> {
+    if (message.empty()) {
+      message = std::string(detail::DefaultMessageFor(code));
     }
-    return json;
+    return std::unexpected(RpcError(code, std::move(message)));
   }
+
+ private:
+  RpcErrorCode code_;
+  std::string message_;
 };
 
-// Client errors
-struct ClientError : RpcError {
-  explicit ClientError(std::string msg)
-      : RpcError(ErrorCode::kClientError, std::move(msg)) {
-  }
-};
-
-// Server lifecycle errors (start/stop failures, resource issues)
-struct ServerError : RpcError {
-  explicit ServerError(std::string msg)
-      : RpcError(ErrorCode::kServerError, std::move(msg)) {
-  }
-};
-
-[[nodiscard]] inline auto CreateTransportError(
-    std::string message, std::error_code ec = {})
-    -> std::unexpected<TransportError> {
-  return std::unexpected(TransportError(std::move(message), ec));
-}
-
-[[nodiscard]] inline auto CreateServerError(
-    std::string message = "Server error") -> std::unexpected<ServerError> {
-  return std::unexpected(ServerError(std::move(message)));
-}
-
-[[nodiscard]] inline auto CreateClientError(
-    std::string message = "Client error") -> std::unexpected<ClientError> {
-  return std::unexpected(ClientError(std::move(message)));
+inline auto Ok() -> std::expected<void, RpcError> {
+  return {};
 }
 
 }  // namespace jsonrpc::error

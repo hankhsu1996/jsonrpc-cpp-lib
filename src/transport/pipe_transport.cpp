@@ -11,6 +11,10 @@
 
 namespace jsonrpc::transport {
 
+using error::Ok;
+using error::RpcError;
+using error::RpcErrorCode;
+
 PipeTransport::PipeTransport(
     asio::any_io_executor executor, std::string socket_path, bool is_server)
     : Transport(std::move(executor)),
@@ -38,43 +42,43 @@ auto PipeTransport::Start()
 
   if (is_started_) {
     spdlog::debug("PipeTransport already started");
-    co_return std::unexpected(
-        error::CreateTransportError("PipeTransport already started"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError, "PipeTransport already started");
   }
 
   if (is_closed_) {
     spdlog::error("PipeTransport cannot start a closed transport");
-    co_return std::unexpected(
-        error::CreateTransportError("Cannot start a closed transport"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError, "Cannot start a closed transport");
   }
 
   if (is_server_) {
     // For server, bind and listen for connections
-    spdlog::debug("PipeTransport server starting at {}", socket_path_);
+    spdlog::debug("PipeTransport starting server at {}", socket_path_);
     auto result = co_await BindAndListen();
     if (!result) {
       spdlog::error(
           "PipeTransport server error starting at {}: {}", socket_path_,
-          result.error().message);
-      co_return std::unexpected(result.error());
+          result.error().Message());
+      co_return result;
     }
   } else {
     // For client, connect to the server
-    spdlog::debug("PipeTransport client connecting to {}", socket_path_);
+    spdlog::debug("PipeTransport connecting client to {}", socket_path_);
     auto result = co_await Connect();
     if (!result) {
       spdlog::error(
           "PipeTransport client error connecting to {}: {}", socket_path_,
-          result.error().message);
-      co_return std::unexpected(result.error());
+          result.error().Message());
+      co_return result;
     }
-    spdlog::debug("PipeTransport client connected to {}", socket_path_);
   }
+  spdlog::debug("PipeTransport client connected to {}", socket_path_);
 
   // Set started flag before performing operations
   is_started_ = true;
   spdlog::debug("PipeTransport successfully started");
-  co_return std::expected<void, error::RpcError>();
+  co_return Ok();
 }
 
 auto PipeTransport::Close()
@@ -84,7 +88,7 @@ auto PipeTransport::Close()
 
   if (is_closed_) {
     spdlog::debug("PipeTransport already closed");
-    co_return std::expected<void, error::RpcError>();
+    co_return Ok();
   }
 
   is_closed_ = true;
@@ -121,12 +125,12 @@ auto PipeTransport::Close()
     if (!result) {
       spdlog::warn(
           "PipeTransport error removing socket file: {}",
-          result.error().message);
+          result.error().Message());
     }
   }
 
   spdlog::debug("PipeTransport closed");
-  co_return std::expected<void, error::RpcError>();
+  co_return Ok();
 }
 
 void PipeTransport::CloseNow() {
@@ -137,7 +141,7 @@ void PipeTransport::CloseNow() {
     if (!socket_.is_open()) {
       return;
     }
-    spdlog::debug("Closing socket synchronously");
+    spdlog::debug("PipeTransport closing socket synchronously");
 
     std::error_code ec;
     socket_.cancel();
@@ -187,7 +191,7 @@ void PipeTransport::CloseNow() {
     try_close_acceptor();
     try_remove_socket_file();
   } catch (const std::exception &e) {
-    spdlog::error("PipeTransport CloseNow() error: {}", e.what());
+    spdlog::error("PipeTransport error during CloseNow(): {}", e.what());
   }
 }
 
@@ -200,13 +204,15 @@ auto PipeTransport::RemoveExistingSocketFile()
   std::error_code ec;
   if (std::filesystem::exists(socket_path_, ec)) {
     if (ec) {
-      return std::unexpected(error::CreateTransportError(
-          "Error checking if socket file exists: " + ec.message()));
+      return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError,
+          "Error checking if socket file exists: " + ec.message());
     }
     std::filesystem::remove(socket_path_, ec);
     if (ec) {
-      return std::unexpected(error::CreateTransportError(
-          "Error removing socket file: " + ec.message()));
+      return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError,
+          "Error removing socket file: " + ec.message());
     }
     spdlog::debug(
         "PipeTransport removed existing socket file: {}", socket_path_);
@@ -222,17 +228,20 @@ auto PipeTransport::SendMessage(std::string message)
   co_await asio::post(GetStrand(), asio::use_awaitable);
 
   if (is_closed_) {
-    co_return std::unexpected(error::CreateTransportError(
-        "Attempt to send message on closed transport"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "Attempt to send message on closed transport");
   }
 
   if (!is_started_) {
-    co_return std::unexpected(error::CreateTransportError(
-        "Transport not started before sending message"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "Transport not started before sending message");
   }
 
   if (!socket_.is_open()) {
-    co_return std::unexpected(error::CreateTransportError("Socket not open"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError, "Socket not open");
   }
 
   // Write to the socket with error redirection
@@ -242,11 +251,12 @@ auto PipeTransport::SendMessage(std::string message)
       asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
     spdlog::error("PipeTransport error sending message: {}", ec.message());
-    co_return std::unexpected(
-        error::CreateTransportError("Error sending message: " + ec.message()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "Error sending message: " + ec.message());
   }
 
-  co_return std::expected<void, error::RpcError>{};
+  co_return Ok();
 }
 
 auto PipeTransport::ReceiveMessage()
@@ -256,19 +266,22 @@ auto PipeTransport::ReceiveMessage()
   if (is_closed_) {
     spdlog::warn(
         "PipeTransport ReceiveMessage called after transport was closed");
-    co_return std::unexpected(error::CreateTransportError(
-        "ReceiveMessage called after transport was closed"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "ReceiveMessage called after transport was closed");
   }
 
   if (!is_started_) {
-    co_return std::unexpected(error::CreateTransportError(
-        "Transport not started before receiving message"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "Transport not started before receiving message");
   }
 
   if (!socket_.is_open()) {
     spdlog::warn("PipeTransport ReceiveMessage called on a closed socket");
-    co_return std::unexpected(error::CreateTransportError(
-        "ReceiveMessage called on a closed socket"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "ReceiveMessage called on a closed socket");
   }
 
   message_buffer_.clear();
@@ -280,28 +293,28 @@ auto PipeTransport::ReceiveMessage()
 
   if (ec) {
     if (ec == asio::error::eof) {
-      spdlog::debug("PipeTransport Connection closed by peer (EOF)");
+      spdlog::debug("PipeTransport connection closed by peer (EOF)");
       is_connected_ = false;
-      co_return std::unexpected(
-          error::CreateTransportError("Connection closed by peer"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError, "Connection closed by peer");
     } else if (ec == asio::error::operation_aborted) {
       spdlog::debug("PipeTransport Receive operation aborted");
-      co_return std::unexpected(error::CreateTransportError("Receive aborted"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError, "Receive aborted");
     } else {
       spdlog::error("PipeTransport error receiving message: {}", ec.message());
-      co_return std::unexpected(
-          error::CreateTransportError("Receive error: " + ec.message()));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kTransportError, "Receive error: " + ec.message());
     }
   }
 
   if (bytes_read == 0) {
-    co_return std::unexpected(error::CreateTransportError("No data received"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError, "No data received");
   }
 
   message_buffer_.append(read_buffer_.data(), bytes_read);
-  spdlog::debug(
-      "PipeTransport received message: {}",
-      utils::Trim(message_buffer_.substr(0, 100)));
+  spdlog::debug("PipeTransport received message: {}", message_buffer_);
   co_return std::move(message_buffer_);
 }
 
@@ -311,13 +324,13 @@ auto PipeTransport::Connect()
 
   // Make sure we're not already connected
   if (is_connected_) {
-    co_return std::expected<void, error::RpcError>();
+    co_return Ok();
   }
 
   // Check if we're closed
   if (is_closed_) {
-    co_return std::unexpected(
-        error::CreateTransportError("Cannot connect a closed transport"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError, "Cannot connect a closed transport");
   }
 
   // Close any existing socket
@@ -341,13 +354,14 @@ auto PipeTransport::Connect()
   if (ec) {
     spdlog::error(
         "PipeTransport error connecting to {}: {}", socket_path_, ec.message());
-    co_return std::unexpected(error::CreateTransportError(ec.message()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError, "Error connecting to: " + ec.message());
   }
 
   is_connected_ = true;
   spdlog::debug("PipeTransport connected to {}", socket_path_);
 
-  co_return std::expected<void, error::RpcError>();
+  co_return Ok();
 }
 
 auto PipeTransport::BindAndListen()
@@ -358,8 +372,8 @@ auto PipeTransport::BindAndListen()
   if (!result) {
     spdlog::error(
         "PipeTransport error removing existing socket file: {}",
-        result.error().message);
-    co_return std::unexpected(result.error());
+        result.error().Message());
+    co_return result;
   }
 
   // Lazily construct the acceptor if not already created
@@ -376,35 +390,40 @@ auto PipeTransport::BindAndListen()
   acceptor_->open(endpoint.protocol(), ec);
   if (ec) {
     spdlog::error("PipeTransport error opening acceptor: {}", ec.message());
-    co_return std::unexpected(
-        error::CreateTransportError("Error opening acceptor: " + ec.message()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "Error opening acceptor: " + ec.message());
   }
   acceptor_->bind(endpoint, ec);
   if (ec) {
     spdlog::error("PipeTransport error binding acceptor: {}", ec.message());
-    co_return std::unexpected(
-        error::CreateTransportError("Error binding acceptor: " + ec.message()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "Error binding acceptor: " + ec.message());
   }
   acceptor_->listen(asio::socket_base::max_listen_connections, ec);
   if (ec) {
     spdlog::error(
         "PipeTransport error listening on acceptor: {}", ec.message());
-    co_return std::unexpected(error::CreateTransportError(
-        "Error listening on acceptor: " + ec.message()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "Error listening on acceptor: " + ec.message());
   }
 
   // Accept a connection
-  spdlog::debug("Waiting for connection on {}", socket_path_);
+  spdlog::debug("PipeTransport waiting for connection on {}", socket_path_);
   co_await acceptor_->async_accept(
       socket_, asio::redirect_error(asio::use_awaitable, ec));
   if (ec) {
     spdlog::error("PipeTransport error accepting connection: {}", ec.message());
-    co_return std::unexpected(error::CreateTransportError(ec.message()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kTransportError,
+        "Error accepting connection: " + ec.message());
   }
   is_connected_ = true;
   spdlog::debug("PipeTransport accepted connection on {}", socket_path_);
 
-  co_return std::expected<void, error::RpcError>();
+  co_return Ok();
 }
 
 }  // namespace jsonrpc::transport

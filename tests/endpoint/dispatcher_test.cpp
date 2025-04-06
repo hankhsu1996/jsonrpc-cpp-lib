@@ -7,7 +7,7 @@
 #include <spdlog/spdlog.h>
 
 using jsonrpc::endpoint::Dispatcher;
-using jsonrpc::error::ErrorCode;
+using jsonrpc::error::RpcErrorCode;
 
 // Helper function for running dispatcher tests
 template <typename TestFunc>
@@ -105,7 +105,7 @@ TEST_CASE("Batch request handling", "[Dispatcher]") {
       auto result = nlohmann::json::parse(*response);
       REQUIRE(
           result["error"]["code"] ==
-          static_cast<int>(ErrorCode::kInvalidRequest));
+          static_cast<int>(RpcErrorCode::kInvalidRequest));
       co_return;
     });
   }
@@ -120,7 +120,7 @@ TEST_CASE("Batch request handling", "[Dispatcher]") {
       REQUIRE(result.size() == 1);
       REQUIRE(
           result[0]["error"]["code"] ==
-          static_cast<int>(ErrorCode::kInvalidRequest));
+          static_cast<int>(RpcErrorCode::kInvalidRequest));
       co_return;
     });
   }
@@ -140,7 +140,7 @@ TEST_CASE("Error handling", "[Dispatcher]") {
       auto result = nlohmann::json::parse(*response);
       REQUIRE(
           result["error"]["code"] ==
-          static_cast<int>(ErrorCode::kMethodNotFound));
+          static_cast<int>(RpcErrorCode::kMethodNotFound));
       co_return;
     });
   }
@@ -154,7 +154,7 @@ TEST_CASE("Error handling", "[Dispatcher]") {
       auto result = nlohmann::json::parse(*response);
       REQUIRE(
           result["error"]["code"] ==
-          static_cast<int>(ErrorCode::kInvalidRequest));
+          static_cast<int>(RpcErrorCode::kInvalidRequest));
     });
   }
 
@@ -165,7 +165,8 @@ TEST_CASE("Error handling", "[Dispatcher]") {
       REQUIRE(response.has_value());
       auto result = nlohmann::json::parse(*response);
       REQUIRE(
-          result["error"]["code"] == static_cast<int>(ErrorCode::kParseError));
+          result["error"]["code"] ==
+          static_cast<int>(RpcErrorCode::kParseError));
     });
   }
 
@@ -176,7 +177,8 @@ TEST_CASE("Error handling", "[Dispatcher]") {
       REQUIRE(response.has_value());
       auto result = nlohmann::json::parse(*response);
       REQUIRE(
-          result["error"]["code"] == static_cast<int>(ErrorCode::kParseError));
+          result["error"]["code"] ==
+          static_cast<int>(RpcErrorCode::kParseError));
     });
   }
 
@@ -195,7 +197,7 @@ TEST_CASE("Error handling", "[Dispatcher]") {
       auto result = nlohmann::json::parse(*response);
       REQUIRE(
           result["error"]["code"] ==
-          static_cast<int>(ErrorCode::kInternalError));
+          static_cast<int>(RpcErrorCode::kInternalError));
     });
   }
 }

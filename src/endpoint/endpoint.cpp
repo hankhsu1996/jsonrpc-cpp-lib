@@ -9,10 +9,9 @@
 
 namespace jsonrpc::endpoint {
 
-using jsonrpc::error::CreateClientError;
-using jsonrpc::error::CreateServerError;
-using jsonrpc::error::ErrorCode;
+using jsonrpc::error::Ok;
 using jsonrpc::error::RpcError;
+using jsonrpc::error::RpcErrorCode;
 
 RpcEndpoint::RpcEndpoint(
     asio::any_io_executor executor,
@@ -41,7 +40,8 @@ auto RpcEndpoint::CreateClient(
 auto RpcEndpoint::Start() -> asio::awaitable<std::expected<void, RpcError>> {
   spdlog::debug("RpcEndpoint starting");
   if (is_running_.exchange(true)) {
-    co_return CreateClientError("RPC endpoint is already running");
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError, "RPC endpoint is already running");
   }
 
   pending_requests_.clear();
@@ -49,7 +49,7 @@ auto RpcEndpoint::Start() -> asio::awaitable<std::expected<void, RpcError>> {
   // Start the transport
   auto start_result = co_await transport_->Start();
   if (!start_result) {
-    co_return std::unexpected(start_result.error());
+    co_return start_result;
   }
 
   // Start message processing on the endpoint strand
@@ -102,14 +102,15 @@ auto RpcEndpoint::Shutdown() -> asio::awaitable<std::expected<void, RpcError>> {
     co_return std::unexpected(close_result.error());
   }
 
-  co_return std::expected<void, RpcError>{};
+  co_return Ok();
 }
 
 auto RpcEndpoint::SendMethodCall(
     std::string method, std::optional<nlohmann::json> params)
     -> asio::awaitable<std::expected<nlohmann::json, RpcError>> {
   if (!is_running_) {
-    co_return CreateClientError("RPC endpoint is not running");
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError, "RPC endpoint is not running");
   }
 
   auto request_id = GetNextRequestId();
@@ -130,7 +131,8 @@ auto RpcEndpoint::SendMethodCall(
   auto result = co_await pending_request->GetResult();
   if (result.contains("error")) {
     auto err = result["error"];
-    co_return CreateClientError(err["message"].get<std::string>());
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError, err["message"].get<std::string>());
   }
 
   co_return result["result"];
@@ -141,8 +143,8 @@ auto RpcEndpoint::SendNotification(
     -> asio::awaitable<std::expected<void, RpcError>> {
   spdlog::debug("RpcEndpoint sending notification: {}", method);
   if (!is_running_) {
-    spdlog::error("RpcEndpoint sending notification failed: {}", method);
-    co_return CreateClientError("RPC endpoint is not running");
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError, "RpcEndpoint is not running");
   }
 
   Request request(method, std::move(params));
@@ -204,14 +206,14 @@ auto RpcEndpoint::ProcessMessagesLoop(asio::cancellation_slot slot)
     spdlog::debug("RpcEndpoint processing messages loop");
     auto message_result = co_await transport_->ReceiveMessage();
     if (!message_result) {
-      spdlog::error("Receive error: {}", message_result.error().message);
+      spdlog::error("Receive error: {}", message_result.error().Message());
       co_await RetryDelay(executor_);
       continue;
     }
 
     auto handle_result = co_await HandleMessage(*message_result);
     if (!handle_result) {
-      spdlog::error("Handle error: {}", handle_result.error().message);
+      spdlog::error("Handle error: {}", handle_result.error().Message());
       co_await RetryDelay(executor_);
       continue;
     }
@@ -231,14 +233,16 @@ auto RpcEndpoint::HandleMessage(std::string message)
   const auto json_message_result =
       nlohmann::json::parse(message, nullptr, false);
   if (json_message_result.is_discarded()) {
-    co_return std::unexpected(CreateClientError("Failed to parse message"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError, "Failed to parse message");
   }
   const auto &json_message = json_message_result;
 
   if (IsResponse(json_message)) {
     auto response = Response::FromJson(json_message);
     if (!response.has_value()) {
-      co_return std::unexpected(CreateClientError("Invalid response"));
+      co_return RpcError::UnexpectedFromCode(
+          RpcErrorCode::kClientError, "Invalid response");
     }
     co_return co_await HandleResponse(std::move(response.value()));
   }
@@ -254,8 +258,8 @@ auto RpcEndpoint::HandleResponse(Response response)
     -> asio::awaitable<std::expected<void, RpcError>> {
   auto id_opt = response.GetId();
   if (!id_opt || !std::holds_alternative<int64_t>(*id_opt)) {
-    co_return std::unexpected(
-        CreateClientError("Response ID missing or not int64"));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError, "Response ID missing or not int64");
   }
 
   const auto id = std::get<int64_t>(*id_opt);
@@ -275,8 +279,9 @@ auto RpcEndpoint::HandleResponse(Response response)
   co_await asio::post(co_await asio::this_coro::executor, asio::use_awaitable);
 
   if (!found || !request) {
-    co_return std::unexpected(
-        CreateClientError("Unknown request ID: " + std::to_string(id)));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError,
+        "Unknown request ID: " + std::to_string(id));
   }
 
   request->SetResult(response.ToJson());

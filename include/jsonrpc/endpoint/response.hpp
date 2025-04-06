@@ -10,8 +10,8 @@
 
 namespace jsonrpc::endpoint {
 
-using jsonrpc::error::ErrorCode;
 using jsonrpc::error::RpcError;
+using jsonrpc::error::RpcErrorCode;
 
 class Response {
  public:
@@ -31,7 +31,7 @@ class Response {
       -> Response;
 
   static auto CreateError(
-      ErrorCode code, const std::optional<RequestId>& id = std::nullopt)
+      RpcErrorCode code, const std::optional<RequestId>& id = std::nullopt)
       -> Response;
 
   static auto CreateError(

@@ -458,7 +458,7 @@ TEST_CASE(
     auto result = co_await framed_receiver->ReceiveMessage();
     REQUIRE(!result.has_value());
     REQUIRE(
-        result.error().message.find("Invalid Content-Length header") !=
+        result.error().Message().find("Invalid Content-Length header") !=
         std::string::npos);
 
     co_await raw_sender->Close();
@@ -506,7 +506,7 @@ TEST_CASE(
     auto result = co_await framed_receiver->ReceiveMessage();
     REQUIRE(!result.has_value());
     REQUIRE(
-        result.error().message.find("Missing Content-Length header") !=
+        result.error().Message().find("Missing Content-Length header") !=
         std::string::npos);
 
     co_await raw_sender->Close();

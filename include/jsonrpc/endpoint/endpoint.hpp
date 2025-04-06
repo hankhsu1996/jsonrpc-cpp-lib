@@ -19,9 +19,8 @@
 
 namespace jsonrpc::endpoint {
 
+using jsonrpc::error::Ok;
 using jsonrpc::error::RpcError;
-
-using ErrorHandler = std::function<void(ErrorCode, const std::string &)>;
 
 class RpcEndpoint {
  public:
@@ -120,8 +119,6 @@ class RpcEndpoint {
 
   std::atomic<bool> is_running_{false};
 
-  ErrorHandler error_handler_;
-
   asio::strand<asio::any_io_executor> endpoint_strand_;
 
   std::atomic<int64_t> next_request_id_{0};
@@ -145,8 +142,10 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
   } catch (const nlohmann::json::exception &ex) {
     spdlog::error(
         "RpcEndpoint failed to convert parameters to JSON: {}", ex.what());
-    co_return error::CreateClientError(
-        "Failed to convert parameters to JSON: " + std::string(ex.what()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError,
+        "RpcEndpoint failed to convert parameters to JSON: " +
+            std::string(ex.what()));
   }
 
   auto result = co_await RpcEndpoint::SendMethodCall(method, json_params);
@@ -159,8 +158,9 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
     co_return result->template get<ResultType>();
   } catch (const nlohmann::json::exception &ex) {
     spdlog::error("RpcEndpoint failed to convert result: {}", ex.what());
-    co_return error::CreateClientError(
-        "Failed to convert result: " + std::string(ex.what()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError,
+        "RpcEndpoint failed to convert result: " + std::string(ex.what()));
   }
 }
 
@@ -178,8 +178,10 @@ auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
   } catch (const nlohmann::json::exception &ex) {
     spdlog::error(
         "RpcEndpoint failed to convert notification parameters: {}", ex.what());
-    co_return error::CreateClientError(
-        "Failed to convert notification parameters: " + std::string(ex.what()));
+    co_return RpcError::UnexpectedFromCode(
+        RpcErrorCode::kClientError,
+        "RpcEndpoint failed to convert notification parameters: " +
+            std::string(ex.what()));
   }
 
   auto result = co_await RpcEndpoint::SendNotification(method, json_params);
@@ -188,7 +190,7 @@ auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
     co_return std::unexpected(result.error());
   }
 
-  co_return std::expected<void, RpcError>{};
+  co_return Ok();
 }
 
 template <typename ParamsType, typename ResultType>

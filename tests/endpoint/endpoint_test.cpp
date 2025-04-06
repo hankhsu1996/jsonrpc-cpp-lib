@@ -77,7 +77,7 @@ TEST_CASE("RpcEndpoint - Basic lifecycle", "[endpoint]") {
       auto start_result2 = co_await endpoint->Start();
       REQUIRE_FALSE(start_result2);
       REQUIRE(
-          start_result2.error().message == "RPC endpoint is already running");
+          start_result2.error().Message() == "RPC endpoint is already running");
 
       // Shutdown should work
       auto shutdown_result = co_await endpoint->Shutdown();

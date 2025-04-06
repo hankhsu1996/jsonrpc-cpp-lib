@@ -5,7 +5,7 @@
 
 using jsonrpc::endpoint::Request;
 using jsonrpc::endpoint::RequestId;
-using jsonrpc::error::ErrorCode;
+using jsonrpc::error::RpcErrorCode;
 
 TEST_CASE("Request construction and basic properties", "[Request]") {
   SECTION("Create request with all parameters") {
@@ -126,7 +126,7 @@ TEST_CASE("Request validation", "[Request]") {
         {"jsonrpc", "1.0"}, {"method", "test_method"}, {"id", 1}};
     auto request = Request::FromJson(json);
     REQUIRE_FALSE(request.has_value());
-    REQUIRE(request.error().code == ErrorCode::kInvalidRequest);
+    REQUIRE(request.error().Code() == RpcErrorCode::kInvalidRequest);
   }
 
   SECTION("Missing method") {
@@ -134,14 +134,14 @@ TEST_CASE("Request validation", "[Request]") {
         {"jsonrpc", "2.0"}, {"params", {{"param", "value"}}}, {"id", 1}};
     auto request = Request::FromJson(json);
     REQUIRE_FALSE(request.has_value());
-    REQUIRE(request.error().code == ErrorCode::kInvalidRequest);
+    REQUIRE(request.error().Code() == RpcErrorCode::kInvalidRequest);
   }
 
   SECTION("Invalid method type") {
     nlohmann::json json = {{"jsonrpc", "2.0"}, {"method", 123}, {"id", 1}};
     auto request = Request::FromJson(json);
     REQUIRE_FALSE(request.has_value());
-    REQUIRE(request.error().code == ErrorCode::kInvalidRequest);
+    REQUIRE(request.error().Code() == RpcErrorCode::kInvalidRequest);
   }
 
   SECTION("Invalid params type") {
@@ -152,6 +152,6 @@ TEST_CASE("Request validation", "[Request]") {
         {"id", 1}};
     auto request = Request::FromJson(json);
     REQUIRE_FALSE(request.has_value());
-    REQUIRE(request.error().code == ErrorCode::kInvalidRequest);
+    REQUIRE(request.error().Code() == RpcErrorCode::kInvalidRequest);
   }
 }
