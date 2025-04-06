@@ -246,8 +246,9 @@ void RpcEndpoint::RegisterNotification(
   // NOTE: Using a class-based approach with shared_ptr ownership guarantees
   // the handler remains valid even when coroutines are suspended and resumed,
   // which is safer than direct lambda captures that may go out of scope.
-  auto typed_handler = std::make_shared<TypedNotificationHandler<ParamsType>>(
-      std::move(handler));
+  auto typed_handler =
+      std::make_shared<TypedNotificationHandler<ParamsType, ErrorType>>(
+          std::move(handler));
 
   // Register a lambda that calls the handler object
   RegisterNotification(
