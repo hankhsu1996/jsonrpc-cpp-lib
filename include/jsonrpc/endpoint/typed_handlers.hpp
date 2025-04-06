@@ -21,79 +21,80 @@
  * reference.
  */
 
+#include <expected>
 #include <optional>
 #include <utility>
+#include <variant>
 
 #include <asio/awaitable.hpp>
 #include <nlohmann/json.hpp>
 
-#include "jsonrpc/endpoint/types.hpp"
-
 namespace jsonrpc::endpoint {
-template <typename ParamsType, typename ResultType>
+
+template <
+    typename ParamsType, typename ResultType,
+    typename ErrorType = std::monostate>
 class TypedMethodHandler {
  private:
-  std::function<asio::awaitable<ResultType>(ParamsType)> handler_;
+  using SimpleHandler = std::function<asio::awaitable<ResultType>(ParamsType)>;
+  using ExpectedHandler =
+      std::function<asio::awaitable<std::expected<ResultType, ErrorType>>(
+          ParamsType)>;
+  using HandlerType = std::conditional_t<
+      std::is_same_v<ErrorType, std::monostate>, SimpleHandler,
+      ExpectedHandler>;
+
+  HandlerType handler_;
 
  public:
-  explicit TypedMethodHandler(
-      std::function<asio::awaitable<ResultType>(ParamsType)> handler)
+  // Constructor for non-error-aware handler
+  explicit TypedMethodHandler(SimpleHandler handler)
+    requires(std::is_same_v<ErrorType, std::monostate>)
+      : handler_(std::move(handler)) {
+  }
+
+  // Constructor for error-aware handler
+  explicit TypedMethodHandler(ExpectedHandler handler)
+    requires(!std::is_same_v<ErrorType, std::monostate>)
       : handler_(std::move(handler)) {
   }
 
   auto operator()(std::optional<nlohmann::json> params)
       -> asio::awaitable<nlohmann::json> {
+    ParamsType typed_params{};
     try {
-      // Convert JSON params to typed params
-      ParamsType typed_params =
-          params.has_value() ? params.value().get<ParamsType>() : ParamsType{};
-
-      // Call the typed handler
-      ResultType result = co_await handler_(typed_params);
-
-      // Convert result back to JSON
-      co_return nlohmann::json(result);
+      if (params.has_value()) {
+        typed_params = params.value().get<ParamsType>();
+      }
     } catch (const nlohmann::json::exception &ex) {
-      // throw RpcError(
-      //     ErrorCode::kInvalidParams,
-      //     std::string("Parameter conversion error: ") + ex.what());
-    } catch (const std::exception &ex) {
-      // throw RpcError(
-      //     ErrorCode::kInternalError,
-      //     std::string("Handler error: ") + ex.what());
+      throw std::runtime_error(
+          "Failed to parse parameters: " + std::string(ex.what()));
+    }
+
+    if constexpr (std::is_same_v<ErrorType, std::monostate>) {
+      if constexpr (std::is_void_v<ResultType>) {
+        co_await handler_(typed_params);
+        co_return nlohmann::json();
+      } else {
+        ResultType result = co_await handler_(typed_params);
+        co_return nlohmann::json(result);
+      }
+    } else {
+      auto result = co_await handler_(typed_params);
+      if (result) {
+        if constexpr (std::is_void_v<ResultType>) {
+          co_return nlohmann::json();
+        } else {
+          co_return nlohmann::json(*result);
+        }
+      } else {
+        throw result.error();
+      }
     }
   }
 };
 
 template <typename ParamsType>
-class TypedNotificationHandler {
- private:
-  std::function<asio::awaitable<void>(ParamsType)> handler_;
+using TypedNotificationHandler = TypedMethodHandler<ParamsType, void>;
 
- public:
-  explicit TypedNotificationHandler(
-      std::function<asio::awaitable<void>(ParamsType)> handler)
-      : handler_(std::move(handler)) {
-  }
-
-  auto operator()(std::optional<nlohmann::json> params)
-      -> asio::awaitable<void> {
-    try {
-      // Convert JSON params to typed params
-      ParamsType typed_params =
-          params.has_value() ? params.value().get<ParamsType>() : ParamsType{};
-
-      // Call the typed handler
-      co_await handler_(typed_params);
-    } catch (const nlohmann::json::exception &ex) {
-      // throw RpcError(
-      //     ErrorCode::kInvalidParams,
-      //     std::string("Parameter conversion error: ") + ex.what());
-    } catch (const std::exception &ex) {
-      // throw RpcError(
-      //     ErrorCode::kInternalError,
-      //     std::string("Handler error: ") + ex.what());
-    }
-  }
-};
 }  // namespace jsonrpc::endpoint

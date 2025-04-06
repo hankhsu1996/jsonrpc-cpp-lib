@@ -22,6 +22,8 @@ enum class RpcErrorCode {
 
   // Client errors
   kClientError = -32099,
+  kClientSerializationError = -32002,
+  kClientDeserializationError = -32003,
 
   // Unknown error
   kUnknownError = -32098,
@@ -48,6 +50,10 @@ inline auto DefaultMessageFor(RpcErrorCode code) -> std::string_view {
       return "Timeout error";
     case RpcErrorCode::kClientError:
       return "Client error";
+    case RpcErrorCode::kClientSerializationError:
+      return "Client serialization error";
+    case RpcErrorCode::kClientDeserializationError:
+      return "Client deserialization error";
     case RpcErrorCode::kUnknownError:
       return "Unknown error";
   }
@@ -72,7 +78,7 @@ class RpcError {
     return code_;
   }
 
-  [[nodiscard]] auto Message() const -> std::string_view {
+  [[nodiscard]] auto Message() const -> std::string {
     return message_;
   }
 
