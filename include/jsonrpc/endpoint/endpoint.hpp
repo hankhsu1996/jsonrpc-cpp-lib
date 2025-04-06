@@ -27,7 +27,8 @@ class RpcEndpoint {
  public:
   explicit RpcEndpoint(
       asio::any_io_executor executor,
-      std::unique_ptr<transport::Transport> transport);
+      std::unique_ptr<transport::Transport> transport,
+      std::shared_ptr<spdlog::logger> logger = nullptr);
 
   static auto CreateClient(
       asio::any_io_executor executor,
@@ -49,6 +50,10 @@ class RpcEndpoint {
 
   [[nodiscard]] auto IsRunning() const -> bool {
     return is_running_.load();
+  }
+
+  auto Logger() -> spdlog::logger & {
+    return *logger_;
   }
 
   auto SendMethodCall(
@@ -114,6 +119,8 @@ class RpcEndpoint {
   auto GetNextRequestId() -> int64_t {
     return next_request_id_++;
   }
+
+  std::shared_ptr<spdlog::logger> logger_;
 
   asio::any_io_executor executor_;
 

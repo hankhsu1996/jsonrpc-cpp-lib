@@ -1,7 +1,6 @@
 #include "jsonrpc/endpoint/dispatcher.hpp"
 
 #include <jsonrpc/endpoint/request.hpp>
-#include <spdlog/spdlog.h>
 
 #include "jsonrpc/endpoint/response.hpp"
 
@@ -10,8 +9,10 @@ namespace jsonrpc::endpoint {
 using jsonrpc::error::RpcError;
 using jsonrpc::error::RpcErrorCode;
 
-Dispatcher::Dispatcher(asio::any_io_executor executor)
-    : executor_(std::move(executor)) {
+Dispatcher::Dispatcher(
+    asio::any_io_executor executor, std::shared_ptr<spdlog::logger> logger)
+    : executor_(std::move(executor)),
+      logger_(logger ? logger : spdlog::default_logger()) {
 }
 
 void Dispatcher::RegisterMethodCall(
@@ -84,7 +85,7 @@ auto Dispatcher::DispatchSingleRequest(Request request)
   if (request.IsNotification()) {
     auto it = notification_handlers_.find(method);
     if (it != notification_handlers_.end()) {
-      spdlog::debug(
+      Logger().debug(
           "Dispatcher found notification handler for method: {}", method);
       co_spawn(
           executor_,
@@ -93,14 +94,14 @@ auto Dispatcher::DispatchSingleRequest(Request request)
           },
           asio::detached);
     }
-    spdlog::debug(
+    Logger().debug(
         "Dispatcher notification handler not found for method: {}", method);
     co_return std::nullopt;
   }
 
   auto it = method_handlers_.find(method);
   if (it != method_handlers_.end()) {
-    spdlog::debug("Dispatcher found method handler for method: {}", method);
+    Logger().debug("Dispatcher found method handler for method: {}", method);
     auto result = co_await asio::co_spawn(
         executor_,
         [handler = it->second, params = request.GetParams()] {
@@ -109,7 +110,7 @@ auto Dispatcher::DispatchSingleRequest(Request request)
         asio::use_awaitable);
     co_return Response::CreateSuccess(result, request.GetId());
   }
-  spdlog::debug("Dispatcher method handler not found for method: {}", method);
+  Logger().debug("Dispatcher method handler not found for method: {}", method);
   co_return Response::CreateError(
       RpcErrorCode::kMethodNotFound, request.GetId());
 }

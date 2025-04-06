@@ -8,24 +8,14 @@
 
 #include "jsonrpc/error/error.hpp"
 
-namespace jsonrpc::detail {
-
-inline auto GetTransportLogger() -> std::shared_ptr<spdlog::logger> {
-  auto logger = spdlog::get("transport");
-  if (!logger) {
-    logger = spdlog::default_logger();
-  }
-  return logger;
-}
-
-}  // namespace jsonrpc::detail
-
 namespace jsonrpc::transport {
 
 class Transport {
  public:
-  explicit Transport(asio::any_io_executor executor)
-      : logger_(jsonrpc::detail::GetTransportLogger()),
+  explicit Transport(
+      asio::any_io_executor executor,
+      std::shared_ptr<spdlog::logger> logger = nullptr)
+      : logger_(logger ? logger : spdlog::default_logger()),
         executor_(std::move(executor)),
         strand_(asio::make_strand(executor_)) {
   }

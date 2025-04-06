@@ -8,6 +8,7 @@
 
 #include <asio.hpp>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 
 #include "jsonrpc/endpoint/request.hpp"
 #include "jsonrpc/endpoint/response.hpp"
@@ -21,13 +22,19 @@ class Dispatcher {
   using NotificationHandler = std::function<asio::awaitable<void>(
       const std::optional<nlohmann::json>&)>;
 
-  explicit Dispatcher(asio::any_io_executor executor);
+  explicit Dispatcher(
+      asio::any_io_executor executor,
+      std::shared_ptr<spdlog::logger> logger = nullptr);
 
   Dispatcher(const Dispatcher&) = delete;
   Dispatcher(Dispatcher&&) = delete;
   auto operator=(const Dispatcher&) -> Dispatcher& = delete;
   auto operator=(Dispatcher&&) -> Dispatcher& = delete;
   virtual ~Dispatcher() = default;
+
+  auto Logger() -> spdlog::logger& {
+    return *logger_;
+  }
 
   void RegisterMethodCall(
       const std::string& method, const MethodCallHandler& handler);
@@ -50,6 +57,8 @@ class Dispatcher {
   std::unordered_map<std::string, NotificationHandler> notification_handlers_;
 
   asio::any_io_executor executor_;
+
+  std::shared_ptr<spdlog::logger> logger_;
 };
 
 }  // namespace jsonrpc::endpoint
