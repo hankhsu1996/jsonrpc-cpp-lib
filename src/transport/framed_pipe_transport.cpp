@@ -30,7 +30,7 @@ auto FramedPipeTransport::ReceiveMessage()
     }
 
     if (!result.error.empty()) {
-      spdlog::error("Framing error: {}", result.error);
+      Logger().error("Framing error: {}", result.error);
       co_return RpcError::UnexpectedFromCode(
           RpcErrorCode::kTransportError, "Framing error: " + result.error);
     }

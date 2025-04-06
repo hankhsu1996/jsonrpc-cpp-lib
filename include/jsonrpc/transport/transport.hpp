@@ -4,15 +4,30 @@
 #include <string>
 
 #include <asio.hpp>
+#include <spdlog/spdlog.h>
 
 #include "jsonrpc/error/error.hpp"
+
+namespace jsonrpc::detail {
+
+inline auto GetTransportLogger() -> std::shared_ptr<spdlog::logger> {
+  auto logger = spdlog::get("transport");
+  if (!logger) {
+    logger = spdlog::default_logger();
+  }
+  return logger;
+}
+
+}  // namespace jsonrpc::detail
 
 namespace jsonrpc::transport {
 
 class Transport {
  public:
   explicit Transport(asio::any_io_executor executor)
-      : executor_(std::move(executor)), strand_(asio::make_strand(executor_)) {
+      : logger_(jsonrpc::detail::GetTransportLogger()),
+        executor_(std::move(executor)),
+        strand_(asio::make_strand(executor_)) {
   }
 
   Transport(const Transport &) = delete;
@@ -45,7 +60,13 @@ class Transport {
     return strand_;
   }
 
+ protected:
+  auto Logger() -> spdlog::logger & {
+    return *logger_;
+  }
+
  private:
+  std::shared_ptr<spdlog::logger> logger_;
   asio::any_io_executor executor_;
   asio::strand<asio::any_io_executor> strand_;
 };
