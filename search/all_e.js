@@ -11,5 +11,6 @@ var searchData=
   ['kparseerror_8',['kParseError',['../namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea70bc2f6598437e307b2b8d35f1c49a18',1,'jsonrpc::error']]],
   ['kservererror_9',['kServerError',['../namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496eac0743fba36fbd100b50c78be97655ae8',1,'jsonrpc::error']]],
   ['ktimeouterror_10',['kTimeoutError',['../namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea39a70ca912cee0eb36eb375f25c2fca6',1,'jsonrpc::error']]],
-  ['ktransporterror_11',['kTransportError',['../namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f',1,'jsonrpc::error']]]
+  ['ktransporterror_11',['kTransportError',['../namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496eadbe4fbec4b2cb2c2709a455206fed67f',1,'jsonrpc::error']]],
+  ['kunknownerror_12',['kUnknownError',['../namespacejsonrpc_1_1error.html#ad1943c3839a0a47773023a566017496ea4366541ea8a34268abc8b24f19fcefdd',1,'jsonrpc::error']]]
 ];

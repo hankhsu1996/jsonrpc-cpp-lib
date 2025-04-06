@@ -679,13 +679,13 @@ template&lt;typename ParamsType , typename ResultType &gt; </div>
 <div class="line"><span class="lineno">  163</span>  }</div>
 <div class="line"><span class="lineno">  164</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_ab87006bb19847eafa4b0487165a2ae82"><div class="ttname"><a href="#ab87006bb19847eafa4b0487165a2ae82">jsonrpc::endpoint::RpcEndpoint::SendMethodCall</a></div><div class="ttdeci">auto SendMethodCall(std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; std::expected&lt; nlohmann::json, RpcError &gt; &gt;</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8cpp_source.html#l00108">endpoint.cpp:108</a></div></div>
-<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_af6c693a01e31520716999275a48b73fb"><div class="ttname"><a href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">jsonrpc::error::RpcError::UnexpectedFromCode</a></div><div class="ttdeci">static auto UnexpectedFromCode(RpcErrorCode code, std::string message=&quot;&quot;) -&gt; std::unexpected&lt; RpcError &gt;</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00091">error.hpp:91</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_af6c693a01e31520716999275a48b73fb"><div class="ttname"><a href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">jsonrpc::error::RpcError::UnexpectedFromCode</a></div><div class="ttdeci">static auto UnexpectedFromCode(RpcErrorCode code, std::string message=&quot;&quot;) -&gt; std::unexpected&lt; RpcError &gt;</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00095">error.hpp:95</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="endpoint_8cpp_source.html#l00108">SendMethodCall()</a>, and <a class="el" href="error_8hpp_source.html#l00091">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
+<p class="reference">References <a class="el" href="endpoint_8cpp_source.html#l00108">SendMethodCall()</a>, and <a class="el" href="error_8hpp_source.html#l00095">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a7c9af8d5f83d86b6c22c56c8f65346c8_cgraph.svg" width="935" height="147"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a7c9af8d5f83d86b6c22c56c8f65346c8_cgraph.svg" width="1139" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -741,13 +741,13 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  138</span>  <span class="keyword">co_return</span> result[<span class="stringliteral">&quot;result&quot;</span>];</div>
 <div class="line"><span class="lineno">  139</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="request_8cpp_source.html#l00093">jsonrpc::endpoint::Request::ToJson()</a>, and <a class="el" href="error_8hpp_source.html#l00091">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
+<p class="reference">References <a class="el" href="request_8cpp_source.html#l00093">jsonrpc::endpoint::Request::ToJson()</a>, and <a class="el" href="error_8hpp_source.html#l00095">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="endpoint_8hpp_source.html#l00132">SendMethodCall()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_ab87006bb19847eafa4b0487165a2ae82_cgraph.svg" width="670" height="147"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_ab87006bb19847eafa4b0487165a2ae82_cgraph.svg" width="874" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -806,11 +806,11 @@ template&lt;typename ParamsType &gt; </div>
 <div class="line"><span class="lineno">  192</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1RpcEndpoint_html_ae235ed10d68e2090491f7da16b8c1485"><div class="ttname"><a href="#ae235ed10d68e2090491f7da16b8c1485">jsonrpc::endpoint::RpcEndpoint::SendNotification</a></div><div class="ttdeci">auto SendNotification(std::string method, std::optional&lt; nlohmann::json &gt; params=std::nullopt) -&gt; asio::awaitable&lt; std::expected&lt; void, RpcError &gt; &gt;</div><div class="ttdef"><b>Definition</b> <a href="endpoint_8cpp_source.html#l00141">endpoint.cpp:141</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="endpoint_8cpp_source.html#l00141">SendNotification()</a>, and <a class="el" href="error_8hpp_source.html#l00091">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
+<p class="reference">References <a class="el" href="endpoint_8cpp_source.html#l00141">SendNotification()</a>, and <a class="el" href="error_8hpp_source.html#l00095">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a8b8e0370b2300029396d3cf570fb40c8_cgraph.svg" width="938" height="147"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_a8b8e0370b2300029396d3cf570fb40c8_cgraph.svg" width="1142" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -854,13 +854,13 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  159</span>  <span class="keyword">co_return</span> std::expected&lt;void, RpcError&gt;{};</div>
 <div class="line"><span class="lineno">  160</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="request_8cpp_source.html#l00093">jsonrpc::endpoint::Request::ToJson()</a>, and <a class="el" href="error_8hpp_source.html#l00091">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
+<p class="reference">References <a class="el" href="request_8cpp_source.html#l00093">jsonrpc::endpoint::Request::ToJson()</a>, and <a class="el" href="error_8hpp_source.html#l00095">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="endpoint_8hpp_source.html#l00167">SendNotification()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_ae235ed10d68e2090491f7da16b8c1485_cgraph.svg" width="671" height="147"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_ae235ed10d68e2090491f7da16b8c1485_cgraph.svg" width="875" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -958,11 +958,11 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">   59</span>  <span class="keyword">co_return</span> std::expected&lt;void, RpcError&gt;{};</div>
 <div class="line"><span class="lineno">   60</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="error_8hpp_source.html#l00091">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
+<p class="reference">References <a class="el" href="error_8hpp_source.html#l00095">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_ad5176975926ea55caaae5fa082e80ba0_cgraph.svg" width="595" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1endpoint_1_1RpcEndpoint_ad5176975926ea55caaae5fa082e80ba0_cgraph.svg" width="799" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

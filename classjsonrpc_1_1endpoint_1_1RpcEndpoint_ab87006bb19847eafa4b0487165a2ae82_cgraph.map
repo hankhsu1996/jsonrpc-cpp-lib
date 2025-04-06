@@ -4,8 +4,8 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,40,273,34,273,39,223,46"/>
 <area shape="rect" id="Node000003" href="$classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb" title=" " alt="" coords="271,69,445,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,69,257,73,257,79,223,74"/>
-<area shape="rect" id="Node000004" href="$namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383" title=" " alt="" coords="501,37,657,77"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="445,74,487,68,487,73,446,79"/>
-<area shape="rect" id="Node000005" href="$classjsonrpc_1_1error_1_1RpcError.html#aef9c4c8109aa31b1bedf66aa8a2bc375" title=" " alt="" coords="493,101,664,141"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="446,99,480,104,479,110,445,105"/>
+<area shape="rect" id="Node000004" href="$classjsonrpc_1_1error_1_1RpcError.html#a43714364e8781ace6d728a70edf089d6" title=" " alt="" coords="493,69,664,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="445,87,480,87,480,92,445,92"/>
+<area shape="rect" id="Node000005" href="$namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383" title=" " alt="" coords="712,69,868,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="664,87,698,87,698,92,664,92"/>
 </map>

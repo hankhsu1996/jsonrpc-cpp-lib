@@ -1,7 +1,47 @@
 <map id="jsonrpc::error::RpcError::FromCode" name="jsonrpc::error::RpcError::FromCode">
-<area shape="rect" id="Node000001" title=" " alt="" coords="479,5,649,45"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Response.html#a1fb087a9e11568a9de167be16156d8f1" title=" " alt="" coords="264,5,431,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="464,28,431,28,431,23,464,23"/>
-<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59f23de0593ce9999f3e07e70b6e1ab5" title=" " alt="" coords="5,5,216,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="250,28,216,28,216,23,250,23"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="779,476,949,516"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1endpoint_1_1Response.html#a1fb087a9e11568a9de167be16156d8f1" title=" " alt="" coords="560,215,727,255"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="835,468,659,257,664,254,839,464"/>
+<area shape="rect" id="Node000004" href="$classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb" title=" " alt="" coords="556,508,731,548"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="765,513,731,518,730,513,765,508"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1endpoint_1_1Dispatcher.html#a59f23de0593ce9999f3e07e70b6e1ab5" title=" " alt="" coords="9,79,220,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="629,203,612,161,586,113,551,68,530,49,507,33,461,16,412,9,362,11,312,19,265,33,221,49,152,81,150,77,219,44,263,28,311,14,361,5,412,3,462,11,509,29,534,45,555,64,591,111,617,159,634,201"/>
+<area shape="rect" id="Node000005" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#a4707b31e8838d8e08536d03b1f969b98" title=" " alt="" coords="281,43,499,83"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="628,496,553,268,544,216,542,174,533,136,523,117,506,97,491,85,494,81,510,93,527,114,538,134,547,173,549,216,559,266,633,495"/>
+<area shape="rect" id="Node000006" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#a3bea984f83644ebed3a47b682eb7cbfa" title=" " alt="" coords="301,107,479,147"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="628,496,561,300,526,205,506,161,478,144,481,139,510,157,531,203,566,298,633,495"/>
+<area shape="rect" id="Node000007" href="$classjsonrpc_1_1endpoint_1_1Request.html#aeded22734248d9dd10743262102673fc" title=" " alt="" coords="319,171,461,211"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="633,495,620,438,595,368,558,295,534,261,506,232,485,217,461,207,463,202,488,212,510,228,538,258,563,292,600,365,625,437,639,494"/>
+<area shape="rect" id="Node000008" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a40c515e2200a29894a05b96b8c77e552" title=" " alt="" coords="31,250,198,305"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="633,496,619,444,595,382,578,351,558,322,534,297,507,276,470,258,431,246,391,240,349,237,269,243,199,256,198,251,269,237,349,232,391,234,432,241,472,253,509,271,538,293,562,319,583,349,600,380,624,442,638,494"/>
+<area shape="rect" id="Node000009" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#af381937d38c244ccc90025db433a6423" title=" " alt="" coords="272,286,508,326"/>
+<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="626,497,606,460,580,418,546,376,506,340,486,328,488,324,510,336,550,372,584,415,611,458,630,495"/>
+<area shape="rect" id="Node000010" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#ab041f69f2934bf51eb2bc98187a85970" title=" " alt="" coords="293,350,487,405"/>
+<area shape="poly" id="edge11_Node000004_Node000010" title=" " alt="" coords="611,501,564,459,507,419,484,408,486,403,509,414,568,454,615,497"/>
+<area shape="rect" id="Node000011" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#a22a7d48d0cef911da5412b294d625766" title=" " alt="" coords="274,429,506,484"/>
+<area shape="poly" id="edge12_Node000004_Node000011" title=" " alt="" coords="558,507,486,486,487,481,560,502"/>
+<area shape="rect" id="Node000012" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#aaddeef7681cfb4d014292df21f260b54" title=" " alt="" coords="282,508,498,548"/>
+<area shape="poly" id="edge13_Node000004_Node000012" title=" " alt="" coords="542,531,498,531,498,526,542,526"/>
+<area shape="rect" id="Node000014" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#aa13237af44ed295661fa1643c6e95ff3" title=" " alt="" coords="275,572,505,612"/>
+<area shape="poly" id="edge15_Node000004_Node000014" title=" " alt="" coords="551,554,470,575,469,570,550,549"/>
+<area shape="rect" id="Node000015" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a7c9af8d5f83d86b6c22c56c8f65346c8" title=" " alt="" coords="6,671,223,711"/>
+<area shape="poly" id="edge16_Node000004_Node000015" title=" " alt="" coords="612,560,566,595,509,627,457,642,384,657,224,681,223,676,383,652,456,637,507,622,563,591,609,555"/>
+<area shape="rect" id="Node000016" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab87006bb19847eafa4b0487165a2ae82" title=" " alt="" coords="281,687,499,727"/>
+<area shape="poly" id="edge17_Node000004_Node000016" title=" " alt="" coords="622,561,574,617,543,646,509,671,471,689,469,685,507,666,540,641,570,613,618,558"/>
+<area shape="rect" id="Node000017" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a8b8e0370b2300029396d3cf570fb40c8" title=" " alt="" coords="5,760,224,800"/>
+<area shape="poly" id="edge19_Node000004_Node000017" title=" " alt="" coords="634,563,616,605,590,655,555,703,533,724,509,741,488,751,459,760,386,772,304,779,224,782,224,777,304,773,386,766,458,754,486,746,507,737,530,720,551,699,586,652,611,603,629,561"/>
+<area shape="rect" id="Node000018" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ae235ed10d68e2090491f7da16b8c1485" title=" " alt="" coords="281,802,499,842"/>
+<area shape="poly" id="edge20_Node000004_Node000018" title=" " alt="" coords="636,562,620,611,594,671,558,732,535,760,510,785,479,804,476,799,506,781,531,757,553,729,589,669,615,609,631,561"/>
+<area shape="rect" id="Node000019" href="$classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ad5176975926ea55caaae5fa082e80ba0" title=" " alt="" coords="319,866,461,906"/>
+<area shape="poly" id="edge22_Node000004_Node000019" title=" " alt="" coords="641,563,629,625,605,704,588,746,567,786,541,823,510,856,488,870,463,880,461,875,485,866,506,852,537,820,562,783,583,743,600,702,623,624,635,562"/>
+<area shape="rect" id="Node000020" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#a14e007069cda74653be616f794d2666f" title=" " alt="" coords="311,930,469,970"/>
+<area shape="poly" id="edge23_Node000004_Node000020" title=" " alt="" coords="643,563,635,637,614,732,597,783,574,833,546,879,510,920,491,933,470,942,468,937,488,928,506,916,541,876,570,830,592,781,609,731,630,636,638,562"/>
+<area shape="rect" id="Node000021" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#ab6c1ddc0b0170969a4fae514f7c01630" title=" " alt="" coords="304,994,476,1034"/>
+<area shape="poly" id="edge24_Node000004_Node000021" title=" " alt="" coords="645,562,641,647,634,701,622,760,605,820,582,880,550,935,510,984,478,1004,475,999,506,980,546,932,577,877,600,819,617,759,629,700,635,646,640,562"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="305,172,271,162,163,122,165,117,273,157,306,167"/>
+<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="258,295,198,289,198,284,259,290"/>
+<area shape="rect" id="Node000013" href="$classjsonrpc_1_1transport_1_1FramedPipeTransport.html#a628643b273f0d3a6be24acd0ad35500f" title=" " alt="" coords="31,501,198,556"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="268,531,198,531,198,526,268,526"/>
+<area shape="poly" id="edge18_Node000016_Node000015" title=" " alt="" coords="268,703,224,700,224,695,268,697"/>
+<area shape="poly" id="edge21_Node000018_Node000017" title=" " alt="" coords="266,806,224,799,224,794,267,801"/>
 </map>

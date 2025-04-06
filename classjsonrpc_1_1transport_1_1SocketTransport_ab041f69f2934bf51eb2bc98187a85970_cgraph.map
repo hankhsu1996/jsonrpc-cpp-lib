@@ -1,9 +1,9 @@
 <map id="jsonrpc::transport::SocketTransport::ReceiveMessage" name="jsonrpc::transport::SocketTransport::ReceiveMessage">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,30,199,85"/>
-<area shape="rect" id="Node000002" href="$classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb" title=" " alt="" coords="247,37,421,77"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,55,233,55,233,60,199,60"/>
-<area shape="rect" id="Node000003" href="$namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383" title=" " alt="" coords="477,5,633,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="421,42,463,36,463,41,422,47"/>
-<area shape="rect" id="Node000004" href="$classjsonrpc_1_1error_1_1RpcError.html#aef9c4c8109aa31b1bedf66aa8a2bc375" title=" " alt="" coords="469,69,640,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="422,67,456,72,455,78,421,73"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,199,60"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb" title=" " alt="" coords="247,13,421,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,30,233,30,233,35,199,35"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1error_1_1RpcError.html#a43714364e8781ace6d728a70edf089d6" title=" " alt="" coords="469,13,640,53"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="421,30,456,30,456,35,421,35"/>
+<area shape="rect" id="Node000004" href="$namespacejsonrpc_1_1error_1_1detail.html#aae1fee218c1f2c4f51e7f029be8b0383" title=" " alt="" coords="688,13,844,53"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="640,30,674,30,674,35,640,35"/>
 </map>
