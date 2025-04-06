@@ -90,7 +90,7 @@ class RpcEndpoint {
   void RegisterNotification(
       std::string method, typename Dispatcher::NotificationHandler handler);
 
-  template <typename ParamsType>
+  template <typename ParamsType, typename ErrorType = std::monostate>
   void RegisterNotification(
       std::string method,
       std::function<asio::awaitable<void>(ParamsType)> handler)
@@ -234,7 +234,7 @@ void RpcEndpoint::RegisterMethodCall(
           std::optional<nlohmann::json> params) { return (*handler)(params); });
 }
 
-template <typename ParamsType>
+template <typename ParamsType, typename ErrorType>
 void RpcEndpoint::RegisterNotification(
     std::string method,
     std::function<asio::awaitable<void>(ParamsType)> handler)

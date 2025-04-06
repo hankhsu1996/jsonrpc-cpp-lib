@@ -28,7 +28,7 @@
 
 #include <asio/awaitable.hpp>
 #include <nlohmann/json.hpp>
-
+#include <spdlog/spdlog.h>
 namespace jsonrpc::endpoint {
 
 template <
@@ -66,7 +66,7 @@ class TypedMethodHandler {
       if (params.has_value()) {
         typed_params = params.value().get<ParamsType>();
       }
-    } catch (const nlohmann::json::exception &ex) {
+    } catch (const nlohmann::json::exception& ex) {
       throw std::runtime_error(
           "Failed to parse parameters: " + std::string(ex.what()));
     }
@@ -94,7 +94,51 @@ class TypedMethodHandler {
   }
 };
 
-template <typename ParamsType>
-using TypedNotificationHandler = TypedMethodHandler<ParamsType, void>;
+template <typename ParamsType, typename ErrorType = std::monostate>
+class TypedNotificationHandler {
+ private:
+  using SimpleHandler = std::function<asio::awaitable<void>(ParamsType)>;
+  using ExpectedHandler =
+      std::function<asio::awaitable<std::expected<void, ErrorType>>(
+          ParamsType)>;
+  using HandlerType = std::conditional_t<
+      std::is_same_v<ErrorType, std::monostate>, SimpleHandler,
+      ExpectedHandler>;
+
+  HandlerType handler_;
+
+ public:
+  explicit TypedNotificationHandler(SimpleHandler handler)
+    requires(std::is_same_v<ErrorType, std::monostate>)
+      : handler_(std::move(handler)) {
+  }
+
+  explicit TypedNotificationHandler(ExpectedHandler handler)
+    requires(!std::is_same_v<ErrorType, std::monostate>)
+      : handler_(std::move(handler)) {
+  }
+
+  auto operator()(std::optional<nlohmann::json> params)
+      -> asio::awaitable<void> {
+    ParamsType typed_params{};
+    try {
+      if (params.has_value()) {
+        typed_params = params.value().get<ParamsType>();
+      }
+    } catch (const nlohmann::json::exception& ex) {
+      spdlog::error("Failed to parse parameters: {}", ex.what());
+      co_return;
+    }
+
+    if constexpr (std::is_same_v<ErrorType, std::monostate>) {
+      co_await handler_(typed_params);
+    } else {
+      auto result = co_await handler_(typed_params);
+      if (!result) {
+        spdlog::warn("TypedNotificationHandler ignored error");
+      }
+    }
+  }
+};
 
 }  // namespace jsonrpc::endpoint
