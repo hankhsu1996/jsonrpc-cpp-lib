@@ -90,10 +90,11 @@ class RpcEndpoint {
   void RegisterNotification(
       std::string method, typename Dispatcher::NotificationHandler handler);
 
-  template <typename ParamsType, typename ErrorType = std::monostate>
+  template <typename ParamsType, typename ErrorType>
   void RegisterNotification(
       std::string method,
-      std::function<asio::awaitable<void>(ParamsType)> handler)
+      std::function<asio::awaitable<std::expected<void, ErrorType>>(ParamsType)>
+          handler)
     requires(FromJson<ParamsType>);
 
   [[nodiscard]] auto HasPendingRequests() const -> bool;
@@ -237,7 +238,8 @@ void RpcEndpoint::RegisterMethodCall(
 template <typename ParamsType, typename ErrorType>
 void RpcEndpoint::RegisterNotification(
     std::string method,
-    std::function<asio::awaitable<void>(ParamsType)> handler)
+    std::function<asio::awaitable<std::expected<void, ErrorType>>(ParamsType)>
+        handler)
   requires(FromJson<ParamsType>)
 {
   // Create a handler object and store its function object
