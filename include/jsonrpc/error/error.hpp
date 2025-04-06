@@ -22,6 +22,9 @@ enum class RpcErrorCode {
 
   // Client errors
   kClientError = -32099,
+
+  // Unknown error
+  kUnknownError = -32098,
 };
 
 namespace detail {
@@ -45,8 +48,9 @@ inline auto DefaultMessageFor(RpcErrorCode code) -> std::string_view {
       return "Timeout error";
     case RpcErrorCode::kClientError:
       return "Client error";
+    case RpcErrorCode::kUnknownError:
+      return "Unknown error";
   }
-  return "Unknown error";
 }
 }  // namespace detail
 
