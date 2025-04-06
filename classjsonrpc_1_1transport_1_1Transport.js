@@ -1,6 +1,6 @@
 var classjsonrpc_1_1transport_1_1Transport =
 [
-    [ "Transport", "classjsonrpc_1_1transport_1_1Transport.html#abda99f896775ef93e40e81bc55e74923", null ],
+    [ "Transport", "classjsonrpc_1_1transport_1_1Transport.html#a6ac42ad4aadc42e835b3eb33e4831ce3", null ],
     [ "Transport", "classjsonrpc_1_1transport_1_1Transport.html#a92e283464e36b663c8acebdb831c3e02", null ],
     [ "Transport", "classjsonrpc_1_1transport_1_1Transport.html#a9abc84d6799e166a165e6493dc50a31c", null ],
     [ "~Transport", "classjsonrpc_1_1transport_1_1Transport.html#a41ecc943dcac4073f965983859f48f2a", null ],
@@ -8,6 +8,7 @@ var classjsonrpc_1_1transport_1_1Transport =
     [ "CloseNow", "classjsonrpc_1_1transport_1_1Transport.html#a9e2a8210822b09228b8e005adaa44927", null ],
     [ "GetExecutor", "classjsonrpc_1_1transport_1_1Transport.html#aa05650e34376a1750716f0865b0c3bd2", null ],
     [ "GetStrand", "classjsonrpc_1_1transport_1_1Transport.html#aecdcca9a3679d5b5b6be318beeeae100", null ],
+    [ "Logger", "classjsonrpc_1_1transport_1_1Transport.html#a4959a71460665835c99f9789640355c8", null ],
     [ "operator=", "classjsonrpc_1_1transport_1_1Transport.html#a474077ebd8d13dc61783bae2d8e4cd17", null ],
     [ "operator=", "classjsonrpc_1_1transport_1_1Transport.html#aa0243b852e7f88f411746c5a461bf62d", null ],
     [ "ReceiveMessage", "classjsonrpc_1_1transport_1_1Transport.html#a64504ed403e426984d722b0240f5345c", null ],

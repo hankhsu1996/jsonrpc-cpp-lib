@@ -114,6 +114,7 @@ $(function(){initNavTree('classjsonrpc_1_1transport_1_1Transport.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classjsonrpc_1_1transport_1_1Transport-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">jsonrpc::transport::Transport Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
@@ -123,18 +124,18 @@ $(function(){initNavTree('classjsonrpc_1_1transport_1_1Transport.html',''); init
 <div class="dynheader">
 Inheritance diagram for jsonrpc::transport::Transport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport__inherit__graph.svg" width="399" height="907"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport__inherit__graph.svg" width="399" height="927"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for jsonrpc::transport::Transport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport__coll__graph.svg" width="160" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport__coll__graph.svg" width="160" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abda99f896775ef93e40e81bc55e74923" id="r_abda99f896775ef93e40e81bc55e74923"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abda99f896775ef93e40e81bc55e74923">Transport</a> (asio::any_io_executor executor)</td></tr>
-<tr class="separator:abda99f896775ef93e40e81bc55e74923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ac42ad4aadc42e835b3eb33e4831ce3" id="r_a6ac42ad4aadc42e835b3eb33e4831ce3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ac42ad4aadc42e835b3eb33e4831ce3">Transport</a> (asio::any_io_executor executor, std::shared_ptr&lt; spdlog::logger &gt; logger=nullptr)</td></tr>
+<tr class="separator:a6ac42ad4aadc42e835b3eb33e4831ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92e283464e36b663c8acebdb831c3e02" id="r_a92e283464e36b663c8acebdb831c3e02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92e283464e36b663c8acebdb831c3e02">Transport</a> (const <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;)=delete</td></tr>
 <tr class="separator:a92e283464e36b663c8acebdb831c3e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9abc84d6799e166a165e6493dc50a31c" id="r_a9abc84d6799e166a165e6493dc50a31c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9abc84d6799e166a165e6493dc50a31c">Transport</a> (<a class="el" href="classjsonrpc_1_1transport_1_1Transport.html">Transport</a> &amp;&amp;)=delete</td></tr>
@@ -159,13 +160,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa05650e34376a1750716f0865b0c3bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecdcca9a3679d5b5b6be318beeeae100" id="r_aecdcca9a3679d5b5b6be318beeeae100"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aecdcca9a3679d5b5b6be318beeeae100">GetStrand</a> () -&gt; asio::strand&lt; asio::any_io_executor &gt; &amp;</td></tr>
 <tr class="separator:aecdcca9a3679d5b5b6be318beeeae100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a4959a71460665835c99f9789640355c8" id="r_a4959a71460665835c99f9789640355c8"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4959a71460665835c99f9789640355c8">Logger</a> () -&gt; spdlog::logger &amp;</td></tr>
+<tr class="separator:a4959a71460665835c99f9789640355c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00012">12</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00013">13</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abda99f896775ef93e40e81bc55e74923" name="abda99f896775ef93e40e81bc55e74923"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abda99f896775ef93e40e81bc55e74923">&#9670;&#160;</a></span>Transport() <span class="overload">[1/3]</span></h2>
+<a id="a6ac42ad4aadc42e835b3eb33e4831ce3" name="a6ac42ad4aadc42e835b3eb33e4831ce3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ac42ad4aadc42e835b3eb33e4831ce3">&#9670;&#160;</a></span>Transport() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,8 +182,12 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">jsonrpc::transport::Transport::Transport </td>
           <td>(</td>
-          <td class="paramtype">asio::any_io_executor</td>          <td class="paramname"><span class="paramname"><em>executor</em></span></td><td>)</td>
+          <td class="paramtype">asio::any_io_executor</td>          <td class="paramname"><span class="paramname"><em>executor</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::shared_ptr&lt; spdlog::logger &gt;</td>          <td class="paramname"><span class="paramname"><em>logger</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -187,9 +197,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00014">14</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   15</span>      : executor_(std::move(executor)), strand_(asio::make_strand(executor_)) {</div>
-<div class="line"><span class="lineno">   16</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00015">15</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span>      : logger_(logger ? logger : spdlog::default_logger()),</div>
+<div class="line"><span class="lineno">   19</span>        executor_(std::move(executor)),</div>
+<div class="line"><span class="lineno">   20</span>        strand_(asio::make_strand(executor_)) {</div>
+<div class="line"><span class="lineno">   21</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -346,10 +358,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00040">40</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>                                                                {</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> executor_;</div>
-<div class="line"><span class="lineno">   42</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00045">45</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>                                                                {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> executor_;</div>
+<div class="line"><span class="lineno">   47</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -376,11 +388,48 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00044">44</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>                                                                      {</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> strand_;</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00049">49</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>                                                                      {</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> strand_;</div>
+<div class="line"><span class="lineno">   51</span>  }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a4959a71460665835c99f9789640355c8" name="a4959a71460665835c99f9789640355c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4959a71460665835c99f9789640355c8">&#9670;&#160;</a></span>Logger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto jsonrpc::transport::Transport::Logger </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> -&gt; spdlog::logger &amp; </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="transport_8hpp_source.html#l00054">54</a> of file <a class="el" href="transport_8hpp_source.html">transport.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>                                  {</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> *logger_;</div>
+<div class="line"><span class="lineno">   56</span>  }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="pipe__transport_8cpp_source.html#l00137">jsonrpc::transport::PipeTransport::CloseNow()</a>, <a class="el" href="socket__transport_8cpp_source.html#l00125">jsonrpc::transport::SocketTransport::CloseNow()</a>, <a class="el" href="pipe__transport_8cpp_source.html#l00028">jsonrpc::transport::PipeTransport::~PipeTransport()</a>, and <a class="el" href="socket__transport_8cpp_source.html#l00022">jsonrpc::transport::SocketTransport::~SocketTransport()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classjsonrpc_1_1transport_1_1Transport_a4959a71460665835c99f9789640355c8_icgraph.svg" width="682" height="192"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <a id="a474077ebd8d13dc61783bae2d8e4cd17" name="a474077ebd8d13dc61783bae2d8e4cd17"></a>

@@ -1,11 +1,12 @@
 var classjsonrpc_1_1endpoint_1_1RpcEndpoint =
 [
-    [ "RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a4acd1cc8a4f08518b01df7a1bd5947e2", null ],
+    [ "RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a3bafc133dc0cfb78364d96976a6f4940", null ],
     [ "RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a87e00ed72fe74f85e192c3971367018c", null ],
     [ "RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#ab25e43f6a488a5dd4fb93671a1696c7e", null ],
     [ "~RpcEndpoint", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aa5adf6ccac54f63ec6d816be4365c3df", null ],
     [ "HasPendingRequests", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a41c2da77c0083d740c17679628a35e64", null ],
     [ "IsRunning", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#aae3ce7f968e4da001e1c2c18c03e8a69", null ],
+    [ "Logger", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a9e0c4ee65bc51a5f4d9239966428cb85", null ],
     [ "operator=", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a2ba351ea31bda43fc5ef1e62718dd523", null ],
     [ "operator=", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a0091ac00c42597f45d6541a8497b3d39", null ],
     [ "RegisterMethodCall", "classjsonrpc_1_1endpoint_1_1RpcEndpoint.html#a6aa574b757a312478df1fef37270b1fa", null ],

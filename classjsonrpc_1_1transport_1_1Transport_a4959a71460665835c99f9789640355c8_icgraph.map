@@ -1,0 +1,13 @@
+<map id="jsonrpc::transport::Transport::Logger" name="jsonrpc::transport::Transport::Logger">
+<area shape="rect" id="Node000001" title=" " alt="" coords="533,92,676,132"/>
+<area shape="rect" id="Node000002" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#af36e8c630d21cbd56133464d6e79b10a" title=" " alt="" coords="287,5,477,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="541,89,484,66,436,48,438,43,486,62,543,84"/>
+<area shape="rect" id="Node000003" href="$classjsonrpc_1_1transport_1_1PipeTransport.html#ad64f2634a0b5bf9865b9ba8818531ef3" title=" " alt="" coords="5,45,231,85"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="519,107,231,79,231,73,520,101"/>
+<area shape="rect" id="Node000004" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#a3642cc686cb19f96112aedb2e385cf1e" title=" " alt="" coords="279,120,485,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="520,125,486,130,485,124,519,120"/>
+<area shape="rect" id="Node000005" href="$classjsonrpc_1_1transport_1_1SocketTransport.html#a2180ab77872ad9238c6a0b30d4f0b6bc" title=" " alt="" coords="47,131,189,186"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="563,142,527,160,486,175,407,187,327,188,252,183,189,175,189,170,253,178,327,183,407,181,485,169,524,155,561,137"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="274,44,231,51,230,46,273,39"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="265,151,189,156,189,151,265,146"/>
+</map>

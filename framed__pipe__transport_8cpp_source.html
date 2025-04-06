@@ -152,7 +152,7 @@ $(function(){initNavTree('framed__pipe__transport_8cpp_source.html',''); initRes
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    }</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">if</span> (!result.error.empty()) {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      spdlog::error(<span class="stringliteral">&quot;Framing error: {}&quot;</span>, result.error);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      Logger().error(<span class="stringliteral">&quot;Framing error: {}&quot;</span>, result.error);</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>          RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Framing error: &quot;</span> + result.error);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
