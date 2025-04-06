@@ -51,8 +51,8 @@ class Transport {
   }
 
  protected:
-  auto Logger() -> spdlog::logger & {
-    return *logger_;
+  auto Logger() -> std::shared_ptr<spdlog::logger> {
+    return logger_;
   }
 
  private:

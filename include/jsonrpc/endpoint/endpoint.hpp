@@ -52,8 +52,8 @@ class RpcEndpoint {
     return is_running_.load();
   }
 
-  auto Logger() -> spdlog::logger & {
-    return *logger_;
+  auto Logger() -> std::shared_ptr<spdlog::logger> {
+    return logger_;
   }
 
   auto SendMethodCall(

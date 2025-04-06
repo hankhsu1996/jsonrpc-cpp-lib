@@ -32,8 +32,8 @@ class Dispatcher {
   auto operator=(Dispatcher&&) -> Dispatcher& = delete;
   virtual ~Dispatcher() = default;
 
-  auto Logger() -> spdlog::logger& {
-    return *logger_;
+  auto Logger() -> std::shared_ptr<spdlog::logger> {
+    return logger_;
   }
 
   void RegisterMethodCall(
