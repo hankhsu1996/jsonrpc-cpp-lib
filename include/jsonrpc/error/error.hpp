@@ -94,10 +94,7 @@ class RpcError {
 
   static auto UnexpectedFromCode(RpcErrorCode code, std::string message = "")
       -> std::unexpected<RpcError> {
-    if (message.empty()) {
-      message = std::string(detail::DefaultMessageFor(code));
-    }
-    return std::unexpected(RpcError(code, std::move(message)));
+    return std::unexpected(RpcError::FromCode(code, std::move(message)));
   }
 
  private:
