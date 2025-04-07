@@ -181,7 +181,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="socket__transport_8hpp_source.html#l00013">13</a> of file <a class="el" href="socket__transport_8hpp_source.html">socket_transport.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8hpp_source.html#l00014">14</a> of file <a class="el" href="socket__transport_8hpp_source.html">socket_transport.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a589ecebbe4414f516bf1a9d61ec9e98c" name="a589ecebbe4414f516bf1a9d61ec9e98c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a589ecebbe4414f516bf1a9d61ec9e98c">&#9670;&#160;</a></span>SocketTransport() <span class="overload">[1/3]</span></h2>
@@ -264,10 +264,10 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   29</span>    }</div>
 <div class="line"><span class="lineno">   30</span>  }</div>
 <div class="line"><span class="lineno">   31</span>}</div>
-<div class="ttc" id="aclassjsonrpc_1_1transport_1_1SocketTransport_html_a3642cc686cb19f96112aedb2e385cf1e"><div class="ttname"><a href="#a3642cc686cb19f96112aedb2e385cf1e">jsonrpc::transport::SocketTransport::CloseNow</a></div><div class="ttdeci">auto CloseNow() -&gt; void override</div><div class="ttdef"><b>Definition</b> <a href="socket__transport_8cpp_source.html#l00128">socket_transport.cpp:128</a></div></div>
+<div class="ttc" id="aclassjsonrpc_1_1transport_1_1SocketTransport_html_a3642cc686cb19f96112aedb2e385cf1e"><div class="ttname"><a href="#a3642cc686cb19f96112aedb2e385cf1e">jsonrpc::transport::SocketTransport::CloseNow</a></div><div class="ttdeci">auto CloseNow() -&gt; void override</div><div class="ttdef"><b>Definition</b> <a href="socket__transport_8cpp_source.html#l00131">socket_transport.cpp:131</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1Transport_html_a8b953a0c16a2f6d9f919af24ec0ca986"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">jsonrpc::transport::Transport::Logger</a></div><div class="ttdeci">auto Logger() -&gt; std::shared_ptr&lt; spdlog::logger &gt;</div><div class="ttdef"><b>Definition</b> <a href="transport_8hpp_source.html#l00054">transport.hpp:54</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="socket__transport_8cpp_source.html#l00128">CloseNow()</a>, and <a class="el" href="transport_8hpp_source.html#l00054">jsonrpc::transport::Transport::Logger()</a>.</p>
+<p class="reference">References <a class="el" href="socket__transport_8cpp_source.html#l00131">CloseNow()</a>, and <a class="el" href="transport_8hpp_source.html#l00054">jsonrpc::transport::Transport::Logger()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -365,39 +365,42 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   91</span>  is_closed_ = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   92</span>  is_connected_ = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport closing&quot;</span>);</div>
-<div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>  <span class="comment">// Cancel and close the socket safely</span></div>
-<div class="line"><span class="lineno">   97</span>  std::error_code ec;</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">if</span> (socket_.is_open()) {</div>
-<div class="line"><span class="lineno">   99</span>    socket_.cancel(ec);</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  101</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
-<div class="line"><span class="lineno">  102</span>          <span class="stringliteral">&quot;SocketTransport error canceling socket: {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  103</span>    }</div>
-<div class="line"><span class="lineno">  104</span>    socket_.close(ec);</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  106</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(<span class="stringliteral">&quot;SocketTransport error closing socket: {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  107</span>    }</div>
-<div class="line"><span class="lineno">  108</span>  }</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>  <span class="comment">// Clean up acceptor if this is a server</span></div>
-<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">if</span> (is_server_ &amp;&amp; acceptor_) {</div>
-<div class="line"><span class="lineno">  112</span>    acceptor_-&gt;cancel(ec);</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  114</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
-<div class="line"><span class="lineno">  115</span>          <span class="stringliteral">&quot;SocketTransport error canceling acceptor: {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  116</span>    }</div>
-<div class="line"><span class="lineno">  117</span>    acceptor_-&gt;close(ec);</div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  119</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
-<div class="line"><span class="lineno">  120</span>          <span class="stringliteral">&quot;SocketTransport error closing acceptor: {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  121</span>    }</div>
-<div class="line"><span class="lineno">  122</span>  }</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>  <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport closed&quot;</span>);</div>
-<div class="line"><span class="lineno">  125</span>  <span class="keyword">co_return</span> Ok();</div>
-<div class="line"><span class="lineno">  126</span>}</div>
+<div class="line"><span class="lineno">   94</span>  <span class="comment">// Clear the message queue</span></div>
+<div class="line"><span class="lineno">   95</span>  send_queue_.clear();</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>  <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport closing&quot;</span>);</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>  <span class="comment">// Cancel and close the socket safely</span></div>
+<div class="line"><span class="lineno">  100</span>  std::error_code ec;</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (socket_.is_open()) {</div>
+<div class="line"><span class="lineno">  102</span>    socket_.cancel(ec);</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">  104</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
+<div class="line"><span class="lineno">  105</span>          <span class="stringliteral">&quot;SocketTransport error canceling socket: {}&quot;</span>, ec.message());</div>
+<div class="line"><span class="lineno">  106</span>    }</div>
+<div class="line"><span class="lineno">  107</span>    socket_.close(ec);</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">  109</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(<span class="stringliteral">&quot;SocketTransport error closing socket: {}&quot;</span>, ec.message());</div>
+<div class="line"><span class="lineno">  110</span>    }</div>
+<div class="line"><span class="lineno">  111</span>  }</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>  <span class="comment">// Clean up acceptor if this is a server</span></div>
+<div class="line"><span class="lineno">  114</span>  <span class="keywordflow">if</span> (is_server_ &amp;&amp; acceptor_) {</div>
+<div class="line"><span class="lineno">  115</span>    acceptor_-&gt;cancel(ec);</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">  117</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
+<div class="line"><span class="lineno">  118</span>          <span class="stringliteral">&quot;SocketTransport error canceling acceptor: {}&quot;</span>, ec.message());</div>
+<div class="line"><span class="lineno">  119</span>    }</div>
+<div class="line"><span class="lineno">  120</span>    acceptor_-&gt;close(ec);</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">  122</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
+<div class="line"><span class="lineno">  123</span>          <span class="stringliteral">&quot;SocketTransport error closing acceptor: {}&quot;</span>, ec.message());</div>
+<div class="line"><span class="lineno">  124</span>    }</div>
+<div class="line"><span class="lineno">  125</span>  }</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span>  <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport closed&quot;</span>);</div>
+<div class="line"><span class="lineno">  128</span>  <span class="keyword">co_return</span> Ok();</div>
+<div class="line"><span class="lineno">  129</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1transport_1_1Transport_html_aecdcca9a3679d5b5b6be318beeeae100"><div class="ttname"><a href="classjsonrpc_1_1transport_1_1Transport.html#aecdcca9a3679d5b5b6be318beeeae100">jsonrpc::transport::Transport::GetStrand</a></div><div class="ttdeci">auto GetStrand() -&gt; asio::strand&lt; asio::any_io_executor &gt; &amp;</div><div class="ttdef"><b>Definition</b> <a href="transport_8hpp_source.html#l00049">transport.hpp:49</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -427,47 +430,50 @@ Here is the call graph for this function:</div>
 
 <p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a9e2a8210822b09228b8e005adaa44927">jsonrpc::transport::Transport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00128">128</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>                               {</div>
-<div class="line"><span class="lineno">  129</span>  is_closed_ = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  130</span>  is_connected_ = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>  <span class="keyword">auto</span> try_close_socket = [&amp;]() {</div>
-<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">if</span> (!socket_.is_open()) {</div>
-<div class="line"><span class="lineno">  134</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  135</span>    }</div>
-<div class="line"><span class="lineno">  136</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport closing socket synchronously&quot;</span>);</div>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00131">131</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span>                               {</div>
+<div class="line"><span class="lineno">  132</span>  is_closed_ = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  133</span>  is_connected_ = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>  <span class="comment">// Clear the message queue</span></div>
+<div class="line"><span class="lineno">  136</span>  send_queue_.clear();</div>
 <div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>    std::error_code ec;</div>
-<div class="line"><span class="lineno">  139</span>    socket_.cancel();</div>
-<div class="line"><span class="lineno">  140</span>    socket_.close(ec);</div>
-<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  142</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(<span class="stringliteral">&quot;SocketTransport error closing socket: {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  143</span>    }</div>
-<div class="line"><span class="lineno">  144</span>  };</div>
-<div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span>  <span class="keyword">auto</span> try_close_acceptor = [&amp;]() {</div>
-<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">if</span> (!is_server_ || !acceptor_ || !acceptor_-&gt;is_open()) {</div>
-<div class="line"><span class="lineno">  148</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  138</span>  <span class="keyword">auto</span> try_close_socket = [&amp;]() {</div>
+<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">if</span> (!socket_.is_open()) {</div>
+<div class="line"><span class="lineno">  140</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  141</span>    }</div>
+<div class="line"><span class="lineno">  142</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport closing socket synchronously&quot;</span>);</div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span>    std::error_code ec;</div>
+<div class="line"><span class="lineno">  145</span>    socket_.cancel();</div>
+<div class="line"><span class="lineno">  146</span>    socket_.close(ec);</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">  148</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(<span class="stringliteral">&quot;SocketTransport error closing socket: {}&quot;</span>, ec.message());</div>
 <div class="line"><span class="lineno">  149</span>    }</div>
-<div class="line"><span class="lineno">  150</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport closing acceptor synchronously&quot;</span>);</div>
+<div class="line"><span class="lineno">  150</span>  };</div>
 <div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>    std::error_code ec;</div>
-<div class="line"><span class="lineno">  153</span>    acceptor_-&gt;cancel();</div>
-<div class="line"><span class="lineno">  154</span>    acceptor_-&gt;close(ec);</div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  156</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
-<div class="line"><span class="lineno">  157</span>          <span class="stringliteral">&quot;SocketTransport error closing acceptor: {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  158</span>    }</div>
-<div class="line"><span class="lineno">  159</span>  };</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>  <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  162</span>    try_close_socket();</div>
-<div class="line"><span class="lineno">  163</span>    try_close_acceptor();</div>
-<div class="line"><span class="lineno">  164</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
-<div class="line"><span class="lineno">  165</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;error(<span class="stringliteral">&quot;SocketTransport error during CloseNow(): {}&quot;</span>, e.what());</div>
-<div class="line"><span class="lineno">  166</span>  }</div>
-<div class="line"><span class="lineno">  167</span>}</div>
+<div class="line"><span class="lineno">  152</span>  <span class="keyword">auto</span> try_close_acceptor = [&amp;]() {</div>
+<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">if</span> (!is_server_ || !acceptor_ || !acceptor_-&gt;is_open()) {</div>
+<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  155</span>    }</div>
+<div class="line"><span class="lineno">  156</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport closing acceptor synchronously&quot;</span>);</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>    std::error_code ec;</div>
+<div class="line"><span class="lineno">  159</span>    acceptor_-&gt;cancel();</div>
+<div class="line"><span class="lineno">  160</span>    acceptor_-&gt;close(ec);</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">  162</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
+<div class="line"><span class="lineno">  163</span>          <span class="stringliteral">&quot;SocketTransport error closing acceptor: {}&quot;</span>, ec.message());</div>
+<div class="line"><span class="lineno">  164</span>    }</div>
+<div class="line"><span class="lineno">  165</span>  };</div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  168</span>    try_close_socket();</div>
+<div class="line"><span class="lineno">  169</span>    try_close_acceptor();</div>
+<div class="line"><span class="lineno">  170</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {</div>
+<div class="line"><span class="lineno">  171</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;error(<span class="stringliteral">&quot;SocketTransport error during CloseNow(): {}&quot;</span>, e.what());</div>
+<div class="line"><span class="lineno">  172</span>  }</div>
+<div class="line"><span class="lineno">  173</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="transport_8hpp_source.html#l00054">jsonrpc::transport::Transport::Logger()</a>.</p>
 
@@ -560,65 +566,65 @@ Here is the caller graph for this function:</div>
 
 <p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#a64504ed403e426984d722b0240f5345c">jsonrpc::transport::Transport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00208">208</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  209</span>                                                            {</div>
-<div class="line"><span class="lineno">  210</span>  <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#aecdcca9a3679d5b5b6be318beeeae100">GetStrand</a>(), asio::use_awaitable);</div>
-<div class="line"><span class="lineno">  211</span> </div>
-<div class="line"><span class="lineno">  212</span>  <span class="keywordflow">if</span> (is_closed_) {</div>
-<div class="line"><span class="lineno">  213</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
-<div class="line"><span class="lineno">  214</span>        <span class="stringliteral">&quot;SocketTransport ReceiveMessage() called after transport was closed&quot;</span>);</div>
-<div class="line"><span class="lineno">  215</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  216</span>        RpcErrorCode::kTransportError,</div>
-<div class="line"><span class="lineno">  217</span>        <span class="stringliteral">&quot;ReceiveMessage() called after transport was closed&quot;</span>);</div>
-<div class="line"><span class="lineno">  218</span>  }</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>  <span class="keywordflow">if</span> (!is_started_) {</div>
-<div class="line"><span class="lineno">  221</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  222</span>        RpcErrorCode::kTransportError,</div>
-<div class="line"><span class="lineno">  223</span>        <span class="stringliteral">&quot;Transport not started before receiving message&quot;</span>);</div>
-<div class="line"><span class="lineno">  224</span>  }</div>
-<div class="line"><span class="lineno">  225</span> </div>
-<div class="line"><span class="lineno">  226</span>  <span class="keywordflow">if</span> (!socket_.is_open()) {</div>
-<div class="line"><span class="lineno">  227</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(<span class="stringliteral">&quot;SocketTransport ReceiveMessage() socket not open&quot;</span>);</div>
-<div class="line"><span class="lineno">  228</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  229</span>        RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Socket not open in ReceiveMessage()&quot;</span>);</div>
-<div class="line"><span class="lineno">  230</span>  }</div>
-<div class="line"><span class="lineno">  231</span> </div>
-<div class="line"><span class="lineno">  232</span>  message_buffer_.clear();</div>
-<div class="line"><span class="lineno">  233</span> </div>
-<div class="line"><span class="lineno">  234</span>  std::error_code ec;</div>
-<div class="line"><span class="lineno">  235</span>  <span class="keywordtype">size_t</span> bytes_read = <span class="keyword">co_await</span> socket_.async_read_some(</div>
-<div class="line"><span class="lineno">  236</span>      asio::buffer(read_buffer_),</div>
-<div class="line"><span class="lineno">  237</span>      asio::redirect_error(asio::use_awaitable, ec));</div>
-<div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>  <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">if</span> (ec == asio::error::eof) {</div>
-<div class="line"><span class="lineno">  241</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(</div>
-<div class="line"><span class="lineno">  242</span>          <span class="stringliteral">&quot;SocketTransport EOF received, connection closed by peer&quot;</span>);</div>
-<div class="line"><span class="lineno">  243</span>      is_connected_ = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  244</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  245</span>          RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Connection closed by peer&quot;</span>);</div>
-<div class="line"><span class="lineno">  246</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ec == asio::error::operation_aborted) {</div>
-<div class="line"><span class="lineno">  247</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport Read operation aborted&quot;</span>);</div>
-<div class="line"><span class="lineno">  248</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  249</span>          RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Receive operation aborted&quot;</span>);</div>
-<div class="line"><span class="lineno">  250</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  251</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;error(</div>
-<div class="line"><span class="lineno">  252</span>          <span class="stringliteral">&quot;SocketTransport ASIO error in ReceiveMessage(): {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  253</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  254</span>          RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Receive error: &quot;</span> + ec.message());</div>
-<div class="line"><span class="lineno">  255</span>    }</div>
-<div class="line"><span class="lineno">  256</span>  }</div>
-<div class="line"><span class="lineno">  257</span> </div>
-<div class="line"><span class="lineno">  258</span>  <span class="keywordflow">if</span> (bytes_read == 0) {</div>
-<div class="line"><span class="lineno">  259</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  260</span>        RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Connection closed by peer (no data)&quot;</span>);</div>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00251">251</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  252</span>                                                            {</div>
+<div class="line"><span class="lineno">  253</span>  <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#aecdcca9a3679d5b5b6be318beeeae100">GetStrand</a>(), asio::use_awaitable);</div>
+<div class="line"><span class="lineno">  254</span> </div>
+<div class="line"><span class="lineno">  255</span>  <span class="keywordflow">if</span> (is_closed_) {</div>
+<div class="line"><span class="lineno">  256</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(</div>
+<div class="line"><span class="lineno">  257</span>        <span class="stringliteral">&quot;SocketTransport ReceiveMessage() called after transport was closed&quot;</span>);</div>
+<div class="line"><span class="lineno">  258</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">  259</span>        RpcErrorCode::kTransportError,</div>
+<div class="line"><span class="lineno">  260</span>        <span class="stringliteral">&quot;ReceiveMessage() called after transport was closed&quot;</span>);</div>
 <div class="line"><span class="lineno">  261</span>  }</div>
 <div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>  message_buffer_.append(read_buffer_.data(), bytes_read);</div>
-<div class="line"><span class="lineno">  264</span>  <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport received {} bytes&quot;</span>, bytes_read);</div>
-<div class="line"><span class="lineno">  265</span>  <span class="keyword">co_return</span> std::move(message_buffer_);</div>
-<div class="line"><span class="lineno">  266</span>}</div>
+<div class="line"><span class="lineno">  263</span>  <span class="keywordflow">if</span> (!is_started_) {</div>
+<div class="line"><span class="lineno">  264</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">  265</span>        RpcErrorCode::kTransportError,</div>
+<div class="line"><span class="lineno">  266</span>        <span class="stringliteral">&quot;Transport not started before receiving message&quot;</span>);</div>
+<div class="line"><span class="lineno">  267</span>  }</div>
+<div class="line"><span class="lineno">  268</span> </div>
+<div class="line"><span class="lineno">  269</span>  <span class="keywordflow">if</span> (!socket_.is_open()) {</div>
+<div class="line"><span class="lineno">  270</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;warn(<span class="stringliteral">&quot;SocketTransport ReceiveMessage() socket not open&quot;</span>);</div>
+<div class="line"><span class="lineno">  271</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">  272</span>        RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Socket not open in ReceiveMessage()&quot;</span>);</div>
+<div class="line"><span class="lineno">  273</span>  }</div>
+<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  275</span>  message_buffer_.clear();</div>
+<div class="line"><span class="lineno">  276</span> </div>
+<div class="line"><span class="lineno">  277</span>  std::error_code ec;</div>
+<div class="line"><span class="lineno">  278</span>  <span class="keywordtype">size_t</span> bytes_read = <span class="keyword">co_await</span> socket_.async_read_some(</div>
+<div class="line"><span class="lineno">  279</span>      asio::buffer(read_buffer_),</div>
+<div class="line"><span class="lineno">  280</span>      asio::redirect_error(asio::use_awaitable, ec));</div>
+<div class="line"><span class="lineno">  281</span> </div>
+<div class="line"><span class="lineno">  282</span>  <span class="keywordflow">if</span> (ec) {</div>
+<div class="line"><span class="lineno">  283</span>    <span class="keywordflow">if</span> (ec == asio::error::eof) {</div>
+<div class="line"><span class="lineno">  284</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(</div>
+<div class="line"><span class="lineno">  285</span>          <span class="stringliteral">&quot;SocketTransport EOF received, connection closed by peer&quot;</span>);</div>
+<div class="line"><span class="lineno">  286</span>      is_connected_ = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  287</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">  288</span>          RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Connection closed by peer&quot;</span>);</div>
+<div class="line"><span class="lineno">  289</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ec == asio::error::operation_aborted) {</div>
+<div class="line"><span class="lineno">  290</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport Read operation aborted&quot;</span>);</div>
+<div class="line"><span class="lineno">  291</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">  292</span>          RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Receive operation aborted&quot;</span>);</div>
+<div class="line"><span class="lineno">  293</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  294</span>      <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;error(</div>
+<div class="line"><span class="lineno">  295</span>          <span class="stringliteral">&quot;SocketTransport ASIO error in ReceiveMessage(): {}&quot;</span>, ec.message());</div>
+<div class="line"><span class="lineno">  296</span>      <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">  297</span>          RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Receive error: &quot;</span> + ec.message());</div>
+<div class="line"><span class="lineno">  298</span>    }</div>
+<div class="line"><span class="lineno">  299</span>  }</div>
+<div class="line"><span class="lineno">  300</span> </div>
+<div class="line"><span class="lineno">  301</span>  <span class="keywordflow">if</span> (bytes_read == 0) {</div>
+<div class="line"><span class="lineno">  302</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">  303</span>        RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Connection closed by peer (no data)&quot;</span>);</div>
+<div class="line"><span class="lineno">  304</span>  }</div>
+<div class="line"><span class="lineno">  305</span> </div>
+<div class="line"><span class="lineno">  306</span>  message_buffer_.append(read_buffer_.data(), bytes_read);</div>
+<div class="line"><span class="lineno">  307</span>  <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;SocketTransport received {} bytes&quot;</span>, bytes_read);</div>
+<div class="line"><span class="lineno">  308</span>  <span class="keyword">co_return</span> std::move(message_buffer_);</div>
+<div class="line"><span class="lineno">  309</span>}</div>
 <div class="ttc" id="aclassjsonrpc_1_1error_1_1RpcError_html_af6c693a01e31520716999275a48b73fb"><div class="ttname"><a href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">jsonrpc::error::RpcError::UnexpectedFromCode</a></div><div class="ttdeci">static auto UnexpectedFromCode(RpcErrorCode code, std::string message=&quot;&quot;) -&gt; std::unexpected&lt; RpcError &gt;</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00101">error.hpp:101</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="error_8hpp_source.html#l00101">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
@@ -655,40 +661,37 @@ Here is the call graph for this function:</div>
 
 <p>Implements <a class="el" href="classjsonrpc_1_1transport_1_1Transport.html#aab09fa4c3e6554af9463358f9395076c">jsonrpc::transport::Transport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00173">173</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>                                                       {</div>
-<div class="line"><span class="lineno">  175</span>  <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#aecdcca9a3679d5b5b6be318beeeae100">GetStrand</a>(), asio::use_awaitable);</div>
-<div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">if</span> (is_closed_) {</div>
-<div class="line"><span class="lineno">  178</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  179</span>        RpcErrorCode::kTransportError,</div>
-<div class="line"><span class="lineno">  180</span>        <span class="stringliteral">&quot;SendMessage() called on closed transport&quot;</span>);</div>
-<div class="line"><span class="lineno">  181</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="socket__transport_8cpp_source.html#l00179">179</a> of file <a class="el" href="socket__transport_8cpp_source.html">socket_transport.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span>                                                       {</div>
+<div class="line"><span class="lineno">  181</span>  <span class="keyword">co_await</span> asio::post(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#aecdcca9a3679d5b5b6be318beeeae100">GetStrand</a>(), asio::use_awaitable);</div>
 <div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span>  <span class="keywordflow">if</span> (!is_started_) {</div>
+<div class="line"><span class="lineno">  183</span>  <span class="keywordflow">if</span> (is_closed_) {</div>
 <div class="line"><span class="lineno">  184</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><span class="lineno">  185</span>        RpcErrorCode::kTransportError,</div>
-<div class="line"><span class="lineno">  186</span>        <span class="stringliteral">&quot;Transport not started before sending message&quot;</span>);</div>
+<div class="line"><span class="lineno">  186</span>        <span class="stringliteral">&quot;SendMessage() called on closed transport&quot;</span>);</div>
 <div class="line"><span class="lineno">  187</span>  }</div>
 <div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">if</span> (!socket_.is_open()) {</div>
+<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">if</span> (!is_started_) {</div>
 <div class="line"><span class="lineno">  190</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  191</span>        RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Socket not open in SendMessage()&quot;</span>);</div>
-<div class="line"><span class="lineno">  192</span>  }</div>
-<div class="line"><span class="lineno">  193</span> </div>
-<div class="line"><span class="lineno">  194</span>  std::error_code ec;</div>
-<div class="line"><span class="lineno">  195</span>  <span class="keyword">co_await</span> asio::async_write(</div>
-<div class="line"><span class="lineno">  196</span>      socket_, asio::buffer(message),</div>
-<div class="line"><span class="lineno">  197</span>      asio::redirect_error(asio::use_awaitable, ec));</div>
-<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><span class="lineno">  199</span>    <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;error(<span class="stringliteral">&quot;SocketTransport SendMessage failed: {}&quot;</span>, ec.message());</div>
-<div class="line"><span class="lineno">  200</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
-<div class="line"><span class="lineno">  201</span>        RpcErrorCode::kTransportError,</div>
-<div class="line"><span class="lineno">  202</span>        <span class="stringliteral">&quot;Error sending message: &quot;</span> + ec.message());</div>
-<div class="line"><span class="lineno">  203</span>  }</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>  <span class="keyword">co_return</span> Ok();</div>
-<div class="line"><span class="lineno">  206</span>}</div>
+<div class="line"><span class="lineno">  191</span>        RpcErrorCode::kTransportError,</div>
+<div class="line"><span class="lineno">  192</span>        <span class="stringliteral">&quot;Transport not started before sending message&quot;</span>);</div>
+<div class="line"><span class="lineno">  193</span>  }</div>
+<div class="line"><span class="lineno">  194</span> </div>
+<div class="line"><span class="lineno">  195</span>  <span class="keywordflow">if</span> (!socket_.is_open()) {</div>
+<div class="line"><span class="lineno">  196</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
+<div class="line"><span class="lineno">  197</span>        RpcErrorCode::kTransportError, <span class="stringliteral">&quot;Socket not open in SendMessage()&quot;</span>);</div>
+<div class="line"><span class="lineno">  198</span>  }</div>
+<div class="line"><span class="lineno">  199</span> </div>
+<div class="line"><span class="lineno">  200</span>  <a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#a8b953a0c16a2f6d9f919af24ec0ca986">Logger</a>()-&gt;debug(<span class="stringliteral">&quot;Queuing {} bytes to send to socket&quot;</span>, message.size());</div>
+<div class="line"><span class="lineno">  201</span>  send_queue_.push_back(std::move(message));</div>
+<div class="line"><span class="lineno">  202</span> </div>
+<div class="line"><span class="lineno">  203</span>  <span class="comment">// If there&#39;s no active sending task, start one</span></div>
+<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">if</span> (!sending_.exchange(<span class="keyword">true</span>)) {</div>
+<div class="line"><span class="lineno">  205</span>    asio::co_spawn(<a class="code hl_function" href="classjsonrpc_1_1transport_1_1Transport.html#aecdcca9a3679d5b5b6be318beeeae100">GetStrand</a>(), SendMessageLoop(), asio::detached);</div>
+<div class="line"><span class="lineno">  206</span>  }</div>
+<div class="line"><span class="lineno">  207</span> </div>
+<div class="line"><span class="lineno">  208</span>  <span class="keyword">co_return</span> Ok();</div>
+<div class="line"><span class="lineno">  209</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="error_8hpp_source.html#l00101">jsonrpc::error::RpcError::UnexpectedFromCode()</a>.</p>
 <div class="dynheader">

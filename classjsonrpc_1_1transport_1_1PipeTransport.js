@@ -8,6 +8,7 @@ var classjsonrpc_1_1transport_1_1PipeTransport =
     [ "Close", "classjsonrpc_1_1transport_1_1PipeTransport.html#a683087921c8536b7319a16620355638a", null ],
     [ "CloseNow", "classjsonrpc_1_1transport_1_1PipeTransport.html#af36e8c630d21cbd56133464d6e79b10a", null ],
     [ "Connect", "classjsonrpc_1_1transport_1_1PipeTransport.html#a3bea984f83644ebed3a47b682eb7cbfa", null ],
+    [ "Flush", "classjsonrpc_1_1transport_1_1PipeTransport.html#accf2063cf15d5522d6e1acd28a1808db", null ],
     [ "GetSocket", "classjsonrpc_1_1transport_1_1PipeTransport.html#a4bede5a046b267abd6c86e7afe22b765", null ],
     [ "operator=", "classjsonrpc_1_1transport_1_1PipeTransport.html#a82d970bd587be51d60cf1d3c3e650954", null ],
     [ "operator=", "classjsonrpc_1_1transport_1_1PipeTransport.html#a7a161bfe3b721d78898b2df9f3ace296", null ],
