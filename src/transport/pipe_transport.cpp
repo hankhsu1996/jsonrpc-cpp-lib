@@ -305,6 +305,20 @@ auto PipeTransport::SendMessageLoop() -> asio::awaitable<void> {
   sending_ = false;
 }
 
+auto PipeTransport::Flush()
+    -> asio::awaitable<std::expected<void, error::RpcError>> {
+  Logger()->debug("Flushing message queue");
+  while (true) {
+    co_await asio::post(GetStrand(), asio::use_awaitable);
+    if (send_queue_.empty() && !sending_) {
+      break;
+    }
+    co_await asio::steady_timer(GetExecutor(), std::chrono::milliseconds(10))
+        .async_wait(asio::use_awaitable);
+  }
+  co_return Ok();
+}
+
 auto PipeTransport::ReceiveMessage()
     -> asio::awaitable<std::expected<std::string, error::RpcError>> {
   co_await asio::post(GetStrand(), asio::use_awaitable);

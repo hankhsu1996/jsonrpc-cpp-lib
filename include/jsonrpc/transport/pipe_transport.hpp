@@ -39,6 +39,8 @@ class PipeTransport : public Transport {
   auto SendMessage(std::string message)
       -> asio::awaitable<std::expected<void, error::RpcError>> override;
 
+  auto Flush() -> asio::awaitable<std::expected<void, error::RpcError>>;
+
   auto ReceiveMessage()
       -> asio::awaitable<std::expected<std::string, error::RpcError>> override;
 
