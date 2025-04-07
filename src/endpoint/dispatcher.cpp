@@ -93,6 +93,7 @@ auto Dispatcher::DispatchSingleRequest(Request request)
             return handler(params);
           },
           asio::detached);
+      co_return std::nullopt;
     }
     Logger()->debug(
         "Dispatcher notification handler not found for method: {}", method);
