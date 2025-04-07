@@ -2,6 +2,7 @@
 
 #include <array>
 #include <atomic>
+#include <deque>
 #include <expected>
 #include <string>
 
@@ -51,6 +52,9 @@ class PipeTransport : public Transport {
   auto BindAndListen() -> asio::awaitable<std::expected<void, error::RpcError>>;
 
  private:
+  // Sends messages from the queue in sequence
+  auto SendMessageLoop() -> asio::awaitable<void>;
+
   asio::local::stream_protocol::socket socket_;
   std::unique_ptr<asio::local::stream_protocol::acceptor> acceptor_;
   std::string socket_path_;
@@ -58,6 +62,10 @@ class PipeTransport : public Transport {
   std::atomic<bool> is_closed_{false};
   std::atomic<bool> is_started_{false};
   std::atomic<bool> is_connected_{false};
+
+  // Message sending queue and state
+  std::deque<std::string> send_queue_;
+  std::atomic<bool> sending_{false};
 
   // Buffer for reading data
   std::array<char, 1024> read_buffer_;
