@@ -91,6 +91,9 @@ auto SocketTransport::Close()
   is_closed_ = true;
   is_connected_ = false;
 
+  // Clear the message queue
+  send_queue_.clear();
+
   Logger()->debug("SocketTransport closing");
 
   // Cancel and close the socket safely
@@ -128,6 +131,9 @@ auto SocketTransport::Close()
 void SocketTransport::CloseNow() {
   is_closed_ = true;
   is_connected_ = false;
+
+  // Clear the message queue
+  send_queue_.clear();
 
   auto try_close_socket = [&]() {
     if (!socket_.is_open()) {
@@ -191,18 +197,55 @@ auto SocketTransport::SendMessage(std::string message)
         RpcErrorCode::kTransportError, "Socket not open in SendMessage()");
   }
 
-  std::error_code ec;
-  co_await asio::async_write(
-      socket_, asio::buffer(message),
-      asio::redirect_error(asio::use_awaitable, ec));
-  if (ec) {
-    Logger()->error("SocketTransport SendMessage failed: {}", ec.message());
-    co_return RpcError::UnexpectedFromCode(
-        RpcErrorCode::kTransportError,
-        "Error sending message: " + ec.message());
+  Logger()->debug("Queuing {} bytes to send to socket", message.size());
+  send_queue_.push_back(std::move(message));
+
+  // If there's no active sending task, start one
+  if (!sending_.exchange(true)) {
+    asio::co_spawn(GetStrand(), SendMessageLoop(), asio::detached);
   }
 
   co_return Ok();
+}
+
+auto SocketTransport::SendMessageLoop() -> asio::awaitable<void> {
+  while (!send_queue_.empty()) {
+    std::string message = std::move(send_queue_.front());
+    send_queue_.pop_front();
+
+    Logger()->debug("Sending {} bytes to socket", message.size());
+    std::size_t bytes_sent = 0;
+    const std::size_t chunk_size = 32 * 1024;  // 32KB chunks to be safe
+
+    while (bytes_sent < message.size()) {
+      auto remaining = message.size() - bytes_sent;
+      auto current_chunk_size = std::min(remaining, chunk_size);
+
+      // Use string_view to avoid copying data
+      std::string_view chunk =
+          std::string_view(message).substr(bytes_sent, current_chunk_size);
+
+      // Write to the socket with error redirection
+      std::error_code ec;
+      auto chunk_sent = co_await asio::async_write(
+          socket_, asio::buffer(chunk),
+          asio::redirect_error(asio::use_awaitable, ec));
+
+      if (ec) {
+        Logger()->error(
+            "SocketTransport error sending message: {}", ec.message());
+        break;  // Stop sending this message but continue with others
+      }
+
+      bytes_sent += chunk_sent;
+      Logger()->debug(
+          "Sent {} bytes to socket, total {}/{}", chunk_sent, bytes_sent,
+          message.size());
+    }
+  }
+
+  // Mark sending as complete
+  sending_ = false;
 }
 
 auto SocketTransport::ReceiveMessage()

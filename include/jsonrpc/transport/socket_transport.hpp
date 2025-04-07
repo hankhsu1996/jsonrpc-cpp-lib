@@ -2,6 +2,7 @@
 
 #include <array>
 #include <atomic>
+#include <deque>
 #include <string>
 
 #include <asio.hpp>
@@ -45,6 +46,9 @@ class SocketTransport : public Transport {
 
   auto BindAndListen() -> asio::awaitable<std::expected<void, error::RpcError>>;
 
+  // Sends messages from the queue in sequence
+  auto SendMessageLoop() -> asio::awaitable<void>;
+
   asio::ip::tcp::socket socket_;
   std::unique_ptr<asio::ip::tcp::acceptor> acceptor_;
   std::string address_;
@@ -53,6 +57,10 @@ class SocketTransport : public Transport {
   std::atomic<bool> is_closed_{false};
   std::atomic<bool> is_started_{false};
   std::atomic<bool> is_connected_{false};
+
+  // Message sending queue and state
+  std::deque<std::string> send_queue_;
+  std::atomic<bool> sending_{false};
 
   // Buffer for reading data
   std::array<char, 1024> read_buffer_;
