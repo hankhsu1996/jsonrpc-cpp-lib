@@ -276,7 +276,7 @@ $(function(){initNavTree('endpoint_8hpp_source.html',''); initResizable(true); }
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordflow">try</span> {</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    json_params = params;</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    spdlog::error(</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    logger_-&gt;error(</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <span class="stringliteral">&quot;RpcEndpoint failed to convert parameters to JSON: {}&quot;</span>, ex.what());</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        RpcErrorCode::kClientSerializationError,</div>
@@ -292,7 +292,7 @@ $(function(){initNavTree('endpoint_8hpp_source.html',''); initResizable(true); }
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="keywordflow">try</span> {</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">co_return</span> result-&gt;template get&lt;ResultType&gt;();</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    spdlog::error(<span class="stringliteral">&quot;RpcEndpoint failed to convert result: {}&quot;</span>, ex.what());</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    logger_-&gt;error(<span class="stringliteral">&quot;RpcEndpoint failed to convert result: {}&quot;</span>, ex.what());</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        RpcErrorCode::kClientDeserializationError,</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        <span class="stringliteral">&quot;RpcEndpoint failed to convert result: &quot;</span> + std::string(ex.what()));</div>
@@ -310,7 +310,7 @@ $(function(){initNavTree('endpoint_8hpp_source.html',''); initResizable(true); }
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <span class="keywordflow">try</span> {</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    json_params = params;</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    spdlog::error(</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    logger_-&gt;error(</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <span class="stringliteral">&quot;RpcEndpoint failed to convert notification parameters: {}&quot;</span>, ex.what());</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        RpcErrorCode::kClientSerializationError,</div>

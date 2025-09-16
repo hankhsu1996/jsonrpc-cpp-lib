@@ -241,26 +241,23 @@ $(function(){initNavTree('typed__handlers_8hpp_source.html',''); initResizable(t
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        typed_params = params.value().get&lt;ParamsType&gt;();</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      }</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception&amp; ex) {</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      spdlog::error(<span class="stringliteral">&quot;Failed to parse parameters: {}&quot;</span>, ex.what());</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      <span class="keyword">co_return</span>;</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    }</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;ErrorType, std::monostate&gt;) {</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      <span class="keyword">co_await</span> handler_(typed_params);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      <span class="keyword">auto</span> result = <span class="keyword">co_await</span> handler_(typed_params);</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>      <span class="keywordflow">if</span> (!result) {</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        spdlog::warn(</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            <span class="stringliteral">&quot;TypedNotificationHandler ignored error: {}&quot;</span>,</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            result.error().Message());</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      }</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    }</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="keyword">co_return</span>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;ErrorType, std::monostate&gt;) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="keyword">co_await</span> handler_(typed_params);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      <span class="keyword">auto</span> result = <span class="keyword">co_await</span> handler_(typed_params);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      <span class="keywordflow">if</span> (!result) {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="comment">// Error ignored - notification handlers don&#39;t propagate errors</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>      }</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    }</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  }</div>
 </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>};</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>};</div>
 </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>}  <span class="comment">// namespace jsonrpc::endpoint</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>}  <span class="comment">// namespace jsonrpc::endpoint</span></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1TypedMethodHandler_html"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html">jsonrpc::endpoint::TypedMethodHandler</a></div><div class="ttdef"><b>Definition</b> <a href="#l00041">typed_handlers.hpp:41</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1TypedMethodHandler_html_a5b60d53bde0272df31762f02fdc7a60b"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html#a5b60d53bde0272df31762f02fdc7a60b">jsonrpc::endpoint::TypedMethodHandler::operator()</a></div><div class="ttdeci">auto operator()(std::optional&lt; nlohmann::json &gt; params) -&gt; asio::awaitable&lt; nlohmann::json &gt;</div><div class="ttdef"><b>Definition</b> <a href="#l00066">typed_handlers.hpp:66</a></div></div>
 <div class="ttc" id="aclassjsonrpc_1_1endpoint_1_1TypedMethodHandler_html_a9e1b5c3afbd9b73e42fb560e99c2e442"><div class="ttname"><a href="classjsonrpc_1_1endpoint_1_1TypedMethodHandler.html#a9e1b5c3afbd9b73e42fb560e99c2e442">jsonrpc::endpoint::TypedMethodHandler::TypedMethodHandler</a></div><div class="ttdeci">TypedMethodHandler(SimpleHandler handler)</div><div class="ttdef"><b>Definition</b> <a href="#l00055">typed_handlers.hpp:55</a></div></div>

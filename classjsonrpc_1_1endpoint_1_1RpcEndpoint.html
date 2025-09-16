@@ -708,7 +708,7 @@ template&lt;typename ParamsType , typename ResultType &gt; </div>
 <div class="line"><span class="lineno">  152</span>  <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  153</span>    json_params = params;</div>
 <div class="line"><span class="lineno">  154</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
-<div class="line"><span class="lineno">  155</span>    spdlog::error(</div>
+<div class="line"><span class="lineno">  155</span>    logger_-&gt;error(</div>
 <div class="line"><span class="lineno">  156</span>        <span class="stringliteral">&quot;RpcEndpoint failed to convert parameters to JSON: {}&quot;</span>, ex.what());</div>
 <div class="line"><span class="lineno">  157</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><span class="lineno">  158</span>        RpcErrorCode::kClientSerializationError,</div>
@@ -724,7 +724,7 @@ template&lt;typename ParamsType , typename ResultType &gt; </div>
 <div class="line"><span class="lineno">  168</span>  <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  169</span>    <span class="keyword">co_return</span> result-&gt;template get&lt;ResultType&gt;();</div>
 <div class="line"><span class="lineno">  170</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
-<div class="line"><span class="lineno">  171</span>    spdlog::error(<span class="stringliteral">&quot;RpcEndpoint failed to convert result: {}&quot;</span>, ex.what());</div>
+<div class="line"><span class="lineno">  171</span>    logger_-&gt;error(<span class="stringliteral">&quot;RpcEndpoint failed to convert result: {}&quot;</span>, ex.what());</div>
 <div class="line"><span class="lineno">  172</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><span class="lineno">  173</span>        RpcErrorCode::kClientDeserializationError,</div>
 <div class="line"><span class="lineno">  174</span>        <span class="stringliteral">&quot;RpcEndpoint failed to convert result: &quot;</span> + std::string(ex.what()));</div>
@@ -838,7 +838,7 @@ template&lt;typename ParamsType &gt; </div>
 <div class="line"><span class="lineno">  184</span>  <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  185</span>    json_params = params;</div>
 <div class="line"><span class="lineno">  186</span>  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> nlohmann::json::exception &amp;ex) {</div>
-<div class="line"><span class="lineno">  187</span>    spdlog::error(</div>
+<div class="line"><span class="lineno">  187</span>    logger_-&gt;error(</div>
 <div class="line"><span class="lineno">  188</span>        <span class="stringliteral">&quot;RpcEndpoint failed to convert notification parameters: {}&quot;</span>, ex.what());</div>
 <div class="line"><span class="lineno">  189</span>    <span class="keyword">co_return</span> <a class="code hl_function" href="classjsonrpc_1_1error_1_1RpcError.html#af6c693a01e31520716999275a48b73fb">RpcError::UnexpectedFromCode</a>(</div>
 <div class="line"><span class="lineno">  190</span>        RpcErrorCode::kClientSerializationError,</div>
