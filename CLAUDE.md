@@ -78,6 +78,31 @@ This is a **JSON-RPC 2.0 Modern C++ Library** implementing both client and serve
 - Global state and singletons
 - `std::future`, `std::promise`, `std::lock`, `std::mutex` (usually indicates design issues)
 
+## Git Workflow Rules
+
+### Branch Naming
+- Use prefixes: `feature/`, `chore/`, or `bugfix/`
+- Use kebab-case after prefix: `feature/add-new-transport`
+- Examples: `chore/update-dependencies`, `bugfix/fix-memory-leak`
+
+### Commit Messages
+- Keep commit messages **concise and simple**
+- Use **imperative mood** starting with a verb: "Remove", "Add", "Fix"
+- **No attribution** in commit messages (save for PR descriptions)
+- **No colons** in commit messages
+- For simple changes, use single-line messages
+- Only use bullet points for complex multi-part changes
+
+Examples:
+- **Good**: "Remove global spdlog debug calls from endpoint templates"
+- **Good**: "Add message queue support to transport layer"
+- **Bad**: "Remove global spdlog debug calls: fix logging issue"
+- **Bad**: "Remove global spdlog debug calls and add CLAUDE.md with project architecture and development guidelines"
+
+### Special Characters
+- **Avoid special Unicode characters** (checkmarks, crosses, emojis) in code and documentation
+- Use plain text alternatives: "Good/Bad", "Yes/No", "Pass/Fail"
+
 ## Project Structure
 
 - `src/endpoint/`: Core RPC endpoint implementation
