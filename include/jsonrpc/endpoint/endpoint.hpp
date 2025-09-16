@@ -148,7 +148,6 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
   requires(
       ToJson<ParamsType> && NotJsonLike<ParamsType> && FromJson<ResultType>)
 {
-  spdlog::debug("RpcEndpoint sending typed method call: {}", method);
   nlohmann::json json_params;
   try {
     json_params = params;
@@ -181,7 +180,6 @@ auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
     -> asio::awaitable<std::expected<void, RpcError>>
   requires(ToJson<ParamsType> && NotJsonLike<ParamsType>)
 {
-  spdlog::debug("RpcEndpoint sending typed notification: {}", method);
   nlohmann::json json_params;
   try {
     json_params = params;
