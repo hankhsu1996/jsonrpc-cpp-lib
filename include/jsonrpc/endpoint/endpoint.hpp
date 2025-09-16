@@ -152,7 +152,7 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
   try {
     json_params = params;
   } catch (const nlohmann::json::exception &ex) {
-    spdlog::error(
+    logger_->error(
         "RpcEndpoint failed to convert parameters to JSON: {}", ex.what());
     co_return RpcError::UnexpectedFromCode(
         RpcErrorCode::kClientSerializationError,
@@ -168,7 +168,7 @@ auto RpcEndpoint::SendMethodCall(std::string method, ParamsType params)
   try {
     co_return result->template get<ResultType>();
   } catch (const nlohmann::json::exception &ex) {
-    spdlog::error("RpcEndpoint failed to convert result: {}", ex.what());
+    logger_->error("RpcEndpoint failed to convert result: {}", ex.what());
     co_return RpcError::UnexpectedFromCode(
         RpcErrorCode::kClientDeserializationError,
         "RpcEndpoint failed to convert result: " + std::string(ex.what()));
@@ -184,7 +184,7 @@ auto RpcEndpoint::SendNotification(std::string method, ParamsType params)
   try {
     json_params = params;
   } catch (const nlohmann::json::exception &ex) {
-    spdlog::error(
+    logger_->error(
         "RpcEndpoint failed to convert notification parameters: {}", ex.what());
     co_return RpcError::UnexpectedFromCode(
         RpcErrorCode::kClientSerializationError,

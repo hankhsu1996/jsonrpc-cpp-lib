@@ -131,7 +131,6 @@ class TypedNotificationHandler {
         typed_params = params.value().get<ParamsType>();
       }
     } catch (const nlohmann::json::exception& ex) {
-      spdlog::error("Failed to parse parameters: {}", ex.what());
       co_return;
     }
 
@@ -140,9 +139,7 @@ class TypedNotificationHandler {
     } else {
       auto result = co_await handler_(typed_params);
       if (!result) {
-        spdlog::warn(
-            "TypedNotificationHandler ignored error: {}",
-            result.error().Message());
+        // Error ignored - notification handlers don't propagate errors
       }
     }
   }
