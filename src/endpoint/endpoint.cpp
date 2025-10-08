@@ -208,12 +208,18 @@ auto RpcEndpoint::ProcessMessagesLoop(asio::cancellation_slot slot)
       continue;
     }
 
-    auto handle_result = co_await HandleMessage(*message_result);
-    if (!handle_result) {
-      Logger()->error("Handle error: {}", handle_result.error().Message());
-      co_await RetryDelay(executor_);
-      continue;
-    }
+    // Spawn message handling concurrently (don't block the read loop)
+    asio::co_spawn(
+        executor_,
+        [this, message = *message_result]() -> asio::awaitable<void> {
+          auto handle_result = co_await HandleMessage(message);
+          if (!handle_result) {
+            Logger()->error(
+                "Handle error: {}", handle_result.error().Message());
+          }
+          co_return;
+        },
+        asio::detached);
   }
 }
 
