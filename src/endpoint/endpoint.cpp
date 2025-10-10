@@ -125,6 +125,10 @@ auto RpcEndpoint::SendMethodCall(
     pending_requests_[request_id] = pending_request;
   });
 
+  // FIX: Ensure the request is registered before sending to avoid race
+  // condition
+  co_await asio::post(endpoint_strand_, asio::use_awaitable);
+
   auto send_result = co_await transport_->SendMessage(message);
   if (!send_result) {
     co_return std::unexpected(send_result.error());
@@ -279,7 +283,7 @@ auto RpcEndpoint::HandleResponse(Response response)
     }
   });
 
-  co_await asio::post(co_await asio::this_coro::executor, asio::use_awaitable);
+  co_await asio::post(endpoint_strand_, asio::use_awaitable);
 
   if (!found || !request) {
     co_return RpcError::UnexpectedFromCode(
