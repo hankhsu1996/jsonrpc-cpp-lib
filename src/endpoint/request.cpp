@@ -38,7 +38,7 @@ auto Request::FromJson(const nlohmann::json& json_obj)
         RpcErrorCode::kInvalidRequest, "Request must be a JSON object");
   }
 
-  if (!json_obj.contains("jsonrpc") || json_obj["jsonrpc"] != kJsonRpcVersion) {
+  if (!json_obj.contains("jsonrpc") || std::string_view(json_obj["jsonrpc"]) != kJsonRpcVersion) {
     return RpcError::UnexpectedFromCode(
         RpcErrorCode::kInvalidRequest, "Missing or invalid 'jsonrpc' version");
   }
