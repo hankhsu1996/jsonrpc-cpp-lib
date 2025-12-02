@@ -93,7 +93,7 @@ auto Response::ToJson() const -> nlohmann::json {
 auto Response::ValidateResponse() const
     -> std::expected<void, error::RpcError> {
   if (!response_.contains("jsonrpc") ||
-      std::string_view(response_["jsonrpc"]) != kJsonRpcVersion) {
+      response_["jsonrpc"].get<std::string>() != kJsonRpcVersion) {
     return RpcError::UnexpectedFromCode(
         RpcErrorCode::kInvalidRequest, "Invalid JSON-RPC version");
   }
