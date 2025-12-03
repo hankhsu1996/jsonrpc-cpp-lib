@@ -23,8 +23,13 @@ jobs:
           clang-format-version: 19
 
   build-and-test-cmake:
-    name: Build and Test (CMake)
+    name: Build and Test (CMake, ${{ matrix.compiler.name }}-${{ matrix.compiler.version }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler:
+          - { name: gcc, version: 13, cc: gcc-13, cxx: g++-13 }
+          - { name: clang, version: 19, cc: clang-19, cxx: clang++-19 }
 
     steps:
       - name: Checkout code
@@ -47,14 +52,14 @@ jobs:
           cache-dependencies: true
           cache-tool: true
 
-      - name: Install Clang 19
+      - name: Install ${{ matrix.compiler.name }}-${{ matrix.compiler.version }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-19
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 100
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 100
-          sudo update-alternatives --set clang++ /usr/bin/clang++-19
-          sudo update-alternatives --set clang /usr/bin/clang-19
+          sudo apt-get install -y ${{ matrix.compiler.cc }} ${{ matrix.compiler.cxx }}
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/${{ matrix.compiler.cc }} 100
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{ matrix.compiler.cxx }} 100
+          sudo update-alternatives --set cc /usr/bin/${{ matrix.compiler.cc }}
+          sudo update-alternatives --set c++ /usr/bin/${{ matrix.compiler.cxx }}
 
       - name: Install dependencies
         run: |
@@ -62,8 +67,10 @@ jobs:
           conan install . --build=missing
           conan install . -s build_type=Debug --build=missing
 
-      - name: Verify Clang is available
-        run: clang --version
+      - name: Verify compiler is available
+        run: |
+          ${{ matrix.compiler.cc }} --version
+          ${{ matrix.compiler.cxx }} --version
 
       - name: Configure CMake and build project
         run: |
@@ -74,7 +81,7 @@ jobs:
         run: ctest --preset release
 
   build-and-test-bazel:
-    name: Build and Test (Bazel)
+    name: Build and Test (Bazel, clang-19)
     runs-on: ubuntu-latest
 
     steps:
@@ -113,6 +120,40 @@ jobs:
           bazel test //... --test_output=all --test_timeout=5
           # Test debug configuration
           bazel test //... --config=debug --test_output=all --test_timeout=5
+
+  build-and-test-windows:
+    name: Build and Test (CMake, MSVC)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Conan
+        uses: hankhsu1996/setup-conan@v1
+        with:
+          conan-version: "2.5.0"
+          cache-dependencies: true
+          cache-tool: true
+
+      - name: Install dependencies
+        run: |
+          conan profile detect --force
+          conan install . --build=missing
+          conan install . -s build_type=Debug --build=missing
+
+      - name: Verify MSVC is available
+        run: |
+          cl.exe
+        continue-on-error: true
+
+      - name: Configure CMake and build project
+        run: |
+          cmake --preset release
+          cmake --build --preset release
+
+      - name: Run tests
+        run: ctest --preset release
 
   docs:
     name: Generate Documentation
