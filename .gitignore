@@ -78,3 +78,6 @@ compile_commands.json
 
 # Misc
 *.tmp.*
+
+# Local configuration
+*.local.md
