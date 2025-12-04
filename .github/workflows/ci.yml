@@ -63,6 +63,8 @@ jobs:
 
       - name: Install dependencies
         run: |
+          export CC=${{ matrix.compiler.cc }}
+          export CXX=${{ matrix.compiler.cxx }}
           conan profile detect --force
           conan install . --build=missing
           conan install . -s build_type=Debug --build=missing
@@ -139,8 +141,8 @@ jobs:
       - name: Install dependencies
         run: |
           conan profile detect --force
-          conan install . --build=missing
-          conan install . -s build_type=Debug --build=missing
+          conan install . -s compiler.cppstd=23 --build=missing
+          conan install . -s build_type=Debug -s compiler.cppstd=23 --build=missing
 
       - name: Verify MSVC is available
         run: |
