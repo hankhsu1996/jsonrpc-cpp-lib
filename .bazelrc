@@ -1,8 +1,8 @@
 # .bazelrc
 
-# Use clang as the compiler
-build --action_env=CC=clang
-build --action_env=CXX=clang++
+# Use clang-18 as the compiler
+build --action_env=CC=clang-18
+build --action_env=CXX=clang++-18
 
 # Common settings for all builds
 build --cxxopt='-std=c++23'
