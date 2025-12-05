@@ -5,12 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2025-12-05
+
+### Added
+
+- Multi-compiler CI testing (GCC 13, Clang 19, MSVC)
+
+### Fixed
+
+- MSVC compatibility issues (#61, @jbraun2025)
+
 ## [2.1.1] - 2025-03-24
 
 ### Changed
 
 - Replace direct framing with MessageFramer class
-- Add comprehensive split message tests
+
+### Added
+
+- Comprehensive split message tests
 
 ## [2.1.0] - 2025-03-16
 
@@ -27,7 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update spdlog from 1.14.1 to 1.15.1
 - Update asio from 1.28.2 to 1.32.0
 - Update bazel_skylib from 1.5.0 to 1.7.1
-- Modify CMakePresets.json to use Clang compiler by default, resolving batch processing memory allocation issues experienced with GCC
+
+### Fixed
+
+- CMakePresets.json to use Clang compiler by default, resolving batch processing memory allocation issues with GCC
 
 ## [2.0.1] - 2025-03-09
 
@@ -46,7 +62,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored transport layer to use asynchronous operations throughout
 - Redesigned RPC endpoint to leverage coroutines for all operations
 - Transitioned from thread pools to IO context-based execution
-- Removed manual thread management in favor of asio's task model
 - Improved error handling with exception propagation in coroutines
 
 ### Added
@@ -67,15 +82,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial release of JSON-RPC 2.0 C++ implementation.
-- Implemented core JSON-RPC functionality:
-  - Methods and notifications with named and positional parameters.
-  - Abstract transport layer support with stdio, HTTP, and ASIO socket connectors.
-  - Support for JSON-RPC batch mode.
-- Client and server implementation with example files.
-- Bazel build system and Conan package management support.
-- Doxygen documentation with enhanced branding.
-- Unit tests for key components: client, server, request, response, and transport layers.
-- ASIO socket and Unix domain socket transport implementations.
-- Support for async method calls and non-blocking request handling.
-- Google C++ Style alignment and modern C++ practices.
+- Initial release of JSON-RPC 2.0 C++ implementation
+- Core JSON-RPC functionality:
+  - Methods and notifications with named and positional parameters
+  - Abstract transport layer support with stdio, HTTP, and ASIO socket connectors
+  - Support for JSON-RPC batch mode
+- Client and server implementation with example files
+- Bazel build system and Conan package management support
+- Doxygen documentation with enhanced branding
+- Unit tests for key components: client, server, request, response, and transport layers
+- ASIO socket and Unix domain socket transport implementations
+- Support for async method calls and non-blocking request handling
+- Google C++ Style alignment and modern C++ practices
