@@ -116,7 +116,7 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a> <a href="https://github.com/hankhsu1996/jsonrpc-cpp-lib/actions/workflows/ci.yml"><img src="https://github.com/hankhsu1996/jsonrpc-cpp-lib/actions/workflows/ci.yml/badge.svg?event=push" alt="CI" style="pointer-events: none;" class="inline"/></a> <img src="https://img.shields.io/github/v/release/hankhsu1996/jsonrpc-cpp-lib" alt="GitHub Release" class="inline"/> <img src="https://img.shields.io/github/license/hankhsu1996/jsonrpc-cpp-lib" alt="GitHub License" class="inline"/></p>
-<p>Welcome to the <b>JSON-RPC 2.0 Modern C++ Library</b>! This library provides a lightweight, modern C++ implementation of <a href="https://www.jsonrpc.org/specification">JSON-RPC 2.0</a> servers and clients. It is designed to be flexible, allowing integration with various transport layers. This library makes it easy to register methods and notifications, binding them to client logic efficiently.</p>
+<p>A lightweight, modern C++ implementation of <a href="https://www.jsonrpc.org/specification">JSON-RPC 2.0</a> servers and clients. The library is designed to be flexible, allowing integration with various transport layers, and provides straightforward method and notification registration.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Features</h1>
 <ul>
@@ -155,7 +155,7 @@ Option 2: Using CMake</h3>
 <p>CMake offers two main approaches for including this library:</p>
 <h4><a class="anchor" id="autotoc_md7"></a>
 A. As a Build-Time Dependency (FetchContent)</h4>
-<p>This approach downloads and builds the library as part of your project. It's ideal for development workflows where you want everything self-contained:</p>
+<p>This approach downloads and builds the library as part of your project, suitable for development workflows where a self-contained build is desired:</p>
 <div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line">FetchContent_Declare(</div>
 <div class="line">  jsonrpc</div>
@@ -168,7 +168,7 @@ A. As a Build-Time Dependency (FetchContent)</h4>
 <div class="line">target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc)</div>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md8"></a>
 B. As a System-Wide Installation (find_package)</h4>
-<p>This approach uses a pre-installed version of the library. It's better for production environments and system-wide installations:</p>
+<p>This approach uses a pre-installed version of the library, appropriate for production environments and system-wide installations:</p>
 <ol type="1">
 <li><p class="startli">First, install the library:</p>
 <div class="fragment"><div class="line"># Configure the project</div>
@@ -370,7 +370,7 @@ Compilation Database</h2>
 <p>In both cases, the <code>compile_commands.json</code> file will be placed in the root directory.</p>
 <h1><a class="anchor" id="autotoc_md18"></a>
 Contributing</h1>
-<p>We welcome contributions! If you have suggestions or find any issues, feel free to open an issue or pull request.</p>
+<p>Contributions are welcome. If you have suggestions or find issues, please open an issue or pull request.</p>
 <h1><a class="anchor" id="autotoc_md19"></a>
 License</h1>
 <p>This project is licensed under the MIT License. See the <a href="./LICENSE">LICENSE</a> file for more details. </p>
