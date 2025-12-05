@@ -4,7 +4,7 @@
 ![GitHub Release](https://img.shields.io/github/v/release/hankhsu1996/jsonrpc-cpp-lib)
 ![GitHub License](https://img.shields.io/github/license/hankhsu1996/jsonrpc-cpp-lib)
 
-Welcome to the **JSON-RPC 2.0 Modern C++ Library**! This library provides a lightweight, modern C++ implementation of [JSON-RPC 2.0](https://www.jsonrpc.org/specification) servers and clients. It is designed to be flexible, allowing integration with various transport layers. This library makes it easy to register methods and notifications, binding them to client logic efficiently.
+A lightweight, modern C++ implementation of [JSON-RPC 2.0](https://www.jsonrpc.org/specification) servers and clients. The library is designed to be flexible, allowing integration with various transport layers, and provides straightforward method and notification registration.
 
 ## Features
 
@@ -49,7 +49,7 @@ CMake offers two main approaches for including this library:
 
 ##### A. As a Build-Time Dependency (FetchContent)
 
-This approach downloads and builds the library as part of your project. It's ideal for development workflows where you want everything self-contained:
+This approach downloads and builds the library as part of your project, suitable for development workflows where a self-contained build is desired:
 
 ```cmake
 include(FetchContent)
@@ -66,7 +66,7 @@ target_link_libraries(your_app PRIVATE jsonrpc::jsonrpc)
 
 ##### B. As a System-Wide Installation (find_package)
 
-This approach uses a pre-installed version of the library. It's better for production environments and system-wide installations:
+This approach uses a pre-installed version of the library, appropriate for production environments and system-wide installations:
 
 1. First, install the library:
 
@@ -318,7 +318,7 @@ In both cases, the `compile_commands.json` file will be placed in the root direc
 
 ## Contributing
 
-We welcome contributions! If you have suggestions or find any issues, feel free to open an issue or pull request.
+Contributions are welcome. If you have suggestions or find issues, please open an issue or pull request.
 
 ## License
 

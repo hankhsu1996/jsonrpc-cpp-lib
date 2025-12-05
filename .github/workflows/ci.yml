@@ -22,60 +22,14 @@ jobs:
         with:
           clang-format-version: 19
 
-  build-and-test-cmake:
-    name: Build and Test (CMake)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Cache CCache
-        uses: actions/cache@v4
-        id: ccache
-        with:
-          path: ~/.cache/ccache
-          key: ${{ runner.os }}-ccache-${{ hashFiles('conanfile.py') }}-${{ hashFiles('CMakeLists.txt') }}-${{ hashFiles('CMakePresets.json') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-ccache-${{ hashFiles('conanfile.py') }}-${{ hashFiles('CMakeLists.txt') }}-${{ hashFiles('CMakePresets.json') }}-
-            ${{ runner.os }}-ccache-
-
-      - name: Setup Conan
-        uses: hankhsu1996/setup-conan@v1
-        with:
-          conan-version: "2.5.0"
-          cache-dependencies: true
-          cache-tool: true
-
-      - name: Install Clang 19
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-19
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 100
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 100
-          sudo update-alternatives --set clang++ /usr/bin/clang++-19
-          sudo update-alternatives --set clang /usr/bin/clang-19
-
-      - name: Install dependencies
-        run: |
-          conan profile detect --force
-          conan install . --build=missing
-          conan install . -s build_type=Debug --build=missing
-
-      - name: Verify Clang is available
-        run: clang --version
-
-      - name: Configure CMake and build project
-        run: |
-          cmake --preset release
-          cmake --build --preset release
-
-      - name: Run tests
-        run: ctest --preset release
-
   build-and-test-bazel:
-    name: Build and Test (Bazel)
+    name: Build and Test (Bazel, ${{ matrix.compiler.name }}-${{ matrix.compiler.version }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler:
+          - { name: gcc, version: 13, cc: gcc-13, cxx: g++-13 }
+          - { name: clang, version: 19, cc: clang-19, cxx: clang++-19 }
 
     steps:
       - name: Checkout code
@@ -88,31 +42,40 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
-      - name: Install Clang 19
+      - name: Install ${{ matrix.compiler.name }}-${{ matrix.compiler.version }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-19
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 100
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 100
-          sudo update-alternatives --set clang++ /usr/bin/clang++-19
-          sudo update-alternatives --set clang /usr/bin/clang-19
+          sudo apt-get install -y ${{ matrix.compiler.cc }} ${{ matrix.compiler.cxx }}
 
-      - name: Verify Clang is available
-        run: clang --version
+      - name: Verify compiler is available
+        run: ${{ matrix.compiler.cxx }} --version
 
       - name: Build with Bazel
         run: |
-          # Build release configuration
-          bazel build //...
-          # Build debug configuration
-          bazel build //... --config=debug
+          bazel build //... --action_env=CC=${{ matrix.compiler.cc }} --action_env=CXX=${{ matrix.compiler.cxx }}
+          bazel build //... --config=debug --action_env=CC=${{ matrix.compiler.cc }} --action_env=CXX=${{ matrix.compiler.cxx }}
 
       - name: Test with Bazel
         run: |
-          # Test release configuration
-          bazel test //... --test_output=all --test_timeout=5
-          # Test debug configuration
-          bazel test //... --config=debug --test_output=all --test_timeout=5
+          bazel test //... --test_output=all --test_timeout=5 --action_env=CC=${{ matrix.compiler.cc }} --action_env=CXX=${{ matrix.compiler.cxx }}
+          bazel test //... --config=debug --test_output=all --test_timeout=5 --action_env=CC=${{ matrix.compiler.cc }} --action_env=CXX=${{ matrix.compiler.cxx }}
+
+  build-and-test-windows:
+    name: Build and Test (CMake, MSVC)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -S . -B build -DBUILD_TESTS=ON
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run tests
+        run: ctest --test-dir build -C Release -E "PipeTransport|FramedPipeTransport" --output-on-failure
 
   docs:
     name: Generate Documentation
